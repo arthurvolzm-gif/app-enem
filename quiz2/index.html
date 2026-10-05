@@ -24,6 +24,20 @@
 .capa-mini b{font-family:'Open Sans',sans-serif;font-weight:900;font-size:12.5px;color:#ffd84d;text-transform:uppercase;line-height:1.1;margin-top:2px;text-shadow:1px 1px 0 rgba(0,0,0,.3);}
 .capa-mini i{font-style:normal;font-size:18px;margin-top:4px;}
 </style>
+<style>
+.hero-sub{font-family:'Open Sans',sans-serif;font-size:17px;font-weight:700;color:var(--verde-claro);line-height:1.5;text-align:center;margin:18px 0 6px;}
+.prints{position:relative;width:62%;max-width:240px;margin:24px auto 0;aspect-ratio:390/844;border-radius:22px;overflow:hidden;background:#fff;border:6px solid #0b1f4d;box-shadow:0 14px 34px rgba(11,31,77,.35);}
+#prints-track{display:flex;height:100%;}
+#prints-track img{flex:1 1 0;min-width:0;height:100%;object-fit:cover;display:block;}
+.prints-dots{display:flex;gap:6px;justify-content:center;margin-top:14px;}
+.prints-dots i{width:7px;height:7px;border-radius:50%;background:#cfdaf0;}
+.prints-dots i.on{background:var(--verde);width:18px;border-radius:6px;}
+.prints-leg{font-size:11.5px;color:#8a98b5;margin-top:8px;}
+.com-lista{margin-top:26px;background:#f4f7fd;border:1px solid var(--borda);border-radius:16px;padding:6px 16px 8px;text-align:left;}
+.com-tt{padding:12px 0 8px;text-align:center;font-size:12.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--verde-claro);}
+.com-item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--borda);font-size:14.5px;font-weight:700;color:var(--cinza);line-height:1.5;}
+.com-item .ck{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--verde);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+</style>
 </head>
 <body>
 <div id="app"></div>
@@ -139,6 +153,29 @@ function montaPlano(){
 /* =========================================================
    TELAS PRÓPRIAS DO QUIZ 2
    ========================================================= */
+/* carrossel de prints reais do app: desliza sozinho, pausa enquanto a pessoa segura a imagem.
+   A última "foto" é cópia da primeira: ao chegar nela, volta ao início sem transição (sem salto). */
+const PRINTS = ['/img/print-app-inicio.jpg','/img/print-app-plano.jpg','/img/print-app-meta.jpg','/img/print-app-resumos.jpg','/img/print-app-tema.jpg','/img/print-app-progresso.jpg'];
+let printsIdx = 0, printsTimer = null;
+function iniciarPrints(){ clearInterval(printsTimer); printsIdx = 0; printsTimer = setInterval(avancarPrints, 2200); }
+function pausarPrints(){ clearInterval(printsTimer); }
+function retomarPrints(){ clearInterval(printsTimer); printsTimer = setInterval(avancarPrints, 2200); }
+function avancarPrints(){
+  const track = document.getElementById('prints-track');
+  if(!track || !document.body.contains(track)){ clearInterval(printsTimer); return; }
+  const pct = 100 / (PRINTS.length + 1);
+  printsIdx++;
+  track.style.transition = 'transform .55s cubic-bezier(.4,0,.2,1)';
+  track.style.transform = `translateX(-${printsIdx * pct}%)`;
+  document.querySelectorAll('#prints-dots i').forEach((d,i)=>d.classList.toggle('on', i === (printsIdx % PRINTS.length)));
+  if(printsIdx === PRINTS.length){
+    setTimeout(()=>{
+      if(!document.body.contains(track)) return;
+      track.style.transition = 'none'; track.style.transform = 'translateX(0)'; printsIdx = 0;
+    }, 600);
+  }
+}
+
 const RENDER = {
   intro(q){
     app.innerHTML = `
@@ -184,25 +221,34 @@ const RENDER = {
   },
 
   app(){
-    const n = nomeA();
-    const C = window.CONTEUDO||{};
-    const capas = ['mat','fis','qui','bio','his','geo','fil','soc','lin'].filter(id=>C[id]).map(id=>`<div class="capa-mini" style="background:${C[id].capa};"><span>Resumo de</span><b>${S(C[id].nome)}</b><i>${C[id].icone}</i></div>`).join('');
     app.innerHTML = `
-    <div class="wrap fade"><div class="card">
-      ${backBtn()}<div class="brand-sub" style="margin-bottom:6px;">A solução para o seu caso</div>
-      <span class="tag">Conheça o material</span>
-      <h2 class="q-title" style="margin-bottom:8px;">Resumos completos do ENEM: as 9 matérias</h2>
-      <p class="sec-s">${n?n+', são':'São'} <b>25 temas por matéria</b>, os que mais caem na prova, explicados de forma simples, visual e direta.</p>
-      <div class="capas">${capas}</div>
-      <div class="sec-h">E o app que diz o que estudar em cada dia</div>
-      <div class="feat-grid">
-        <div class="feat"><div class="i">📅</div><h5>Plano semanal pronto</h5><p>A matéria de cada dia e o tempo, de acordo com a sua rotina.</p></div>
-        <div class="feat"><div class="i">📚</div><h5>Temas da semana</h5><p>Alguns temas por semana, começando pelos que mais caem.</p></div>
-        <div class="feat"><div class="i">📊</div><h5>Desempenho por matéria</h5><p>Tempo estudado e temas já lidos.</p></div>
-        <div class="feat"><div class="i">⏰</div><h5>Lembretes de estudo</h5><p>No horário que você escolher.</p></div>
+    <div class="wrap fade"><div class="card" style="text-align:center;padding-top:34px;padding-bottom:40px;">
+      ${backBtn()}
+      <p class="hero-sub">Organize o seu plano de estudos, os resumos de cada matéria, o seu desempenho e os lembretes em um app só.</p>
+
+      <div id="prints-wrap" class="prints"
+           onmousedown="pausarPrints()" onmouseup="retomarPrints()" onmouseleave="retomarPrints()"
+           ontouchstart="pausarPrints()" ontouchend="retomarPrints()" ontouchcancel="retomarPrints()">
+        <div id="prints-track" style="width:${(PRINTS.length+1)*100}%;">
+          ${PRINTS.concat([PRINTS[0]]).map(src=>`<img src="${src}" alt="Telas do app Plano ENEM" onerror="this.style.visibility='hidden'">`).join('')}
+        </div>
       </div>
-      <button class="btn" style="margin-top:18px;" onclick="go(1)">Ver o meu plano →</button>
+      <div class="prints-dots" id="prints-dots">${PRINTS.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join('')}</div>
+      <p class="prints-leg">Telas do app (exemplo)</p>
+
+      <div class="com-lista">
+        <div class="com-tt">Com o ${S(QUIZ.APP_NOME)} você tem:</div>
+        <div class="com-item"><span class="ck">✓</span>O seu plano semanal pronto: a matéria de cada dia e o tempo, de acordo com a sua rotina</div>
+        <div class="com-item"><span class="ck">✓</span>Os 225 temas que mais caem, com alguns separados por semana até o ENEM e os 🔥 primeiro</div>
+        <div class="com-item"><span class="ck">✓</span>O seu desempenho por matéria: tempo estudado e cada tema lido salvos</div>
+        <div class="com-item"><span class="ck">✓</span>Lembrete na hora de estudar e a revisão no tempo certo para o conteúdo ficar</div>
+        <div class="com-item"><span class="ck">✓</span>Sem montar cronograma e sem planilha: você abre o app e sabe o que estudar agora</div>
+      </div>
+
+      <button class="btn" style="margin-top:24px;" onclick="go(1)">Ver o meu plano →</button>
+      <p style="font-size:13px;color:#8a98b5;margin:12px 0 0;">✅ Falta só um passo</p>
     </div></div>`;
+    iniciarPrints();
   },
 
   projecao(){
