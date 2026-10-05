@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Teste ENEM | Você está preparado?</title>
+<meta name="description" content="Faça o teste grátis e descubra o seu Índice de Preparo para o ENEM. Receba um plano para o último mês." />
+<meta name="theme-color" content="#1d3f8f" />
+<link rel="stylesheet" href="/shared/quiz-azul.css" />
+<script src="/shared/resumos.js"></script>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* =========================================================
+   CONFIGURAÇÃO DO QUIZ 2 (MATÉRIAS)
+   ========================================================= */
+window.QUIZ = {
+  id: 'quiz2',
+  MARCA: 'Teste de Preparo ENEM',
+  SUB: 'Você está preparado para o ENEM?',
+  APP_NOME: 'Plano ENEM',
+  PIXEL_ID: '',
+  GA_ID: '',
+  CHECKOUT_URL: '',             // checkout do app das matérias
+  CHECKOUT_DESCONTO: '',        // opcional: pop-up de saída. Vazio = desligado
+  PRECO_POR: 'R$ 24,90',        // provisório
+  PRECO_DESCONTO: '',
+  DATA_ENEM: '2026-11-08'       // CONFIRME no edital do INEP
+};
+
+/* nota de corte média aproximada em federais (SISU, edições anteriores). VALIDAR com dados oficiais antes de anunciar. */
+const CURSOS = {
+  'Medicina':'780 a 820', 'Direito':'700 a 750', 'Engenharias':'650 a 720', 'Psicologia':'680 a 730',
+  'Enfermagem e outras da saúde':'600 a 680', 'Administração ou Economia':'600 a 680', 'Pedagogia e licenciaturas':'540 a 620', 'Outro curso':null
+};
+
+const QUESTIONS = [
+  { id:'situacao', type:'foto',
+    options:['Estou no 3º ano do ensino médio','Já terminei e estudo por conta própria','Faço cursinho / pré-vestibular','Já fiz o ENEM e vou tentar de novo'],
+    images:['/img/situacao-3ano.jpg','/img/situacao-sozinho.jpg','/img/situacao-cursinho.jpg','/img/situacao-tentar-de-novo.jpg'] },
+  { id:'nome', type:'text', question:'Qual o seu primeiro nome?', placeholder:'Digite seu primeiro nome' },
+  { id:'sentimento', question:'Faltando tão pouco, como você se sente agora?',
+    options:['😰 Desesperado(a): sinto que não vai dar tempo','🌀 Perdido(a): não sei nem por onde começar','😟 Ansioso(a): estudo, mas não sei se é o suficiente','🙂 Tranquilo(a), mas quero garantir o máximo'] },
+  { id:'horas', question:'Quanto tempo você estuda por dia, em média?',
+    options:['Não estou estudando','Menos de 1 hora','De 1 a 2 horas','De 2 a 4 horas','Mais de 4 horas'] },
+  { id:'dias', question:'Quantos dias por semana você realmente estuda?',
+    options:['Quase nenhum','1 a 2 dias','3 a 4 dias','5 a 6 dias','Todos os dias'] },
+  { id:'rotina', question:'Como está a sua rotina de estudos?',
+    options:['Não tenho rotina, estudo quando dá','Tenho cronograma, mas não consigo cumprir','Estudo bastante, mas sem saber o que priorizar','Tenho uma rotina organizada'] },
+  { id:'tentou', question:'Você já montou um cronograma e abandonou no meio do caminho?',
+    options:['Sim, várias vezes','Sim, uma vez','Nunca montei um','Não, sempre cumpro'] },
+  { id:'materias', type:'multi', max:4, question:'Em quais matérias você tem mais dificuldade?',
+    options:['Matemática','Física','Química','Biologia','História','Geografia','Filosofia e Sociologia','Linguagens','Redação'] },
+  { id:'resumos', question:'Você sabe quais são os temas que mais caem em cada matéria?',
+    options:['Não faço ideia','Sei de alguns, mas estudo tudo igual','Sei, mas não tenho resumo deles','Sei e tenho resumos organizados'] },
+  { id:'simulados', question:'Quando foi o seu último simulado completo do ENEM?',
+    options:['Nunca fiz um','Há mais de 3 meses','No último mês','Faço toda semana'] },
+  { id:'curso', question:'Qual curso você quer fazer?', options:Object.keys(CURSOS) },
+  { id:'meta', question:'Qual nota você precisa tirar para passar?',
+    sub:a=>{ const c=CURSOS[a.curso]; return c ? `Para ${S(a.curso)}, a nota de corte nas federais costuma ficar na faixa de <strong>${c} pontos</strong> (valor aproximado de edições anteriores do SISU; muda conforme a universidade).` : ''; },
+    options:['Até 600 pontos','De 600 a 700','De 700 a 800','Acima de 800','Não sei qual é a minha meta'] },
+  { id:'red_nota', question:'E na redação, como você está?',
+    options:['Nunca escrevi uma redação completa','Não sei, ninguém corrige','Tiro menos de 500','Tiro entre 500 e 700','Tiro entre 700 e 800','Tiro mais de 800'] },
+  { id:'atrapalha', question:'O que mais atrapalha você de estudar?',
+    options:['Falta de tempo','Celular e distrações','Não saber o que estudar hoje','Ansiedade e cansaço','Desmotivação'] },
+  { id:'ajuda', question:'O que mais ajudaria você a manter o foco e render no último mês?',
+    options:['📅 Um plano pronto: o que estudar em cada dia e por quanto tempo','📚 Resumos do que mais cai em cada matéria','📊 Ver o meu desempenho por matéria e saber onde melhorar','⏰ Lembretes e um app que me puxa para estudar','✅ Todas as alternativas acima'] }
+];
+
+function montaFlow(){
+  QUESTIONS.forEach(q=>FLOW.push({type:'question', q}));
+  FLOW.push({type:'analyzing', label:'Calculando o seu Índice de Preparo...', dur:5000});
+  FLOW.push({type:'diag'});
+  FLOW.push({type:'app'});
+  FLOW.push({type:'analyzing', label:'Montando o seu plano personalizado...', dur:3500});
+  FLOW.push({type:'projecao'});
+  FLOW.push({type:'result'});
+}
+
+/* =========================================================
+   ÍNDICE DE PREPARO (sempre entre 14 e 38, decisão do dono do funil)
+   ========================================================= */
+function opts(id){ return QUESTIONS.find(q=>q.id===id).options; }
+function calcPreparo(){
+  const a = state.answers;
+  const horas = pts(a.horas, opts('horas')) / 4;
+  const dias  = pts(a.dias,  opts('dias')) / 4;
+  const rot   = pts(a.rotina,opts('rotina')) / 3;
+  const tent  = pts(a.tentou,opts('tentou')) / 3;
+  const resu  = pts(a.resumos,opts('resumos')) / 3;
+  const simu  = pts(a.simulados,opts('simulados')) / 3;
+  const rn    = pts(a.red_nota,opts('red_nota')) / 5;
+  const raw = horas*20 + dias*15 + rot*15 + tent*5 + resu*15 + simu*15 + rn*15;   // 0..100
+  const idx = Math.round(14 + raw*0.24);
+  const barra = r => Math.min(46, Math.round(8 + r*38));
+  return { idx, areas:[
+    {n:'Rotina e constância', v:barra((dias*15+rot*15+tent*5)/35)},
+    {n:'Tempo de estudo',     v:barra(horas)},
+    {n:'Conteúdo priorizado', v:barra(resu)},
+    {n:'Simulados e prática', v:barra(simu)},
+    {n:'Redação',             v:barra(rn)}
+  ]};
+}
+function nivel(i){ return i<24 ? {txt:'MUITO BAIXO', cor:'#d64545'} : {txt:'BAIXO', cor:'#e0703a'}; }
+function matsDificeis(){ return (state.answers.materias||[]).filter(m=>m!=='Redação'); }
+
+/* plano da semana montado com as respostas */
+const MIN_POR_DIA = {'Não estou estudando':45,'Menos de 1 hora':45,'De 1 a 2 horas':90,'De 2 a 4 horas':120,'Mais de 4 horas':150};
+function fmt(m){ return m>=60 ? (Math.floor(m/60)+'h'+(m%60?String(m%60).padStart(2,'0'):'')) : (m+' min'); }
+function montaPlano(){
+  let mats = matsDificeis();
+  ['Matemática','Linguagens','Biologia','História'].forEach(m=>{ if(mats.length<4 && !mats.includes(m)) mats.push(m); });
+  mats = mats.slice(0,4);
+  const mi = MIN_POR_DIA[state.answers.horas] || 60;
+  return [
+    {d:'Seg', m:mats[0], t:fmt(mi)}, {d:'Ter', m:mats[1], t:fmt(mi)}, {d:'Qua', m:'Redação', t:fmt(mi)},
+    {d:'Qui', m:mats[2], t:fmt(mi)}, {d:'Sex', m:mats[0], t:fmt(mi)}, {d:'Sáb', m:mats[3], t:fmt(mi)},
+    {d:'Dom', m:'Revisão da semana', t:fmt(Math.max(60,mi))}
+  ];
+}
+
+/* =========================================================
+   TELAS PRÓPRIAS DO QUIZ 2
+   ========================================================= */
+const RENDER = {
+  intro(q){
+    app.innerHTML = `
+    <div class="wrap fade"><div class="card" style="text-align:center;padding-top:46px;padding-bottom:40px;">
+      <span class="intro-badge">Teste grátis · 2 minutos</span>
+      <h1 class="intro-h1">Você está <span>preparado</span> para o ENEM?</h1>
+      <p class="intro-sub">${S(prazoTxt())}. Faça o teste e descubra o seu <strong>Índice de Preparo</strong>. Ao final você recebe um plano para o último mês.</p>
+      <h2 class="intro-h1" style="font-size:24px;margin:30px 0 4px;">Qual é a sua situação?</h2>
+      <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:#9aa2b4;margin:8px 0 18px;">Toque para escolher</p>
+      ${introCards(q)}
+      <p style="font-size:13px;color:#8a98b5;margin-top:18px;">✅ Gratuito e sem cadastro</p>
+    </div></div>`;
+  },
+
+  diag(){
+    const a = state.answers, n = nomeA();
+    const P = calcPreparo(), niv = nivel(P.idx);
+    const mats = matsDificeis();
+    const semPlano = /quando dá|não consigo|sem saber/.test(a.rotina||'');
+    app.innerHTML = `
+    <div class="wrap fade"><div class="card">
+      ${backBtn()}<div class="brand-sub" style="margin-bottom:6px;">Diagnóstico personalizado</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+      <div class="alerta"><p>⚠️ ${n?n+', o':'O'} seu preparo para o ENEM está <strong>${niv.txt}</strong>.</p>
+        <p class="s">Com base nas suas respostas, hoje a sua rotina e o seu conteúdo não estão no ritmo que a sua meta exige.</p></div>
+      ${medidorHTML(P.idx, niv.cor, 'Seu Índice de Preparo para o ENEM')}
+        ${barrasHTML(P.areas)}
+        <p class="note">Estimativa educativa calculada a partir das suas respostas. Não é uma avaliação oficial e não prevê a sua nota.</p>
+      </div>
+      <div class="alerta" style="margin-top:20px;"><p style="font-size:15px;letter-spacing:.4px;">⚠️ 3 PONTOS CRÍTICOS FORAM IDENTIFICADOS</p></div>
+      <div class="box"><h4>1 · Sua rotina não está protegendo o seu tempo</h4>
+        <p>Estudar <strong>${S((a.dias||'').toLowerCase())}</strong> por semana e <strong>${S((a.horas||'').toLowerCase())}</strong> por dia, ${semPlano?'sem um plano que você consiga cumprir,':'sem priorizar o que mais cai,'} deixa a preparação irregular justo no último mês.</p></div>
+      <div class="box"><h4>2 · Você está estudando sem prioridade</h4>
+        <p>${(a.resumos||'').startsWith('Sei e tenho')?'Mesmo com resumos, sem saber quanto tempo dedica a cada matéria fica difícil equilibrar.':'Sem saber quais temas mais caem, o tempo vai para o que menos pesa na prova.'}${mats.length?` E você marcou <strong>${S(mats.join(', '))}</strong> como dificuldade.`:''}</p></div>
+      <div class="box"><h4>3 · Você não sabe onde está perdendo pontos</h4>
+        <p>${(a.simulados==='Nunca fiz um'||a.simulados==='Há mais de 3 meses')?'Sem simulados recentes e sem acompanhar o desempenho por matéria,':'Sem acompanhar o desempenho por matéria,'} você não enxerga em qual matéria o tempo rende mais.</p></div>
+      <div style="background:#eef3fc;border:1px solid #d5e0f3;border-radius:14px;padding:20px;margin:6px 0 0;text-align:center;">
+        <p style="color:var(--verde-escuro);font-size:15.5px;font-weight:800;line-height:1.55;">Mas ainda dá para reagir. Com um plano pronto, os temas certos e o seu desempenho acompanhado, <strong>o último mês pode ser muito mais bem aproveitado</strong>.</p></div>
+      <button class="btn" style="margin-top:20px;" onclick="go(1)">Ver como resolver →</button>
+    </div></div>`;
+    px('DiagnosticoGerado');
+  },
+
+  app(){
+    const n = nomeA();
+    app.innerHTML = `
+    <div class="wrap fade"><div class="card">
+      ${backBtn()}<div class="brand-sub" style="margin-bottom:6px;">A solução para o seu caso</div>
+      <span class="tag">Conheça o app</span>
+      <h2 class="q-title" style="margin-bottom:8px;">${S(QUIZ.APP_NOME)}: o seu último mês organizado, no celular</h2>
+      <p class="sec-s">${n?n+', foi':'Foi'} feito para quem tem pouco tempo e precisa de direção, sem complicação.</p>
+      <div class="feat-grid">
+        <div class="feat"><div class="i">📅</div><h5>Plano semanal pronto</h5><p>A matéria de cada dia e o tempo, de acordo com a sua rotina.</p></div>
+        <div class="feat"><div class="i">📊</div><h5>Desempenho por matéria</h5><p>Tempo estudado e temas já lidos.</p></div>
+        <div class="feat"><div class="i">⏰</div><h5>Lembretes de estudo</h5><p>No horário que você escolher.</p></div>
+        <div class="feat"><div class="i">📚</div><h5>Resumo do que mais cai</h5><p>Os temas principais de cada matéria.</p></div>
+      </div>
+      <button class="btn" style="margin-top:18px;" onclick="go(1)">Ver o meu plano com o app →</button>
+    </div></div>`;
+  },
+
+  projecao(){
+    const a = state.answers, n = nomeA();
+    const P = calcPreparo(), niv = nivel(P.idx);
+    const plano = montaPlano();
+    const nomes = matsDificeis().length ? matsDificeis() : ['Matemática','Biologia'];
+    /* resumo real do app para a 1ª matéria difícil */
+    const M = (window.MATERIAS||[]).find(m=>m.nome===nomes[0]) || (window.MATERIAS||[])[0];
+    const tema = M ? M.temas[0] : null;
+    app.innerHTML = `
+    <div class="wrap fade"><div class="card">
+      ${backBtn()}<div class="brand-sub" style="margin-bottom:6px;">Seu plano personalizado</div>
+      <span class="tag">${n?n+', veja':'Veja'} como fica usando o app</span>
+      <h2 class="q-title" style="margin-bottom:6px;">Seu último mês com o ${S(QUIZ.APP_NOME)}</h2>
+      <p class="sec-s">Montado com as suas respostas: suas dificuldades, o tempo que você tem e a sua meta.</p>
+
+      <div class="sec-h" style="margin-top:6px;">📅 Sua semana de estudos</div>
+      <div class="phone"><div class="phone-top"><span><i class="dot"></i>Plano da semana</span><span>${S(a.horas||'')}</span></div>
+        <table class="plano">${plano.map(p=>`<tr><td class="d">${p.d}</td><td class="m">${S(p.m)}</td><td class="h">${p.t}</td></tr>`).join('')}</table>
+        <p class="note" style="margin-top:8px;">As matérias em que você tem mais dificuldade aparecem com mais frequência. Você ajusta os dias no app.</p></div>
+
+      ${tema?`<div class="sec-h">📚 Um resumo do que mais cai</div>
+      <div class="phone"><div class="phone-top"><span><i class="dot"></i>${S(M.nome)}</span><span>Prioridade ${S(tema.prio)}</span></div>
+        <b style="color:var(--verde-escuro);font-size:15px;">${S(tema.titulo)}</b>
+        <ul style="padding-left:18px;margin:8px 0;">${tema.resumo.slice(0,3).map(r=>`<li style="font-size:13.5px;line-height:1.55;margin-bottom:5px;">${S(r)}</li>`).join('')}</ul>
+        <div style="background:var(--verde-suave);border-radius:10px;padding:9px 12px;font-size:13px;font-weight:800;color:var(--verde-escuro);text-align:center;">✓ Marcar como lido: entra no seu desempenho</div></div>`:''}
+
+      <div class="sec-h">📊 Seu desempenho por matéria</div>
+      <span class="exemplo">Exemplo ilustrativo</span>
+      <div class="phone"><div class="phone-top"><span><i class="dot"></i>Desempenho</span><span>Temas lidos</span></div>
+        ${nomes.slice(0,3).map((m,i)=>{ const [x,y]=[[3,8],[1,6],[0,7]][i]; return `<div class="mat-row"><div class="l">${S(m)}<span>${x} de ${y} temas</span></div><div class="t"><div class="f" style="width:${Math.round(x/y*100)}%"></div></div></div>`;}).join('')}
+        <p class="note" style="text-align:left;margin-top:6px;">O tempo de cada sessão e os temas lidos ficam salvos por matéria.</p></div>
+
+      <div class="sec-h">⏰ Lembrete na hora certa</div>
+      <div class="phone" style="display:flex;gap:12px;align-items:center;"><div style="font-size:30px;">🔔</div><div><b style="color:var(--verde-escuro);">Hora de estudar!</b><div style="font-size:13px;color:#6b7590;">Hoje: ${S(plano[0].m)}, ${plano[0].t}</div></div></div>
+
+      <div class="sec-h">🎯 Do seu ponto de partida à sua meta</div>
+      <div class="box" style="background:#fff;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:10px;">
+          <div style="text-align:center;flex:1;"><div style="font-size:11px;font-weight:800;letter-spacing:1px;color:var(--vermelho);text-transform:uppercase;">Hoje</div><div style="font-family:'Open Sans';font-size:40px;font-weight:900;color:${niv.cor};line-height:1.1;">${P.idx}</div></div>
+          <div style="font-size:24px;color:#9ba8c2;padding-bottom:8px;">→</div>
+          <div style="text-align:center;flex:1;"><div style="font-size:11px;font-weight:800;letter-spacing:1px;color:var(--verde);text-transform:uppercase;">Meta do plano</div><div style="font-family:'Open Sans';font-size:40px;font-weight:900;color:var(--verde);line-height:1.1;">60+</div></div>
+        </div>
+        <div class="meter"><i style="left:${P.idx}%;border-color:${niv.cor};"></i></div>
+        <div class="meter-l"><span>Crítico</span><span>Em evolução</span><span>Preparado</span></div>
+        <p class="note">A meta é chegar à faixa "Em evolução" seguindo o plano. É uma estimativa educativa: o resultado depende da sua dedicação, e não garantimos nota nem aprovação.</p>
+      </div>
+
+      <div class="cmp">
+        <div class="c a"><h4>Como você está</h4><ul><li>Estudo sem plano</li><li>Tudo com o mesmo peso</li><li>Sem saber o desempenho</li><li>Esquece de estudar</li></ul></div>
+        <div class="c b"><h4>Com o app</h4><ul><li>Plano pronto por dia</li><li>Resumo do que mais cai</li><li>Desempenho por matéria</li><li>Lembrete na hora certa</li></ul></div>
+      </div>
+      <button class="btn" style="margin-top:14px;" onclick="go(1)">Quero ativar o meu plano →</button>
+    </div></div>`;
+  },
+
+  result(){
+    const n = nomeA(), P = calcPreparo();
+    px('ViewContent', true);
+    app.innerHTML = `
+    <div class="res fade">
+      <div class="blk" style="text-align:center;">
+        <span class="tag red">${S(prazoTxt())}</span>
+        <h1 class="intro-h1" style="font-size:27px;">${n?n+', c':'C'}omece hoje o plano do seu último mês</h1>
+        <p class="intro-sub" style="font-size:15px;">Seu Índice de Preparo hoje é <strong style="color:${nivel(P.idx).cor};">${P.idx}/100</strong>. O ${S(QUIZ.APP_NOME)} organiza o que estudar em cada dia até a prova.</p>
+      </div>
+      <div class="blk">
+        <h3 class="sec-h" style="margin-top:0;">O que você recebe</h3>
+        <ul class="lista">
+          <li><span><b>Plano semanal pronto:</b> a matéria de cada dia e o tempo, de acordo com a sua rotina</span></li>
+          <li><span><b>Desempenho por matéria:</b> tempo estudado e temas já lidos</span></li>
+          <li><span><b>Lembretes de estudo</b> no horário que você escolher</span></li>
+          <li><span><b>Resumo do que mais cai</b> em cada matéria, com os temas principais</span></li>
+        </ul>
+      </div>
+      <div class="blk">
+        <div class="price-box">
+          <div class="label">Acesso até o dia do ENEM</div>
+          <div class="val">${S(QUIZ.PRECO_POR)}</div>
+          <div style="font-size:13px;opacity:.9;">pagamento único, sem mensalidade</div>
+          <span class="off">Acesso imediato no celular</span>
+        </div>
+        <button class="btn" onclick="irCheckout('oferta')">Quero começar agora →</button>
+        <p class="note">Compra segura • Funciona direto no navegador do celular • Sem instalar nada</p>
+      </div>
+      <div class="blk garantia">
+        <img src="/img/garantia-7-dias.png" alt="Garantia de 7 dias" onerror="this.outerHTML='<div class=&quot;sel&quot;>7 DIAS<br>DE GARANTIA</div>'">
+        <div><h3 style="font-family:'Open Sans';font-size:18px;font-weight:900;color:var(--verde-escuro);margin-bottom:6px;">Garantia de 7 dias</h3>
+        <p style="font-size:14px;color:#525d78;line-height:1.6;">Use o app por 7 dias. Se não gostar, peça o reembolso dentro do prazo e devolvemos o valor pago.</p></div>
+      </div>
+      <div class="blk faq">
+        <h3 class="sec-h" style="margin-top:0;">Dúvidas frequentes</h3>
+        <details><summary>Ainda dá tempo de usar?</summary><p>Sim. O plano é feito para o tempo que falta e foca no que mais pesa: priorizar os temas certos e manter a constância. Não prometemos nota, mas cada dia bem usado conta.</p></details>
+        <details><summary>Não tenho tempo para estudar muito. Serve para mim?</summary><p>Serve. O plano parte do tempo que você tem hoje, a partir de 30 minutos por dia, e cada dia já mostra o que estudar.</p></details>
+        <details><summary>Já tentei cronograma e larguei. O que muda?</summary><p>No app o plano já vem pronto e você recebe lembretes na hora de estudar. Você não precisa montar nem lembrar de nada sozinho.</p></details>
+        <details><summary>Tem exercícios e correção de redação?</summary><p>No checkout você pode incluir os Exercícios e simulados no estilo do ENEM e a Correção da redação pela foto.</p></details>
+        <details><summary>Preciso instalar algum aplicativo?</summary><p>Não. O app abre no navegador do celular e você pode adicioná-lo à tela inicial.</p></details>
+        <details><summary>E se eu não gostar?</summary><p>Você tem 7 dias de garantia. Se não gostar, peça o reembolso dentro do prazo.</p></details>
+        <details><summary>Isso é oficial do ENEM ou do MEC?</summary><p>Não. É um produto independente, sem vínculo com o INEP, o MEC ou o Governo Federal.</p></details>
+      </div>
+      <div class="blk" style="text-align:center;">
+        <h3 class="sec-h" style="margin-top:0;">${S(prazoTxt())}.</h3>
+        <p class="sec-s">Cada dia sem plano é um dia a menos para estudar o que mais cai.</p>
+        <button class="btn" onclick="irCheckout('final')">Quero começar agora →</button>
+      </div>
+      <p class="legal">Produto independente, sem vínculo com o INEP, o MEC ou o Governo Federal. O app é uma ferramenta de apoio: os resultados dependem da dedicação de cada estudante e não há garantia de nota ou aprovação. O Índice de Preparo é uma estimativa educativa.</p>
+    </div>
+    <div class="sticky-cta"><button class="btn" onclick="irCheckout('sticky')">Quero começar agora →</button></div>`;
+  }
+};
+</script>
+<script src="/shared/quiz-base.js"></script>
+</body>
+</html>
