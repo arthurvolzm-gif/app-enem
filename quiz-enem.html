@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reta Final ENEM | Teste seu Índice de Preparo</title>
+<meta name="description" content="Faça o teste grátis e descubra o seu Índice de Preparo para o ENEM. Receba um plano para o último mês." />
+<meta name="theme-color" content="#0b8f4d" />
+
+<!-- ===== CONFIGURAÇÃO (preencha antes de publicar) =====
+     Enquanto estiver vazio, nada é carregado e o quiz funciona normalmente. -->
+<script>
+var PIXEL_ID = '';   // ID do Pixel da Meta deste funil (NÃO reaproveite o do Caneta Zero)
+var GA_ID    = '';   // G-XXXXXXXXXX da propriedade GA4
+
+if (PIXEL_ID) {
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;
+  s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', PIXEL_ID);
+  fbq('track', 'PageView');
+}
+if (GA_ID) {
+  var gaTag = document.createElement('script');
+  gaTag.async = true;
+  gaTag.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+  document.head.appendChild(gaTag);
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ dataLayer.push(arguments); };
+  gtag('js', new Date());
+  gtag('config', GA_ID);
+}
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800;900&family=Lato:wght@400;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --verde:#0b8f4d;
+  --verde-claro:#2fbf71;
+  --verde-suave:#e9f7ef;
+  --verde-escuro:#065f35;
+  --branco:#ffffff;
+  --cinza:#3d4a43;
+  --cinza-claro:#f4f8f5;
+  --borda:#dcebe2;
+  --vermelho:#d64545;
+  --laranja:#e8863a;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Lato',sans-serif;background:#f1f8f4;color:var(--cinza);line-height:1.6;min-height:100vh;}
+.wrap{max-width:620px;margin:0 auto;padding:22px 18px 80px;}
+.card{background:#fff;border-radius:22px;box-shadow:0 12px 44px rgba(6,95,53,.12);padding:34px 28px;position:relative;border:1px solid #e3f0e8;}
+.back-btn{position:absolute;left:14px;top:12px;background:none;border:none;color:#9bb3a6;font-size:24px;cursor:pointer;padding:4px 8px;}
+.back-btn:hover{color:var(--verde);}
+.brand{text-align:center;font-family:'Open Sans',sans-serif;font-weight:900;font-size:19px;color:var(--verde-escuro);letter-spacing:.2px;}
+.brand b{color:var(--verde-claro);}
+.brand-sub{font-size:13px;color:#8aa79a;margin-bottom:14px;text-align:center;}
+.progress-bar{height:7px;background:#e3efe8;border-radius:20px;overflow:hidden;margin:8px 0 24px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--verde-escuro),var(--verde-claro));border-radius:20px;transition:width .5s ease;}
+.q-title{font-family:'Open Sans',sans-serif;font-size:25px;font-weight:900;color:var(--verde-escuro);line-height:1.28;margin-bottom:20px;text-align:center;}
+.q-sub{font-size:14px;color:#7d9488;text-align:center;margin:-10px 0 16px;}
+.opts{display:flex;flex-direction:column;gap:11px;}
+.opts.compact{gap:9px;}
+.opts.compact .opt{padding:13px 16px;font-size:14.5px;}
+.opt{display:flex;align-items:center;gap:14px;background:#fff;border:1.5px solid #dcebe2;border-radius:14px;padding:16px 18px;font-size:15px;font-weight:700;color:var(--cinza);cursor:pointer;transition:all .18s ease;text-align:left;font-family:'Lato',sans-serif;width:100%;}
+.opt:hover{border-color:var(--verde-claro);box-shadow:0 6px 20px rgba(47,191,113,.14);transform:translateY(-1px);}
+.opt-radio{width:24px;height:24px;border-radius:50%;border:2px solid #c9ddd1;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .18s;}
+.opt.sel{border-color:var(--verde);background:var(--verde-suave);}
+.opt.sel .opt-radio{border-color:var(--verde);background:var(--verde);}
+.opt.sel .opt-radio::after{content:'✓';color:#fff;font-size:13px;font-weight:700;}
+/* cards com foto (abertura) */
+.opts.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.opts.grid2 .foto-card{display:flex;flex-direction:column;border-radius:16px;overflow:hidden;box-shadow:0 6px 18px rgba(11,143,77,.26);cursor:pointer;transition:all .18s;}
+.opts.grid2 .foto-card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(11,143,77,.36);}
+.opts.grid2 .foto-img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:var(--verde-suave);}
+.opts.grid2 .opt{padding:14px 10px;font-size:13.5px;font-weight:700;justify-content:center;text-align:center;background:linear-gradient(135deg,var(--verde),var(--verde-claro));color:#fff;border:none;border-radius:0;gap:8px;line-height:1.3;}
+.opts.grid2 .opt:hover{transform:none;box-shadow:none;}
+.opts.grid2 .opt.sel{background:linear-gradient(135deg,var(--verde-escuro),var(--verde));}
+.opts.grid2 .opt-radio{display:none;}
+.btn{display:block;width:100%;text-align:center;background:linear-gradient(135deg,var(--verde),var(--verde-claro));color:#fff;font-family:'Lato',sans-serif;font-size:17px;font-weight:900;border:none;border-radius:50px;padding:18px 26px;cursor:pointer;text-decoration:none;box-shadow:0 8px 28px rgba(11,143,77,.32);transition:transform .2s,box-shadow .2s;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(11,143,77,.45);}
+.btn-ghost{background:#fff;color:var(--verde);border:1.5px solid var(--borda);box-shadow:none;margin-top:12px;}
+.text-input{width:100%;border:1.5px solid #dcebe2;border-radius:14px;padding:16px 18px;font-size:16px;font-family:'Lato',sans-serif;color:var(--cinza);background:#fff;margin-bottom:14px;outline:none;}
+.text-input:focus{border-color:var(--verde);box-shadow:0 6px 20px rgba(47,191,113,.14);}
+.intro-badge{display:inline-block;background:var(--verde-suave);color:var(--verde);font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:7px 16px;border-radius:20px;margin-bottom:18px;}
+.intro-h1{font-family:'Open Sans',sans-serif;font-size:31px;font-weight:900;color:var(--verde-escuro);line-height:1.22;margin-bottom:12px;text-align:center;}
+.intro-h1 span{color:var(--verde-claro);}
+.intro-sub{font-size:16px;color:#5b6d63;text-align:center;line-height:1.6;}
+.inter-badge{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.inter-badge .ic{width:38px;height:38px;border-radius:50%;background:var(--verde-escuro);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.inter-badge .tt{font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--verde-escuro);line-height:1.3;}
+.inter-text{font-size:16px;color:#48594f;line-height:1.7;margin-bottom:14px;}
+.inter-text strong{color:var(--verde);}
+.inter-text .red{color:var(--vermelho);font-weight:800;}
+.tag{display:block;width:max-content;margin:0 auto 12px;background:var(--verde-escuro);color:#fff;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;}
+.tag.red{background:#fdecec;color:var(--vermelho);}
+.big-num{font-family:'Open Sans',sans-serif;font-size:64px;font-weight:900;color:var(--verde);line-height:1;text-align:center;}
+.big-leg{font-size:14.5px;color:#5b6d63;text-align:center;max-width:420px;margin:6px auto 16px;line-height:1.55;}
+.box{background:#f4faf7;border:1px solid var(--borda);border-radius:14px;padding:16px 18px;margin-bottom:16px;}
+.box h4{font-family:'Open Sans',sans-serif;font-size:17px;font-weight:900;color:var(--verde-escuro);margin-bottom:8px;line-height:1.35;}
+.box p{font-size:14px;color:#48594f;line-height:1.65;}
+.box p+p{margin-top:8px;}
+.alerta{border-radius:14px;padding:16px 18px;margin:0 0 18px;text-align:center;background:#fdecec;}
+.alerta p{color:var(--vermelho);font-weight:800;font-size:16px;line-height:1.45;}
+.alerta p.s{font-weight:600;font-size:13.5px;margin-top:6px;}
+.meter-num{text-align:center;font-family:'Open Sans',sans-serif;font-size:60px;font-weight:900;line-height:1;}
+.meter-num small{font-size:22px;color:#9aaaa2;}
+.meter{height:14px;border-radius:20px;margin:16px 0 8px;background:linear-gradient(90deg,#e05a4e 0%,#f0c05a 50%,#2fbf71 100%);position:relative;}
+.meter i{position:absolute;top:-5px;width:24px;height:24px;border-radius:50%;background:#fff;border:4px solid var(--vermelho);box-shadow:0 2px 8px rgba(0,0,0,.18);transform:translateX(-50%);}
+.meter-l{display:flex;justify-content:space-between;font-size:11.5px;color:#8a9a92;font-weight:700;}
+.sub-bars{margin:18px 0 6px;}
+.sb{margin-bottom:12px;}
+.sb .l{display:flex;justify-content:space-between;font-size:13px;font-weight:800;color:var(--cinza);margin-bottom:4px;}
+.sb .t{height:9px;background:#e8efe9;border-radius:20px;overflow:hidden;}
+.sb .f{height:100%;border-radius:20px;background:linear-gradient(90deg,#e05a4e,#f0a15a);}
+.note{font-size:12px;color:#8a9a92;line-height:1.55;text-align:center;margin-top:12px;}
+/* analisando */
+.analise-title{text-align:center;font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--verde-escuro);}
+.lib-box{text-align:center;margin:30px 0 14px;}
+.lib-label{font-size:11.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--verde);}
+.lib-pct{font-family:'Open Sans',sans-serif;font-size:42px;font-weight:900;color:var(--verde-escuro);line-height:1;margin:6px 0 10px;font-variant-numeric:tabular-nums;}
+.lib-bar{height:11px;background:#e3efe8;border-radius:20px;overflow:hidden;}
+.lib-fill{height:100%;width:0;background:linear-gradient(90deg,var(--verde-escuro),var(--verde-claro));border-radius:20px;}
+/* mocks do app */
+.sec-h{font-family:'Open Sans',sans-serif;font-size:21px;font-weight:900;color:var(--verde-escuro);text-align:center;line-height:1.3;margin:26px 0 6px;}
+.sec-h span{color:var(--verde-claro);}
+.sec-s{font-size:14px;color:#6d8176;text-align:center;margin-bottom:16px;line-height:1.55;}
+.exemplo{display:block;width:max-content;margin:0 auto 10px;background:#fff7e6;color:#9a6a12;font-size:10.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;}
+.phone{background:#fff;border:1.5px solid var(--borda);border-radius:20px;padding:14px;box-shadow:0 8px 26px rgba(6,95,53,.1);margin-bottom:16px;}
+.phone-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:800;color:var(--verde-escuro);margin-bottom:10px;}
+.phone-top .dot{width:8px;height:8px;border-radius:50%;background:var(--verde-claro);display:inline-block;margin-right:6px;}
+.plano{width:100%;border-collapse:collapse;font-size:13.5px;}
+.plano td{padding:9px 8px;border-bottom:1px solid #edf4ef;}
+.plano tr:last-child td{border-bottom:none;}
+.plano .d{font-weight:900;color:var(--verde-escuro);width:56px;}
+.plano .m{font-weight:700;}
+.plano .h{text-align:right;color:var(--verde);font-weight:800;white-space:nowrap;}
+.plano .red-row .m{color:var(--verde-escuro);}
+.chip{display:inline-block;background:var(--verde-suave);color:var(--verde);font-size:11px;font-weight:800;padding:2px 9px;border-radius:12px;margin-left:6px;}
+.red-demo{font-size:14.5px;line-height:1.9;color:#3a463f;background:#fafdfb;border:1px dashed #cfe3d6;border-radius:12px;padding:12px 14px;}
+.hl{background:#ffe3e0;border-bottom:2px solid var(--vermelho);border-radius:3px;padding:0 2px;}
+.hl2{background:#fff0d6;border-bottom:2px solid var(--laranja);border-radius:3px;padding:0 2px;}
+.fb{display:flex;gap:10px;font-size:13px;line-height:1.55;margin-top:10px;color:#48594f;}
+.fb b.c{flex-shrink:0;background:var(--verde-escuro);color:#fff;border-radius:8px;padding:2px 8px;font-size:11px;height:max-content;}
+.foto-caderno{width:100%;border-radius:12px;display:block;margin-bottom:10px;}
+.mat-row{margin-bottom:11px;}
+.mat-row .l{display:flex;justify-content:space-between;font-size:13px;font-weight:800;margin-bottom:4px;}
+.mat-row .l span{color:#8a9a92;font-weight:700;}
+.mat-row .t{height:9px;background:#e8efe9;border-radius:20px;overflow:hidden;}
+.mat-row .f{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--verde),var(--verde-claro));}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px;}
+.feat{background:#fff;border:1.5px solid var(--borda);border-radius:14px;padding:14px 12px;text-align:center;}
+.feat .i{font-size:26px;margin-bottom:6px;}
+.feat h5{font-size:13.5px;font-weight:900;color:var(--verde-escuro);line-height:1.3;margin-bottom:4px;}
+.feat p{font-size:12px;color:#6d8176;line-height:1.45;}
+.timeline{border-left:3px solid var(--borda);margin:14px 0 6px 10px;padding-left:18px;}
+.tl{position:relative;margin-bottom:16px;}
+.tl::before{content:'';position:absolute;left:-26px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--verde);border:3px solid #fff;box-shadow:0 0 0 2px var(--verde-claro);}
+.tl b{display:block;font-size:13px;color:var(--verde-escuro);font-weight:900;letter-spacing:.4px;text-transform:uppercase;}
+.tl span{font-size:14px;color:#48594f;line-height:1.55;}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.cmp .c{background:#fff;border-radius:14px;padding:16px 14px;border:1px solid #e4ede9;}
+.cmp .c.a{border-top:3px solid #e07a7a;}
+.cmp .c.b{border-top:3px solid var(--verde-claro);}
+.cmp h4{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.cmp .a h4{color:var(--vermelho);} .cmp .b h4{color:var(--verde);}
+.cmp li{list-style:none;font-size:13px;color:#5a6a62;padding:5px 0;display:flex;gap:8px;line-height:1.45;}
+.cmp .a li::before{content:'✕';color:#e07a7a;font-weight:800;}
+.cmp .b li::before{content:'✓';color:var(--verde-claro);font-weight:800;}
+.fade{animation:fade .4s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+/* landing final */
+.res{max-width:760px;margin:0 auto;padding:18px 18px 110px;}
+.res .blk{background:#fff;border-radius:20px;border:1px solid #e3f0e8;box-shadow:0 8px 30px rgba(6,95,53,.08);padding:28px 22px;margin-bottom:18px;}
+.price-box{background:linear-gradient(150deg,var(--verde-escuro),var(--verde));border-radius:18px;padding:26px 22px;text-align:center;color:#fff;margin-bottom:16px;}
+.price-box .label{font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;opacity:.85;}
+.price-box .val{font-family:'Open Sans',sans-serif;font-size:54px;font-weight:900;line-height:1;margin:6px 0;}
+.price-box .de{font-size:14px;opacity:.78;text-decoration:line-through;}
+.price-box .off{display:inline-block;background:var(--verde-claro);color:#fff;font-size:12px;font-weight:800;padding:4px 14px;border-radius:20px;margin-top:10px;}
+.lista{list-style:none;}
+.lista li{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #edf4ef;font-size:14.5px;line-height:1.5;}
+.lista li:last-child{border-bottom:none;}
+.lista li::before{content:'✓';color:var(--verde);font-weight:900;flex-shrink:0;}
+.lista li b{color:var(--verde-escuro);}
+.faq details{border-bottom:1px solid #edf4ef;padding:12px 0;}
+.faq summary{font-weight:900;color:var(--verde-escuro);cursor:pointer;font-size:15px;line-height:1.4;}
+.faq p{font-size:14px;color:#52645a;line-height:1.65;margin-top:8px;}
+.garantia{display:flex;gap:16px;align-items:center;}
+.garantia img{width:92px;height:92px;object-fit:contain;flex-shrink:0;}
+.garantia .sel{width:92px;height:92px;border-radius:50%;background:var(--verde);color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:900;font-size:13px;line-height:1.2;flex-shrink:0;}
+.sticky-cta{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--borda);padding:10px 16px;z-index:60;box-shadow:0 -6px 24px rgba(6,95,53,.1);}
+.sticky-cta .btn{max-width:560px;margin:0 auto;padding:15px 20px;font-size:16px;}
+.legal{font-size:11.5px;color:#93a39a;line-height:1.6;text-align:center;margin-top:10px;}
+/* pop-up de saída (só liga se CHECKOUT_DESCONTO existir) */
+.saida-overlay{position:fixed;inset:0;background:rgba(10,40,25,.78);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:20px;z-index:9999;}
+.saida-overlay.aberto{display:flex;}
+.saida-modal{background:#fff;border-radius:22px;max-width:380px;width:100%;padding:30px 24px;text-align:center;position:relative;}
+.saida-fechar{position:absolute;right:14px;top:8px;background:none;border:none;font-size:26px;color:#9bb3a6;cursor:pointer;}
+.saida-selo{display:inline-block;background:var(--verde-suave);color:var(--verde);font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:12px;}
+.saida-titulo{font-family:'Open Sans',sans-serif;font-size:22px;font-weight:900;color:var(--verde-escuro);line-height:1.3;margin-bottom:8px;}
+.saida-sub{font-size:13.5px;color:#6d8176;margin-bottom:14px;}
+.saida-de{font-size:14px;color:#9aaaa2;text-decoration:line-through;}
+.saida-val{font-family:'Open Sans',sans-serif;font-size:46px;font-weight:900;color:var(--verde);line-height:1.1;margin:2px 0 14px;}
+.saida-recusa{background:none;border:none;color:#9aaaa2;font-size:12.5px;margin-top:12px;cursor:pointer;text-decoration:underline;}
+@media(max-width:480px){.card{padding:30px 20px;}.q-title{font-size:23px;}.intro-h1{font-size:27px;}.cmp{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* =========================================================
+   CONFIG DA OFERTA  (preencha antes de publicar)
+   ========================================================= */
+const APP_NOME          = 'Reta Final ENEM';     // nome provisório do app
+const CHECKOUT_URL      = '';                    // link do checkout principal (Ticto etc.)
+const CHECKOUT_DESCONTO = '';                    // opcional: checkout do pop-up de saída. Vazio = pop-up desligado
+const PRECO_DESCONTO    = '';                    // preço mostrado no pop-up de saída (só usado se CHECKOUT_DESCONTO existir)
+const PRECO_POR         = 'R$ 27,90';            // preço da oferta (provisório)
+const PRECO_DE          = 'R$ 97,90';            // ancoragem: só use se for a soma real dos itens
+const DATA_ENEM         = '2026-11-08';          // CONFIRME no edital do INEP. Vazio = textos sem contagem de dias
+
+/* ===== Rastreamento (GA4 + Pixel; seguro se não estiverem carregados) ===== */
+function px(evento, padrao){
+  try{ if(typeof fbq==='function'){ padrao ? fbq('track', evento) : fbq('trackCustom', evento); } }catch(e){}
+}
+function track(evento, params){
+  try{ if(typeof gtag==='function') gtag('event', evento, params||{}); }catch(e){}
+  try{ if(typeof fbq==='function') fbq('trackCustom', evento, params||{}); }catch(e){}
+}
+const track_estado = { etapa:0, rotulo:'intro', concluiu:false, respondidas:0 };
+function trackEtapa(step){
+  let num = 0, rotulo = step.type;
+  if(step.type==='question'){ num = step.q.num; rotulo = step.q.id; }
+  else { num = track_estado.etapa; }
+  track_estado.etapa  = Math.max(track_estado.etapa, num);
+  track_estado.rotulo = rotulo + (step.id ? ':'+step.id : '');
+  if(step.type==='result') track_estado.concluiu = true;
+  track('quiz_etapa', { etapa:num, etapa_id:track_estado.rotulo, tipo:step.type, posicao:state.idx, total_perguntas:TOTAL_Q });
+}
+function trackResposta(qid, valor){
+  track_estado.respondidas++;
+  const q = QUESTIONS.find(x=>x.id===qid);
+  track('quiz_resposta', { pergunta:qid, etapa:q?q.num:0, resposta: Array.isArray(valor) ? valor.join(' | ') : String(valor) });
+}
+window.addEventListener('pagehide', function(){
+  if(track_estado.concluiu) return;
+  track('quiz_abandono', { etapa:track_estado.etapa, etapa_id:track_estado.rotulo, respondidas:track_estado.respondidas });
+});
+
+/* ===== util ===== */
+function S(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function diasEnem(){
+  if(!DATA_ENEM) return null;
+  const d = Math.ceil((new Date(DATA_ENEM+'T09:00:00') - new Date())/86400000);
+  return (isFinite(d) && d>0) ? d : null;
+}
+function prazoTxt(){ const d = diasEnem(); return d ? `Faltam ${d} dias para o ENEM` : 'O ENEM está chegando'; }
+function irCheckout(origem){
+  px('InitiateCheckout', true);
+  track('quiz_clique_checkout', { origem: origem||'' });
+  if(!CHECKOUT_URL){ alert('Configure CHECKOUT_URL no topo do quiz-enem.html antes de publicar.'); return; }
+  try{ sessionStorage.setItem('enem_check','1'); }catch(e){}
+  window.location.href = CHECKOUT_URL;
+}
+
+/* =========================================================
+   PERGUNTAS
+   ========================================================= */
+const SITUACAO_OPTS = ['Estou no 3º ano do ensino médio','Já terminei e estudo por conta própria','Faço cursinho / pré-vestibular','Já fiz o ENEM e vou tentar de novo'];
+const SITUACAO_IMGS = ['situacao-3ano.jpg','situacao-sozinho.jpg','situacao-cursinho.jpg','situacao-tentar-de-novo.jpg'];
+
+const MATERIAS = ['Matemática','Física','Química','Biologia','História','Geografia','Filosofia e Sociologia','Interpretação de texto','Gramática','Redação'];
+
+/* nota de corte média aproximada em federais (SISU, edições anteriores). VALIDAR com dados oficiais antes de anunciar. */
+const CURSOS = {
+  'Medicina':                      {txt:'Medicina',                   corte:'780 a 820'},
+  'Direito':                       {txt:'Direito',                    corte:'700 a 750'},
+  'Engenharias':                   {txt:'Engenharias',                corte:'650 a 720'},
+  'Psicologia':                    {txt:'Psicologia',                 corte:'680 a 730'},
+  'Enfermagem e outras da saúde':  {txt:'Enfermagem e saúde',         corte:'600 a 680'},
+  'Administração ou Economia':     {txt:'Administração ou Economia',  corte:'600 a 680'},
+  'Pedagogia e licenciaturas':     {txt:'Pedagogia e licenciaturas',  corte:'540 a 620'},
+  'Outro curso':                   {txt:'o seu curso',                corte:null}
+};
+
+const QUESTIONS = [
+  { id:'situacao', type:'foto' },
+  { id:'nome', type:'text', question:'Qual o seu primeiro nome?', placeholder:'Digite seu primeiro nome' },
+  { id:'sentimento', question:'Faltando tão pouco, como você se sente agora?',
+    options:['😰 Desesperado(a): sinto que não vai dar tempo','🌀 Perdido(a): não sei nem por onde começar','😟 Ansioso(a): estudo, mas não sei se é o suficiente','🙂 Tranquilo(a), mas quero garantir o máximo'] },
+  { id:'horas', question:'Quanto tempo você estuda por dia, em média?',
+    options:['Não estou estudando','Menos de 1 hora','De 1 a 2 horas','De 2 a 4 horas','Mais de 4 horas'] },
+  { id:'dias', question:'Quantos dias por semana você realmente estuda?',
+    options:['Quase nenhum','1 a 2 dias','3 a 4 dias','5 a 6 dias','Todos os dias'] },
+  { id:'rotina', question:'Como está a sua rotina de estudos?',
+    options:['Não tenho rotina, estudo quando dá','Tenho cronograma, mas não consigo cumprir','Estudo bastante, mas sem saber o que priorizar','Tenho uma rotina organizada'] },
+  { id:'tentou', question:'Você já montou um cronograma e abandonou no meio do caminho?',
+    options:['Sim, várias vezes','Sim, uma vez','Nunca montei um','Não, sempre cumpro'] },
+  { id:'materias', type:'multi', question:'Em quais matérias você tem mais dificuldade?', max:4,
+    options:MATERIAS },
+  { id:'simulados', question:'Quando foi o seu último simulado completo do ENEM?',
+    options:['Nunca fiz um','Há mais de 3 meses','No último mês','Faço toda semana'] },
+  { id:'curso', question:'Qual curso você quer fazer?', options:Object.keys(CURSOS) },
+  { id:'meta', question:'Qual nota você precisa tirar para passar?',
+    options:['Até 600 pontos','De 600 a 700','De 700 a 800','Acima de 800','Não sei qual é a minha meta'] },
+  { id:'red_nota', question:'Como você está indo na redação?',
+    options:['Nunca escrevi uma redação completa','Tiro menos de 500','Tiro entre 500 e 700','Tiro entre 700 e 800','Tiro mais de 800','Não sei, ninguém corrige'] },
+  { id:'red_dif', question:'Em que parte da redação você mais trava?',
+    options:['Introdução: não sei como começar','Desenvolvimento: não sei argumentar','Conclusão: a proposta de intervenção','Repertório: não sei o que citar','Não sei apontar o que está errado'] },
+  { id:'red_corr', question:'Quem corrige as suas redações hoje?',
+    options:['Ninguém corrige','Professor, mas demora semanas','Eu mesmo(a), comparando com modelos','Já usei algum site ou ferramenta'] },
+  { id:'atrapalha', question:'O que mais atrapalha você de estudar?',
+    options:['Falta de tempo','Celular e distrações','Não saber o que estudar hoje','Ansiedade e cansaço','Desmotivação'] },
+  { id:'ajuda', question:'O que mais ajudaria você a manter o foco e render no último mês?',
+    options:['📸 Corrigir minha redação pela foto e ver onde errei','📅 Um plano pronto: o que estudar em cada dia e por quanto tempo','📊 Ver meu desempenho por matéria e saber onde melhorar','⏰ Lembretes e um app que me puxa para estudar'] }
+];
+QUESTIONS.forEach((q,i)=>q.num=i+1);
+const TOTAL_Q = QUESTIONS.length;
+
+/* =========================================================
+   FLUXO
+   ========================================================= */
+const state = { idx:0, answers:{} };
+const FLOW = [];
+QUESTIONS.forEach(q=>{
+  FLOW.push({type:'question', q});
+  if(q.id==='nome')      FLOW.push({type:'inter', id:'paraquem'});
+  if(q.id==='sentimento')FLOW.push({type:'inter', id:'prazo'});
+  if(q.id==='tentou')    FLOW.push({type:'inter', id:'abandono'});
+  if(q.id==='curso')     FLOW.push({type:'inter', id:'mediacurso'});
+  if(q.id==='red_corr')  FLOW.push({type:'diag'});             // diagnóstico curto, sem índice
+  if(q.id==='atrapalha') FLOW.push({type:'inter', id:'tempo'});
+});
+FLOW.push({type:'analyzing'});
+FLOW.push({type:'diag', full:true});                           // índice de preparo (sempre baixo)
+FLOW.push({type:'app'});                                       // apresenta o app
+FLOW.push({type:'analyzing', v2:true});
+FLOW.push({type:'projecao'});                                  // desempenho dela usando o app
+FLOW.push({type:'result'});                                    // oferta
+
+const app = document.getElementById('app');
+function go(n){ state.idx += n; render(); window.scrollTo({top:0,behavior:'instant'}); }
+function pctAte(qid){ const q = QUESTIONS.find(x=>x.id===qid); return q ? Math.round((q.num/TOTAL_Q)*100) : 100; }
+function backBtn(){ return state.idx>0 ? `<button class="back-btn" onclick="go(-1)" aria-label="Voltar">←</button>` : ''; }
+function nomeA(){ const n = state.answers.nome; return n && n!=='você' ? S(n) : ''; }
+function head(num){
+  return `${backBtn()}<div class="brand">${S(APP_NOME)}</div><div class="brand-sub">Teste de preparo para o ENEM</div>
+  <div class="progress-bar"><div class="progress-fill" style="width:${num?(num/TOTAL_Q)*100:0}%"></div></div>`;
+}
+
+function render(){
+  const step = FLOW[state.idx];
+  if(step.type==='question'){
+    const q = step.q;
+    if(q.type==='foto') renderIntro();
+    else if(q.type==='text') renderText(q);
+    else if(q.type==='multi') renderMulti(q);
+    else renderSingle(q);
+  }
+  else if(step.type==='inter') renderInter(step.id);
+  else if(step.type==='diag') renderDiag(step.full);
+  else if(step.type==='analyzing') renderAnalyzing(step.v2);
+  else if(step.type==='app') renderApp();
+  else if(step.type==='projecao') renderProjecao();
+  else if(step.type==='result') renderResult();
+  trackEtapa(step);
+}
+
+/* ---------- INTRO (já é a primeira pergunta) ---------- */
+function renderIntro(){
+  app.innerHTML = `
+  <div class="wrap fade"><div class="card" style="text-align:center;padding-top:46px;padding-bottom:40px;">
+    <span class="intro-badge">Teste grátis · 2 minutos</span>
+    <h1 class="intro-h1">Você está <span>preparado</span> para o ENEM?</h1>
+    <p class="intro-sub">${S(prazoTxt())}. Faça o teste e descubra o seu <strong>Índice de Preparo</strong>. Ao final você recebe um plano para o último mês.</p>
+    <h2 class="intro-h1" style="font-size:24px;margin:30px 0 4px;">Qual é a sua situação?</h2>
+    <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:#9aa8a2;margin:8px 0 18px;">Toque para escolher</p>
+    <div class="opts grid2">
+      ${SITUACAO_OPTS.map((o,i)=>`<div class="foto-card" onclick="selectSituacao(${i})"><img src="${SITUACAO_IMGS[i]}" alt="${S(o)}" class="foto-img" onerror="this.style.display='none'"><button class="opt${state.answers.situacao===o?' sel':''}" data-i="${i}"><span class="opt-radio"></span><span>${S(o)}</span></button></div>`).join('')}
+    </div>
+    <p style="font-size:13px;color:#8aa79a;margin-top:18px;">✅ Gratuito e sem cadastro</p>
+  </div></div>`;
+}
+function selectSituacao(i){
+  state.answers.situacao = SITUACAO_OPTS[i];
+  trackResposta('situacao', SITUACAO_OPTS[i]);
+  app.querySelectorAll('.opt').forEach(b=>{b.classList.remove('sel');b.style.pointerEvents='none';});
+  const c = app.querySelector(`.opt[data-i="${i}"]`); if(c) c.classList.add('sel');
+  px('QuizIniciado');
+  setTimeout(()=>go(1),360);
+}
+
+/* ---------- PERGUNTAS ---------- */
+function renderSingle(q){
+  app.innerHTML = `
+  <div class="wrap fade"><div class="card">
+    ${head(q.num)}
+    <h2 class="q-title">${q.question}</h2>
+    <div class="opts">${q.options.map((o,i)=>`<button class="opt" data-i="${i}" onclick="selectOpt('${q.id}',${i})"><span class="opt-radio"></span><span>${S(o)}</span></button>`).join('')}</div>
+  </div></div>`;
+}
+function selectOpt(qid,i){
+  const q = QUESTIONS.find(x=>x.id===qid);
+  state.answers[qid] = q.options[i];
+  trackResposta(qid, q.options[i]);
+  app.querySelectorAll('.opt').forEach(b=>{b.classList.remove('sel');b.style.pointerEvents='none';});
+  const c = app.querySelector(`.opt[data-i="${i}"]`); if(c) c.classList.add('sel');
+  setTimeout(()=>go(1),360);
+}
+function renderMulti(q){
+  const sel = state.answers[q.id] || [];
+  app.innerHTML = `
+  <div class="wrap fade"><div class="card">
+    ${head(q.num)}
+    <h2 class="q-title" style="margin-bottom:10px;">${q.question}</h2>
+    <p class="q-sub">Marque até ${q.max} opções</p>
+    <div class="opts compact">${q.options.map((o,i)=>`<button class="opt${sel.includes(o)?' sel':''}" data-i="${i}" onclick="toggleOpt('${q.id}',${i})"><span class="opt-radio"></span><span>${S(o)}</span></button>`).join('')}</div>
+    <button class="btn" id="multiNext" style="margin-top:14px;">Continuar →</button>
+  </div></div>`;
+  document.getElementById('multiNext').onclick = ()=>{
+    if(!(state.answers[q.id]||[]).length){ state.answers[q.id]=['Matemática']; }
+    trackResposta(q.id, state.answers[q.id]); go(1);
+  };
+}
+function toggleOpt(qid,i){
+  const q = QUESTIONS.find(x=>x.id===qid);
+  const o = q.options[i];
+  let sel = state.answers[qid] || [];
+  if(sel.includes(o)) sel = sel.filter(x=>x!==o);
+  else { if(sel.length>=q.max) sel = sel.slice(1); sel = [...sel,o]; }
+  state.answers[qid] = sel;
+  app.querySelectorAll('.opt').forEach(b=>{
+    b.classList.toggle('sel', sel.includes(q.options[parseInt(b.dataset.i,10)]));
+  });
+}
+function renderText(q){
+  const v = state.answers[q.id] && state.answers[q.id]!=='você' ? state.answers[q.id] : '';
+  app.innerHTML = `
+  <div class="wrap fade"><div class="card">
+    ${head(q.num)}
+    <h2 class="q-title">${q.question}</h2>
+    <input type="text" class="text-input" id="txtField" placeholder="${S(q.placeholder||'')}" value="${S(v)}" autocomplete="given-name" maxlength="30">
+    <button class="btn" id="txtNext">Continuar →</button>
+  </div></div>`;
+  const f = document.getElementById('txtField');
+  setTimeout(()=>f.focus(),60);
+  function ok(){ state.answers[q.id]=(f.value.trim()||'você'); trackResposta(q.id,'preenchido'); go(1); }
+  document.getElementById('txtNext').onclick = ok;
+  f.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();ok();} });
+}
+
+/* ---------- TELAS DE CONTEÚDO (quebra de objeções) ---------- */
+function cursoInfo(){ return CURSOS[state.answers.curso] || CURSOS['Outro curso']; }
+const INTER = {
+  paraquem:{ icon:'🎯', title:'Isso aqui é pra você?', text:a=>{
+    const n = nomeA();
+    return `<strong>${n?n+', s':'S'}e você vai fazer o ENEM e sente que ainda falta muita coisa, você está no lugar certo.</strong></p>
+    <p class="inter-text">Nas próximas perguntas a gente mede o seu <strong>Índice de Preparo</strong>: como estão a sua rotina, as suas matérias e a sua redação, que sozinha pode valer até 1000 pontos.</p>
+    <p class="inter-text">Vá até o final: é lá que o seu diagnóstico e o seu plano para o último mês são liberados.`; } },
+  prazo:{ icon:'⏳', title:'Será que ainda dá tempo?', text:a=>{
+    const n = nomeA();
+    return `${S(prazoTxt())}. ${n?n+', ':''}ninguém consegue estudar o conteúdo inteiro nesse prazo, e <strong>você não precisa</strong>.</p>
+    <p class="inter-text">O que muda a nota no último mês é saber <strong>o que priorizar</strong>: os temas que mais aparecem, os seus pontos fracos e a redação. Quem estuda tudo sem direção chega na prova cansado e com as mesmas falhas.</p>
+    <p class="inter-text" style="font-size:13px;color:#8aa79a;margin:0;">Falta pouco, mas ainda é tempo de reagir. Vamos mapear onde você está.`; } },
+  abandono:{ icon:'🔁', title:'Sobre os cronogramas que não deram certo', text:a=>{
+    const jaTentou = (a.tentou||'').startsWith('Sim');
+    return (jaTentou
+      ? `Se você já montou um cronograma e largou, saiba que <strong>o problema quase nunca é falta de vontade</strong>.</p>`
+      : `Quem estuda sem um plano pronto costuma <strong>gastar a energia decidindo o que fazer</strong>, e não estudando.</p>`)
+    + `<p class="inter-text">Montar tudo sozinho, sem lembrete e sem alguém mostrando o que fazer hoje, faz qualquer plano morrer na segunda semana.</p>
+    <p class="inter-text">Por isso, no que vamos te mostrar, <strong>o plano já chega pronto</strong>, dia a dia, e o app te lembra na hora de estudar.`; } },
+  mediacurso:{ icon:'📊', title:'A nota do seu curso', text:a=>{
+    const c = cursoInfo();
+    if(!c.corte) return `Cada curso e cada universidade têm a sua própria nota de corte. Na próxima pergunta, diga qual nota você acredita precisar. Depois, a gente calcula a distância entre o seu preparo de hoje e essa meta.`;
+    return `Para <strong>${S(c.txt)}</strong>, a nota de corte nas universidades federais costuma ficar na faixa de <strong>${c.corte} pontos</strong>.</p>
+    <p class="inter-text" style="font-size:13px;color:#8aa79a;">Valor aproximado, com base em edições anteriores do SISU. Muda conforme a universidade e o ano.</p>
+    <p class="inter-text">Cada ponto conta, e a redação é a parte da prova em que mais dá para evoluir em pouco tempo. Vamos ver onde você está.`; } },
+  tempo:{ icon:'🧭', title:'Você não precisa de mais tempo', text:a=>{
+    return `Quem está com pouco tempo não pode perder 40 minutos decidindo o que estudar.</p>
+    <p class="inter-text">Você precisa de <strong>menos decisões e mais estudo certo</strong>. O plano que vamos montar para você já mostra, em cada dia, <strong>qual matéria estudar e por quanto tempo</strong>, de acordo com a rotina que você tem hoje.`; } }
+};
+function renderInter(id){
+  const it = INTER[id];
+  const num = Math.max(track_estado.etapa, 0);
+  app.innerHTML = `
+  <div class="wrap fade"><div class="card">
+    ${backBtn()}<div class="brand-sub" style="margin-bottom:12px;">Antes de continuar</div>
+    <div class="inter-badge"><span class="ic">${it.icon}</span><span class="tt">${it.title}</span></div>
+    <p class="inter-text">${it.text(state.answers)}</p>
+    <button class="btn" onclick="go(1)">Continuar →</button>
+  </div></div>`;
+}
+
+/* ---------- ANALISANDO ---------- */
+function renderAnalyzing(v2){
+  app.innerHTML = `
+  <div class="wrap fade"><div class="card" style="padding-top:54px;padding-bottom:50px;">
+    <div class="analise-title">Analisando suas respostas...</div>
+    <div class="lib-box">
+      <div class="lib-label">${v2 ? 'Montando o seu plano personalizado...' : 'Calculando o seu Índice de Preparo...'}</div>
+      <div class="lib-pct" id="libPct">0%</div>
+      <div class="lib-bar"><div class="lib-fill" id="libFill"></div></div>
+    </div>
+  </div></div>`;
+  const DUR = v2 ? 3500 : 5000;
+  const p = document.getElementById('libPct'), f = document.getElementById('libFill');
+  const t0 = performance.now(); let ult = -1;
+  (function tick(now){
+    const t = Math.min(1,(now-t0)/DUR);
+    const e = t*t*t*(t*(t*6-15)+10);                    // smootherstep
+    const pct = Math.round(e*100);
+    if(p && pct!==ult){ p.textContent = pct+'%'; ult = pct; }
+    if(f) f.style.width = (e*100)+'%';
+    if(t<1) requestAnimationFrame(tick);
+  })(performance.now());
+  setTimeout(()=>go(1),DUR);
+}
+
+/* =========================================================
+   ÍNDICE DE PREPARO
+   Calculado a partir das respostas, mas comprimido numa faixa
+   baixa (14 a 38): o teste sempre acusa que falta preparo.
+   ========================================================= */
+function pts(ans, tabela){ const i = tabela.indexOf(ans); return i<0 ? 0 : i; }
+function calcPreparo(){
+  const a = state.answers;
+  const horas = pts(a.horas, ['Não estou estudando','Menos de 1 hora','De 1 a 2 horas','De 2 a 4 horas','Mais de 4 horas']) / 4;       // 0..1
+  const dias  = pts(a.dias,  ['Quase nenhum','1 a 2 dias','3 a 4 dias','5 a 6 dias','Todos os dias']) / 4;
+  const rot   = pts(a.rotina,['Não tenho rotina, estudo quando dá','Tenho cronograma, mas não consigo cumprir','Estudo bastante, mas sem saber o que priorizar','Tenho uma rotina organizada']) / 3;
+  const tent  = pts(a.tentou,['Sim, várias vezes','Sim, uma vez','Nunca montei um','Não, sempre cumpro']) / 3;
+  const simu  = pts(a.simulados,['Nunca fiz um','Há mais de 3 meses','No último mês','Faço toda semana']) / 3;
+  const rn    = pts(a.red_nota,['Nunca escrevi uma redação completa','Não sei, ninguém corrige','Tiro menos de 500','Tiro entre 500 e 700','Tiro entre 700 e 800','Tiro mais de 800']) / 5;
+  const rc    = pts(a.red_corr,['Ninguém corrige','Eu mesmo(a), comparando com modelos','Professor, mas demora semanas','Já usei algum site ou ferramenta']) / 3;
+  const raw = (horas*20 + dias*15 + rot*15 + tent*5 + simu*15 + rn*20 + rc*10);                 // 0..100
+  const idx = Math.round(14 + raw*0.24);                                                         // 14..38
+  /* barras por área: também sempre baixas (8% a 46%) */
+  const barra = r => Math.min(46, Math.round(8 + r*38));
+  return {
+    idx,
+    areas:[
+      {n:'Redação',        v:barra((rn*20+rc*10)/30)},
+      {n:'Rotina e constância', v:barra((dias*15+rot*15+tent*5)/35)},
+      {n:'Tempo de estudo',v:barra(horas)},
+      {n:'Simulados e prática', v:barra(simu)}
+    ]
+  };
+}
+function nivelPreparo(i){ return i<24 ? {txt:'MUITO BAIXO', cor:'#d64545'} : {txt:'BAIXO', cor:'#e0703a'}; }
+
+/* ---------- DIAGNÓSTICO ---------- */
+function renderDiag(full){
+  const a = state.answers, n = nomeA();
+  const P = calcPreparo(), niv = nivelPreparo(P.idx);
+  const mats = (a.materias||[]).filter(m=>m!=='Redação');
+  const progressoId = full ? 'ajuda' : 'red_corr';
+
+  const revelacao = !full ? '' : `
+    <div class="alerta"><p>⚠️ ${n?n+', o':'O'} seu preparo para o ENEM está <strong>${niv.txt}</strong>.</p>
+    <p class="s">Com base nas suas respostas, hoje a sua rotina e a sua redação não estão no ritmo que a sua meta exige.</p></div>
+    <div class="box" style="background:#fff;padding:20px 16px;">
+      <h4 style="text-align:center;">Seu Índice de Preparo para o ENEM</h4>
+      <div class="meter-num" style="color:${niv.cor};">${P.idx}<small>/100</small></div>
+      <div class="meter"><i style="left:${P.idx}%;border-color:${niv.cor};"></i></div>
+      <div class="meter-l"><span>Crítico</span><span>Em evolução</span><span>Preparado</span></div>
+      <div class="sub-bars">${P.areas.map(r=>`<div class="sb"><div class="l"><span>${r.n}</span><span>${r.v}%</span></div><div class="t"><div class="f" style="width:${r.v}%"></div></div></div>`).join('')}</div>
+      <p class="note">Estimativa educativa calculada a partir das suas respostas. Não é uma avaliação oficial e não prevê a sua nota.</p>
+    </div>
+    <div class="alerta" style="margin-top:20px;"><p style="font-size:15px;letter-spacing:.4px;">⚠️ 3 PONTOS CRÍTICOS FORAM IDENTIFICADOS</p></div>`;
+
+  const ponto1 = !full ? `
+    <span class="tag">Você sabia que:</span>
+    <div class="big-num">1000</div>
+    <p class="big-leg">é o máximo de pontos da redação do ENEM, dividido em <strong>5 competências de 200 pontos</strong>.</p>
+    <div class="box"><p>Sem alguém apontando o que errou em cada competência, a tendência é <strong>repetir o mesmo erro em todas as redações</strong>, mesmo escrevendo muito.</p></div>`
+  : `
+    <div class="box"><h4>1 · Sua redação está sem correção de verdade</h4>
+      <p>${S(a.red_corr||'')==='Ninguém corrige' ? 'Você disse que ninguém corrige o que você escreve.' : 'Pelo que você respondeu, a correção das suas redações ainda é lenta ou incompleta.'} Sem ver <strong>onde</strong> perde pontos (${S((a.red_dif||'').split(':')[0].toLowerCase())}), a nota da redação tende a ficar parada.</p></div>`;
+
+  const ponto2 = !full ? '' : `
+    <div class="box"><h4>2 · Sua rotina não está protegendo o seu tempo</h4>
+      <p>Estudar <strong>${S((a.dias||'').toLowerCase())}</strong> por semana e <strong>${S((a.horas||'').toLowerCase())}</strong> por dia, ${/montei|cronograma|abandon|Sim|rotina/i.test(a.rotina||'') ? 'sem um plano que você consiga cumprir,' : 'sem priorizar o que mais cai,'} deixa a preparação irregular justo no último mês.</p></div>`;
+
+  const ponto3 = !full ? '' : `
+    <div class="box"><h4>3 · Seus pontos fracos estão sem prioridade</h4>
+      <p>${mats.length ? `Você marcou <strong>${S(mats.join(', '))}</strong> como dificuldade. ` : ''}${(a.simulados==='Nunca fiz um'||a.simulados==='Há mais de 3 meses') ? 'Sem simulados recentes, você ainda não sabe com clareza onde está perdendo mais pontos.' : 'Sem acompanhar o desempenho por matéria, fica difícil saber onde o tempo rende mais.'}</p></div>`;
+
+  const solucao = full
+    ? `Mas ainda dá para reagir. Com um plano pronto, a redação corrigida e o seu desempenho acompanhado, <strong>o último mês pode ser muito mais bem aproveitado</strong>.`
+    : `Continue o teste: ainda falta mapear a sua rotina e os seus pontos fracos para calcular o seu <strong>Índice de Preparo</strong>.`;
+
+  app.innerHTML = `
+  <div class="wrap fade"><div class="card">
+    ${backBtn()}<div class="brand-sub" style="margin-bottom:6px;">Diagnóstico personalizado</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pctAte(progressoId)}%"></div></div>
+    ${revelacao}${ponto1}${ponto2}${ponto3}
+    <div style="background:#eef8f2;border:1px solid #d5ebe0;border-radius:14px;padding:20px;margin:6px 0 0;text-align:center;">
+      <p style="color:var(--verde-escuro);font-size:15.5px;font-weight:800;line-height:1.55;">${solucao}</p></div>
+    <button class="btn" style="margin-top:20px;" onclick="go(1)">${full?'Ver como resolver →':'Continuar →'}</button>
+  </div></div>`;
+  if(full) px('DiagnosticoGerado');
+}
+
+/* ---------- APRESENTAÇÃO DO APP ---------- */
+function renderApp(){
+  const n = nomeA();
+  app.innerHTML = `
+  <div class="wrap fade"><div class="card">
+    ${backBtn()}<div class="brand-sub" style="margin-bottom:6px;">A solução para o seu caso</div>
+    <span class="tag">Conheça o app</span>
+    <h2 class="q-title" style="margin-bottom:8px;">${S(APP_NOME)}: tudo o que você precisa para o último mês, no celular</h2>
+    <p class="sec-s">${n?n+', ':''}foi feito para quem tem pouco tempo e precisa de direção, sem complicação.</p>
+    <div class="feat-grid">
+      <div class="feat"><div class="i">📸</div><h5>Corrige a sua redação pela foto</h5><p>Tire a foto do caderno e veja os erros e como melhorar.</p></div>
+      <div class="feat"><div class="i">📅</div><h5>Plano de estudo da semana</h5><p>Cada dia com a matéria certa e o tempo certo.</p></div>
+      <div class="feat"><div class="i">📊</div><h5>Desempenho por matéria</h5><p>Tempo estudado e evolução em cada matéria.</p></div>
+      <div class="feat"><div class="i">⏰</div><h5>Lembrete para estudar</h5><p>O app avisa na hora que você escolher.</p></div>
+      <div class="feat"><div class="i">📝</div><h5>Exercícios e simulados</h5><p>Pratique no estilo do ENEM e veja onde errou.</p></div>
+      <div class="feat"><div class="i">📚</div><h5>Resumo do que mais cai</h5><p>Os temas principais de cada matéria, e cada tema lido entra no seu desempenho.</p></div>
+    </div>
+    <button class="btn" style="margin-top:18px;" onclick="go(1)">Ver o meu plano com o app →</button>
+  </div></div>`;
+}
+
+/* ---------- PROJEÇÃO: O DESEMPENHO DELA USANDO O APP ---------- */
+const MIN_POR_DIA = {'Não estou estudando':45,'Menos de 1 hora':45,'De 1 a 2 horas':90,'De 2 a 4 horas':120,'Mais de 4 horas':150};
+function montaPlano(){
+  const a = state.answers;
+  let mats = (a.materias||[]).filter(m=>m!=='Redação');
+  ['Matemática','Interpretação de texto','Biologia','História'].forEach(m=>{ if(mats.length<4 && !mats.includes(m)) mats.push(m); });
+  mats = mats.slice(0,4);
+  const mi = MIN_POR_DIA[a.horas] || 60;
+  const fmt = m => m>=60 ? (Math.floor(m/60)+'h'+(m%60?String(m%60).padStart(2,'0'):'')) : (m+' min');
+  return [
+    {d:'Seg', m:mats[0], t:fmt(mi)},
+    {d:'Ter', m:'Redação: 1 texto + correção por foto', t:fmt(mi), r:true},
+    {d:'Qua', m:mats[1], t:fmt(mi)},
+    {d:'Qui', m:'Redação: reescrita do ponto fraco', t:fmt(Math.max(45,Math.round(mi*0.7))), r:true},
+    {d:'Sex', m:mats[2], t:fmt(mi)},
+    {d:'Sáb', m:mats[3], t:fmt(mi)},
+    {d:'Dom', m:'Mini simulado + revisão dos erros', t:fmt(Math.max(60,mi))}
+  ];
+}
+function renderProjecao(){
+  const a = state.answers, n = nomeA();
+  const P = calcPreparo(), niv = nivelPreparo(P.idx);
+  const plano = montaPlano();
+  const mats = (a.materias||[]).filter(m=>m!=='Redação').slice(0,3);
+  const exemplo = mats.length ? mats : ['Matemática','Biologia'];
+  const exTemas = [[3,8],[1,6],[0,7]];
+  app.innerHTML = `
+  <div class="wrap fade"><div class="card">
+    ${backBtn()}<div class="brand-sub" style="margin-bottom:6px;">Seu plano personalizado</div>
+    <span class="tag">${n?n+', veja':'Veja'} como fica usando o app</span>
+    <h2 class="q-title" style="margin-bottom:6px;">Seu último mês com o ${S(APP_NOME)}</h2>
+    <p class="sec-s">Montado com as suas respostas: suas dificuldades, o tempo que você tem e a sua meta.</p>
+
+    <div class="sec-h" style="margin-top:6px;">📅 Sua semana de estudos</div>
+    <div class="phone"><div class="phone-top"><span><i class="dot"></i>Plano da semana</span><span>${S(a.horas||'')}</span></div>
+      <table class="plano">${plano.map(p=>`<tr class="${p.r?'red-row':''}"><td class="d">${p.d}</td><td class="m">${S(p.m)}${p.r?'<span class="chip">foto</span>':''}</td><td class="h">${p.t}</td></tr>`).join('')}</table>
+      <p class="note" style="margin-top:8px;">O plano respeita o tempo que você tem hoje e aumenta aos poucos. Você pode ajustar os dias no app.</p></div>
+
+    <div class="sec-h">📸 Sua redação, corrigida pela foto</div>
+    <span class="exemplo">Exemplo ilustrativo</span>
+    <div class="phone">
+      <img class="foto-caderno" src="foto-caderno.jpg" alt="Foto de uma redação no caderno" onerror="this.style.display='none'">
+      <div class="red-demo">
+        <span class="hl2">Hoje em dia</span> a internet é muito usada e isso causa <span class="hl">vários problemas</span>. Portanto, <span class="hl">o governo deve resolver isso</span>.
+      </div>
+      <div class="fb"><b class="c">C1/C3</b><span><b>“Hoje em dia”</b> é uma abertura genérica. Comece com um dado ou um fato que apresente o tema.</span></div>
+      <div class="fb"><b class="c">C3</b><span><b>“Vários problemas”</b> é vago. Escolha um problema e explique a causa e a consequência.</span></div>
+      <div class="fb"><b class="c">C5</b><span><b>A proposta está incompleta.</b> Faltam quem faz, o que faz, por qual meio e para qual finalidade.</span></div>
+    </div>
+    <p class="note" style="margin-top:-4px;">${a.red_dif ? 'Você disse que trava em: <strong>'+S(a.red_dif.split(':')[0].toLowerCase())+'</strong>. É onde o app vai olhar com mais atenção.' : ''}</p>
+
+    <div class="sec-h">📊 Seu desempenho por matéria</div>
+    <span class="exemplo">Exemplo ilustrativo</span>
+    <div class="phone"><div class="phone-top"><span><i class="dot"></i>Desempenho</span><span>Temas lidos</span></div>
+      ${exemplo.map((m,i)=>{const [x,y]=exTemas[i]; return `<div class="mat-row"><div class="l">${S(m)}<span>${x} de ${y} temas</span></div><div class="t"><div class="f" style="width:${Math.round(x/y*100)}%"></div></div></div>`;}).join('')}
+      <p class="note" style="text-align:left;margin-top:6px;">Cada tema que você lê no resumo entra no seu desempenho, junto com o tempo estudado.</p></div>
+
+    <div class="sec-h">🎯 Do seu ponto de partida à sua meta</div>
+    <div class="box" style="background:#fff;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:10px;">
+        <div style="text-align:center;flex:1;"><div style="font-size:11px;font-weight:800;letter-spacing:1px;color:var(--vermelho);text-transform:uppercase;">Hoje</div><div style="font-family:'Open Sans';font-size:40px;font-weight:900;color:${niv.cor};line-height:1.1;">${P.idx}</div></div>
+        <div style="font-size:24px;color:#9bb3a6;padding-bottom:8px;">→</div>
+        <div style="text-align:center;flex:1;"><div style="font-size:11px;font-weight:800;letter-spacing:1px;color:var(--verde);text-transform:uppercase;">Meta do plano</div><div style="font-family:'Open Sans';font-size:40px;font-weight:900;color:var(--verde);line-height:1.1;">60+</div></div>
+      </div>
+      <div class="meter"><i style="left:${P.idx}%;border-color:${niv.cor};"></i></div>
+      <div class="meter-l"><span>Crítico</span><span>Em evolução</span><span>Preparado</span></div>
+      <p class="note">A meta é chegar à faixa “Em evolução” seguindo o plano. É uma estimativa educativa: o resultado depende da sua dedicação, e não garantimos nota nem aprovação.</p>
+    </div>
+
+    <div class="sec-h">Seus próximos 30 dias</div>
+    <div class="timeline">
+      <div class="tl"><b>Semana 1</b><span>Você começa pelo plano e manda a primeira redação. Descobre onde perde pontos.</span></div>
+      <div class="tl"><b>Semana 2</b><span>Cada redação é corrigida e reescrita. Os resumos dos temas que mais caem entram na sua rotina.</span></div>
+      <div class="tl"><b>Semana 3</b><span>Simulados e exercícios mostram a evolução por matéria. O plano se ajusta ao que você ainda erra.</span></div>
+      <div class="tl"><b>Semana 4</b><span>Revisão dos pontos fracos, redação em ritmo de prova e foco no que importa para o dia.</span></div>
+    </div>
+
+    <div class="cmp">
+      <div class="c a"><h4>Como você está</h4><ul><li>Estudo sem plano</li><li>Redação sem correção</li><li>Sem saber o desempenho</li><li>Esquece de estudar</li></ul></div>
+      <div class="c b"><h4>Com o app</h4><ul><li>Plano pronto por dia</li><li>Erros e como melhorar</li><li>Desempenho por matéria</li><li>Lembrete na hora certa</li></ul></div>
+    </div>
+    <button class="btn" style="margin-top:14px;" onclick="go(1)">Quero ativar o meu plano →</button>
+  </div></div>`;
+}
+
+/* ---------- LANDING FINAL (OFERTA) ---------- */
+function renderResult(){
+  const a = state.answers, n = nomeA();
+  const P = calcPreparo();
+  px('ViewContent', true);
+  app.innerHTML = `
+  <div class="res fade">
+    <div class="blk" style="text-align:center;">
+      <span class="tag red">${S(prazoTxt())}</span>
+      <h1 class="intro-h1" style="font-size:27px;">${n?n+', c':'C'}omece hoje o plano do seu último mês</h1>
+      <p class="intro-sub" style="font-size:15px;">Seu Índice de Preparo hoje é <strong style="color:${nivelPreparo(P.idx).cor};">${P.idx}/100</strong>. O ${S(APP_NOME)} entrega o plano, a correção da redação e o acompanhamento de que você precisa até a prova.</p>
+    </div>
+
+    <div class="blk">
+      <h3 class="sec-h" style="margin-top:0;">O que você recebe</h3>
+      <ul class="lista">
+        <li><span><b>Correção de redação pela foto:</b> mostra os erros por competência e como melhorar</span></li>
+        <li><span><b>Plano semanal pronto:</b> a matéria de cada dia e o tempo, de acordo com a sua rotina</span></li>
+        <li><span><b>Desempenho por matéria:</b> tempo estudado e temas já lidos</span></li>
+        <li><span><b>Lembretes de estudo</b> no horário que você escolher</span></li>
+        <li><span><b>Exercícios e simulados</b> no estilo do ENEM</span></li>
+        <li><span><b>Resumo do que mais cai</b> em cada matéria, com os temas principais</span></li>
+      </ul>
+      <p style="font-size:13px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--verde);margin:18px 0 4px;">Bônus</p>
+      <ul class="lista">
+        <li><span><b>Guia das 5 competências da redação:</b> o que cada uma avalia e como não perder pontos</span></li>
+        <li><span><b>Checklist da semana da prova:</b> o que fazer nos últimos 7 dias</span></li>
+      </ul>
+    </div>
+
+    <div class="blk">
+      <div class="price-box">
+        <div class="label">Acesso até o dia do ENEM</div>
+        <div class="de">De ${S(PRECO_DE)}</div>
+        <div class="val">${S(PRECO_POR)}</div>
+        <div style="font-size:13px;opacity:.9;">pagamento único, sem mensalidade</div>
+        <span class="off">Acesso imediato no celular</span>
+      </div>
+      <button class="btn" onclick="irCheckout('oferta')">Quero começar agora →</button>
+      <p class="note">Compra segura • Funciona direto no navegador do celular • Sem instalar nada</p>
+    </div>
+
+    <div class="blk garantia">
+      <img src="garantia-7-dias.png" alt="Garantia de 7 dias" onerror="this.outerHTML='<div class=&quot;sel&quot;>7 DIAS<br>DE GARANTIA</div>'">
+      <div><h3 style="font-family:'Open Sans';font-size:18px;font-weight:900;color:var(--verde-escuro);margin-bottom:6px;">Garantia de 7 dias</h3>
+      <p style="font-size:14px;color:#52645a;line-height:1.6;">Use o app por 7 dias. Se não gostar, peça o reembolso dentro do prazo e devolvemos o valor pago.</p></div>
+    </div>
+
+    <div class="blk faq">
+      <h3 class="sec-h" style="margin-top:0;">Dúvidas frequentes</h3>
+      <details><summary>Ainda dá tempo de usar?</summary><p>Sim. O plano é feito para o tempo que falta e foca no que mais pesa: priorizar os temas certos, treinar a redação e acompanhar o seu desempenho. Não prometemos nota, mas cada dia bem usado conta.</p></details>
+      <details><summary>Não tenho tempo para estudar muito. Serve para mim?</summary><p>Serve. O plano parte do tempo que você tem hoje e cada dia já mostra o que estudar, sem você perder tempo decidindo.</p></details>
+      <details><summary>Já tentei cronograma e larguei. O que muda?</summary><p>No app o plano já vem pronto e você recebe lembretes na hora de estudar. Você não precisa montar nem lembrar de nada sozinho.</p></details>
+      <details><summary>A correção da redação é confiável?</summary><p>Ela aponta erros e sugere melhorias com base nas 5 competências do ENEM. É um apoio para você treinar com feedback imediato e não substitui a avaliação oficial nem um professor.</p></details>
+      <details><summary>Preciso instalar algum aplicativo?</summary><p>Não. O app abre no navegador do celular e você pode adicioná-lo à tela inicial.</p></details>
+      <details><summary>E se eu não gostar?</summary><p>Você tem 7 dias de garantia. Se não gostar, peça o reembolso dentro do prazo.</p></details>
+      <details><summary>Isso é oficial do ENEM ou do MEC?</summary><p>Não. O ${S(APP_NOME)} é um produto independente, sem vínculo com o INEP, o MEC ou o Governo Federal.</p></details>
+    </div>
+
+    <div class="blk" style="text-align:center;">
+      <h3 class="sec-h" style="margin-top:0;">${S(prazoTxt())}.</h3>
+      <p class="sec-s">Cada dia sem plano é um dia a menos para corrigir o que está te custando pontos.</p>
+      <button class="btn" onclick="irCheckout('final')">Quero começar agora →</button>
+    </div>
+    <p class="legal">${S(APP_NOME)} é um produto independente e não é afiliado ao INEP, ao MEC nem ao Governo Federal. ENEM é uma sigla do Exame Nacional do Ensino Médio. O app é uma ferramenta de apoio: os resultados dependem da dedicação de cada estudante e não há garantia de nota ou aprovação. O Índice de Preparo é uma estimativa educativa.</p>
+  </div>
+  <div class="sticky-cta"><button class="btn" onclick="irCheckout('sticky')">Quero começar agora →</button></div>`;
+}
+
+state.idx = 0;
+render();
+</script>
+
+<!-- ===== POP-UP DE SAÍDA (só liga se CHECKOUT_DESCONTO estiver preenchido) ===== -->
+<div class="saida-overlay" id="saida-overlay" role="dialog" aria-modal="true" aria-labelledby="saida-titulo">
+  <div class="saida-modal">
+    <button class="saida-fechar" id="saida-fechar" aria-label="Fechar">&times;</button>
+    <div class="saida-selo">Espere um segundo</div>
+    <h3 class="saida-titulo" id="saida-titulo">Uma condição especial para você começar hoje</h3>
+    <p class="saida-sub">Esta condição aparece só uma vez. Fechando a janela, o preço volta ao normal.</p>
+    <div class="saida-de" id="saida-de"></div>
+    <div class="saida-val" id="saida-val"></div>
+    <a href="#" class="btn" id="saida-btn">Quero com desconto &rarr;</a>
+    <button class="saida-recusa" id="saida-recusa">Não quero o desconto</button>
+  </div>
+</div>
+<script>
+(function(){
+  if(!CHECKOUT_DESCONTO) return;
+  const overlay = document.getElementById('saida-overlay');
+  document.getElementById('saida-de').textContent = 'De ' + PRECO_POR;
+  document.getElementById('saida-val').textContent = PRECO_DESCONTO;
+  let armado=false, usado=false;
+  const jaExibido = ()=>{ try{return sessionStorage.getItem('enem_saida')==='1';}catch(e){return false;} };
+  const naOferta = ()=>{ try{return FLOW[state.idx] && FLOW[state.idx].type==='result';}catch(e){return false;} };
+  function armar(){ if(armado||usado||jaExibido()||!naOferta()) return; try{history.pushState({e:1},'');armado=true;}catch(e){} }
+  function abrir(){
+    overlay.classList.add('aberto'); document.body.style.overflow='hidden'; usado=true;
+    try{sessionStorage.setItem('enem_saida','1');}catch(e){}
+    px('ExitOffer');
+  }
+  function fechar(){ overlay.classList.remove('aberto'); document.body.style.overflow=''; }
+  window.addEventListener('popstate',()=>{ if(usado||jaExibido()||!armado) return; abrir(); });
+  ['pointerdown','mousedown','click','touchstart','keydown'].forEach(e=>window.addEventListener(e,armar,{passive:true}));
+  document.getElementById('saida-btn').addEventListener('click',e=>{ e.preventDefault(); px('ExitOfferClick'); window.location.href=CHECKOUT_DESCONTO; });
+  /* quem volta do checkout cai de novo aqui */
+  window.addEventListener('pageshow',()=>{
+    let v=false; try{v=sessionStorage.getItem('enem_check')==='1';}catch(e){}
+    if(!v) return; try{sessionStorage.removeItem('enem_check');}catch(e){}
+    if(!jaExibido()) setTimeout(abrir,400);
+  });
+  document.getElementById('saida-fechar').addEventListener('click',fechar);
+  document.getElementById('saida-recusa').addEventListener('click',fechar);
+  overlay.addEventListener('click',e=>{ if(e.target===overlay) fechar(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&overlay.classList.contains('aberto')) fechar(); });
+})();
+</script>
+</body>
+</html>
