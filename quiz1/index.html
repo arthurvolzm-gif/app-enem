@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Teste de Redação ENEM | Você está preparado?</title>
+<meta name="description" content="Faça o teste grátis e descubra se você está preparado para a redação do ENEM." />
+<meta name="theme-color" content="#0b8f4d" />
+<link rel="stylesheet" href="/shared/quiz.css" />
+<style>
+/* capa do material (desenhada em CSS; troque por /img/capa-arsenal.png quando tiver) */
+.capa{position:relative;width:200px;margin:4px auto 18px;border-radius:14px;overflow:hidden;box-shadow:0 14px 34px rgba(6,95,53,.28);background:linear-gradient(160deg,#0b8f4d,#065f35);aspect-ratio:3/4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:16px;}
+.capa img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.capa .k{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;opacity:.85;}
+.capa .t{font-family:'Open Sans',sans-serif;font-size:26px;font-weight:900;line-height:1.05;margin:8px 0;}
+.capa .t span{display:block;color:#ffd84d;font-size:34px;}
+.capa .b{font-size:30px;margin-top:6px;}
+.frase{background:#fafdfb;border-left:4px solid var(--verde-claro);border-radius:8px;padding:10px 12px;font-size:14px;font-style:italic;color:#3a463f;margin-bottom:8px;line-height:1.55;}
+.antes{background:#fff5f4;border:1px solid #f2d3cf;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.6;color:#6a3b36;}
+.depois{background:#eef8f2;border:1px solid #cfe9da;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.6;color:#244a36;}
+.rotulo{font-size:11px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;margin:12px 0 6px;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* =========================================================
+   CONFIGURAÇÃO DO QUIZ 1 (REDAÇÃO)
+   ========================================================= */
+window.QUIZ = {
+  id: 'quiz1',
+  MARCA: 'Teste de Redação ENEM',
+  SUB: 'Você está preparado para a redação?',
+  PIXEL_ID: '',                 // Pixel da Meta deste funil
+  GA_ID: '',                    // G-XXXXXXXXXX
+  CHECKOUT_URL: '',             // checkout do Arsenal de Redações (R$ 19,90)
+  CHECKOUT_DESCONTO: '',        // opcional: checkout do pop-up de saída. Vazio = pop-up desligado
+  PRECO_POR: 'R$ 19,90',
+  PRECO_DESCONTO: '',
+  DATA_ENEM: '2026-11-08'       // CONFIRME no edital do INEP
+};
+
+/* =========================================================
+   PERGUNTAS
+   ========================================================= */
+const QUESTIONS = [
+  { id:'situacao', type:'foto',
+    options:['Estou no 3º ano do ensino médio','Já terminei e estudo por conta própria','Faço cursinho / pré-vestibular','Já fiz o ENEM e vou tentar de novo'],
+    images:['/img/situacao-3ano.jpg','/img/situacao-sozinho.jpg','/img/situacao-cursinho.jpg','/img/situacao-tentar-de-novo.jpg'] },
+  { id:'nome', type:'text', question:'Qual o seu primeiro nome?', placeholder:'Digite seu primeiro nome' },
+  { id:'sentimento', question:'Quando você pensa na redação do ENEM, como se sente?',
+    options:['😰 Travo: não sei nem como começar','😟 Inseguro(a): escrevo, mas não sei se está bom','🌀 Perdido(a): cada redação sai de um jeito','🙂 Confiante, mas quero subir a nota'] },
+  { id:'qtd', question:'Quantas redações completas você escreveu nos últimos 30 dias?',
+    options:['Nenhuma','1 ou 2','De 3 a 5','Mais de 5'] },
+  { id:'nota', question:'Quanto você costuma tirar na redação?',
+    options:['Nunca fiz uma redação completa','Não sei, ninguém corrige','Menos de 500','Entre 500 e 700','Entre 700 e 800','Mais de 800'] },
+  { id:'meta', question:'Qual nota de redação você quer tirar no ENEM?',
+    options:['Mais de 900','Entre 800 e 900','Entre 700 e 800','Entre 600 e 700','Só quero não zerar'] },
+  { id:'tempo', question:'Quanto tempo você leva para escrever uma redação completa?',
+    options:['Nunca consegui terminar uma','Mais de 1h30','Entre 1h e 1h30','Menos de 1 hora'] },
+  { id:'trava', type:'multi', max:3, question:'Em que parte da redação você mais trava?',
+    options:['Introdução: não sei como começar','Tese: não consigo deixar claro o meu ponto de vista','Desenvolvimento: não sei argumentar','Repertório: não sei o que citar','Conectivos: repito sempre as mesmas palavras','Conclusão: a proposta de intervenção'] },
+  { id:'intro', question:'Como você costuma começar a sua introdução?',
+    options:['Com "Hoje em dia..." ou "Atualmente..."','Copio a ideia do texto motivador','Não tenho um jeito: travo toda vez','Com uma citação ou um fato histórico'] },
+  { id:'repertorio', question:'Quantos repertórios (fatos históricos, filósofos, leis) você sabe usar com segurança?',
+    options:['Nenhum','1 ou 2, que uso em toda redação','De 3 a 5','Mais de 5'] },
+  { id:'conectivos', question:'Como você liga os seus parágrafos?',
+    options:['Não sei bem o que são conectivos','Não presto atenção nisso','Uso sempre "além disso" e "portanto"','Vario bastante os conectivos'] },
+  { id:'proposta', question:'A sua proposta de intervenção tem os 5 elementos: agente, ação, meio, finalidade e detalhamento?',
+    options:['Não sabia que eram 5 elementos','Nunca termino com proposta','Às vezes esqueço algum','Sempre coloco os 5'] },
+  { id:'correcao', question:'Quem corrige as suas redações hoje?',
+    options:['Ninguém corrige','Eu mesmo(a), comparando com modelos','Professor, mas demora semanas','Já usei algum site ou aplicativo'] },
+  { id:'curso', question:'Qual curso você quer fazer?',
+    options:['Medicina','Direito','Engenharias','Psicologia','Enfermagem e outras da saúde','Administração ou Economia','Pedagogia e licenciaturas','Outro curso'] },
+  { id:'ajuda', question:'O que mais ajudaria você a chegar preparado(a) na redação?',
+    options:['📝 Modelos prontos de introdução e tese para adaptar ao tema','🏛️ Repertório pronto: fatos históricos, filósofos e frases para citar','🛠️ Frases prontas para a proposta de intervenção','🧩 Tudo isso organizado em um só material'] }
+];
+
+function montaFlow(){
+  QUESTIONS.forEach(q=>FLOW.push({type:'question', q}));
+  FLOW.push({type:'analyzing', label:'Calculando o seu Índice de Preparo para a Redação...', dur:5000});
+  FLOW.push({type:'diag'});
+  FLOW.push({type:'produto'});
+  FLOW.push({type:'analyzing', label:'Separando os modelos para o seu caso...', dur:3000});
+  FLOW.push({type:'result'});
+}
+
+/* =========================================================
+   ÍNDICE DE PREPARO PARA A REDAÇÃO
+   Calculado das respostas e comprimido numa faixa baixa (14 a 38):
+   o teste sempre acusa que falta preparo (decisão do dono do funil).
+   ========================================================= */
+function calcRedacao(){
+  const a = state.answers;
+  const qtd  = pts(a.qtd,  QUESTIONS.find(q=>q.id==='qtd').options) / 3;
+  const nota = pts(a.nota, QUESTIONS.find(q=>q.id==='nota').options) / 5;
+  const tmp  = pts(a.tempo,QUESTIONS.find(q=>q.id==='tempo').options) / 3;
+  const intr = pts(a.intro,QUESTIONS.find(q=>q.id==='intro').options) / 3;
+  const rep  = pts(a.repertorio,QUESTIONS.find(q=>q.id==='repertorio').options) / 3;
+  const con  = pts(a.conectivos,QUESTIONS.find(q=>q.id==='conectivos').options) / 3;
+  const pro  = pts(a.proposta,QUESTIONS.find(q=>q.id==='proposta').options) / 3;
+  const cor  = pts(a.correcao,QUESTIONS.find(q=>q.id==='correcao').options) / 3;
+  const trava = a.trava || [];
+  const travou = txt => trava.some(t=>t.startsWith(txt)) ? 0.5 : 1;   // a parte em que trava pesa contra
+  const raw = qtd*15 + nota*20 + tmp*5 + intr*10 + rep*15 + con*10 + pro*15 + cor*10;   // 0..100
+  const idx = Math.round(14 + raw*0.24);
+  const barra = r => Math.min(46, Math.round(8 + r*38));
+  const comps = [
+    {n:'C1 · Norma culta',              v:barra((nota+qtd)/2)},
+    {n:'C2 · Tema e repertório',        v:barra(((rep+intr)/2)*travou('Repertório')*travou('Introdução'))},
+    {n:'C3 · Argumentação',             v:barra(((nota+tmp)/2)*travou('Desenvolvimento')*travou('Tese'))},
+    {n:'C4 · Coesão e conectivos',      v:barra(con*travou('Conectivos'))},
+    {n:'C5 · Proposta de intervenção',  v:barra(pro*travou('Conclusão'))}
+  ];
+  return { idx, comps };
+}
+function nivel(i){ return i<24 ? {txt:'MUITO BAIXO', cor:'#d64545'} : {txt:'BAIXO', cor:'#e0703a'}; }
+
+/* textos dos pontos críticos, por competência */
+const PONTOS = {
+  'C1': a=>`<h4>Escrita formal sem revisão</h4><p>Sem alguém apontando os desvios de gramática, ${a.correcao==='Ninguém corrige'?'e você disse que ninguém corrige os seus textos,':''} os mesmos erros se repetem em todas as redações e tiram pontos da competência 1.</p>`,
+  'C2': a=>`<h4>Falta de repertório pronto</h4><p>${a.repertorio==='Nenhum'?'Você disse que não tem nenhum repertório que saiba usar com segurança.':'Você disse que sabe usar com segurança <strong>'+({'1 ou 2, que uso em toda redação':'só 1 ou 2','De 3 a 5':'de 3 a 5','Mais de 5':'mais de 5'}[a.repertorio]||'poucos')+'</strong> repertórios.'} Sem repertório legitimado e bem encaixado, a competência 2 fica travada, ${(a.intro||'').startsWith('Com "Hoje')?'e começar a introdução com "Hoje em dia" deixa o texto genérico logo na primeira linha':'e a introdução fica sem força'}.</p>`,
+  'C3': a=>`<h4>Argumentos sem estrutura</h4><p>Quando não existe um modelo de tópico frasal e de desenvolvimento, o texto vira uma lista de ideias soltas, e a competência 3, que avalia a organização dos argumentos, perde pontos.</p>`,
+  'C4': a=>`<h4>Conectivos repetidos</h4><p>${(a.conectivos||'').startsWith('Uso sempre')?'Você usa sempre "além disso" e "portanto".':'Você não tem uma lista de conectivos para variar.'} A repetição tira pontos da competência 4, mesmo com boas ideias.</p>`,
+  'C5': a=>`<h4>Proposta de intervenção incompleta</h4><p>${(a.proposta||'').startsWith('Não sabia')?'Você não sabia que a proposta precisa de 5 elementos.':(a.proposta||'').startsWith('Nunca')?'Você disse que nunca termina com proposta.':'Você disse que às vezes esquece algum elemento.'} Cada elemento que falta é ponto perdido na competência 5.</p>`
+};
+
+/* =========================================================
+   TELAS PRÓPRIAS DO QUIZ 1
+   ========================================================= */
+const RENDER = {
+  intro(q){
+    app.innerHTML = `
+    <div class="wrap fade"><div class="card" style="text-align:center;padding-top:46px;padding-bottom:40px;">
+      <span class="intro-badge">Teste grátis · 2 minutos</span>
+      <h1 class="intro-h1">Você está <span>preparado</span> para a redação do ENEM?</h1>
+      <p class="intro-sub">${S(prazoTxt())}. Faça o teste e descubra o seu <strong>Índice de Preparo para a Redação</strong>, competência por competência.</p>
+      <h2 class="intro-h1" style="font-size:24px;margin:30px 0 4px;">Qual é a sua situação?</h2>
+      <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:#9aa8a2;margin:8px 0 18px;">Toque para escolher</p>
+      ${introCards(q)}
+      <p style="font-size:13px;color:#8aa79a;margin-top:18px;">✅ Gratuito e sem cadastro</p>
+    </div></div>`;
+  },
+
+  diag(){
+    const a = state.answers, n = nomeA();
+    const R = calcRedacao(), niv = nivel(R.idx);
+    const piores = R.comps.map((c,i)=>({k:'C'+(i+1), v:c.v})).sort((x,y)=>x.v-y.v).slice(0,3);
+    app.innerHTML = `
+    <div class="wrap fade"><div class="card">
+      ${backBtn()}<div class="brand-sub" style="margin-bottom:6px;">Diagnóstico da sua redação</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+      <div class="alerta"><p>⚠️ ${n?n+', o':'O'} seu preparo para a redação está <strong>${niv.txt}</strong>.</p>
+        <p class="s">Com base nas suas respostas, hoje a sua redação ainda não está no nível que a sua meta (${S((a.meta||'').toLowerCase())}) exige.</p></div>
+      ${medidorHTML(R.idx, niv.cor, 'Seu Índice de Preparo para a Redação')}
+        <p style="font-size:13px;font-weight:800;color:var(--verde-escuro);margin:16px 0 4px;text-align:left;">Preparo por competência</p>
+        ${barrasHTML(R.comps)}
+        <p class="note">Estimativa educativa calculada a partir das suas respostas. Não é uma avaliação oficial e não prevê a sua nota.</p>
+      </div>
+      <div class="alerta" style="margin-top:20px;"><p style="font-size:15px;letter-spacing:.4px;">⚠️ 3 PONTOS CRÍTICOS FORAM IDENTIFICADOS</p></div>
+      ${piores.map((p,i)=>`<div class="box">${PONTOS[p.k](a).replace('<h4>','<h4>'+(i+1)+' · ')}</div>`).join('')}
+      <div style="background:#eef8f2;border:1px solid #d5ebe0;border-radius:14px;padding:20px;margin:6px 0 0;text-align:center;">
+        <p style="color:var(--verde-escuro);font-size:15.5px;font-weight:800;line-height:1.55;">A boa notícia: a redação é a parte da prova em que mais dá para evoluir em pouco tempo, quando você tem <strong>modelos e repertório prontos</strong> para treinar.</p></div>
+      <button class="btn" style="margin-top:20px;" onclick="go(1)">Ver como resolver →</button>
+    </div></div>`;
+    px('DiagnosticoGerado');
+  },
+
+  produto(){
+    const a = state.answers, n = nomeA();
+    const comecaHoje = (a.intro||'').startsWith('Com "Hoje');
+    app.innerHTML = `
+    <div class="wrap fade"><div class="card">
+      ${backBtn()}<div class="brand-sub" style="margin-bottom:6px;">A solução para o seu caso</div>
+      <span class="tag">Conheça o material</span>
+      <div class="capa"><img src="/img/capa-arsenal.png" alt="" onerror="this.remove()"><div class="k">Arsenal de</div><div class="t">REDAÇÕES<span>ENEM</span></div><div class="b">✍️</div></div>
+      <h2 class="q-title" style="margin-bottom:8px;">Arsenal de Redações para o ENEM</h2>
+      <p class="sec-s">${n?n+', é':'É'} tudo o que você precisa para escrever com mais clareza e segurança, organizado em um só lugar e direto no celular.</p>
+
+      <div class="sec-h" style="margin-top:4px;">Exemplos de frases do material</div>
+      <div class="frase">"Diante dos desafios contemporâneos, é fundamental repensar práticas e buscar soluções efetivas."</div>
+      <div class="frase">"É fundamental que a sociedade esteja consciente de seu papel na construção de um futuro mais justo."</div>
+      <div class="frase">"Fica evidente a necessidade de uma reflexão profunda sobre essa questão."</div>
+
+      <div class="sec-h">Veja a diferença na introdução</div>
+      <span class="exemplo">Exemplo ilustrativo</span>
+      <div class="rotulo" style="color:var(--vermelho);">${comecaHoje?'Como você começa hoje':'Uma introdução comum'}</div>
+      <div class="antes">Hoje em dia, o estigma das doenças mentais é um problema muito grande no Brasil e precisa ser resolvido.</div>
+      <div class="rotulo" style="color:var(--verde);">Com um modelo do Arsenal</div>
+      <div class="depois">Segundo Zygmunt Bauman, vivemos uma "modernidade líquida", em que os vínculos se tornaram frágeis e passageiros. Sob essa ótica, é possível compreender o estigma associado às doenças mentais no Brasil, problema que persiste em razão da desinformação e da falta de atendimento na rede pública.</div>
+      <p class="note">Repertório legitimado, tema contextualizado e tese com duas causas: o que a banca procura na introdução.</p>
+
+      <div class="sec-h">Como você vai usar</div>
+      <div class="timeline">
+        <div class="tl"><b>Escolha o modelo</b><span>Introdução, tese, tópico frasal e proposta prontos para adaptar.</span></div>
+        <div class="tl"><b>Encaixe o repertório</b><span>Fatos históricos e pensadores com indicação de em quais temas usar.</span></div>
+        <div class="tl"><b>Monte e treine</b><span>O montador junta tudo em um esqueleto de redação para você desenvolver.</span></div>
+      </div>
+      <button class="btn" style="margin-top:14px;" onclick="go(1)">Quero o meu Arsenal →</button>
+    </div></div>`;
+  },
+
+  result(){
+    const a = state.answers, n = nomeA();
+    const R = calcRedacao();
+    px('ViewContent', true);
+    app.innerHTML = `
+    <div class="res fade">
+      <div class="blk" style="text-align:center;">
+        <span class="tag red">${S(prazoTxt())}</span>
+        <h1 class="intro-h1" style="font-size:27px;">${n?n+', t':'T'}ravou na redação? Aqui está o seu arsenal</h1>
+        <p class="intro-sub" style="font-size:15px;">Seu Índice de Preparo para a Redação hoje é <strong style="color:${nivel(R.idx).cor};">${R.idx}/100</strong>. Tenha modelos e frases prontas para fechar a sua redação com mais clareza e ganhar pontos no ENEM.</p>
+        <div class="capa" style="margin-top:16px;"><img src="/img/capa-arsenal.png" alt="" onerror="this.remove()"><div class="k">Arsenal de</div><div class="t">REDAÇÕES<span>ENEM</span></div><div class="b">✍️</div></div>
+      </div>
+
+      <div class="blk">
+        <h3 class="sec-h" style="margin-top:0;">O que você recebe</h3>
+        <ul class="lista">
+          <li><span><b>Modelos prontos para introdução</b>, com dica de quando usar cada um</span></li>
+          <li><span><b>Modelos prontos para tese</b></span></li>
+          <li><span><b>50 tópicos frasais</b> para abrir os parágrafos de desenvolvimento</span></li>
+          <li><span><b>50 alusões históricas</b>, com os temas em que cada uma se encaixa</span></li>
+          <li><span><b>50 frases coringas</b></span></li>
+          <li><span><b>Frases filosóficas</b> e ideias de pensadores para citar</span></li>
+          <li><span><b>Frases de efeito para a proposta de intervenção</b> e os 5 elementos explicados</span></li>
+          <li><span><b>Conectivos</b>, com exemplos de uso</span></li>
+        </ul>
+        <p style="font-size:13px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--verde);margin:18px 0 4px;">Bônus exclusivos</p>
+        <ul class="lista">
+          <li><span><b>Montador de redação:</b> preencha o tema e as causas e receba o esqueleto do texto</span></li>
+          <li><span><b>Checklist das 5 competências</b> e o que zera a redação</span></li>
+          <li><span><b>Temas das últimas edições</b> e 20 eixos para treinar</span></li>
+        </ul>
+      </div>
+
+      <div class="blk">
+        <div class="price-box">
+          <div class="label">Todo esse material por apenas</div>
+          <div class="val">${S(QUIZ.PRECO_POR)}</div>
+          <div style="font-size:13px;opacity:.9;">pagamento único</div>
+          <span class="off">Acesso imediato no celular</span>
+        </div>
+        <button class="btn" onclick="irCheckout('oferta')">Quero acessar agora →</button>
+        <p class="note">Compra segura • Funciona no navegador do celular • Sem instalar nada</p>
+      </div>
+
+      <div class="blk garantia">
+        <img src="/img/garantia-7-dias.png" alt="Garantia de 7 dias" onerror="this.outerHTML='<div class=&quot;sel&quot;>7 DIAS<br>DE GARANTIA</div>'">
+        <div><h3 style="font-family:'Open Sans';font-size:18px;font-weight:900;color:var(--verde-escuro);margin-bottom:6px;">Garantia de 7 dias</h3>
+        <p style="font-size:14px;color:#52645a;line-height:1.6;">Use o material por 7 dias. Se não gostar, peça o reembolso dentro do prazo e devolvemos o valor pago.</p></div>
+      </div>
+
+      <div class="blk faq">
+        <h3 class="sec-h" style="margin-top:0;">Dúvidas frequentes</h3>
+        <details><summary>Ainda dá tempo de usar antes da prova?</summary><p>Sim. O material é feito para usar já: você escolhe os modelos, monta o seu repertório e treina. Não prometemos nota, mas ter estrutura e repertório prontos faz diferença na hora de escrever.</p></details>
+        <details><summary>Os modelos servem para qualquer tema?</summary><p>Sim. Os modelos têm lacunas para você adaptar ao tema, e cada repertório traz os assuntos em que ele se encaixa.</p></details>
+        <details><summary>Usar modelo pronto não é decorar redação?</summary><p>Não. Você usa a estrutura e as frases para organizar as suas próprias ideias. A banca avalia o seu texto, e o material ajuda você a escrever com mais clareza.</p></details>
+        <details><summary>Como recebo o acesso?</summary><p>Logo após a compra, você recebe no e-mail o link de acesso. O material abre direto no navegador do celular, e você pode adicioná-lo à tela inicial.</p></details>
+        <details><summary>E se eu quiser que alguém corrija a minha redação?</summary><p>No checkout você pode incluir a Correção da redação pela foto: você fotografa a redação no caderno e recebe a nota estimada por competência, os erros e como melhorar.</p></details>
+        <details><summary>E se eu não gostar?</summary><p>Você tem 7 dias de garantia. Se não gostar, peça o reembolso dentro do prazo.</p></details>
+        <details><summary>Isso é oficial do ENEM?</summary><p>Não. É um material independente, sem vínculo com o INEP, o MEC ou o Governo Federal.</p></details>
+      </div>
+
+      <div class="blk" style="text-align:center;">
+        <h3 class="sec-h" style="margin-top:0;">${S(prazoTxt())}.</h3>
+        <p class="sec-s">Cada redação escrita sem estrutura é um treino perdido.</p>
+        <button class="btn" onclick="irCheckout('final')">Quero acessar agora →</button>
+      </div>
+      <p class="legal">Material independente, sem vínculo com o INEP, o MEC ou o Governo Federal. O material é uma ferramenta de apoio: os resultados dependem da dedicação de cada estudante e não há garantia de nota. O Índice de Preparo é uma estimativa educativa.</p>
+    </div>
+    <div class="sticky-cta"><button class="btn" onclick="irCheckout('sticky')">Quero acessar agora por ${S(QUIZ.PRECO_POR)} →</button></div>`;
+  }
+};
+</script>
+<script src="/shared/quiz-base.js"></script>
+</body>
+</html>

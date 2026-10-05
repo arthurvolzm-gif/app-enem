@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Plano ENEM: Matérias</title>
+<meta name="theme-color" content="#065f35" />
+<meta name="robots" content="noindex" />
+<link rel="manifest" href="/materias/manifest.json" />
+<link rel="stylesheet" href="/shared/app.css" />
+<script src="/shared/config.js"></script>
+<script src="/shared/acesso.js"></script>
+<script src="/shared/resumos.js"></script>
+<script src="/shared/questoes.js"></script>
+</head>
+<body>
+<div class="app" id="app"></div>
+<nav class="nav" id="nav" style="display:none"><div class="in">
+  <button data-r="hoje"><span class="i">🏠</span>Hoje</button>
+  <button data-r="plano"><span class="i">📅</span>Plano</button>
+  <button data-r="resumos"><span class="i">📚</span>Resumos</button>
+  <button data-r="desempenho"><span class="i">📊</span>Desempenho</button>
+  <button data-r="mais"><span class="i">☰</span>Mais</button>
+</div></nav>
+
+<script>
+const M = window.MATERIAS, Q = window.QUESTOES, C = window.ENEM_CONFIG;
+const app = document.getElementById('app');
+const nav = document.getElementById('nav');
+const DIAS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const DIAS_LONGO = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+
+/* ===== util ===== */
+function S(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function toast(t){ const d=document.createElement('div'); d.className='toast'; d.textContent=t; document.body.appendChild(d); setTimeout(()=>d.remove(),2000); }
+function ls(k,def){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):def; }catch(e){ return def; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+function hojeISO(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function dias(){ if(!C.DATA_ENEM) return null; const d=Math.ceil((new Date(C.DATA_ENEM+'T09:00:00')-new Date())/86400000); return d>0?d:null; }
+function mat(id){ return M.find(m=>m.id===id); }
+function fmtMin(m){ m=Math.round(m); return m>=60 ? Math.floor(m/60)+'h'+(m%60?String(m%60).padStart(2,'0'):'') : m+' min'; }
+function checkout(prod){ const url=C.CHECKOUT[prod]; if(!url){ toast('Link de compra ainda não configurado.'); return; } location.href=url; }
+function topo(titulo, voltar){
+  const d = dias();
+  return `<div class="top">${voltar?`<button class="voltar" onclick="history.back()" aria-label="Voltar">←</button>`:''}<h1>${titulo}</h1>${d?`<span class="dias">⏳ ${d} dias</span>`:''}</div>`;
+}
+function bloqueadoHTML(prod, titulo, texto){
+  return `<div class="card bloq fade"><div class="i">🔒</div><h2>${titulo}</h2><p class="muted" style="margin:6px 0 16px;">${texto}</p>
+    <button class="btn" onclick="checkout('${prod}')">Desbloquear agora</button>
+    <button class="btn sec" onclick="irPara('codigo')">Já comprei: inserir código</button></div>`;
+}
+
+/* ===== dados do aluno ===== */
+const perfil = ()=>ls('mat_perfil',null);
+const lidos = ()=>ls('mat_lidos',[]);
+const sessoes = ()=>ls('mat_tempo',[]);          // [{d:'YYYY-MM-DD', m:'mat', min:25}]
+const respostas = ()=>ls('mat_resp',{});         // {indiceQuestao: true|false}
+
+function minutosPorMateria(desdeISO){
+  const r = {};
+  sessoes().filter(s=>!desdeISO || s.d>=desdeISO).forEach(s=>{ r[s.m]=(r[s.m]||0)+s.min; });
+  return r;
+}
+function inicioSemana(){ const d=new Date(); const dw=(d.getDay()+6)%7; d.setDate(d.getDate()-dw); return hojeISO(d); }
+function sequencia(){
+  const set = new Set(sessoes().map(s=>s.d).concat(ls('mat_dias_leitura',[])));
+  let n=0; const d=new Date();
+  if(!set.has(hojeISO(d))) d.setDate(d.getDate()-1);
+  while(set.has(hojeISO(d))){ n++; d.setDate(d.getDate()-1); }
+  return n;
+}
+function marcarDiaAtivo(){ const a=ls('mat_dias_leitura',[]); const h=hojeISO(); if(!a.includes(h)){ a.push(h); lsSet('mat_dias_leitura',a.slice(-120)); } }
+
+/* ===== geração do plano semanal ===== */
+function gerarPlano(p){
+  const dif = (p.dificeis||[]).filter(id=>mat(id));
+  const outras = M.map(m=>m.id).filter(id=>!dif.includes(id));
+  /* matérias difíceis aparecem duas vezes mais; redação entra pelo menos 2 vezes */
+  const fila = [];
+  const metade = Math.ceil(outras.length/2);
+  [outras.slice(0,metade), outras.slice(metade)].forEach(parte=>{
+    const rodada = [...dif]; parte.forEach((o,i)=>rodada.splice(Math.min(rodada.length, i*2+1),0,o));
+    fila.push(...rodada);
+  });
+  if(fila.filter(x=>x==='red').length<2) fila.splice(3,0,'red');
+  const diasEstudo = (p.dias||[1,2,3,4,5]).slice().sort((a,b)=>((a+6)%7)-((b+6)%7));   // segunda primeiro
+  const blocos = p.minutos>=90 ? 2 : 1;
+  const minBloco = Math.round(p.minutos/blocos);
+  const plano = {}; let k = 0;
+  diasEstudo.forEach(d=>{
+    if(d===0 && diasEstudo.length>1){ plano[d]=[{m:'revisao', min:p.minutos}]; return; }
+    plano[d] = [];
+    for(let b=0;b<blocos;b++){
+      let m = fila[k % fila.length]; k++;
+      if(plano[d].some(x=>x.m===m)){ m = fila[k % fila.length]; k++; }
+      plano[d].push({m, min:minBloco});
+    }
+  });
+  return plano;
+}
+function nomeBloco(id){ return id==='revisao' ? 'Revisão da semana e mini simulado' : (mat(id)?mat(id).nome:id); }
+function iconeBloco(id){ return id==='revisao' ? '🔁' : (mat(id)?mat(id).icone:'📘'); }
+function proximoTema(mid){
+  const m = mat(mid); if(!m) return null;
+  const L = lidos();
+  return m.temas.filter(t=>!L.includes(t.id)).sort((a,b)=>(a.prio==='alta'?0:1)-(b.prio==='alta'?0:1))[0] || null;
+}
+
+/* ===== acesso ===== */
+function telaCodigo(){
+  nav.style.display='none';
+  app.innerHTML = `${topo('Plano ENEM: Matérias')}
+  <div class="pg fade">
+    <div class="card hero"><h2>Bem-vindo(a)! 📚</h2><p>Digite o código de acesso que chegou no e-mail da compra. Se você abriu pelo link do e-mail, o acesso já é liberado sozinho.</p></div>
+    <div class="card">
+      <label class="f" for="cod">Código de acesso</label>
+      <input class="inp" id="cod" placeholder="Ex.: PLA-XXXXXX-XXXX" autocomplete="off" style="text-transform:uppercase;">
+      <div class="sp"></div>
+      <button class="btn" id="okCod">Liberar acesso</button>
+      <p class="muted" style="margin-top:12px;text-align:center;">${C.SUPORTE_EMAIL?'Problemas? Fale com '+S(C.SUPORTE_EMAIL):'O código vem no e-mail de confirmação da compra.'}</p>
+    </div>
+    ${(Acesso.tem('plano')||Acesso.tem('exercicios'))?'<button class="btn sec" onclick="irPara(\'hoje\')">Voltar ao app</button>':''}
+  </div>`;
+  const f=document.getElementById('cod');
+  async function ok(){
+    const p = await Acesso.resgatar(f.value);
+    if(!p){ toast('Código não encontrado. Confira e tente de novo.'); return; }
+    if(p==='arsenal'||p==='correcao'){ toast('Esse código é do app de redação. Abrindo...'); setTimeout(()=>location.href='/redacao',900); return; }
+    toast('Acesso liberado! 🎉'); irPara('hoje');
+  }
+  document.getElementById('okCod').onclick=ok;
+  f.addEventListener('keydown',e=>{ if(e.key==='Enter') ok(); });
+}
+
+/* ===== configuração inicial ===== */
+function telaConfig(primeira){
+  const p = perfil() || {};
+  const q = ls('enem_quiz2',{});                     // respostas do quiz 2, quando a pessoa veio dele
+  const nome = p.nome || q.nome || '';
+  let dif = p.dificeis || (q.materias||[]).map(n=>(M.find(m=>m.nome===n||n.startsWith(m.nome))||{}).id).filter(Boolean);
+  let diasSel = p.dias || [1,2,3,4,5,6];
+  let minutos = p.minutos || ({'Menos de 1 hora':45,'De 1 a 2 horas':90,'De 2 a 4 horas':120,'Mais de 4 horas':150}[q.horas]) || 60;
+  const hora = p.hora || '19:00';
+  nav.style.display = primeira ? 'none' : '';
+  app.innerHTML = `${topo(primeira?'Vamos montar o seu plano':'Ajustar meu plano', !primeira)}
+  <div class="pg fade">
+    ${primeira?'<div class="card hero"><h2>Em 1 minuto o seu plano fica pronto</h2><p>Responda e o app monta a sua semana: qual matéria estudar em cada dia e por quanto tempo.</p></div>':''}
+    <div class="card">
+      <label class="f" for="nome">Seu primeiro nome</label>
+      <input class="inp" id="nome" value="${S(nome)}" placeholder="Seu nome" maxlength="30">
+      <label class="f">Matérias em que você tem mais dificuldade</label>
+      <div class="opcs" id="difs">${M.map(m=>`<button data-id="${m.id}" class="${dif.includes(m.id)?'on':''}">${m.icone} ${S(m.nome)}</button>`).join('')}</div>
+      <label class="f">Quanto tempo por dia você consegue estudar?</label>
+      <div class="opcs" id="mins">${[30,45,60,90,120,150].map(v=>`<button data-v="${v}" class="${minutos===v?'on':''}">${fmtMin(v)}</button>`).join('')}</div>
+      <label class="f">Em quais dias?</label>
+      <div class="opcs" id="dias">${[1,2,3,4,5,6,0].map(d=>`<button data-d="${d}" class="${diasSel.includes(d)?'on':''}">${DIAS[d]}</button>`).join('')}</div>
+      <label class="f" for="hora">Horário do lembrete</label>
+      <input class="inp" id="hora" type="time" value="${S(hora)}">
+      <div class="sp"></div>
+      <button class="btn" id="salvar">${primeira?'Montar meu plano':'Salvar e refazer o plano'}</button>
+    </div>
+  </div>`;
+  document.querySelectorAll('#difs button').forEach(b=>b.onclick=()=>{ const id=b.dataset.id; dif = dif.includes(id)?dif.filter(x=>x!==id):[...dif,id]; b.classList.toggle('on'); });
+  document.querySelectorAll('#mins button').forEach(b=>b.onclick=()=>{ minutos=+b.dataset.v; document.querySelectorAll('#mins button').forEach(x=>x.classList.toggle('on',x===b)); });
+  document.querySelectorAll('#dias button').forEach(b=>b.onclick=()=>{ const d=+b.dataset.d; diasSel = diasSel.includes(d)?diasSel.filter(x=>x!==d):[...diasSel,d]; b.classList.toggle('on'); });
+  document.getElementById('salvar').onclick=()=>{
+    if(!diasSel.length){ toast('Escolha pelo menos um dia.'); return; }
+    const np = { nome:document.getElementById('nome').value.trim(), dificeis:dif.slice(0,4), minutos, dias:diasSel, hora:document.getElementById('hora').value||'19:00' };
+    np.plano = gerarPlano(np);
+    lsSet('mat_perfil', np);
+    toast('Plano pronto! ✅');
+    irPara(primeira?'hoje':'plano');
+  };
+}
+
+/* ===== HOJE ===== */
+function telaHoje(){
+  const p = perfil();
+  const dw = new Date().getDay();
+  const blocos = p.plano[dw] || [];
+  const feitoHoje = minutosPorMateria(hojeISO());
+  const seq = sequencia();
+  const min = Object.values(minutosPorMateria(inicioSemana())).reduce((a,b)=>a+b,0);
+  const L = lidos(), totalTemas = M.reduce((s,m)=>s+m.temas.length,0);
+  app.innerHTML = `${topo('Olá'+(p.nome?', '+S(p.nome):'')+'!')}
+  <div class="pg fade">
+    <div class="stat" style="margin-bottom:14px;">
+      <div><b>${seq}</b><span>🔥 dias seguidos</span></div>
+      <div><b>${fmtMin(min)}</b><span>nesta semana</span></div>
+      <div><b>${L.length}/${totalTemas}</b><span>temas lidos</span></div>
+    </div>
+    <div class="card hero"><h2>${DIAS_LONGO[dw]}: o seu estudo de hoje</h2><p>${blocos.length?'Faça na ordem. Toque em "Começar" para cronometrar.':'Hoje é o seu dia de descanso. Se quiser, leia um resumo ou faça exercícios.'}</p></div>
+    ${blocos.map((b,i)=>{ const t=b.m!=='revisao'?proximoTema(b.m):null; const feito=(feitoHoje[b.m]||0); return `<div class="card">
+      <div class="row"><div><h3>${iconeBloco(b.m)} ${S(nomeBloco(b.m))}</h3><p class="muted">${fmtMin(b.min)}${feito?' · feito hoje: '+fmtMin(feito):''}</p></div>${feito>=b.min?'<span class="chip">✓ Feito</span>':''}</div>
+      ${t?`<p style="margin:8px 0 10px;font-size:14px;">Próximo tema: <a href="#tema/${t.id}" style="color:var(--verde);font-weight:800;">${S(t.titulo)}</a></p>`:''}
+      ${b.m==='revisao'?'<p class="muted" style="margin:8px 0 10px;">Releia os temas da semana'+(Acesso.tem('exercicios')?' e faça um mini simulado.':'.')+'</p>':''}
+      <button class="btn sm" onclick="irPara('timer/${b.m}/${b.min}')">▶ Começar</button>
+      ${b.m==='red'?' <button class="btn sm sec" onclick="location.href=\'/redacao#corrigir\'">📸 Corrigir redação</button>':''}
+    </div>`; }).join('')}
+    <div class="grid">
+      <div class="tile" onclick="irPara('exercicios')">${!Acesso.tem('exercicios')?'<span class="lock">🔒</span>':''}<span class="i">📝</span><b>Exercícios e simulados</b><span>No estilo do ENEM</span></div>
+      <div class="tile" onclick="location.href='/redacao#corrigir'"><span class="i">📸</span><b>Corrigir redação</b><span>Pela foto do caderno</span></div>
+    </div>
+  </div>`;
+}
+
+/* ===== PLANO ===== */
+function telaPlano(){
+  const p = perfil();
+  const ordem = [1,2,3,4,5,6,0];
+  const hoje = new Date().getDay();
+  app.innerHTML = `${topo('📅 Seu plano semanal')}
+  <div class="pg fade">
+    <div class="card"><p class="muted">${fmtMin(p.minutos)} por dia, ${p.dias.length} dias por semana. As matérias marcadas como difíceis aparecem com mais frequência.</p></div>
+    ${ordem.map(d=>{ const bl=p.plano[d]; return `<div class="card" style="${d===hoje?'border:2px solid var(--verde-claro);':''}">
+      <div class="row"><h3>${DIAS_LONGO[d]}${d===hoje?' <span class="chip">Hoje</span>':''}</h3>${bl?'':'<span class="muted">Descanso</span>'}</div>
+      ${bl?bl.map(b=>`<div class="row" style="margin-top:8px;"><span style="font-size:14.5px;font-weight:700;">${iconeBloco(b.m)} ${S(nomeBloco(b.m))}</span><span style="color:var(--verde);font-weight:900;font-size:14px;">${fmtMin(b.min)}</span></div>`).join(''):''}
+    </div>`; }).join('')}
+    <button class="btn sec" onclick="irPara('config')">⚙️ Ajustar dias, tempo e matérias</button>
+  </div>`;
+}
+
+/* ===== TIMER ===== */
+let timerInt = null;
+function telaTimer(mid, minAlvo){
+  const st = ls('mat_timer',null);
+  let t = (st && st.m===mid) ? st : {m:mid, acumulado:0, inicio:null};
+  lsSet('mat_timer', t);
+  const tema = mid!=='revisao' ? proximoTema(mid) : null;
+  app.innerHTML = `${topo(iconeBloco(mid)+' '+S(nomeBloco(mid)),true)}
+  <div class="pg fade">
+    <div class="card" style="text-align:center;">
+      <p class="muted">Meta de hoje: ${fmtMin(minAlvo)}</p>
+      <div class="timer" id="tm">00:00</div>
+      <div class="bar" style="margin:6px 0 16px;"><i id="tb" style="width:0%"></i></div>
+      <button class="btn" id="tPlay">▶ Iniciar</button>
+      <button class="btn sec" id="tFim">✓ Terminar e salvar</button>
+    </div>
+    ${tema?`<div class="card"><h3>Sugestão para agora</h3><p style="font-size:14px;">Leia o resumo de <b>${S(tema.titulo)}</b> e depois faça exercícios do tema.</p><div class="sp"></div><button class="btn sm sec" onclick="irPara('tema/${tema.id}')">Abrir resumo</button></div>`:''}
+  </div>`;
+  const tm=document.getElementById('tm'), tb=document.getElementById('tb'), play=document.getElementById('tPlay');
+  const decorrido = ()=> t.acumulado + (t.inicio ? (Date.now()-t.inicio)/1000 : 0);
+  function pinta(){
+    const s = Math.floor(decorrido());
+    tm.textContent = String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+    tb.style.width = Math.min(100, s/60/minAlvo*100)+'%';
+    play.textContent = t.inicio ? '⏸ Pausar' : (t.acumulado? '▶ Continuar' : '▶ Iniciar');
+  }
+  play.onclick=()=>{
+    if(t.inicio){ t.acumulado = decorrido(); t.inicio=null; } else { t.inicio = Date.now(); }
+    lsSet('mat_timer', t); pinta();
+  };
+  document.getElementById('tFim').onclick=()=>{
+    const min = Math.round(decorrido()/60);
+    lsSet('mat_timer', null); clearInterval(timerInt);
+    if(min<1){ toast('Menos de 1 minuto: nada foi salvo.'); history.back(); return; }
+    const reg = sessoes(); reg.push({d:hojeISO(), m:mid==='revisao'?'revisao':mid, min}); lsSet('mat_tempo', reg.slice(-1000));
+    toast(`+${fmtMin(min)} de ${nomeBloco(mid)} no seu desempenho!`);
+    irPara('hoje');
+  };
+  clearInterval(timerInt); timerInt = setInterval(pinta, 1000); pinta();
+}
+
+/* ===== RESUMOS ===== */
+function telaResumos(){
+  const L = lidos();
+  app.innerHTML = `${topo('📚 Resumos do que mais cai')}
+  <div class="pg fade">
+    <p class="muted" style="margin-bottom:12px;">Os temas principais de cada matéria. Cada tema que você marca como lido entra no seu desempenho.</p>
+    ${M.map(m=>{ const n=m.temas.filter(t=>L.includes(t.id)).length; return `<div class="item" style="cursor:pointer" onclick="irPara('materia/${m.id}')">
+      <div class="row"><b style="font-size:15px;color:var(--verde-escuro);">${m.icone} ${S(m.nome)}</b><span class="muted">${n}/${m.temas.length}</span></div>
+      <div class="bar" style="margin-top:8px;"><i style="width:${n/m.temas.length*100}%"></i></div></div>`; }).join('')}
+  </div>`;
+}
+function telaMateria(id){
+  const m = mat(id); if(!m){ irPara('resumos'); return; }
+  const L = lidos();
+  app.innerHTML = `${topo(m.icone+' '+S(m.nome),true)}
+  <div class="pg fade">
+    ${m.temas.map(t=>`<div class="item" style="cursor:pointer" onclick="irPara('tema/${t.id}')">
+      <div class="row"><b style="font-size:14.5px;color:var(--verde-escuro);">${L.includes(t.id)?'✅ ':''}${S(t.titulo)}</b>${t.prio==='alta'?'<span class="chip red">Prioridade alta</span>':'<span class="chip amb">Prioridade média</span>'}</div></div>`).join('')}
+  </div>`;
+}
+function telaTema(id){
+  let m, t;
+  M.forEach(mm=>mm.temas.forEach(tt=>{ if(tt.id===id){ m=mm; t=tt; } }));
+  if(!t){ irPara('resumos'); return; }
+  const lido = lidos().includes(id);
+  const nq = Q.filter(q=>q.t===id).length;
+  app.innerHTML = `${topo(m.icone+' '+S(m.nome),true)}
+  <div class="pg fade">
+    <div class="card">
+      <span class="chip ${t.prio==='alta'?'red':'amb'}">Prioridade ${t.prio}</span>
+      <h2 style="margin-top:8px;">${S(t.titulo)}</h2>
+      <ul style="padding-left:18px;margin-top:8px;">${t.resumo.map(r=>`<li style="font-size:14.5px;line-height:1.65;margin-bottom:8px;">${S(r)}</li>`).join('')}</ul>
+      <div class="explic" style="margin-top:6px;"><b>💡 Como cai no ENEM:</b> ${S(t.dica)}</div>
+    </div>
+    <button class="btn" id="lido" ${lido?'disabled':''}>${lido?'✅ Tema lido':'Marcar como lido'}</button>
+    ${nq?`<button class="btn sec" onclick="irPara('treino/tema/${id}')">📝 Praticar ${nq} ${nq>1?'questões':'questão'} deste tema${Acesso.tem('exercicios')?'':' 🔒'}</button>`:''}
+  </div>`;
+  if(!lido) document.getElementById('lido').onclick=()=>{
+    const L = lidos(); L.push(id); lsSet('mat_lidos', L); marcarDiaAtivo();
+    toast('Salvo no seu desempenho em '+m.nome+'!'); telaTema(id);
+  };
+}
+
+/* ===== DESEMPENHO ===== */
+function telaDesempenho(){
+  const L = lidos();
+  const semana = minutosPorMateria(inicioSemana()), total = minutosPorMateria();
+  const R = respostas();
+  const acertos = {}; Object.keys(R).forEach(i=>{ const q=Q[i]; if(!q) return; acertos[q.m]=acertos[q.m]||{ok:0,n:0}; acertos[q.m].n++; if(R[i]) acertos[q.m].ok++; });
+  const maxMin = Math.max(1, ...M.map(m=>total[m.id]||0));
+  const totSem = Object.values(semana).reduce((a,b)=>a+b,0), totGeral = Object.values(total).reduce((a,b)=>a+b,0);
+  /* últimos 7 dias */
+  const dias7 = [...Array(7)].map((_,i)=>{ const d=new Date(); d.setDate(d.getDate()-6+i); const iso=hojeISO(d); return {l:DIAS[d.getDay()], min:sessoes().filter(s=>s.d===iso).reduce((a,s)=>a+s.min,0)}; });
+  const max7 = Math.max(30, ...dias7.map(d=>d.min));
+  app.innerHTML = `${topo('📊 Seu desempenho')}
+  <div class="pg fade">
+    <div class="stat" style="margin-bottom:14px;">
+      <div><b>${sequencia()}</b><span>🔥 dias seguidos</span></div>
+      <div><b>${fmtMin(totSem)}</b><span>nesta semana</span></div>
+      <div><b>${fmtMin(totGeral)}</b><span>no total</span></div>
+    </div>
+    <div class="card"><h3>Últimos 7 dias</h3>
+      <div style="display:flex;align-items:flex-end;gap:8px;height:120px;margin-top:12px;">${dias7.map(d=>`<div style="flex:1;text-align:center;display:flex;flex-direction:column;justify-content:flex-end;height:100%;"><div style="font-size:10.5px;color:var(--cinza2);font-weight:700;">${d.min?d.min:''}</div><div style="height:${Math.max(3,d.min/max7*90)}px;background:${d.min?'linear-gradient(180deg,var(--verde-claro),var(--verde))':'#e8efe9'};border-radius:6px 6px 0 0;"></div><div style="font-size:11px;font-weight:800;color:var(--cinza2);margin-top:4px;">${d.l}</div></div>`).join('')}</div>
+      <p class="muted" style="margin-top:6px;">Minutos estudados por dia</p></div>
+    <div class="card"><h3>Por matéria</h3><p class="muted" style="margin-bottom:12px;">Tempo estudado e temas lidos</p>
+      ${M.map(m=>{ const n=m.temas.filter(t=>L.includes(t.id)).length; const a=acertos[m.id]; return `<div style="margin-bottom:14px;">
+        <div class="row" style="font-size:13.5px;font-weight:800;"><span>${m.icone} ${S(m.nome)}</span><span style="color:var(--verde);">${fmtMin(total[m.id]||0)}</span></div>
+        <div class="bar" style="margin:5px 0 4px;"><i style="width:${(total[m.id]||0)/maxMin*100}%"></i></div>
+        <div class="row muted" style="font-size:12px;"><span>${n} de ${m.temas.length} temas lidos</span><span>${a?`${a.ok}/${a.n} acertos`:''}</span></div>
+      </div>`; }).join('')}
+    </div>
+  </div>`;
+}
+
+/* ===== LEMBRETES ===== */
+function telaLembretes(){
+  const p = perfil();
+  const suporta = 'Notification' in window;
+  const perm = suporta ? Notification.permission : 'indisponivel';
+  app.innerHTML = `${topo('⏰ Lembretes',true)}
+  <div class="pg fade">
+    <div class="card"><h2>Lembrete às ${S(p.hora)}</h2><p class="muted">Dias: ${p.dias.slice().sort((a,b)=>((a+6)%7)-((b+6)%7)).map(d=>DIAS[d]).join(', ')}</p>
+      <div class="sp"></div>
+      <button class="btn" id="cal">📅 Adicionar ao calendário do celular</button>
+      <p class="muted" style="margin-top:8px;">É o jeito mais garantido: o próprio celular avisa no horário, mesmo com o app fechado.</p>
+    </div>
+    <div class="card"><h3>Notificações do app</h3>
+      <p class="muted" style="margin-bottom:10px;">${perm==='granted'?'Ativadas. O aviso aparece no horário quando o app está aberto ou instalado na tela inicial.':'Avisos do próprio app, no horário escolhido, enquanto ele estiver aberto ou instalado na tela inicial.'}</p>
+      ${suporta&&perm!=='granted'?'<button class="btn sec" id="notif">🔔 Ativar notificações</button>':''}
+    </div>
+    <button class="btn sec" onclick="irPara('config')">Mudar horário e dias</button>
+  </div>`;
+  document.getElementById('cal').onclick = baixarICS;
+  const n = document.getElementById('notif');
+  if(n) n.onclick = async ()=>{ const r = await Notification.requestPermission(); toast(r==='granted'?'Notificações ativadas!':'Permissão negada no navegador.'); telaLembretes(); };
+}
+function baixarICS(){
+  const p = perfil();
+  const [hh,mm] = (p.hora||'19:00').split(':');
+  const by = p.dias.map(d=>['SU','MO','TU','WE','TH','FR','SA'][d]).join(',');
+  const d = new Date(); const ini = d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'T'+hh+mm+'00';
+  const ate = C.DATA_ENEM ? ';UNTIL='+C.DATA_ENEM.replace(/-/g,'')+'T235959' : '';
+  const ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//PlanoENEM//PT-BR','CALSCALE:GREGORIAN','BEGIN:VEVENT',
+    'UID:plano-enem-'+Date.now()+'@testegratuitoenem','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').split('.')[0]+'Z',
+    'DTSTART:'+ini,'DURATION:PT'+p.minutos+'M','RRULE:FREQ=WEEKLY;BYDAY='+by+ate,
+    'SUMMARY:📚 Hora de estudar para o ENEM','DESCRIPTION:Abra o seu plano: '+location.origin+'/materias',
+    'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:Hora de estudar para o ENEM','TRIGGER:PT0M','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));
+  a.download = 'lembrete-estudo-enem.ics'; document.body.appendChild(a); a.click(); a.remove();
+  toast('Abra o arquivo baixado para salvar no calendário.');
+}
+/* verificação do lembrete com o app aberto */
+function checaLembrete(){
+  const p = perfil(); if(!p || !('Notification' in window) || Notification.permission!=='granted') return;
+  const agora = new Date(); const hm = String(agora.getHours()).padStart(2,'0')+':'+String(agora.getMinutes()).padStart(2,'0');
+  if(!p.dias.includes(agora.getDay()) || hm!==p.hora) return;
+  const chave = hojeISO()+p.hora; if(ls('mat_ult_lembrete','')===chave) return;
+  lsSet('mat_ult_lembrete', chave);
+  const bl = (p.plano[agora.getDay()]||[]).map(b=>nomeBloco(b.m)).join(' + ');
+  const corpo = bl ? 'Hoje: '+bl : 'Abra o seu plano de estudos.';
+  if(navigator.serviceWorker && navigator.serviceWorker.ready){ navigator.serviceWorker.ready.then(r=>r.showNotification('📚 Hora de estudar!',{body:corpo, icon:'/shared/icone.svg'})).catch(()=>new Notification('📚 Hora de estudar!',{body:corpo})); }
+  else new Notification('📚 Hora de estudar!',{body:corpo});
+}
+setInterval(checaLembrete, 30000);
+
+/* ===== EXERCÍCIOS E SIMULADOS ===== */
+let sessaoQ = null;   // {lista:[indices], i, acertos, modo:'treino'|'simulado', inicio, marcadas:{}}
+function telaExercicios(){
+  if(!Acesso.tem('exercicios')){ app.innerHTML = topo('📝 Exercícios e simulados',true)+`<div class="pg">${bloqueadoHTML('exercicios','Exercícios e simulados','Pratique com questões no estilo do ENEM, com explicação de cada resposta, e faça simulados cronometrados.')}</div>`; return; }
+  const R = respostas();
+  app.innerHTML = `${topo('📝 Exercícios e simulados',true)}
+  <div class="pg fade">
+    <div class="card hero"><h2>Mini simulado</h2><p>10 questões de todas as matérias, cronometrado. O resultado entra no seu desempenho.</p><div class="sp"></div><button class="btn sec" style="background:#fff;" onclick="iniciarQ('simulado')">Começar simulado</button></div>
+    <h3 style="font-family:'Open Sans';font-weight:900;color:var(--verde-escuro);margin:6px 2px 10px;">Treinar por matéria</h3>
+    ${M.map(m=>{ const qs=Q.map((q,i)=>({q,i})).filter(x=>x.q.m===m.id); if(!qs.length) return ''; const feitas=qs.filter(x=>x.i in R).length; return `<div class="item" style="cursor:pointer" onclick="iniciarQ('treino','${m.id}')"><div class="row"><b style="color:var(--verde-escuro);">${m.icone} ${S(m.nome)}</b><span class="muted">${feitas}/${qs.length} feitas</span></div></div>`; }).join('')}
+    <p class="legal">Questões originais, elaboradas no estilo do ENEM para treino. Não são questões oficiais de provas anteriores.</p>
+  </div>`;
+}
+function embaralhar(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function iniciarQ(modo, filtro, tema){
+  let idx = Q.map((q,i)=>i);
+  if(tema) idx = idx.filter(i=>Q[i].t===tema);
+  else if(filtro) idx = idx.filter(i=>Q[i].m===filtro);
+  idx = embaralhar(idx);
+  if(modo==='simulado') idx = idx.slice(0,10);
+  sessaoQ = {lista:idx, i:0, acertos:0, modo, inicio:Date.now(), marcadas:{}};
+  irPara('questao');
+}
+function telaQuestao(){
+  if(!sessaoQ){ irPara('exercicios'); return; }
+  const s = sessaoQ;
+  if(s.i>=s.lista.length) return telaFimQ();
+  const qi = s.lista[s.i], q = Q[qi];
+  const marcada = s.marcadas[qi];
+  const mostrar = marcada!==undefined && s.modo==='treino';
+  app.innerHTML = `${topo((s.modo==='simulado'?'Simulado':'Treino')+' · '+(s.i+1)+'/'+s.lista.length,true)}
+  <div class="pg fade">
+    <div class="card">
+      <span class="chip">${S(mat(q.m).nome)}</span>
+      <p class="q-enun" style="margin-top:10px;">${S(q.e)}</p>
+      ${q.a.map((alt,j)=>`<button class="alt${mostrar&&j===q.c?' ok':''}${mostrar&&j===marcada&&j!==q.c?' no':''}" ${marcada!==undefined?'disabled':''} onclick="responder(${j})"><b>${'ABCDE'[j]}</b><span>${S(alt)}</span></button>`).join('')}
+      ${mostrar?`<div class="explic"><b>${marcada===q.c?'✅ Você acertou!':'❌ Resposta correta: '+'ABCDE'[q.c]}</b><br>${S(q.x)}</div>`:''}
+    </div>
+    ${marcada!==undefined?`<button class="btn" onclick="sessaoQ.i++;telaQuestao();window.scrollTo(0,0);">${s.i+1<s.lista.length?'Próxima →':'Ver resultado'}</button>`:''}
+  </div>`;
+}
+function responder(j){
+  const s = sessaoQ, qi = s.lista[s.i], q = Q[qi];
+  s.marcadas[qi] = j;
+  const ok = j===q.c; if(ok) s.acertos++;
+  const R = respostas(); R[qi] = ok; lsSet('mat_resp', R); marcarDiaAtivo();
+  if(s.modo==='simulado'){ s.i++; }
+  telaQuestao();
+}
+function telaFimQ(){
+  const s = sessaoQ; const min = Math.max(1, Math.round((Date.now()-s.inicio)/60000));
+  if(s.modo==='simulado'){ const reg=sessoes(); reg.push({d:hojeISO(), m:'revisao', min}); lsSet('mat_tempo', reg); }
+  app.innerHTML = `${topo('Resultado',false)}
+  <div class="pg fade">
+    <div class="card" style="text-align:center;"><p class="muted">Você acertou</p><div class="nota-total">${s.acertos}/${s.lista.length}</div><p class="muted" style="margin-top:6px;">em ${fmtMin(min)}</p></div>
+    ${s.modo==='simulado'?`<div class="card"><h3>Gabarito</h3>${s.lista.map((qi,k)=>{ const q=Q[qi], m=s.marcadas[qi]; return `<details class="acc"><summary>${m===q.c?'✅':'❌'} ${k+1}. ${S(mat(q.m).nome)}</summary><div class="ct"><p class="q-enun">${S(q.e)}</p><p><b>Sua resposta:</b> ${'ABCDE'[m]} · <b>Correta:</b> ${'ABCDE'[q.c]}</p><div class="explic">${S(q.x)}</div></div></details>`; }).join('')}</div>`:''}
+    <button class="btn" onclick="sessaoQ=null;irPara('exercicios')">Voltar aos exercícios</button>
+    <button class="btn sec" onclick="sessaoQ=null;irPara('desempenho')">Ver meu desempenho</button>
+  </div>`;
+}
+
+/* ===== MAIS ===== */
+function telaMais(){
+  app.innerHTML = `${topo('☰ Mais')}
+  <div class="pg fade">
+    <div class="grid">
+      <div class="tile" onclick="irPara('lembretes')"><span class="i">⏰</span><b>Lembretes</b><span>Horário de estudo</span></div>
+      <div class="tile" onclick="irPara('config')"><span class="i">⚙️</span><b>Ajustar plano</b><span>Dias, tempo e matérias</span></div>
+      <div class="tile" onclick="irPara('exercicios')">${!Acesso.tem('exercicios')?'<span class="lock">🔒</span>':''}<span class="i">📝</span><b>Exercícios e simulados</b><span>No estilo do ENEM</span></div>
+      <div class="tile" onclick="location.href='/redacao#corrigir'"><span class="i">📸</span><b>Corrigir redação</b><span>Pela foto do caderno</span></div>
+      <div class="tile full" onclick="location.href='/redacao'"><span class="i">✍️</span><div><b>Arsenal de Redações</b><br><span>Modelos, repertório e frases prontas</span></div></div>
+      <div class="tile full" onclick="irPara('codigo')"><span class="i">🔑</span><div><b>Inserir código de acesso</b><br><span>Para liberar um produto que você comprou</span></div></div>
+    </div>
+    <p class="legal">Produto independente, sem vínculo com o INEP, o MEC ou o Governo Federal. O app é uma ferramenta de apoio aos estudos e não garante nota ou aprovação.</p>
+  </div>`;
+}
+
+/* ===== roteador ===== */
+function irPara(r){ if(location.hash==='#'+r) render(); else location.hash = r; }
+function render(){
+  clearInterval(timerInt);
+  const r = (location.hash||'#hoje').slice(1);
+  const partes = r.split('/');
+  const temPlano = Acesso.tem('plano'), temEx = Acesso.tem('exercicios');
+  if(r==='codigo' || (!temPlano && !temEx)){ telaCodigo(); return; }
+  /* só comprou exercícios: abre direto neles */
+  if(!temPlano){
+    nav.style.display='none';
+    if(partes[0]==='questao') return telaQuestao();
+    if(partes[0]==='treino') { iniciarQ('treino', null, partes[2]); return; }
+    return telaExercicios();
+  }
+  if(!perfil() || partes[0]==='config'){ telaConfig(!perfil()); return; }
+  nav.style.display='';
+  nav.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.r===partes[0] || (['materia','tema'].includes(partes[0])&&b.dataset.r==='resumos') || (partes[0]==='timer'&&b.dataset.r==='hoje') || (['lembretes','exercicios','questao'].includes(partes[0])&&b.dataset.r==='mais')));
+  if(partes[0]==='plano') telaPlano();
+  else if(partes[0]==='resumos') telaResumos();
+  else if(partes[0]==='materia') telaMateria(partes[1]);
+  else if(partes[0]==='tema') telaTema(partes[1]);
+  else if(partes[0]==='desempenho') telaDesempenho();
+  else if(partes[0]==='timer') telaTimer(partes[1], +partes[2]||30);
+  else if(partes[0]==='lembretes') telaLembretes();
+  else if(partes[0]==='exercicios') telaExercicios();
+  else if(partes[0]==='questao') telaQuestao();
+  else if(partes[0]==='treino'){ if(!temEx){ telaExercicios(); } else iniciarQ('treino', null, partes[2]); return; }
+  else if(partes[0]==='mais') telaMais();
+  else telaHoje();
+  window.scrollTo(0,0);
+}
+nav.querySelectorAll('button').forEach(b=>b.onclick=()=>irPara(b.dataset.r));
+window.addEventListener('hashchange', render);
+(async()=>{
+  const lib = await Acesso.lerDaUrl();
+  if(lib.length) setTimeout(()=>toast('Acesso liberado! 🎉'),300);
+  render();
+})();
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(()=>{}); }
+</script>
+</body>
+</html>

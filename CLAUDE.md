@@ -1,23 +1,29 @@
-# Reta Final ENEM: contexto do projeto
+# testegratuitoenem: contexto do projeto
 
-Funil para vender um app de estudos para o ENEM a quem está no último mês (urgência real).
-Cores: branco e verde (padrão do ENEM). Nome do app provisório.
+Dois funis de ENEM para quem está no último mês antes da prova (urgência real), publicados
+em `testegratuitoenem.vercel.app` a partir deste repositório. Cores: branco e verde.
 
-## Arquivos
-- `quiz-enem.html`: o quiz inteiro em arquivo único (HTML, CSS, JS). Sem build. Abrir no navegador já roda.
-- `vercel.json`: abre o quiz na raiz do site.
-- `docs/sugestoes-app.md`: escopo do app e sugestões de funcionalidades.
-- `docs/oferta-e-funil.md`: oferta, fluxo, objeções, pendências e compliance.
-- `docs/prompts-imagens.md`: prompts das imagens do quiz e do app.
+## Estrutura
+- `quiz1/index.html`: quiz de preparo para a **redação** → oferta do Arsenal de Redações (R$ 19,90).
+- `quiz2/index.html`: quiz de preparo para as **matérias** → oferta do app Plano ENEM.
+- `redacao/index.html`: app 1 (Arsenal + montador + correção por foto). Rota também em `/redação`.
+- `materias/index.html`: app 2 (plano, desempenho, lembretes, resumos, exercícios). Rota também em `/matérias`.
+- `api/corrigir.js`: função Vercel que corrige a redação pela foto com a API do Claude.
+- `shared/`: `quiz.css` e `quiz-base.js` (motor comum dos quizzes), `app.css`, `config.js`,
+  `acesso.js` (códigos por produto, só hashes), `arsenal.js`, `resumos.js`, `questoes.js` (conteúdo).
+- `img/`: imagens (ver `docs/prompts-imagens.md`).
+- `docs/oferta-e-funil.md`: funis, bumps, entrega de acesso, configuração e pendências.
 
-## Configuração (topo do script do `quiz-enem.html`)
-`PIXEL_ID`, `GA_ID`, `CHECKOUT_URL`, `CHECKOUT_DESCONTO`, `PRECO_DESCONTO`, `PRECO_POR`, `PRECO_DE`, `DATA_ENEM`, `APP_NOME`. Vazio = não carrega ou não liga.
-
-## Regras (herdadas dos outros funis do usuário)
+## Regras
+- **Repositório público: nunca gravar código de acesso em texto puro.** Só o hash SHA-256.
 - Manter o texto exato pedido. Sem travessão na copy. Avisar erro de português, não corrigir sozinho.
-- Compliance Meta: sem promessa de nota ou aprovação, sem "antes e depois" agressivo, sem depoimento fabricado, sem número sem fonte.
+- Compliance Meta: sem promessa de nota ou aprovação, sem depoimento fabricado, sem número sem fonte.
 - "Crie uma imagem" = escrever o prompt de geração, não montar HTML.
-- O Índice de Preparo é calculado em `calcPreparo()` e fica sempre entre 14 e 38 (decisão do usuário), rotulado como estimativa educativa.
-- Notas de corte em `CURSOS` e a data em `DATA_ENEM` são provisórias: validar com INEP e SISU.
-- Ao inserir ou remover perguntas, os gatilhos de tela ficam no `QUESTIONS.forEach` que monta o `FLOW`; a pontuação em `calcPreparo()` lê o texto das alternativas, então mudar o texto exige ajustar as tabelas de pontos.
+- Os quizzes não têm telas de texto entre as perguntas (pedido do usuário): só perguntas →
+  analisando → diagnóstico → produto → oferta.
+- O Índice de Preparo fica sempre entre 14 e 38 (decisão do usuário), rotulado como estimativa educativa.
+  A pontuação lê o texto das alternativas: ao mudar uma opção, revise `calcRedacao()` / `calcPreparo()`.
+- Notas de corte em `CURSOS` (quiz 2) e `DATA_ENEM` são provisórias: validar com INEP e SISU.
+- O app 2 lê as respostas do quiz 2 (`localStorage.enem_quiz2`) para pré-preencher o plano: os nomes
+  das matérias no quiz precisam bater com `shared/resumos.js`.
 - Playbook de copy e funil: skill `vturb-ouro` do repositório `Quiz-Emagecimento`.

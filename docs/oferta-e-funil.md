@@ -1,54 +1,60 @@
-# Oferta e funil: Reta Final ENEM
+# Funis, produtos e order bumps
 
-## Posicionamento
-Para quem está no último mês e sente que não vai dar tempo. Promessa sem garantia de nota: **plano pronto + redação corrigida + desempenho acompanhado até o dia da prova**. Urgência real (a data do ENEM), nunca escassez inventada.
+Site: `testegratuitoenem.vercel.app` (projeto Vercel ligado a este repositório).
 
-## Mecanismo
-"Índice de Preparo": nota de 0 a 100 calculada das respostas (rotina, tempo, simulados, redação). Por decisão do dono do projeto, o índice **sempre cai numa faixa baixa (14 a 38)** e é apresentado como estimativa educativa, não como avaliação oficial. Subíndices: Redação, Rotina e constância, Tempo de estudo, Simulados e prática.
-
-## Fluxo do quiz (`quiz-enem.html`)
-1. Abertura com a 1ª pergunta (situação, com 4 cards de foto). Clique inicia e dispara `QuizIniciado`.
-2. Nome → "Isso é pra você?" → sentimento → **objeção: dá tempo?**
-3. Tempo diário, dias por semana, rotina, já abandonou cronograma → **objeção: já tentei e larguei**
-4. Matérias com dificuldade (até 4), simulados, curso → **nota de corte do curso**, meta de nota
-5. Redação: nota, onde trava (introdução, desenvolvimento, conclusão, repertório), quem corrige → **diagnóstico curto** (redação vale 1000, 5 competências de 200)
-6. O que atrapalha → **objeção: não tenho tempo**
-7. Pergunta final: o que mais ajudaria no último mês (4 opções, todas levam ao app)
-8. "Analisando" 5 s → **diagnóstico completo**: alerta, Índice de Preparo, barras por área, 3 pontos críticos
-9. **Apresentação do app** (6 funções)
-10. "Montando seu plano" 3,5 s → **projeção personalizada**: plano da semana com as matérias dela e o tempo da rotina dela, exemplo de correção de redação, desempenho por matéria, do ponto de partida à meta, 4 semanas
-11. **Oferta**: o que recebe, bônus, preço, garantia, FAQ, CTA fixo, aviso legal
-
-## Objeções quebradas e onde
-| Objeção | Onde |
+| Caminho | O que é |
 |---|---|
-| "Não dá mais tempo" | tela "Será que ainda dá tempo?" |
-| "Já tentei cronograma e larguei" | tela sobre cronogramas + lembrete e plano pronto |
-| "Não tenho tempo" | tela "Você não precisa de mais tempo" + plano ajustado à rotina |
-| "A redação não tem como corrigir" | foto + exemplo de correção na projeção |
-| "É mais um app / IA erra" | FAQ: apoio, 5 competências, não substitui professor |
-| "É caro" | pagamento único, preço baixo, garantia de 7 dias |
-| "Preciso instalar?" | FAQ: abre no navegador |
-| "É oficial?" | FAQ e rodapé: independente do INEP/MEC |
+| `/` | redireciona para `/quiz1` |
+| `/quiz1` | Quiz 1: preparo para a **redação** → oferta do Arsenal de Redações |
+| `/quiz2` | Quiz 2: preparo para as **matérias** → oferta do app Plano ENEM |
+| `/redacao` (ou `/redação`) | App 1: Arsenal de Redações + Correção por foto |
+| `/materias` (ou `/matérias`) | App 2: plano semanal, desempenho, lembretes, resumos + Exercícios e simulados |
+| `/api/corrigir` | Função que corrige a redação pela foto (API do Claude) |
 
-## O que aproveitei dos outros quizzes
-- Motor do `quiz-caneta-zero.html`: progresso, "analisando" com smootherstep, diagnóstico curto no meio e completo no fim, telas de quebra, personalização por `state.answers`.
-- Abertura sem botão: a 1ª pergunta já está na tela, com foto colada ao botão.
-- Medição `quiz_etapa`, `quiz_resposta`, `quiz_abandono` (GA4 e Pixel).
-- Pop-up de saída com gesto do usuário, uma vez por sessão, e reabertura ao voltar do checkout.
-- Preferências: texto exato, sem travessão, sem depoimento fabricado, sem número inventado, compliance Meta.
-- **Não reaproveitado**: prova social com depoimento, "antes e depois", contador falso de pessoas, escassez falsa.
+## Funil 1: Redação (`/quiz1`)
+- **Front: Arsenal de Redações para o ENEM, R$ 19,90.** Modelos de introdução e tese, 50 tópicos frasais, 50+ alusões históricas, 50 frases coringas, frases filosóficas, proposta de intervenção, conectivos com exemplos. Bônus: montador de redação, checklist das 5 competências, o que zera, temas anteriores, 20 eixos para treinar.
+- **Order bump 1: Correção da redação por foto** (sugestão R$ 14,90).
+- **Order bump 2: Plano ENEM (app das matérias)** (sugestão R$ 17,90).
+- **Order bump 3 (opcional): Exercícios e simulados** (sugestão R$ 12,90).
+
+## Funil 2: Matérias (`/quiz2`)
+- **Front: Plano ENEM, sugestão R$ 24,90.** Plano semanal pronto, desempenho por matéria, lembretes, resumos do que mais cai.
+- **Order bump 1: Correção da redação por foto** (sugestão R$ 14,90).
+- **Order bump 2: Exercícios e simulados no estilo do ENEM** (sugestão R$ 14,90).
+- **Order bump 3 (opcional): Arsenal de Redações** (sugestão R$ 12,90, venda cruzada).
+
+Máximo de 3 bumps por checkout (a partir do 4º a conversão do checkout cai).
+
+## Como a pessoa recebe o acesso
+Cada produto tem um código. Na Ticto, o link de entrega de cada produto é:
+
+| Produto | Link de entrega |
+|---|---|
+| Arsenal de Redações | `https://testegratuitoenem.vercel.app/redacao?k=CÓDIGO_ARSENAL` |
+| Correção por foto | `https://testegratuitoenem.vercel.app/redacao?k=CÓDIGO_CORRECAO` |
+| Plano ENEM | `https://testegratuitoenem.vercel.app/materias?k=CÓDIGO_PLANO` |
+| Exercícios e simulados | `https://testegratuitoenem.vercel.app/materias?k=CÓDIGO_EXERCICIOS` |
+
+Os códigos **não ficam neste repositório** (ele é público). O site guarda só o hash SHA-256 de cada um, em `shared/acesso.js` e em `api/corrigir.js`. Para trocar um código: gere um novo, calcule o hash (`node -e "console.log(require('crypto').createHash('sha256').update('NOVO-CODIGO').digest('hex'))"`) e substitua a linha.
+
+Limite conhecido: o conteúdo dos apps está no próprio site, então o código impede o acesso casual, mas não um curioso técnico. A correção por foto, que tem custo, é conferida também no servidor. Próximo passo, se a venda validar: login por e-mail com Supabase e webhook da Ticto, como no app-emagrecimento.
+
+## Configuração na Vercel
+- `ANTHROPIC_API_KEY` (obrigatória para a correção por foto).
+- `CODIGOS_CORRECAO` (opcional): códigos extras aceitos pela correção, separados por vírgula.
+- `CORRECAO_MODELO` (opcional): troca o modelo da correção. Padrão `claude-opus-5-5`.
+
+## Configuração no código
+- `quiz1/index.html` e `quiz2/index.html`, bloco `window.QUIZ`: Pixel, GA4, checkout, preço, pop-up de saída, data do ENEM.
+- `shared/config.js`: links de checkout dos botões "Desbloquear" dentro dos apps, e-mail de suporte, data do ENEM.
 
 ## Pendências (decisões suas)
-- **Nome do app** (provisório: Reta Final ENEM).
-- **Preço e ancoragem**: `PRECO_POR = R$ 27,90` e `PRECO_DE = R$ 97,90` são provisórios. A ancoragem só vale se for a soma real dos itens.
-- **Link do checkout** (`CHECKOUT_URL`), e do pop-up (`CHECKOUT_DESCONTO` + `PRECO_DESCONTO`; vazio = pop-up desligado).
-- **Pixel e GA4** próprios deste funil (`PIXEL_ID`, `GA_ID`). Não usar o Pixel do Caneta Zero.
-- **Data do ENEM** (`DATA_ENEM`): coloquei 08/11/2026 como referência. **Confirme no edital do INEP.** Vazio = textos sem contagem de dias.
-- **Notas de corte por curso** (`CURSOS` no quiz): são faixas aproximadas de universidades federais. **Valide com os dados oficiais do SISU** antes de anunciar.
-- **Bônus** (guia das 5 competências e checklist da semana da prova): estão na oferta, mas precisam ser produzidos.
-- **Limite de correções por aluno** (custo da IA).
-- **Imagens**: ver `prompts-imagens.md`. Sem elas o quiz funciona (as fotos somem sem quebrar o layout).
+- Links de checkout, Pixel e GA4 dos dois funis.
+- Preço do Plano ENEM (R$ 24,90 é provisório) e preços dos bumps.
+- Data do ENEM (`2026-11-08` é referência: confirmar no edital do INEP).
+- Notas de corte por curso no quiz 2: faixas aproximadas, validar com o SISU.
+- Imagens: ver `prompts-imagens.md`. Sem elas tudo funciona (as fotos somem sem quebrar o layout).
+- Deixar o repositório privado: hoje ele é público e expõe o conteúdo pago.
 
-## Compliance (Meta)
-Sem promessa de nota ou aprovação, sem "antes e depois" agressivo, sem depoimento fabricado, sem número sem fonte. O Índice de Preparo é rotulado como estimativa educativa. A meta "60+" é meta do plano, não resultado prometido. Aviso de que não há vínculo com INEP/MEC.
+## Compliance
+Sem promessa de nota ou aprovação, sem depoimento fabricado, sem número sem fonte. O Índice de Preparo (sempre entre 14 e 38, decisão do dono) é rotulado como estimativa educativa. A nota da correção por foto é rotulada como estimativa feita por IA. Aviso de que não há vínculo com INEP/MEC em todas as páginas.

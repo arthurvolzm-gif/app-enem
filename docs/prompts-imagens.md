@@ -1,51 +1,54 @@
-# Prompts de imagem para o quiz
+# Prompts de imagem
 
-Regras gerais para todos os prompts: estudantes brasileiros reais e diversos (idade entre 17 e 22 anos), fotografia realista com luz natural, **sem texto, logos ou marcas dentro da imagem** (IA erra letras), fundo limpo com toques de verde e branco, sem aparência de banco de imagem artificial. Salve com o nome indicado na **raiz** do repositório.
+Salve as imagens na pasta `img/` do repositório, com o nome indicado. Sem elas o site funciona, porque as fotos somem sem quebrar o layout.
 
-## 1. Cards da abertura (4 imagens, quadradas 1:1, 1080x1080)
-O botão fica colado embaixo da foto. Enquadramento do rosto ao peito, pessoa olhando para a câmera.
+Regras para as fotos de pessoas: estudantes brasileiros reais e diversos (17 a 22 anos), fotografia realista com luz natural, sem logos ou marcas, fundo limpo com toques de verde e branco.
 
-**`situacao-3ano.jpg`**
-Foto realista de uma adolescente brasileira de 17 anos, uniforme escolar simples (camiseta branca), mochila nas costas, segurando cadernos contra o peito, sorriso leve e um pouco apreensivo. Fundo de corredor de escola desfocado, com tons de verde. Luz natural suave. Formato quadrado.
+## Quizzes 1 e 2: cards da abertura (quadradas 1:1, 1080x1080)
 
-**`situacao-sozinho.jpg`**
-Foto realista de um jovem brasileiro de 19 anos estudando em casa, sentado à mesa com notebook fechado, caderno aberto e caneca de café, olhando para a câmera com expressão concentrada. Quarto simples e iluminado, parede clara, uma planta verde ao fundo. Formato quadrado.
+**`img/situacao-3ano.jpg`**
+Foto realista de uma adolescente brasileira de 17 anos, camiseta branca de uniforme escolar simples, mochila nas costas, segurando cadernos contra o peito, sorriso leve e um pouco apreensivo, olhando para a câmera. Fundo de corredor de escola desfocado, com tons de verde. Luz natural suave. Enquadramento do rosto ao peito. Sem texto, sem logos.
 
-**`situacao-cursinho.jpg`**
-Foto realista de uma jovem brasileira de 18 anos em sala de cursinho, sentada em carteira, apostila aberta, caneta na mão, olhando para a câmera. Ao fundo, colegas desfocados e uma lousa branca sem texto legível. Tons claros e verdes. Formato quadrado.
+**`img/situacao-sozinho.jpg`**
+Foto realista de um jovem brasileiro de 19 anos estudando em casa, sentado à mesa com caderno aberto, livros e uma caneca, olhando para a câmera com expressão concentrada. Quarto simples e iluminado, parede clara, uma planta verde ao fundo. Enquadramento do rosto ao peito. Sem texto, sem logos.
 
-**`situacao-tentar-de-novo.jpg`**
-Foto realista de um rapaz brasileiro de 21 anos, expressão determinada e levemente cansada, segurando uma pilha de livros e uma garrafa de água, em uma biblioteca com estantes desfocadas. Luz quente natural. Formato quadrado.
+**`img/situacao-cursinho.jpg`**
+Foto realista de uma jovem brasileira de 18 anos em sala de cursinho, sentada em carteira, apostila aberta e caneta na mão, olhando para a câmera. Colegas desfocados ao fundo e uma lousa branca sem texto legível. Tons claros e verdes. Sem texto, sem logos.
 
-## 2. Foto do caderno com redação (`foto-caderno.jpg`, 4:3, 1600x1200)
-Aparece dentro do exemplo de correção. Foto de celular, vista de cima, de um caderno pautado aberto com uma redação escrita à mão em caneta azul, letra legível de estudante, algumas palavras sublinhadas com caneta vermelha. Mesa de madeira clara, caneta ao lado, luz natural. O texto manuscrito não precisa ser legível. Sem rostos.
+**`img/situacao-tentar-de-novo.jpg`**
+Foto realista de um rapaz brasileiro de 21 anos, expressão determinada e levemente cansada, segurando uma pilha de livros, em uma biblioteca com estantes desfocadas. Luz quente natural. Enquadramento do rosto ao peito. Sem texto, sem logos.
 
-## 3. Selo de garantia (`garantia-7-dias.png`, quadrado, fundo transparente)
-Selo circular de garantia em verde escuro e branco, com uma estrela ou check no centro, acabamento limpo e plano (flat), sem sombras exageradas. Espaço central vazio para o texto "7 dias" (o texto pode ser aplicado depois no editor).
+## Quiz 1: capa do produto (`img/capa-arsenal.png`, 3:4, 900x1200)
+Capa de e-book vertical em estilo 3D vibrante, fundo azul e verde com brilho suave, título grande "ARSENAL de REDAÇÕES para o ENEM" com "ENEM" em amarelo e contorno grosso, ilustração de um caderno aberto com lápis, fones de ouvido, relógio despertador e marca-texto coloridos. Visual limpo, cores saturadas, sem nenhum outro texto além do título e sem assinatura.
 
-## 4. Ícone e capa do app (para a loja, `manifest.json` e criativos)
+## Garantia (`img/garantia-7-dias.png`, quadrada, fundo transparente)
+Selo circular de garantia em verde escuro e branco, estilo flat e limpo, com o texto "7 DIAS DE GARANTIA" em letras brancas em arco e um ícone de escudo com check no centro. Sem sombras exageradas, fundo transparente.
 
-**`icone-app.png` (1024x1024)**
-Ícone de aplicativo moderno, fundo verde (#0b8f4d), símbolo central branco de um lápis cruzado com um check, cantos suaves, estilo flat minimalista, sem texto.
+## Ícone dos apps (`img/icone-app.png`, 1024x1024)
+Ícone de aplicativo moderno, fundo verde (#0b8f4d), um check branco grosso no centro com uma pequena ponta de lápis, cantos arredondados, estilo flat minimalista, sem texto.
 
-**`logo-reta-final.png` (horizontal, fundo transparente)**
-Logotipo simples para um app de estudos do ENEM, símbolo de lápis/check em verde e espaço para o nome ao lado. Tipografia sem serifa, moderna, verde escuro (#065f35).
+## Criativos do funil 1 (redação), quadrados 1080x1080
+Mesma linha visual das 3 peças que você já tem (caderno espiral, marca-texto, tablet com a capa).
 
-## 5. Mockups do app (opcionais, para a página de oferta e criativos)
-Hoje as telas do app no quiz são montadas em HTML. Se quiser imagens de celular reais depois, use estes prompts e **cole os prints reais do app** quando ele existir.
+**Criativo "Travou na proposta de intervenção?"**
+Anúncio quadrado para Instagram, mesa de estudos com caderno espiral aberto, marca-textos coloridos e um tablet mostrando a capa "ARSENAL de REDAÇÕES para o ENEM". Título grande no topo em letras pretas e vermelhas com contorno: "TRAVOU NA PROPOSTA DE INTERVENÇÃO?". No caderno, a lista "Os 5 elementos: agente, ação, meio, finalidade, detalhamento" com checks verdes. Selo vermelho "APENAS R$ 19,90" e botão verde arredondado "QUERO ACESSAR AGORA". Estilo vibrante e organizado, fotografia com elementos gráficos de papelaria.
 
-**`mock-redacao.png` (4:5)**
-Celular moderno em ângulo levemente inclinado sobre fundo branco com sombra suave, tela mostrando a foto de uma redação à mão com marcações coloridas e cartões de feedback verdes, interface limpa nas cores branco e verde. Sem texto legível.
+**Criativo "Repertório pronto"**
+Anúncio quadrado, caderno aberto com post-its coloridos e o título "NÃO SABE O QUE CITAR NA REDAÇÃO?". No caderno, três cartões escritos à mão: "Bauman: modernidade líquida", "Revolta da Vacina (1904)", "Constituição de 1988, art. 6º". Tablet ao lado com a capa "ARSENAL de REDAÇÕES para o ENEM". Faixa amarela "50 alusões históricas + frases filosóficas" e botão verde "QUERO ACESSAR AGORA". Visual vibrante, luz natural.
 
-**`mock-plano.png` (4:5)**
-Celular em ângulo levemente inclinado sobre fundo branco, tela com uma agenda semanal em cartões verdes (segunda a domingo), barras de progresso e um ícone de sino de lembrete. Interface limpa, branco e verde, sem texto legível.
+**Criativo "Teste grátis" (para mandar ao quiz)**
+Anúncio quadrado, fundo branco e verde, título "VOCÊ ESTÁ PREPARADO PARA A REDAÇÃO DO ENEM?", abaixo uma folha de redação com marcações em vermelho e cinco barras de progresso rotuladas C1, C2, C3, C4 e C5, quase vazias. Botão verde "FAÇA O TESTE GRÁTIS". Visual limpo, estilo infográfico, sem preço.
 
-**`mock-desempenho.png` (4:5)**
-Celular em ângulo levemente inclinado sobre fundo branco, tela com gráfico de barras horizontais por matéria em verde, um círculo de progresso e uma sequência de dias marcados. Interface limpa, branco e verde, sem texto legível.
+## Criativos do funil 2 (matérias), quadrados 1080x1080
 
-## 6. Criativos de anúncio (próxima etapa, roteiro de partida)
-Formato manda mais que copy (lei 4 do playbook). Testar em lote, 3 formatos na onda 1:
-1. **Vídeo vertical cru de celular** (UGC): estudante mostrando o caderno e dizendo o prazo ("faltam X dias e eu não sei se estou pronto"), CTA para o teste.
-2. **Estático "teste"**: grade de 4 situações igual à abertura do quiz (continuidade do toque), CTA "Faça o teste grátis".
-3. **Estático da redação**: foto do caderno com marcações vermelhas e a pergunta "Você sabe onde está perdendo pontos?".
-Regras: sem promessa de nota, sem depoimento fabricado, sem "antes e depois". Quando você pedir, escrevo os roteiros e prompts de cada um.
+**Criativo "Plano pronto"**
+Anúncio quadrado, mesa de estudos com celular em destaque mostrando uma agenda semanal em cartões verdes (Seg: Matemática 1h, Ter: Química 1h, Qua: Redação 1h, Qui: Biologia 1h, Sex: Matemática 1h), ao lado de livros e marca-textos. Título no topo: "FALTA MENOS DE 1 MÊS E VOCÊ NÃO SABE O QUE ESTUDAR?". Faixa amarela "Plano pronto: a matéria de cada dia e o tempo". Botão verde "FAÇA O TESTE GRÁTIS". Visual vibrante, luz natural.
+
+**Criativo "O que mais cai"**
+Anúncio quadrado, caderno espiral com o título "O QUE MAIS CAI NO ENEM" e uma lista com checks verdes: "Porcentagem e juros", "Ecologia", "Estequiometria", "Interpretação de texto", "Meio ambiente e urbanização". Celular ao lado com um resumo aberto e o botão "Marcar como lido". Botão verde "FAÇA O TESTE GRÁTIS". Estilo papelaria, cores vivas.
+
+**Criativo "Índice de preparo"**
+Anúncio quadrado, fundo branco e verde, título "QUAL É O SEU ÍNDICE DE PREPARO PARA O ENEM?", um medidor em semicírculo de vermelho a verde com o ponteiro no vermelho, e abaixo quatro barras curtas: "Rotina", "Tempo de estudo", "Conteúdo", "Simulados". Botão verde "DESCUBRA GRÁTIS EM 2 MINUTOS". Visual limpo, estilo infográfico.
+
+## Regras de compliance para os criativos
+Sem promessa de nota ou aprovação, sem "nota 1000 garantida", sem depoimento inventado, sem "antes e depois". Não usar logo do INEP, do MEC nem do Governo Federal.

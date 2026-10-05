@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Arsenal de Redações ENEM</title>
+<meta name="theme-color" content="#065f35" />
+<meta name="robots" content="noindex" />
+<link rel="manifest" href="/redacao/manifest.json" />
+<link rel="stylesheet" href="/shared/app.css" />
+<script src="/shared/config.js"></script>
+<script src="/shared/acesso.js"></script>
+<script src="/shared/arsenal.js"></script>
+</head>
+<body>
+<div class="app" id="app"></div>
+<nav class="nav" id="nav" style="display:none"><div class="in">
+  <button data-r="inicio"><span class="i">🏠</span>Início</button>
+  <button data-r="montar"><span class="i">🧩</span>Montar</button>
+  <button data-r="corrigir"><span class="i">📸</span>Corrigir</button>
+  <button data-r="salvos"><span class="i">⭐</span>Salvos</button>
+</div></nav>
+
+<script>
+const A = window.ARSENAL, C = window.ENEM_CONFIG;
+const app = document.getElementById('app');
+/* textos referenciados pelos botões (evita quebrar o HTML com aspas) */
+let REG = [];
+function reg(t){ REG.push(t); return REG.length-1; }
+const nav = document.getElementById('nav');
+
+/* ===== util ===== */
+function S(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function lac(s){ return S(s).replace(/\[([^\]]+)\]/g,'<span class="lacuna">[$1]</span>'); }
+function toast(t){ const d=document.createElement('div'); d.className='toast'; d.textContent=t; document.body.appendChild(d); setTimeout(()=>d.remove(),1800); }
+function dias(){ if(!C.DATA_ENEM) return null; const d=Math.ceil((new Date(C.DATA_ENEM+'T09:00:00')-new Date())/86400000); return d>0?d:null; }
+function ls(k,def){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):def; }catch(e){ return def; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+async function copiar(txt){
+  try{ await navigator.clipboard.writeText(txt); toast('Copiado!'); }
+  catch(e){ const t=document.createElement('textarea'); t.value=txt; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); toast('Copiado!'); }
+}
+function checkout(prod){
+  const url = C.CHECKOUT[prod];
+  if(!url){ toast('Link de compra ainda não configurado.'); return; }
+  location.href = url;
+}
+
+/* ===== favoritos ===== */
+function favs(){ return ls('red_favs',[]); }
+function isFav(id){ return favs().some(f=>f.id===id); }
+function togFav(id,txt,sec){
+  let f=favs();
+  if(f.some(x=>x.id===id)) f=f.filter(x=>x.id!==id); else f.unshift({id,txt,sec});
+  lsSet('red_favs',f); toast(isFav(id)?'Salvo em ⭐ Salvos':'Removido dos salvos');
+  render();
+}
+
+/* ===== seções do arsenal ===== */
+const SECOES = [
+  {id:'introducao', i:'🚀', t:'Modelos de introdução', s:`${A.introducao.length} modelos prontos`},
+  {id:'tese',       i:'🎯', t:'Modelos de tese', s:`${A.tese.length} modelos`},
+  {id:'topicos',    i:'🧱', t:'Tópicos frasais', s:`${A.topicos.length} inícios de parágrafo`},
+  {id:'alusoes',    i:'🏛️', t:'Alusões históricas', s:`${A.alusoes.length} fatos para citar`},
+  {id:'coringas',   i:'🃏', t:'Frases coringas', s:`${A.coringas.length} frases`},
+  {id:'filosofos',  i:'💭', t:'Frases filosóficas', s:`${A.filosofos.length} pensadores`},
+  {id:'proposta',   i:'🛠️', t:'Proposta de intervenção', s:'5 elementos e frases de efeito'},
+  {id:'conectivos', i:'🔗', t:'Conectivos', s:'Com exemplos de uso'},
+  {id:'bonus',      i:'🎁', t:'Bônus exclusivos', s:'Estrutura, competências, temas'}
+];
+
+function itens(sec){
+  /* devolve [{id, html, txt, meta}] de uma seção */
+  if(sec==='introducao') return A.introducao.map((x,i)=>({id:'in'+i, titulo:x.titulo, html:lac(x.texto), txt:x.texto, meta:x.dica}));
+  if(sec==='tese')       return A.tese.map((x,i)=>({id:'te'+i, html:lac(x), txt:x}));
+  if(sec==='topicos')    return A.topicos.map((x,i)=>({id:'to'+i, titulo: i<25?'Desenvolvimento 1':'Desenvolvimento 2', html:lac(x), txt:x}));
+  if(sec==='alusoes')    return A.alusoes.map((x,i)=>({id:'al'+i, titulo:x.fato, html:S(x.texto), txt:x.fato+': '+x.texto, meta:'Use em: '+x.temas}));
+  if(sec==='coringas')   return A.coringas.map((x,i)=>({id:'co'+i, html:S(x), txt:x}));
+  if(sec==='filosofos')  return A.filosofos.map((x,i)=>({id:'fi'+i, titulo:x.autor, html:S(x.ideia), txt:'Segundo '+x.autor+', '+x.ideia.charAt(0).toLowerCase()+x.ideia.slice(1), meta:'Use em: '+x.temas}));
+  return [];
+}
+
+function itemHTML(it, sec){
+  return `<div class="item">
+    ${it.titulo?`<div style="font-size:12px;font-weight:900;color:var(--verde);letter-spacing:.4px;text-transform:uppercase;margin-bottom:4px;">${S(it.titulo)}</div>`:''}
+    <div class="t">${it.html}</div>
+    ${it.meta?`<div class="m">${S(it.meta)}</div>`:''}
+    <div class="acts">
+      <button class="mini" onclick="copiar(REG[${reg(it.txt)}])">📋 Copiar</button>
+      <button class="mini${isFav(it.id)?' on':''}" onclick="togFav(REG[${reg(it.id)}],REG[${reg(it.txt)}],REG[${reg(sec)}])">${isFav(it.id)?'★ Salvo':'☆ Salvar'}</button>
+    </div>
+  </div>`;
+}
+
+function bloqueadoHTML(prod, titulo, texto){
+  return `<div class="card bloq fade"><div class="i">🔒</div><h2>${titulo}</h2><p class="muted" style="margin:6px 0 16px;">${texto}</p>
+    <button class="btn" onclick="checkout('${prod}')">Desbloquear agora</button>
+    <button class="btn sec" onclick="irPara('codigo')">Já comprei: inserir código</button></div>`;
+}
+
+/* ===== telas ===== */
+function topo(titulo, voltar){
+  const d = dias();
+  return `<div class="top">${voltar?`<button class="voltar" onclick="history.back()" aria-label="Voltar">←</button>`:''}<h1>${titulo}</h1>${d?`<span class="dias">⏳ ${d} dias</span>`:''}</div>`;
+}
+
+function telaCodigo(){
+  nav.style.display='none';
+  app.innerHTML = `${topo('Arsenal de Redações ENEM')}
+  <div class="pg fade">
+    <div class="card hero"><h2>Bem-vindo(a)! ✍️</h2><p>Digite o código de acesso que chegou no seu e-mail de compra. Se você abriu pelo link do e-mail, o acesso já é liberado sozinho.</p></div>
+    <div class="card">
+      <label class="f" for="cod">Código de acesso</label>
+      <input class="inp" id="cod" placeholder="Ex.: ARS-XXXXXX-XXXX" autocomplete="off" style="text-transform:uppercase;">
+      <div class="sp"></div>
+      <button class="btn" id="okCod">Liberar acesso</button>
+      <p class="muted" style="margin-top:12px;text-align:center;">${C.SUPORTE_EMAIL?'Problemas? Fale com '+S(C.SUPORTE_EMAIL):'O código vem no e-mail de confirmação da compra.'}</p>
+    </div>
+    ${(Acesso.tem('arsenal')||Acesso.tem('correcao'))?'<button class="btn sec" onclick="irPara(\'inicio\')">Voltar ao app</button>':''}
+  </div>`;
+  const f=document.getElementById('cod');
+  async function ok(){
+    const p = await Acesso.resgatar(f.value);
+    if(!p){ toast('Código não encontrado. Confira e tente de novo.'); return; }
+    if(p==='plano'||p==='exercicios'){ toast('Esse código é do app das matérias. Abrindo...'); setTimeout(()=>location.href='/materias',900); return; }
+    toast('Acesso liberado! 🎉'); irPara('inicio');
+  }
+  document.getElementById('okCod').onclick=ok;
+  f.addEventListener('keydown',e=>{ if(e.key==='Enter') ok(); });
+}
+
+function telaInicio(){
+  const temA = Acesso.tem('arsenal'), temC = Acesso.tem('correcao');
+  const hist = ls('red_correcoes',[]);
+  app.innerHTML = `${topo('Arsenal de Redações ENEM')}
+  <div class="pg fade">
+    <div class="card hero">
+      <h2>Sua redação, pronta para a prova</h2>
+      <p>Modelos, repertório e frases prontas para usar. Copie, adapte ao tema e treine.</p>
+    </div>
+    <div class="grid">
+      ${SECOES.map(s=>`<div class="tile" onclick="irPara('sec/${s.id}')">${!temA?'<span class="lock">🔒</span>':''}<span class="i">${s.i}</span><b>${s.t}</b><span>${s.s}</span></div>`).join('')}
+      <div class="tile" onclick="irPara('montar')">${!temA?'<span class="lock">🔒</span>':''}<span class="i">🧩</span><b>Montar minha redação</b><span>Preencha e receba o esqueleto do texto</span></div>
+      <div class="tile full" onclick="irPara('corrigir')">${!temC?'<span class="lock">🔒</span>':''}<span class="i">📸</span><div><b>Corrigir redação pela foto</b><br><span>Tire a foto do caderno e veja os erros por competência${hist.length?' · '+hist.length+' corrigida(s)':''}</span></div></div>
+      <div class="tile full" onclick="location.href='/materias'"><span class="i">📚</span><div><b>Plano de estudos das matérias</b><br><span>Plano semanal, resumos, desempenho e lembretes</span></div></div>
+    </div>
+    <p class="legal">Produto independente, sem vínculo com o INEP, o MEC ou o Governo Federal. <a href="#" onclick="irPara('codigo');return false;" style="color:inherit;">Inserir outro código</a></p>
+  </div>`;
+}
+
+function telaSecao(sec){
+  const meta = SECOES.find(s=>s.id===sec);
+  if(!meta){ irPara('inicio'); return; }
+  if(!Acesso.tem('arsenal')){ app.innerHTML = topo(meta.t,true)+`<div class="pg">${bloqueadoHTML('arsenal','Arsenal de Redações','Libere todos os modelos, repertórios e frases prontas para a redação do ENEM.')}</div>`; return; }
+  if(sec==='proposta') return telaProposta();
+  if(sec==='conectivos') return telaConectivos();
+  if(sec==='bonus') return telaBonus();
+  const lista = itens(sec);
+  app.innerHTML = `${topo(meta.i+' '+meta.t,true)}
+  <div class="pg fade">
+    ${sec==='introducao'||sec==='tese'||sec==='topicos'?'<p class="muted" style="margin-bottom:12px;">Troque o que está entre <span class="lacuna">[colchetes]</span> pelo seu tema, suas causas e seu repertório.</p>':''}
+    <input class="busca" id="busca" placeholder="🔎 Buscar por palavra ou tema (ex.: racismo, internet)">
+    <div id="lista">${lista.map(it=>itemHTML(it,sec)).join('')}</div>
+  </div>`;
+  document.getElementById('busca').addEventListener('input',e=>{
+    const q = e.target.value.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+    const f = lista.filter(it=>(it.txt+' '+(it.meta||'')+' '+(it.titulo||'')).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').includes(q));
+    document.getElementById('lista').innerHTML = f.length ? f.map(it=>itemHTML(it,sec)).join('') : '<p class="muted" style="text-align:center;padding:20px;">Nada encontrado.</p>';
+  });
+}
+
+function telaProposta(){
+  const P = A.proposta;
+  app.innerHTML = `${topo('🛠️ Proposta de intervenção',true)}
+  <div class="pg fade">
+    <div class="card"><h2>Os 5 elementos que a banca procura</h2>
+      <p class="muted" style="margin-bottom:10px;">Cada elemento presente e bem articulado soma pontos na competência 5.</p>
+      ${P.elementos.map((e,i)=>`<div class="comp"><div class="n">${i+1}</div><div class="tx"><b>${S(e.nome)}: ${S(e.pergunta)}</b><p>${S(e.exemplos)}</p></div></div>`).join('')}
+    </div>
+    <h3 style="font-family:'Open Sans';font-weight:900;color:var(--verde-escuro);margin:6px 2px 10px;">Frases de efeito e modelos</h3>
+    ${P.frases.map((f,i)=>itemHTML({id:'pr'+i, html:lac(f), txt:f},'proposta')).join('')}
+  </div>`;
+}
+
+function telaConectivos(){
+  app.innerHTML = `${topo('🔗 Conectivos',true)}
+  <div class="pg fade">
+    <p class="muted" style="margin-bottom:12px;">Toque em um conectivo para copiar. Variar os conectivos ajuda na competência 4.</p>
+    ${A.conectivos.map((g,i)=>`<div class="card">
+      <h3>${S(g.funcao)}</h3>
+      <div class="opcs" style="margin:8px 0 10px;">${g.lista.map(c=>`<button onclick="copiar(REG[${reg(c)}])">${S(c)}</button>`).join('')}</div>
+      <div class="explic"><b>Exemplo:</b> ${S(g.exemplo)}</div>
+    </div>`).join('')}
+  </div>`;
+}
+
+function telaBonus(){
+  const B = A.bonus;
+  app.innerHTML = `${topo('🎁 Bônus exclusivos',true)}
+  <div class="pg fade">
+    <details class="acc" open><summary>📐 Estrutura da redação nota alta</summary><div class="ct">${B.estrutura.map(p=>`<p style="font-weight:800;color:var(--verde-escuro);margin-top:8px;">${S(p.p)}</p><ul>${p.itens.map(x=>`<li>${S(x)}</li>`).join('')}</ul>`).join('')}</div></details>
+    <details class="acc"><summary>✅ Checklist das 5 competências</summary><div class="ct">${B.competencias.map(c=>`<p style="font-weight:800;color:var(--verde-escuro);margin-top:8px;">${S(c.c)}: ${S(c.t)}</p><ul>${c.dicas.map(x=>`<li>${S(x)}</li>`).join('')}</ul>`).join('')}</div></details>
+    <details class="acc"><summary>⛔ O que zera a redação</summary><div class="ct"><ul>${B.zera.map(x=>`<li>${S(x)}</li>`).join('')}</ul><p class="muted">Baseado na Cartilha do Participante publicada pelo INEP.</p></div></details>
+    <details class="acc"><summary>📅 Temas das últimas edições</summary><div class="ct"><ul>${B.temasAnteriores.map(x=>`<li>${S(x)}</li>`).join('')}</ul></div></details>
+    <details class="acc"><summary>🏋️ 20 eixos para treinar</summary><div class="ct"><p class="muted" style="margin-bottom:8px;">Não são previsões do tema. São assuntos atuais e frequentes para você treinar repertório e argumentação.</p><ul>${B.eixos.map(x=>`<li>${S(x)}</li>`).join('')}</ul></div></details>
+  </div>`;
+}
+
+/* ===== montador de redação ===== */
+function telaMontar(){
+  if(!Acesso.tem('arsenal')){ app.innerHTML = topo('🧩 Montar minha redação')+`<div class="pg">${bloqueadoHTML('arsenal','Montador de redação','O montador faz parte do Arsenal de Redações.')}</div>`; return; }
+  const d = ls('red_montar',{});
+  const campo = (id,label,ph,area)=>`<label class="f" for="m_${id}">${label}</label>${area?`<textarea class="inp" id="m_${id}" placeholder="${S(ph)}">${S(d[id]||'')}</textarea>`:`<input class="inp" id="m_${id}" placeholder="${S(ph)}" value="${S(d[id]||'')}">`}`;
+  app.innerHTML = `${topo('🧩 Montar minha redação')}
+  <div class="pg fade">
+    <div class="card"><p class="muted">Preencha os campos e o app monta o esqueleto dos 4 parágrafos com os modelos do Arsenal. Depois é só desenvolver com as suas palavras.</p></div>
+    <div class="card">
+      ${campo('tema','Tema da redação','Ex.: o estigma associado às doenças mentais')}
+      ${campo('causa1','Causa 1 (vira o 1º desenvolvimento)','Ex.: a desinformação sobre saúde mental')}
+      ${campo('causa2','Causa 2 (vira o 2º desenvolvimento)','Ex.: a falta de atendimento na rede pública')}
+      <label class="f" for="m_rep">Repertório da introdução</label>
+      <select class="inp" id="m_rep">
+        <option value="">Escolha uma alusão ou um pensador</option>
+        <optgroup label="Alusões históricas">${A.alusoes.map((a,i)=>`<option value="a${i}"${d.rep==='a'+i?' selected':''}>${S(a.fato)}</option>`).join('')}</optgroup>
+        <optgroup label="Pensadores">${A.filosofos.map((f,i)=>`<option value="f${i}"${d.rep==='f'+i?' selected':''}>${S(f.autor)}: ${S(f.ideia.slice(0,50))}...</option>`).join('')}</optgroup>
+      </select>
+      ${campo('agente','Agente da proposta','Ex.: o Ministério da Saúde')}
+      ${campo('acao','Ação','Ex.: ampliar os Centros de Atenção Psicossocial')}
+      ${campo('meio','Meio','Ex.: a destinação de verbas específicas')}
+      ${campo('finalidade','Finalidade','Ex.: garantir atendimento a todos que precisam')}
+      <div class="sp"></div>
+      <button class="btn" id="gerar">Montar esqueleto</button>
+    </div>
+    <div id="saida"></div>
+  </div>`;
+  document.getElementById('gerar').onclick = ()=>{
+    const v = id=>document.getElementById('m_'+id).value.trim();
+    const dd = {tema:v('tema'),causa1:v('causa1'),causa2:v('causa2'),rep:document.getElementById('m_rep').value,agente:v('agente'),acao:v('acao'),meio:v('meio'),finalidade:v('finalidade')};
+    lsSet('red_montar',dd);
+    const T = dd.tema||'[TEMA]', C1 = dd.causa1||'[CAUSA 1]', C2 = dd.causa2||'[CAUSA 2]';
+    let intro;
+    if(dd.rep && dd.rep[0]==='a'){ const a=A.alusoes[+dd.rep.slice(1)]; intro = `Um marco histórico ajuda a compreender esse debate: ${a.fato}. Na ocasião, ${a.texto.charAt(0).toLowerCase()+a.texto.slice(1)} Embora o contexto seja outro, essa lógica ainda se manifesta no Brasil contemporâneo quando se observa ${T}. Nesse cenário, é evidente que esse problema decorre tanto de ${C1} quanto de ${C2}.`; }
+    else if(dd.rep && dd.rep[0]==='f'){ const f=A.filosofos[+dd.rep.slice(1)]; intro = `Segundo ${f.autor}, ${f.ideia.charAt(0).toLowerCase()+f.ideia.slice(1)} Sob essa ótica, é possível compreender ${T} no Brasil, problema que persiste em razão de ${C1} e de ${C2}.`; }
+    else intro = `[REPERTÓRIO]. Sob essa ótica, é possível compreender ${T} no Brasil, problema que persiste em razão de ${C1} e de ${C2}.`;
+    const d1 = `Em primeiro lugar, é importante destacar que ${C1} contribui diretamente para ${T}. [EXPLIQUE POR QUE ISSO ACONTECE]. [DÊ UM EXEMPLO OU REPERTÓRIO]. Dessa forma, [FECHAMENTO LIGANDO À TESE].`;
+    const d2 = `Além disso, outro fator relevante para a persistência desse problema é ${C2}. [EXPLIQUE A CAUSA]. [DÊ UM EXEMPLO OU REPERTÓRIO]. Consequentemente, [CONSEQUÊNCIA PARA A SOCIEDADE].`;
+    const concl = `Portanto, cabe ${cabeA(dd.agente)} ${dd.acao||'[AÇÃO]'}, por meio de ${dd.meio||'[MEIO]'}, a fim de ${dd.finalidade||'[FINALIDADE]'}. Somente assim será possível superar ${T} e construir uma sociedade mais justa.`;
+    const texto = [intro,d1,d2,concl].join('\n\n');
+    document.getElementById('saida').innerHTML = `<div class="card fade"><h2>Seu esqueleto</h2>
+      <p class="muted" style="margin-bottom:10px;">Revise a concordância (ex.: "cabe ao", "cabe à") e preencha o que está em <span class="lacuna">[colchetes]</span>.</p>
+      ${[intro,d1,d2,concl].map((p,i)=>`<p style="margin-bottom:12px;"><b style="color:var(--verde);">${['Introdução','Desenvolvimento 1','Desenvolvimento 2','Conclusão'][i]}:</b> ${lac(p)}</p>`).join('')}
+      <button class="btn" onclick="copiar(REG[${reg(texto)}])">📋 Copiar texto</button></div>`;
+    document.getElementById('saida').scrollIntoView({behavior:'smooth'});
+  };
+}
+
+/* "cabe" + agente com a crase/contração certa */
+function cabeA(ag){
+  if(!ag) return 'ao [AGENTE]';
+  const m = /^(os|as|o|a)\s+(.*)$/i.exec(ag);
+  if(!m) return 'a '+ag;
+  return ({o:'ao',a:'à',os:'aos',as:'às'})[m[1].toLowerCase()]+' '+m[2];
+}
+
+/* ===== correção por foto ===== */
+let fotoData = null;
+function comprimir(file){
+  return new Promise((ok,err)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      const max = 1600; let w=img.width, h=img.height;
+      if(Math.max(w,h)>max){ const r=max/Math.max(w,h); w=Math.round(w*r); h=Math.round(h*r); }
+      const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+      cv.getContext('2d').drawImage(img,0,0,w,h);
+      URL.revokeObjectURL(img.src);
+      ok(cv.toDataURL('image/jpeg',0.85));
+    };
+    img.onerror = ()=>err(new Error('img'));
+    img.src = URL.createObjectURL(file);
+  });
+}
+function telaCorrigir(){
+  if(!Acesso.tem('correcao')){ app.innerHTML = topo('📸 Corrigir pela foto')+`<div class="pg">${bloqueadoHTML('correcao','Correção da redação pela foto','Tire a foto da redação no caderno e receba a nota estimada por competência, os erros e como melhorar.')}${historicoHTML()}</div>`; return; }
+  fotoData = null;
+  app.innerHTML = `${topo('📸 Corrigir pela foto')}
+  <div class="pg fade">
+    <div class="card">
+      <h2>Envie a foto da sua redação</h2>
+      <p class="muted">Dicas: boa luz, folha inteira na foto, sem sombra e com a letra legível.</p>
+      <label class="f" for="tema">Tema (opcional, mas melhora a correção)</label>
+      <input class="inp" id="tema" placeholder="Ex.: Desafios para a valorização da herança africana no Brasil" value="${S(ls('red_ultimo_tema',''))}">
+      <div class="sp"></div>
+      <input type="file" id="foto" accept="image/*" capture="environment" style="display:none">
+      <button class="btn sec" id="escolher">📷 Tirar foto ou escolher da galeria</button>
+      <img id="prev" class="foto-prev" style="display:none" alt="Prévia da redação">
+      <div class="sp"></div>
+      <button class="btn" id="enviar" disabled>Corrigir minha redação</button>
+    </div>
+    <div id="res"></div>
+    ${historicoHTML()}
+  </div>`;
+  const inp=document.getElementById('foto'), prev=document.getElementById('prev'), env=document.getElementById('enviar');
+  document.getElementById('escolher').onclick=()=>inp.click();
+  inp.onchange = async ()=>{
+    const f = inp.files && inp.files[0]; if(!f) return;
+    try{ fotoData = await comprimir(f); prev.src=fotoData; prev.style.display='block'; env.disabled=false; }
+    catch(e){ toast('Não consegui abrir essa imagem. Tente outra.'); }
+  };
+  env.onclick = enviarCorrecao;
+}
+async function enviarCorrecao(){
+  if(!fotoData) return;
+  const tema = document.getElementById('tema').value.trim();
+  lsSet('red_ultimo_tema', tema);
+  const res = document.getElementById('res');
+  document.getElementById('enviar').disabled = true;
+  res.innerHTML = `<div class="card load"><div class="spin"></div><b>Corrigindo a sua redação...</b><p class="muted">Isso leva de 20 a 60 segundos. Não feche a tela.</p></div>`;
+  res.scrollIntoView({behavior:'smooth'});
+  try{
+    const r = await fetch('/api/corrigir',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({codigo:Acesso.codigo('correcao'),tema,imagem:fotoData})});
+    const j = await r.json().catch(()=>({erro:'Resposta inválida do servidor.'}));
+    if(!r.ok){ throw new Error(j.erro||'Erro na correção.'); }
+    if(!j.legivel){ res.innerHTML = `<div class="card"><h2>Não consegui ler a redação</h2><p>${S(j.motivo_ilegivel||'Tente outra foto, com mais luz e a folha inteira.')}</p></div>`; document.getElementById('enviar').disabled=false; return; }
+    const reg = {data:new Date().toISOString(), tema: tema||j.tema_identificado, r:j};
+    const h = ls('red_correcoes',[]); h.unshift(reg); lsSet('red_correcoes', h.slice(0,15));
+    res.innerHTML = resultadoHTML(reg);
+  }catch(e){
+    res.innerHTML = `<div class="card"><h2>Algo deu errado</h2><p>${S(e.message)}</p></div>`;
+    document.getElementById('enviar').disabled=false;
+  }
+}
+const NOMES_C = ['','Norma culta','Tema e repertório','Argumentação','Coesão','Proposta de intervenção'];
+function resultadoHTML(reg){
+  const j = reg.r;
+  const comps = (j.competencias||[]).slice().sort((a,b)=>a.numero-b.numero);
+  const total = comps.reduce((s,c)=>s+(c.nota||0),0);
+  return `<div class="card fade">
+    <p class="muted" style="text-align:center;">Nota estimada</p>
+    <div class="nota-total">${total}</div>
+    <p class="muted" style="text-align:center;margin-bottom:14px;">de 1000 · ${S(reg.tema||'')}</p>
+    ${comps.map(c=>`<div class="comp"><div class="n">${c.nota}</div><div class="tx"><b>C${c.numero} · ${NOMES_C[c.numero]}</b><p>${S(c.comentario)}</p></div></div>`).join('')}
+  </div>
+  ${j.proxima_acao?`<div class="card" style="background:var(--verde-suave);border-color:#cfe9da;"><h3>🎯 O que mais vai aumentar a sua nota</h3><p>${S(j.proxima_acao)}</p></div>`:''}
+  ${(j.erros||[]).length?`<div class="card"><h2>Erros encontrados</h2>${j.erros.map(e=>`<div class="erro"><div class="tr">"${S(e.trecho)}"</div><p><b>C${e.competencia}:</b> ${S(e.problema)}</p><p class="sg">Como melhorar: ${S(e.sugestao)}</p></div>`).join('')}</div>`:''}
+  ${(j.pontos_fortes||[]).length?`<div class="card"><h2>Pontos fortes</h2><ul style="padding-left:18px;">${j.pontos_fortes.map(p=>`<li style="margin-bottom:6px;font-size:14px;">${S(p)}</li>`).join('')}</ul></div>`:''}
+  ${j.paragrafo_reescrito?`<div class="card"><h2>Seu parágrafo mais fraco, reescrito</h2><p>${S(j.paragrafo_reescrito)}</p></div>`:''}
+  ${j.transcricao?`<details class="acc"><summary>📄 Ver transcrição da sua redação</summary><div class="ct" style="white-space:pre-line;">${S(j.transcricao)}</div></details>`:''}
+  <p class="legal">A nota é uma estimativa feita por inteligência artificial com base nas 5 competências do ENEM. É um apoio para o seu treino e não substitui a correção oficial nem um professor.</p>`;
+}
+function historicoHTML(){
+  const h = ls('red_correcoes',[]);
+  if(!h.length) return '';
+  return `<h3 style="font-family:'Open Sans';font-weight:900;color:var(--verde-escuro);margin:18px 2px 10px;">Suas correções</h3>
+  ${h.map((x,i)=>{ const t=(x.r.competencias||[]).reduce((s,c)=>s+(c.nota||0),0); return `<div class="item" style="cursor:pointer" onclick="verCorrecao(${i})"><div class="row"><div><b style="color:var(--verde-escuro);">${S((x.tema||'Sem tema').slice(0,60))}</b><div class="m">${new Date(x.data).toLocaleDateString('pt-BR')}</div></div><span class="chip">${t}</span></div></div>`; }).join('')}`;
+}
+function verCorrecao(i){
+  const x = ls('red_correcoes',[])[i]; if(!x) return;
+  app.innerHTML = `${topo('Correção',true)}<div class="pg">${resultadoHTML(x)}</div>`;
+  window.scrollTo(0,0);
+}
+
+function telaSalvos(){
+  const f = favs();
+  app.innerHTML = `${topo('⭐ Salvos')}
+  <div class="pg fade">
+    ${f.length ? f.map(x=>`<div class="item"><div class="t">${lac(x.txt)}</div><div class="acts"><button class="mini" onclick="copiar(REG[${reg(x.txt)}])">📋 Copiar</button><button class="mini on" onclick="togFav(REG[${reg(x.id)}],'','')">★ Remover</button></div></div>`).join('')
+      : '<div class="card bloq"><div class="i">⭐</div><h2>Nada salvo ainda</h2><p class="muted">Toque em "Salvar" nos modelos e frases que você mais gostar para montar o seu kit de redação.</p></div>'}
+  </div>`;
+}
+
+/* ===== roteador ===== */
+function irPara(r){ if(location.hash==='#'+r) render(); else location.hash = r; }
+function render(){
+  REG = [];
+  const r = (location.hash||'#inicio').slice(1);
+  const temAlgo = Acesso.tem('arsenal') || Acesso.tem('correcao');
+  if(r==='corrigir' && !temAlgo){ nav.style.display='none'; telaCorrigir(); return; }   // veio do app das matérias sem ter comprado
+  if(r==='codigo' || !temAlgo){ telaCodigo(); return; }
+  nav.style.display='';
+  const base = r.split('/')[0];
+  nav.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.r===base || (base==='sec'&&b.dataset.r==='inicio')));
+  if(base==='sec') telaSecao(r.split('/')[1]);
+  else if(base==='montar') telaMontar();
+  else if(base==='corrigir') telaCorrigir();
+  else if(base==='salvos') telaSalvos();
+  else telaInicio();
+  window.scrollTo(0,0);
+}
+nav.querySelectorAll('button').forEach(b=>b.onclick=()=>irPara(b.dataset.r));
+window.addEventListener('hashchange', render);
+(async()=>{
+  const lib = await Acesso.lerDaUrl();
+  if(lib.length) setTimeout(()=>toast('Acesso liberado! 🎉'),300);
+  render();
+})();
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(()=>{}); }
+</script>
+</body>
+</html>
