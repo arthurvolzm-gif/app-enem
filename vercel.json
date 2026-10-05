@@ -2,20 +2,60 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/", "destination": "/quiz1", "permanent": false },
-    { "source": "/quiz-enem", "destination": "/quiz2", "permanent": false }
-  ],
-  "rewrites": [
-    { "source": "/reda%C3%A7%C3%A3o", "destination": "/redacao/index.html" },
-    { "source": "/redação", "destination": "/redacao/index.html" },
-    { "source": "/mat%C3%A9rias", "destination": "/materias/index.html" },
-    { "source": "/matérias", "destination": "/materias/index.html" }
+    {
+      "source": "/",
+      "destination": "/quiz1",
+      "permanent": false
+    },
+    {
+      "source": "/quiz-enem",
+      "destination": "/quiz2",
+      "permanent": false
+    },
+    {
+      "source": "/reda%C3%A7%C3%A3o",
+      "destination": "/redacao",
+      "permanent": false
+    },
+    {
+      "source": "/redação",
+      "destination": "/redacao",
+      "permanent": false
+    },
+    {
+      "source": "/mat%C3%A9rias",
+      "destination": "/materias",
+      "permanent": false
+    },
+    {
+      "source": "/matérias",
+      "destination": "/materias",
+      "permanent": false
+    }
   ],
   "functions": {
-    "api/corrigir.js": { "maxDuration": 90 }
+    "api/corrigir.js": {
+      "maxDuration": 90
+    }
   },
   "headers": [
-    { "source": "/sw.js", "headers": [ { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" } ] },
-    { "source": "/(redacao|materias)(.*)", "headers": [ { "key": "X-Robots-Tag", "value": "noindex" } ] }
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(redacao|materias)(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    }
   ]
 }
