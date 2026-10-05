@@ -5,7 +5,7 @@ window.ENEM_CONFIG = {
   /* Supabase (login e progresso salvo na conta). Use a chave PÚBLICA
      (publishable / anon), feita para ficar visível no site. NUNCA a
      service_role. Vazio = apps sem login, salvando só no aparelho. */
-  SUPABASE_URL: '',
+  SUPABASE_URL: 'https://mogirincherfbikrkmrz.supabase.co',
   SUPABASE_KEY: 'sb_publishable_cDVVobvbNCQhciAGhzT9SQ_BaUAstdR',
 
   /* links de checkout usados nos botões "Desbloquear" dentro dos apps.
