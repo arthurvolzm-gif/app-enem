@@ -9,6 +9,7 @@
 <link rel="manifest" href="/materias/manifest.json" />
 <link rel="stylesheet" href="/shared/app.css" />
 <script src="/shared/config.js"></script>
+<script src="/shared/conta.js"></script>
 <script src="/shared/acesso.js"></script>
 <script src="/shared/resumos.js"></script>
 <script src="/shared/questoes.js"></script>
@@ -34,7 +35,7 @@ const DIAS_LONGO = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sáb
 function S(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function toast(t){ const d=document.createElement('div'); d.className='toast'; d.textContent=t; document.body.appendChild(d); setTimeout(()=>d.remove(),2000); }
 function ls(k,def){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):def; }catch(e){ return def; } }
-function lsSet(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+function lsSet(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} if(window.Conta) Conta.agendar(); }
 function hojeISO(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function dias(){ if(!C.DATA_ENEM) return null; const d=Math.ceil((new Date(C.DATA_ENEM+'T09:00:00')-new Date())/86400000); return d>0?d:null; }
 function mat(id){ return M.find(m=>m.id===id); }
@@ -118,6 +119,7 @@ function telaCodigo(){
       <div class="sp"></div>
       <button class="btn" id="okCod">Liberar acesso</button>
       <p class="muted" style="margin-top:12px;text-align:center;">${C.SUPORTE_EMAIL?'Problemas? Fale com '+S(C.SUPORTE_EMAIL):'O código vem no e-mail de confirmação da compra.'}</p>
+      ${Conta.usuario()?`<p class="muted" style="margin-top:8px;text-align:center;">Logado como ${S(Conta.usuario().email)} · <a href="#" onclick="sairConta();return false;" style="color:inherit;">Sair</a></p>`:''}
     </div>
     ${(Acesso.tem('plano')||Acesso.tem('exercicios'))?'<button class="btn sec" onclick="irPara(\'hoje\')">Voltar ao app</button>':''}
   </div>`;
@@ -136,7 +138,7 @@ function telaCodigo(){
 function telaConfig(primeira){
   const p = perfil() || {};
   const q = ls('enem_quiz2',{});                     // respostas do quiz 2, quando a pessoa veio dele
-  const nome = p.nome || q.nome || '';
+  const nome = p.nome || q.nome || Conta.nome() || '';
   let dif = p.dificeis || (q.materias||[]).map(n=>(M.find(m=>m.nome===n||n.startsWith(m.nome))||{}).id).filter(Boolean);
   let diasSel = p.dias || [1,2,3,4,5,6];
   let minutos = p.minutos || ({'Menos de 1 hora':45,'De 1 a 2 horas':90,'De 2 a 4 horas':120,'Mais de 4 horas':150}[q.horas]) || 60;
@@ -459,6 +461,7 @@ function telaMais(){
       <div class="tile" onclick="location.href='/redacao#corrigir'"><span class="i">📸</span><b>Corrigir redação</b><span>Pela foto do caderno</span></div>
       <div class="tile full" onclick="location.href='/redacao'"><span class="i">✍️</span><div><b>Arsenal de Redações</b><br><span>Modelos, repertório e frases prontas</span></div></div>
       <div class="tile full" onclick="irPara('codigo')"><span class="i">🔑</span><div><b>Inserir código de acesso</b><br><span>Para liberar um produto que você comprou</span></div></div>
+      ${Conta.usuario()?`<div class="tile full" onclick="sairConta()"><span class="i">🚪</span><div><b>Sair da conta</b><br><span>${S(Conta.usuario().email)}</span></div></div>`:''}
     </div>
     <p class="legal">Produto independente, sem vínculo com o INEP, o MEC ou o Governo Federal. O app é uma ferramenta de apoio aos estudos e não garante nota ou aprovação.</p>
   </div>`;
@@ -467,6 +470,8 @@ function telaMais(){
 /* ===== roteador ===== */
 function irPara(r){ if(location.hash==='#'+r) render(); else location.hash = r; }
 function render(){
+  if(Conta.ativo && Conta.recuperando){ nav.style.display='none'; Conta.telaNovaSenha(app, 'Plano ENEM: Matérias', ()=>{ Conta.recuperando=false; toast('Senha salva!'); render(); }); return; }
+  if(Conta.ativo && !Conta.usuario()){ nav.style.display='none'; Conta.telaLogin(app, 'Plano ENEM: Matérias', lib=>{ if(lib.length) toast('Acesso liberado! 🎉'); render(); }); return; }
   clearInterval(timerInt);
   const r = (location.hash||'#hoje').slice(1);
   const partes = r.split('/');
@@ -499,10 +504,13 @@ function render(){
 nav.querySelectorAll('button').forEach(b=>b.onclick=()=>irPara(b.dataset.r));
 window.addEventListener('hashchange', render);
 (async()=>{
-  const lib = await Acesso.lerDaUrl();
+  let lib = [];
+  try{ lib = await Conta.iniciar(); }catch(e){ console.error(e); toast(e.message); }
+  lib = lib.concat(await Acesso.lerDaUrl());
   if(lib.length) setTimeout(()=>toast('Acesso liberado! 🎉'),300);
   render();
 })();
+function sairConta(){ Conta.sair().then(()=>{ location.hash=''; render(); }); }
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(()=>{}); }
 </script>
 </body>

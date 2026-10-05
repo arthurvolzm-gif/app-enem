@@ -30,6 +30,7 @@
 
   /* tenta liberar um código; devolve o nome do produto ou null */
   async function resgatar(codigo){
+    if(window.Conta && Conta.ativo) return Conta.usuario() ? Conta.resgatar(codigo) : null;   // com login, o código vai para a conta
     const c = String(codigo||'').trim().toUpperCase();
     if(!c) return null;
     const h = await sha256(c);
@@ -41,6 +42,7 @@
 
   /* lê ?k=CODIGO (pode vir mais de um separado por vírgula) e limpa a URL */
   async function lerDaUrl(){
+    if(window.Conta && Conta.ativo) return [];        // com login, Conta.iniciar() já tratou o ?k=
     const u = new URL(location.href);
     const k = u.searchParams.get('k');
     if(!k) return [];

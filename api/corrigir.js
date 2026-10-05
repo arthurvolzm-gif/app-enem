@@ -8,6 +8,8 @@
    - ANTHROPIC_API_KEY   (obrigatória) chave da API da Anthropic
    - CODIGOS_CORRECAO    (opcional) códigos extras aceitos, separados por vírgula
    - CORRECAO_MODELO     (opcional) troca o modelo; padrão claude-opus-5-5
+   - SUPABASE_URL e SUPABASE_KEY (com login ligado) os mesmos de shared/config.js;
+     com eles, quem está logado com a Correção liberada na conta é aceito sem código
    ========================================================= */
 import Anthropic from "@anthropic-ai/sdk";
 import { createHash } from "node:crypto";
@@ -93,6 +95,23 @@ const SCHEMA = {
   },
 };
 
+/* com login: confere na tabela "acessos" (a política do banco só deixa a pessoa ver os próprios) */
+async function contaTemCorrecao(authHeader) {
+  const url = process.env.SUPABASE_URL, key = process.env.SUPABASE_KEY;
+  if (!url || !key || !/^Bearer\s+\S+/.test(String(authHeader || ""))) return false;
+  try {
+    const r = await fetch(`${url}/rest/v1/acessos?select=produto&produto=eq.correcao`, {
+      headers: { apikey: key, Authorization: authHeader },
+    });
+    if (!r.ok) return false;
+    const linhas = await r.json();
+    return Array.isArray(linhas) && linhas.length > 0;
+  } catch (e) {
+    console.error("Falha ao consultar o Supabase:", e.message);
+    return false;
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -100,7 +119,7 @@ export default async function handler(req, res) {
   }
 
   const { codigo, tema, imagem } = req.body || {};
-  if (!codigoValido(codigo)) {
+  if (!codigoValido(codigo) && !(await contaTemCorrecao((req.headers || {}).authorization))) {
     return res.status(403).json({ erro: "Código de acesso da correção inválido." });
   }
 

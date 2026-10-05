@@ -10,7 +10,8 @@ em `testegratuitoenem.vercel.app` a partir deste repositório. Cores: branco e v
 - `materias/index.html`: app 2 (plano, desempenho, lembretes, resumos, exercícios). Rota também em `/matérias`.
 - `api/corrigir.js`: função Vercel que corrige a redação pela foto com a API do Claude.
 - `shared/`: `quiz.css` e `quiz-base.js` (motor comum dos quizzes), `app.css`, `config.js`,
-  `acesso.js` (códigos por produto, só hashes), `arsenal.js`, `resumos.js`, `questoes.js` (conteúdo).
+  `conta.js` (login Supabase e sincronização do progresso), `acesso.js` (códigos por produto, só hashes), `arsenal.js`, `resumos.js`, `questoes.js` (conteúdo).
+- `supabase/schema.sql`: banco (progresso, acessos, resgate de código). Passo a passo em `docs/SUPABASE.md`.
 - `img/`: imagens (ver `docs/prompts-imagens.md`).
 - `docs/oferta-e-funil.md`: funis, bumps, entrega de acesso, configuração e pendências.
 
@@ -24,6 +25,8 @@ em `testegratuitoenem.vercel.app` a partir deste repositório. Cores: branco e v
 - O Índice de Preparo fica sempre entre 14 e 38 (decisão do usuário), rotulado como estimativa educativa.
   A pontuação lê o texto das alternativas: ao mudar uma opção, revise `calcRedacao()` / `calcPreparo()`.
 - Notas de corte em `CURSOS` (quiz 2) e `DATA_ENEM` são provisórias: validar com INEP e SISU.
+- Login: conta única (e-mail e senha) para os dois apps. Toda chave nova de progresso no localStorage
+  precisa entrar na lista `SINCRONIZAR` de `shared/conta.js`, senão não vai para a conta.
 - O app 2 lê as respostas do quiz 2 (`localStorage.enem_quiz2`) para pré-preencher o plano: os nomes
   das matérias no quiz precisam bater com `shared/resumos.js`.
 - Playbook de copy e funil: skill `vturb-ouro` do repositório `Quiz-Emagecimento`.

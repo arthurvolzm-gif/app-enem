@@ -9,6 +9,7 @@
 <link rel="manifest" href="/redacao/manifest.json" />
 <link rel="stylesheet" href="/shared/app.css" />
 <script src="/shared/config.js"></script>
+<script src="/shared/conta.js"></script>
 <script src="/shared/acesso.js"></script>
 <script src="/shared/arsenal.js"></script>
 </head>
@@ -35,7 +36,7 @@ function lac(s){ return S(s).replace(/\[([^\]]+)\]/g,'<span class="lacuna">[$1]<
 function toast(t){ const d=document.createElement('div'); d.className='toast'; d.textContent=t; document.body.appendChild(d); setTimeout(()=>d.remove(),1800); }
 function dias(){ if(!C.DATA_ENEM) return null; const d=Math.ceil((new Date(C.DATA_ENEM+'T09:00:00')-new Date())/86400000); return d>0?d:null; }
 function ls(k,def){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):def; }catch(e){ return def; } }
-function lsSet(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+function lsSet(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} if(window.Conta) Conta.agendar(); }
 async function copiar(txt){
   try{ await navigator.clipboard.writeText(txt); toast('Copiado!'); }
   catch(e){ const t=document.createElement('textarea'); t.value=txt; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); toast('Copiado!'); }
@@ -115,6 +116,7 @@ function telaCodigo(){
       <div class="sp"></div>
       <button class="btn" id="okCod">Liberar acesso</button>
       <p class="muted" style="margin-top:12px;text-align:center;">${C.SUPORTE_EMAIL?'Problemas? Fale com '+S(C.SUPORTE_EMAIL):'O código vem no e-mail de confirmação da compra.'}</p>
+      ${Conta.usuario()?`<p class="muted" style="margin-top:8px;text-align:center;">Logado como ${S(Conta.usuario().email)} · <a href="#" onclick="sairConta();return false;" style="color:inherit;">Sair</a></p>`:''}
     </div>
     ${(Acesso.tem('arsenal')||Acesso.tem('correcao'))?'<button class="btn sec" onclick="irPara(\'inicio\')">Voltar ao app</button>':''}
   </div>`;
@@ -144,7 +146,7 @@ function telaInicio(){
       <div class="tile full" onclick="irPara('corrigir')">${!temC?'<span class="lock">🔒</span>':''}<span class="i">📸</span><div><b>Corrigir redação pela foto</b><br><span>Tire a foto do caderno e veja os erros por competência${hist.length?' · '+hist.length+' corrigida(s)':''}</span></div></div>
       <div class="tile full" onclick="location.href='/materias'"><span class="i">📚</span><div><b>Plano de estudos das matérias</b><br><span>Plano semanal, resumos, desempenho e lembretes</span></div></div>
     </div>
-    <p class="legal">Produto independente, sem vínculo com o INEP, o MEC ou o Governo Federal. <a href="#" onclick="irPara('codigo');return false;" style="color:inherit;">Inserir outro código</a></p>
+    <p class="legal">Produto independente, sem vínculo com o INEP, o MEC ou o Governo Federal. <a href="#" onclick="irPara('codigo');return false;" style="color:inherit;">Inserir outro código</a>${Conta.usuario()?' · <a href="#" onclick="sairConta();return false;" style="color:inherit;">Sair da conta</a>':''}</p>
   </div>`;
 }
 
@@ -317,7 +319,8 @@ async function enviarCorrecao(){
   res.innerHTML = `<div class="card load"><div class="spin"></div><b>Corrigindo a sua redação...</b><p class="muted">Isso leva de 20 a 60 segundos. Não feche a tela.</p></div>`;
   res.scrollIntoView({behavior:'smooth'});
   try{
-    const r = await fetch('/api/corrigir',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({codigo:Acesso.codigo('correcao'),tema,imagem:fotoData})});
+    const tk = await Conta.token();
+    const r = await fetch('/api/corrigir',{method:'POST',headers:Object.assign({'Content-Type':'application/json'}, tk?{'Authorization':'Bearer '+tk}:{}),body:JSON.stringify({codigo:Acesso.codigo('correcao'),tema,imagem:fotoData})});
     const j = await r.json().catch(()=>({erro:'Resposta inválida do servidor.'}));
     if(!r.ok){ throw new Error(j.erro||'Erro na correção.'); }
     if(!j.legivel){ res.innerHTML = `<div class="card"><h2>Não consegui ler a redação</h2><p>${S(j.motivo_ilegivel||'Tente outra foto, com mais luz e a folha inteira.')}</p></div>`; document.getElementById('enviar').disabled=false; return; }
@@ -371,6 +374,8 @@ function telaSalvos(){
 /* ===== roteador ===== */
 function irPara(r){ if(location.hash==='#'+r) render(); else location.hash = r; }
 function render(){
+  if(Conta.ativo && Conta.recuperando){ nav.style.display='none'; Conta.telaNovaSenha(app, 'Arsenal de Redações ENEM', ()=>{ Conta.recuperando=false; toast('Senha salva!'); render(); }); return; }
+  if(Conta.ativo && !Conta.usuario()){ nav.style.display='none'; Conta.telaLogin(app, 'Arsenal de Redações ENEM', lib=>{ if(lib.length) toast('Acesso liberado! 🎉'); render(); }); return; }
   REG = [];
   const r = (location.hash||'#inicio').slice(1);
   const temAlgo = Acesso.tem('arsenal') || Acesso.tem('correcao');
@@ -389,10 +394,13 @@ function render(){
 nav.querySelectorAll('button').forEach(b=>b.onclick=()=>irPara(b.dataset.r));
 window.addEventListener('hashchange', render);
 (async()=>{
-  const lib = await Acesso.lerDaUrl();
+  let lib = [];
+  try{ lib = await Conta.iniciar(); }catch(e){ console.error(e); toast(e.message); }
+  lib = lib.concat(await Acesso.lerDaUrl());
   if(lib.length) setTimeout(()=>toast('Acesso liberado! 🎉'),300);
   render();
 })();
+function sairConta(){ Conta.sair().then(()=>{ location.hash=''; render(); }); }
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(()=>{}); }
 </script>
 </body>

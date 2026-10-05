@@ -37,16 +37,17 @@ Cada produto tem um código. Na Ticto, o link de entrega de cada produto é:
 
 Os códigos **não ficam neste repositório** (ele é público). O site guarda só o hash SHA-256 de cada um, em `shared/acesso.js` e em `api/corrigir.js`. Para trocar um código: gere um novo, calcule o hash (`node -e "console.log(require('crypto').createHash('sha256').update('NOVO-CODIGO').digest('hex'))"`) e substitua a linha.
 
-Limite conhecido: o conteúdo dos apps está no próprio site, então o código impede o acesso casual, mas não um curioso técnico. A correção por foto, que tem custo, é conferida também no servidor. Próximo passo, se a venda validar: login por e-mail com Supabase e webhook da Ticto, como no app-emagrecimento.
+Com o Supabase configurado (ver `SUPABASE.md`), a pessoa abre o link, cria a conta e o produto fica ligado a ela. Depois é só entrar com e-mail e senha, e o progresso fica salvo na conta.
 
 ## Configuração na Vercel
 - `ANTHROPIC_API_KEY` (obrigatória para a correção por foto).
 - `CODIGOS_CORRECAO` (opcional): códigos extras aceitos pela correção, separados por vírgula.
 - `CORRECAO_MODELO` (opcional): troca o modelo da correção. Padrão `claude-opus-5-5`.
+- `SUPABASE_URL` e `SUPABASE_KEY`: os mesmos de `shared/config.js`, para a correção reconhecer quem está logado.
 
 ## Configuração no código
 - `quiz1/index.html` e `quiz2/index.html`, bloco `window.QUIZ`: Pixel, GA4, checkout, preço, pop-up de saída, data do ENEM.
-- `shared/config.js`: links de checkout dos botões "Desbloquear" dentro dos apps, e-mail de suporte, data do ENEM.
+- `shared/config.js`: Supabase (`SUPABASE_URL`, `SUPABASE_KEY`), links de checkout dos botões "Desbloquear" dentro dos apps, e-mail de suporte, data do ENEM.
 
 ## Pendências (decisões suas)
 - Links de checkout, Pixel e GA4 dos dois funis.
