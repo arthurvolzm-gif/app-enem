@@ -1,1 +1,4 @@
 node_modules
+materiais/pdf/
+materiais/node_modules/
+materiais/_tmp_*

@@ -11,7 +11,16 @@
 <script src="/shared/config.js"></script>
 <script src="/shared/conta.js"></script>
 <script src="/shared/acesso.js"></script>
-<script src="/shared/resumos.js"></script>
+<script src="/shared/conteudo/mat.js"></script>
+<script src="/shared/conteudo/fis.js"></script>
+<script src="/shared/conteudo/qui.js"></script>
+<script src="/shared/conteudo/bio.js"></script>
+<script src="/shared/conteudo/his.js"></script>
+<script src="/shared/conteudo/geo.js"></script>
+<script src="/shared/conteudo/fil.js"></script>
+<script src="/shared/conteudo/soc.js"></script>
+<script src="/shared/conteudo/lin.js"></script>
+<script src="/shared/materias.js"></script>
 <script src="/shared/questoes.js"></script>
 </head>
 <body>
@@ -31,9 +40,10 @@ const nav = document.getElementById('nav');
 const DIAS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 const DIAS_LONGO = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
 const ORDEM_SEMANA = [1,2,3,4,5,6,0];
-const COR_MAT = { mat:'#e8f0ff', fis:'#fff4dc', qui:'#e9fbf2', bio:'#e6f8ec', his:'#fdeee6', geo:'#e5f5fb', fil:'#f1ecff', lin:'#ffeef4', red:'#eef1f8' };
+const COR_MAT = { mat:'#e8f0ff', fis:'#fff4dc', qui:'#e9fbf2', bio:'#e6f8ec', his:'#fdeee6', geo:'#e5f5fb', fil:'#f1ecff', soc:'#fdeef7', lin:'#ffeef4', red:'#eef1f8' };
 
 /* ===================== util ===================== */
+function F(s){ return S(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>'); }
 function S(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function toast(t){ const d=document.createElement('div'); d.className='toast'; d.textContent=t; document.body.appendChild(d); setTimeout(()=>d.remove(),2200); }
 function ls(k,def){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):def; }catch(e){ return def; } }
@@ -112,6 +122,20 @@ function fase(){
   if(d>21) return {n:1,nome:'Base',txt:'Agora é hora de cobrir os temas que mais caem, um por dia.',ic:'🧱'};
   if(d>7)  return {n:2,nome:'Prática',txt:'Junte leitura com exercícios e redação toda semana.',ic:'🎯'};
   return {n:3,nome:'Revisão final',txt:'Revise o que já leu e descanse bem. Nada de conteúdo novo pesado.',ic:'🏁'};
+}
+
+/* ===================== meta de temas da semana ===================== */
+function temasPorBloco(b){ return Math.max(1, Math.min(3, Math.round(b.min/25))); }
+function metaSemana(){
+  const p=perfil(), d=diasEnem();
+  const capacidade = Object.values(p.plano).flat().filter(b=>b.m!=='revisao').reduce((a,b)=>a+temasPorBloco(b),0);
+  const restantes = totalTemas - lidos().length;
+  const semanas = d ? Math.max(1, Math.ceil(d/7)) : 4;
+  const meta = Math.max(1, Math.min(capacidade, Math.ceil(restantes/semanas)));
+  const ini = inicioSemana(), L = lidosEm();
+  const feitos = Object.keys(L).filter(k=>L[k]>=ini).length;
+  const cobertos = Math.min(totalTemas, lidos().length + capacidade*semanas);
+  return { meta, feitos, capacidade, semanas, cobertos };
 }
 
 /* ===================== revisão espaçada ===================== */
@@ -334,6 +358,7 @@ function telaInicio(){
   const minHoje=minutosDia(h), metaMin=metaMinHoje()||p.minutos;
   const planejado=minutosPlanejados(), feitoTot=totalMin(), pctPlano = planejado ? Math.min(100,Math.round(feitoTot/planejado*100)) : 0;
   const tHoje=lidosHoje(), qHoje=(respDia()[h]||0), temEx=Acesso.tem('exercicios');
+  const metaTemasHoje = Math.max(1, bl.filter(b=>b.m!=='revisao').reduce((a,b)=>a+temasPorBloco(b),0)) || 1, ms=metaSemana();
   const rv=revisoesPendentes(), notif=notificacoes().filter(n=>n.nova).length;
   const hum = checkins()[h];
   const semana = ORDEM_SEMANA.map(x=>{ const dt=new Date(); dt.setDate(dt.getDate()-((dt.getDay()+6)%7)+((x+6)%7)); const iso=hojeISO(dt); const blx=p.plano[x]||[]; const mins=minutosDia(iso); const meta=blx.reduce((a,b)=>a+b.min,0);
@@ -352,7 +377,7 @@ function telaInicio(){
     <div class="card">
       <div class="card-tt">🎯 Meta de hoje <button class="acao" onclick="irPara('plano')">Ver plano</button></div>
       <div class="mh-linha">${anel(minHoje/metaMin*100, minHoje, 'min', '')}<div class="anel-info"><div class="t">Tempo de estudo</div><div class="v">${fmtMin(metaMin)}</div><div class="s">${minHoje>=metaMin?'Meta batida! 🎉':'Faltam '+fmtMin(metaMin-minHoje)}</div>${pend[0]?`<button class="mini-btn" onclick="irPara('timer/${pend[0].m}/${pend[0].min}')">▶ Começar ${S(nomeBloco(pend[0].m))}</button>`:''}</div></div>
-      <div class="mh-linha">${anel(tHoje/2*100, tHoje, 'temas', '')}<div class="anel-info"><div class="t">Temas lidos</div><div class="v">2 temas</div><div class="s">${tHoje>=2?'Leitura em dia ✓':'Cada tema lido entra no seu desempenho'}</div><button class="mini-btn" onclick="irPara('resumos')">📚 Ler um resumo</button></div></div>
+      <div class="mh-linha">${anel(tHoje/metaTemasHoje*100, tHoje, 'temas', '')}<div class="anel-info"><div class="t">Temas lidos</div><div class="v">${metaTemasHoje} ${metaTemasHoje>1?'temas':'tema'}</div><div class="s">${tHoje>=metaTemasHoje?'Leitura em dia ✓':'Semana: '+ms.feitos+' de '+ms.meta+' temas'}</div><button class="mini-btn" onclick="irPara('resumos')">📚 Ler um resumo</button></div></div>
       ${temEx?`<div class="mh-linha">${anel(qHoje/10*100, qHoje, 'questões', '')}<div class="anel-info"><div class="t">Questões</div><div class="v">10 questões</div><div class="s">${qHoje>=10?'Treino feito ✓':'Pratique no estilo do ENEM'}</div><button class="mini-btn" onclick="irPara('exercicios')">📝 Resolver</button></div></div>`
              :`<div class="mh-linha">${anel(rv.length?0:100, rv.length, 'revisões', '')}<div class="anel-info"><div class="t">Revisões</div><div class="v">${rv.length?rv.length+' para hoje':'Em dia'}</div><div class="s">Revisar no tempo certo fixa o conteúdo</div></div></div>`}
     </div>
@@ -384,7 +409,7 @@ function telaPlano(){
     <div class="dias-tabs">${ORDEM_SEMANA.map(x=>{ const d2=new Date(); d2.setDate(d2.getDate()-((d2.getDay()+6)%7)+((x+6)%7)); const i2=hojeISO(d2); const b2=p.plano[x]||[]; const ok=b2.length&&b2.every(b=>blocoFeito(i2,b)); return `<button class="${x===diaSel?'on':''} ${b2.length?'tem':''} ${ok?'ok':''}" onclick="diaSel=${x};telaPlano()">${DIAS[x].toUpperCase()}<span class="p"></span></button>`; }).join('')}</div>
     <div class="card">
       <div class="card-tt">${DIAS_LONGO[diaSel]}${diaSel===hoje?' <span class="tag azul">Hoje</span>':''}<span style="margin-left:auto;font-family:Inter;font-size:13px;color:var(--cinza);font-weight:600;">${bl.length?fmtMin(bl.reduce((a,b)=>a+b.min,0)):'Descanso'}</span></div>
-      ${bl.length?bl.map((b,i)=>{ const feito=blocoFeito(iso,b); const temas=b.m==='revisao'?[]:proximosTemas(b.m,2); return `<div class="bloco ${feito?'feito':''}">
+      ${bl.length?bl.map((b,i)=>{ const feito=blocoFeito(iso,b); const temas=b.m==='revisao'?[]:proximosTemas(b.m,temasPorBloco(b)); return `<div class="bloco ${feito?'feito':''}">
         <div class="num">${feito?'✓':i+1}</div>
         <div class="info"><b>${iconeBloco(b.m)} ${S(nomeBloco(b.m))}</b><div class="s">${b.m==='revisao'?'Releia os temas da semana e faça questões':b.m==='red'?'Escreva 1 redação e corrija pela foto':'Leia o resumo e faça questões do tema'}</div>
           ${temas.length?`<div class="temas">${temas.map(t=>`<a href="#tema/${t.id}">📖 ${S(t.titulo)} ${t.prio==='alta'?'<span class="tag alta">cai muito</span>':''}</a>`).join('')}</div>`:'<div style="height:8px"></div>'}
@@ -393,6 +418,7 @@ function telaPlano(){
         </div><div class="tempo">${fmtMin(b.min)}</div></div>`; }).join('')
       :'<p class="nota" style="padding:6px 0;">Dia livre. Descansar também faz parte do plano: o cérebro fixa o que você estudou.</p>'}
     </div>
+    ${(()=>{ const ms=metaSemana(); return `<div class="card"><div class="meta-topo"><div><div class="k">Meta de temas da semana</div><div class="v">${ms.feitos} <small>de ${ms.meta} temas</small></div></div><div class="pct"><b>${Math.min(100,Math.round(ms.feitos/ms.meta*100))}%</b><span>da semana</span></div></div><div class="barra"><i style="width:${Math.min(100,ms.feitos/ms.meta*100)}%"></i></div><div class="nota">No seu ritmo, você cobre cerca de <b>${ms.cobertos} dos ${totalTemas} temas</b> até o ENEM, começando pelos 🔥 que mais caem.</div></div>`; })()}
     <div class="card hero"><div class="fase"><span class="ic">${f.ic}</span><div><div class="k">Fase ${f.n} de 3</div><div class="grande" style="font-size:20px;">${f.nome}</div><p style="font-size:13px;">${f.txt}</p></div></div></div>
     <div class="secao">Sua semana completa</div>
     <div class="card">${ORDEM_SEMANA.map(x=>{ const b2=p.plano[x]||[]; return `<div class="row" style="display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--borda);font-size:14px;"><b style="color:var(--navy);width:44px;">${DIAS[x]}</b><span style="flex:1;color:${b2.length?'var(--texto)':'var(--cinza2)'};">${b2.length?b2.map(b=>iconeBloco(b.m)+' '+nomeBloco(b.m)).join(' · '):'Descanso'}</span><span style="color:var(--azul2);font-weight:700;">${b2.length?fmtMin(b2.reduce((a,b)=>a+b.min,0)):''}</span></div>`; }).join('')}</div>
@@ -462,7 +488,7 @@ function telaTema(id){
     <div class="card">
       <span class="tag ${t.prio==='alta'?'alta':'media'}">${t.prio==='alta'?'🔥 Cai muito':'Cai às vezes'}</span>
       <h2 class="disp" style="color:var(--navy);font-size:22px;margin:10px 0 12px;line-height:1.25;">${S(t.titulo)}</h2>
-      <ul class="resumo-txt" style="padding-left:18px;">${t.resumo.map(r=>`<li>${S(r)}</li>`).join('')}</ul>
+      ${t.secoes.map(sc=>`<div class="sec-app"><div class="sec-rot">${S(sc[0])}</div>${sc[1]?`<p>${F(sc[1])}</p>`:''}${sc[2]&&sc[2].length?`<ul>${sc[2].map(i=>`<li>${F(i)}</li>`).join('')}</ul>`:''}${sc[3]?`<p class="sec-fecho">${F(sc[3])}</p>`:''}</div>`).join('')}
       <div class="dica-enem"><b>💡 Como cai no ENEM:</b> ${S(t.dica)}</div>
     </div>
     ${rev?`<button class="btn azul" id="revisei">🧠 Revisei este tema</button>`:`<button class="btn" id="lido" ${lido?'disabled':''}>${lido?'✅ Tema lido':'Marcar como lido'}</button>`}

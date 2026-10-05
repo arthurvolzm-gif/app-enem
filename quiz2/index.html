@@ -7,7 +7,23 @@
 <meta name="description" content="Faça o teste grátis e descubra o seu Índice de Preparo para o ENEM. Receba um plano para o último mês." />
 <meta name="theme-color" content="#1d3f8f" />
 <link rel="stylesheet" href="/shared/quiz-azul.css" />
-<script src="/shared/resumos.js"></script>
+<script src="/shared/conteudo/mat.js"></script>
+<script src="/shared/conteudo/fis.js"></script>
+<script src="/shared/conteudo/qui.js"></script>
+<script src="/shared/conteudo/bio.js"></script>
+<script src="/shared/conteudo/his.js"></script>
+<script src="/shared/conteudo/geo.js"></script>
+<script src="/shared/conteudo/fil.js"></script>
+<script src="/shared/conteudo/soc.js"></script>
+<script src="/shared/conteudo/lin.js"></script>
+<script src="/shared/materias.js"></script>
+<style>
+.capas{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 4px;}
+.capa-mini{aspect-ratio:3/4;border-radius:10px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;box-shadow:0 6px 16px rgba(11,31,77,.25);position:relative;overflow:hidden;}
+.capa-mini span{font-size:10px;opacity:.9;}
+.capa-mini b{font-family:'Open Sans',sans-serif;font-weight:900;font-size:12.5px;color:#ffd84d;text-transform:uppercase;line-height:1.1;margin-top:2px;text-shadow:1px 1px 0 rgba(0,0,0,.3);}
+.capa-mini i{font-style:normal;font-size:18px;margin-top:4px;}
+</style>
 </head>
 <body>
 <div id="app"></div>
@@ -52,7 +68,7 @@ const QUESTIONS = [
   { id:'tentou', question:'Você já montou um cronograma e abandonou no meio do caminho?',
     options:['Sim, várias vezes','Sim, uma vez','Nunca montei um','Não, sempre cumpro'] },
   { id:'materias', type:'multi', max:4, question:'Em quais matérias você tem mais dificuldade?',
-    options:['Matemática','Física','Química','Biologia','História','Geografia','Filosofia e Sociologia','Linguagens','Redação'] },
+    options:['Matemática','Física','Química','Biologia','História','Geografia','Filosofia','Sociologia','Linguagens','Redação'] },
   { id:'resumos', question:'Você sabe quais são os temas que mais caem em cada matéria?',
     options:['Não faço ideia','Sei de alguns, mas estudo tudo igual','Sei, mas não tenho resumo deles','Sei e tenho resumos organizados'] },
   { id:'simulados', question:'Quando foi o seu último simulado completo do ENEM?',
@@ -169,19 +185,23 @@ const RENDER = {
 
   app(){
     const n = nomeA();
+    const C = window.CONTEUDO||{};
+    const capas = ['mat','fis','qui','bio','his','geo','fil','soc','lin'].filter(id=>C[id]).map(id=>`<div class="capa-mini" style="background:${C[id].capa};"><span>Resumo de</span><b>${S(C[id].nome)}</b><i>${C[id].icone}</i></div>`).join('');
     app.innerHTML = `
     <div class="wrap fade"><div class="card">
       ${backBtn()}<div class="brand-sub" style="margin-bottom:6px;">A solução para o seu caso</div>
-      <span class="tag">Conheça o app</span>
-      <h2 class="q-title" style="margin-bottom:8px;">${S(QUIZ.APP_NOME)}: o seu último mês organizado, no celular</h2>
-      <p class="sec-s">${n?n+', foi':'Foi'} feito para quem tem pouco tempo e precisa de direção, sem complicação.</p>
+      <span class="tag">Conheça o material</span>
+      <h2 class="q-title" style="margin-bottom:8px;">Resumos completos do ENEM: as 9 matérias</h2>
+      <p class="sec-s">${n?n+', são':'São'} <b>25 temas por matéria</b>, os que mais caem na prova, explicados de forma simples, visual e direta.</p>
+      <div class="capas">${capas}</div>
+      <div class="sec-h">E o app que diz o que estudar em cada dia</div>
       <div class="feat-grid">
         <div class="feat"><div class="i">📅</div><h5>Plano semanal pronto</h5><p>A matéria de cada dia e o tempo, de acordo com a sua rotina.</p></div>
+        <div class="feat"><div class="i">📚</div><h5>Temas da semana</h5><p>Alguns temas por semana, começando pelos que mais caem.</p></div>
         <div class="feat"><div class="i">📊</div><h5>Desempenho por matéria</h5><p>Tempo estudado e temas já lidos.</p></div>
         <div class="feat"><div class="i">⏰</div><h5>Lembretes de estudo</h5><p>No horário que você escolher.</p></div>
-        <div class="feat"><div class="i">📚</div><h5>Resumo do que mais cai</h5><p>Os temas principais de cada matéria.</p></div>
       </div>
-      <button class="btn" style="margin-top:18px;" onclick="go(1)">Ver o meu plano com o app →</button>
+      <button class="btn" style="margin-top:18px;" onclick="go(1)">Ver o meu plano →</button>
     </div></div>`;
   },
 
@@ -208,7 +228,7 @@ const RENDER = {
       ${tema?`<div class="sec-h">📚 Um resumo do que mais cai</div>
       <div class="phone"><div class="phone-top"><span><i class="dot"></i>${S(M.nome)}</span><span>Prioridade ${S(tema.prio)}</span></div>
         <b style="color:var(--verde-escuro);font-size:15px;">${S(tema.titulo)}</b>
-        <ul style="padding-left:18px;margin:8px 0;">${tema.resumo.slice(0,3).map(r=>`<li style="font-size:13.5px;line-height:1.55;margin-bottom:5px;">${S(r)}</li>`).join('')}</ul>
+        <ul style="padding-left:18px;margin:8px 0;">${(tema.secoes[0][2]||[tema.secoes[0][1]]).slice(0,3).map(r=>`<li style="font-size:13.5px;line-height:1.55;margin-bottom:5px;">${S(r).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')}</li>`).join('')}</ul>
         <div style="background:var(--verde-suave);border-radius:10px;padding:9px 12px;font-size:13px;font-weight:800;color:var(--verde-escuro);text-align:center;">✓ Marcar como lido: entra no seu desempenho</div></div>`:''}
 
       <div class="sec-h">📊 Seu desempenho por matéria</div>
@@ -248,23 +268,31 @@ const RENDER = {
       <div class="blk" style="text-align:center;">
         <span class="tag red">${S(prazoTxt())}</span>
         <h1 class="intro-h1" style="font-size:27px;">${n?n+', c':'C'}omece hoje o plano do seu último mês</h1>
-        <p class="intro-sub" style="font-size:15px;">Seu Índice de Preparo hoje é <strong style="color:${nivel(P.idx).cor};">${P.idx}/100</strong>. O ${S(QUIZ.APP_NOME)} organiza o que estudar em cada dia até a prova.</p>
+        <p class="intro-sub" style="font-size:15px;">Seu Índice de Preparo hoje é <strong style="color:${nivel(P.idx).cor};">${P.idx}/100</strong>. Os resumos trazem o que mais cai, e o app diz o que estudar em cada dia até a prova.</p>
       </div>
       <div class="blk">
         <h3 class="sec-h" style="margin-top:0;">O que você recebe</h3>
+        <div class="capas" style="margin-bottom:12px;">${['mat','fis','qui','bio','his','geo','fil','soc','lin'].filter(id=>(window.CONTEUDO||{})[id]).map(id=>`<div class="capa-mini" style="background:${CONTEUDO[id].capa};"><span>Resumo de</span><b>${S(CONTEUDO[id].nome)}</b><i>${CONTEUDO[id].icone}</i></div>`).join('')}</div>
+        <ul class="lista">
+          <li><span><b>9 resumos completos em PDF:</b> Matemática, Física, Química, Biologia, História, Geografia, Filosofia, Sociologia e Linguagens</span></li>
+          <li><span><b>25 temas por matéria</b> (225 no total), com os que mais caem marcados com 🔥</span></li>
+          <li><span><b>"Como cai no ENEM"</b> no fim de cada tema</span></li>
+          <li><span>Feito para ler no celular ou imprimir, com espaço para anotações</span></li>
+        </ul>
+        <p style="font-size:13px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--verde);margin:18px 0 4px;">Junto: o app ${S(QUIZ.APP_NOME)}</p>
         <ul class="lista">
           <li><span><b>Plano semanal pronto:</b> a matéria de cada dia e o tempo, de acordo com a sua rotina</span></li>
+          <li><span><b>Temas da semana:</b> alguns por semana até o ENEM, começando pelos que mais caem</span></li>
           <li><span><b>Desempenho por matéria:</b> tempo estudado e temas já lidos</span></li>
           <li><span><b>Lembretes de estudo</b> no horário que você escolher</span></li>
-          <li><span><b>Resumo do que mais cai</b> em cada matéria, com os temas principais</span></li>
         </ul>
       </div>
       <div class="blk">
         <div class="price-box">
-          <div class="label">Acesso até o dia do ENEM</div>
+          <div class="label">9 resumos em PDF + app</div>
           <div class="val">${S(QUIZ.PRECO_POR)}</div>
           <div style="font-size:13px;opacity:.9;">pagamento único, sem mensalidade</div>
-          <span class="off">Acesso imediato no celular</span>
+          <span class="off">Receba agora no seu e-mail</span>
         </div>
         <button class="btn" onclick="irCheckout('oferta')">Quero começar agora →</button>
         <p class="note">Compra segura • Funciona direto no navegador do celular • Sem instalar nada</p>
@@ -272,7 +300,7 @@ const RENDER = {
       <div class="blk garantia">
         <img src="/img/garantia-7-dias.png" alt="Garantia de 7 dias" onerror="this.outerHTML='<div class=&quot;sel&quot;>7 DIAS<br>DE GARANTIA</div>'">
         <div><h3 style="font-family:'Open Sans';font-size:18px;font-weight:900;color:var(--verde-escuro);margin-bottom:6px;">Garantia de 7 dias</h3>
-        <p style="font-size:14px;color:#525d78;line-height:1.6;">Use o app por 7 dias. Se não gostar, peça o reembolso dentro do prazo e devolvemos o valor pago.</p></div>
+        <p style="font-size:14px;color:#525d78;line-height:1.6;">Use os resumos e o app por 7 dias. Se não gostar, peça o reembolso dentro do prazo e devolvemos o valor pago.</p></div>
       </div>
       <div class="blk faq">
         <h3 class="sec-h" style="margin-top:0;">Dúvidas frequentes</h3>
@@ -280,6 +308,8 @@ const RENDER = {
         <details><summary>Não tenho tempo para estudar muito. Serve para mim?</summary><p>Serve. O plano parte do tempo que você tem hoje, a partir de 30 minutos por dia, e cada dia já mostra o que estudar.</p></details>
         <details><summary>Já tentei cronograma e larguei. O que muda?</summary><p>No app o plano já vem pronto e você recebe lembretes na hora de estudar. Você não precisa montar nem lembrar de nada sozinho.</p></details>
         <details><summary>Tem exercícios e correção de redação?</summary><p>No checkout você pode incluir os Exercícios e simulados no estilo do ENEM e a Correção da redação pela foto.</p></details>
+        <details><summary>Como recebo os resumos?</summary><p>Logo após a compra, os 9 PDFs chegam no seu e-mail, junto com o link do app. Você pode ler no celular, no computador ou imprimir.</p></details>
+        <details><summary>Preciso estudar os 225 temas?</summary><p>Não precisa ler tudo de uma vez. O app distribui alguns temas por semana até o ENEM, começando pelos que mais caem, de acordo com o tempo que você tem.</p></details>
         <details><summary>Preciso instalar algum aplicativo?</summary><p>Não. O app abre no navegador do celular e você pode adicioná-lo à tela inicial.</p></details>
         <details><summary>E se eu não gostar?</summary><p>Você tem 7 dias de garantia. Se não gostar, peça o reembolso dentro do prazo.</p></details>
         <details><summary>Isso é oficial do ENEM ou do MEC?</summary><p>Não. É um produto independente, sem vínculo com o INEP, o MEC ou o Governo Federal.</p></details>
