@@ -54,7 +54,13 @@
   }
 
   window.Acesso = {
-    tem: p => !!ler()[p],
+    /* com login ligado, quem está logado entra direto nos produtos de LIBERADO_COM_CONTA
+       (sem tela de código). Os bumps (correção, exercícios) continuam pedindo código. */
+    tem: p => {
+      const lib = (window.ENEM_CONFIG && ENEM_CONFIG.LIBERADO_COM_CONTA) || [];
+      if(window.Conta && Conta.ativo && Conta.usuario() && lib.includes(p)) return true;
+      return !!ler()[p];
+    },
     codigo: p => ler()[p] || '',
     resgatar, lerDaUrl,
     sair: ()=>{ try{ localStorage.removeItem(CHAVE); }catch(e){} }

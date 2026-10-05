@@ -34,11 +34,12 @@ O e-mail de recuperação precisa de um SMTP próprio (Resend, Brevo etc.):
 **Authentication → Emails → SMTP Settings**. Sem isso, o botão existe, mas o e-mail não chega.
 
 ## Como fica para o aluno
-1. Compra na Ticto e recebe o link de entrega (ex.: `/redacao?k=CÓDIGO`).
-2. Abre o link, **cria a conta** (nome, e-mail, senha). O produto é ligado à conta na hora.
-3. Nas próximas vezes, só **entra** com e-mail e senha, em qualquer aparelho. A mesma conta vale para `/redacao` e `/materias`.
-4. Tudo fica salvo na conta: plano, tempo estudado, temas lidos, respostas, favoritos e correções.
+1. Cria a conta (nome, e-mail, senha) e já entra: sem tela de código.
+2. Quem está logado acessa o Arsenal (`/redacao`) e o Plano (`/materias`): ver `LIBERADO_COM_CONTA` em `shared/config.js`.
+3. Correção por foto e Exercícios e simulados continuam bloqueados até a pessoa abrir o link do bump (`?k=CÓDIGO`) ou digitar o código.
+4. Tudo fica salvo na conta e vale em qualquer aparelho.
 
 ## Limite conhecido
-O código do link de entrega pode ser repassado e ligado a outra conta. Se isso virar problema,
-o próximo passo é o webhook da Ticto liberar o produto pelo e-mail da compra.
+Qualquer pessoa que chegar em `/redacao` ou `/materias` consegue criar conta e usar o Arsenal e o Plano
+sem ter comprado. Os códigos dos bumps também podem ser repassados. Se isso virar problema, o próximo
+passo é o webhook da Ticto liberar cada produto pelo e-mail da compra.

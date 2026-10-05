@@ -8,6 +8,10 @@ window.ENEM_CONFIG = {
   SUPABASE_URL: 'https://mogirincherfbikrkmrz.supabase.co',
   SUPABASE_KEY: 'sb_publishable_cDVVobvbNCQhciAGhzT9SQ_BaUAstdR',
 
+  /* produtos que abrem só de estar logado (sem pedir código).
+     Correção por foto e exercícios ficam de fora: continuam pagos à parte. */
+  LIBERADO_COM_CONTA: ['arsenal', 'plano'],
+
   /* links de checkout usados nos botões "Desbloquear" dentro dos apps.
      Vazio = o botão mostra um aviso em vez de levar ao checkout. */
   CHECKOUT: {
