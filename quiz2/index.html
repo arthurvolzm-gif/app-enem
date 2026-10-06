@@ -157,16 +157,20 @@ function matsDificeis(){ return (state.answers.materias||[]).filter(m=>m!=='Reda
 /* plano da semana montado com as respostas */
 const MIN_POR_DIA = {'Não estou estudando':45,'Menos de 1 hora':45,'De 1 a 2 horas':90,'De 2 a 4 horas':120,'Mais de 4 horas':150};
 function fmt(m){ return m>=60 ? (Math.floor(m/60)+'h'+(m%60?String(m%60).padStart(2,'0'):'')) : (m+' min'); }
+const TODAS_MATS = ['Matemática','Física','Química','Biologia','História','Geografia','Filosofia','Sociologia','Linguagens','Redação'];
+/* mesma lógica do app: todas as matérias entram na semana; com 6 dias de estudo, cada dia leva 2 matérias
+   e o tempo é dividido entre elas. As prioritárias vêm primeiro e se repetem mais. */
 function montaPlano(){
-  let mats = matsDificeis();
-  ['Matemática','Linguagens','Biologia','História'].forEach(m=>{ if(mats.length<4 && !mats.includes(m)) mats.push(m); });
-  mats = mats.slice(0,4);
+  const dif = matsDificeis();
+  const fila = [...dif, ...TODAS_MATS.filter(m=>!dif.includes(m))];
   const mi = MIN_POR_DIA[state.answers.horas] || 60;
-  return [
-    {d:'Seg', m:mats[0], t:fmt(mi)}, {d:'Ter', m:mats[1], t:fmt(mi)}, {d:'Qua', m:'Redação', t:fmt(mi)},
-    {d:'Qui', m:mats[2], t:fmt(mi)}, {d:'Sex', m:mats[0], t:fmt(mi)}, {d:'Sáb', m:mats[3], t:fmt(mi)},
-    {d:'Dom', m:'Revisão da semana', t:fmt(Math.max(60,mi))}
-  ];
+  const dias = ['Seg','Ter','Qua','Qui','Sex','Sáb'], porDia = Math.ceil(fila.length/dias.length);
+  const base = Math.floor(mi/porDia/5)*5; let sobra = mi - base*porDia;
+  const mins = [...Array(porDia)].map(()=>{ const x = base + (sobra>=5?5:0); if(sobra>=5) sobra-=5; return x; });
+  let k = 0;
+  const linhas = dias.map(d=>{ const itens = mins.map(min=>({m:fila[(k++)%fila.length], min})); return {d, itens, total:mi}; });
+  linhas.push({d:'Dom', itens:[{m:'Revisão da semana', min:Math.max(60,mi)}], total:Math.max(60,mi)});
+  return linhas;
 }
 
 /* =========================================================
@@ -365,7 +369,7 @@ const RENDER = {
   projecao(){
     const a = state.answers, n = nomeA();
     const P = calcPreparo(), niv = nivel(P.idx);
-    const plano = montaPlano();
+    const plano = montaPlano(), dif = matsDificeis(), semanaMin = plano.reduce((x,p)=>x+p.total,0);
     const metaIdx = P.idx>=65 ? 90 : P.idx>=45 ? 75 : 60, metaFaixa = P.idx>=65 ? 'Preparado' : P.idx>=45 ? 'Preparado' : 'Em evolução';
     const nomes = matsDificeis().length ? matsDificeis() : ['Matemática','Biologia'];
     /* resumo real do app para a 1ª matéria difícil */
@@ -397,8 +401,19 @@ const RENDER = {
 
       <div class="sec-h" style="margin-top:6px;">📅 Sua semana de estudos</div>
       <div class="phone"><div class="phone-top"><span><i class="dot"></i>Plano da semana</span><span>${S(a.horas||'')}</span></div>
-        <table class="plano">${plano.map(p=>`<tr><td class="d">${p.d}</td><td class="m">${S(p.m)}</td><td class="h">${p.t}</td></tr>`).join('')}</table>
-        <p class="note" style="margin-top:8px;">As matérias em que você tem mais dificuldade aparecem com mais frequência. Você ajusta os dias no app.</p></div>
+        <table class="plano">${plano.map(p=>`<tr><td class="d">${p.d}</td><td class="m">${p.itens.map(i=>`<div>${S(i.m)}${p.itens.length>1?` <span style="color:#8a98b5;font-weight:600;font-size:12.5px;">${fmt(i.min)}</span>`:''}</div>`).join('')}</td><td class="h">${fmt(p.total)}</td></tr>`).join('')}</table>
+        <p class="note" style="margin-top:8px;">Todas as matérias entram na semana, em 2 por dia quando preciso, com o tempo dividido entre elas. As que você marcou como dificuldade vêm primeiro e se repetem mais. Você ajusta os dias e o tempo no app.</p></div>
+
+      <div class="sec-h">📋 Resumo do seu plano</div>
+      <div class="com-lista" style="text-align:left;">
+        <div class="com-item"><span class="ck">✓</span><span style="font-weight:500;"><b>${fmt(semanaMin)} por semana</b> de estudo, de segunda a sábado, mais a revisão no domingo</span></div>
+        <div class="com-item"><span class="ck">✓</span><span style="font-weight:500;"><b>As ${TODAS_MATS.length} matérias</b> da prova cobertas na semana, incluindo a Redação</span></div>
+        ${dif.length?`<div class="com-item"><span class="ck">✓</span><span style="font-weight:500;"><b>Foco em ${S(dif.join(', ').replace(/, ([^,]*)$/, ' e $1'))}</b>, que aparecem mais vezes</span></div>`:''}
+        <div class="com-item"><span class="ck">✓</span><span style="font-weight:500;"><b>Os 225 temas que mais caem</b>, dos que mais pesam para os que menos pesam</span></div>
+        <div class="com-item"><span class="ck">✓</span><span style="font-weight:500;"><b>Revisão no tempo certo</b> e o seu desempenho por matéria salvos a cada tema lido</span></div>
+        <div class="com-item"><span class="ck">✓</span><span style="font-weight:500;"><b>${S(prazoTxt())}</b>: o plano foi pensado para esse prazo</span></div>
+      </div>
+      <p class="note" style="margin-top:8px;">Plano montado com as suas respostas. Você ajusta tudo no app. O resultado depende da sua dedicação.</p>
 
       <button class="btn" style="margin-top:14px;" onclick="go(1)">Quero ativar o meu plano →</button>
     </div></div>`;
