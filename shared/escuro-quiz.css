@@ -96,3 +96,9 @@ html.escuro .preco-card .pc-de{color:#5d737b;}
 html.escuro .preco-card .pc-vista{color:var(--txt2);}
 html.escuro .preco-card .pc-parc{color:#fff;}
 html.escuro .preco-card .pc-nota{color:var(--txt3);}
+
+/* pontos críticos em amarelo */
+html.escuro .alerta.amarelo{background:#2a2108;}
+html.escuro .alerta.amarelo p{color:#ffd24d;}
+html.escuro .box.crit{border-left-color:#e0a400;}
+html.escuro .box.crit h4{color:#ffd24d;}

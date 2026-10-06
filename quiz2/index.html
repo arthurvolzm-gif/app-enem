@@ -80,6 +80,10 @@ if(/\/escuro\/?$/.test(location.pathname)||/[?&]tema=escuro/.test(location.searc
 .preco-card .pc-vista{font-size:15px;color:#46506a;margin-top:4px;}
 .preco-card .pc-btn{display:block;width:100%;margin-top:20px;background:linear-gradient(135deg,#0b1f4d,#2a55b8);color:#fff;font-weight:800;font-size:15px;letter-spacing:.3px;padding:17px 12px;border-radius:50px;border:none;cursor:pointer;box-shadow:0 10px 24px rgba(11,31,77,.25);}
 .preco-card .pc-nota{font-size:12px;line-height:1.7;color:#8a98b5;margin-top:16px;}
+.alerta.amarelo{background:#fff6d6;}
+.alerta.amarelo p{color:#8a5a00;}
+.box.crit{border-left:4px solid #e0a400;}
+.box.crit h4{color:#8a5a00;}
 .pdf-fecho{margin-top:16px;font-size:14.5px;font-weight:700;color:var(--verde-escuro);line-height:1.6;}
 </style>
 </head>
@@ -334,15 +338,15 @@ const RENDER = {
         ${barrasHTML(P.areas, true)}
         <p class="note">Estimativa educativa calculada a partir das suas respostas.</p>
       </div>
-      <div class="alerta" style="margin-top:20px;${nCrit===0?VERDE:''}"><p style="font-size:15px;letter-spacing:.4px;${nCrit===0?'color:#16764a;':''}">${nCrit===0?'✅ TODOS OS PONTOS ESTÃO BEM ENCAMINHADOS':nCrit===1?'⚠️ 1 PONTO PARA MELHORAR FOI IDENTIFICADO':`⚠️ ${nCrit} PONTOS CRÍTICOS FORAM IDENTIFICADOS`}</p></div>
+      <div class="alerta${nCrit>0?' amarelo':''}" style="margin-top:20px;${nCrit===0?VERDE:''}"><p style="font-size:15px;letter-spacing:.4px;${nCrit===0?'color:#16764a;':''}">${nCrit===0?'✅ TODOS OS PONTOS ESTÃO BEM ENCAMINHADOS':nCrit===1?'⚠️ 1 PONTO PARA MELHORAR FOI IDENTIFICADO':`⚠️ ${nCrit} PONTOS CRÍTICOS FORAM IDENTIFICADOS`}</p></div>
       ${okRotina ? caixaOk('1 · Sua rotina é um ponto forte',`${a.dias==='Todos os dias'?'Estudar <strong>todos os dias</strong>':'Estudar <strong>'+S((a.dias||'').toLowerCase())+'</strong> por semana'}, <strong>${S((a.horas||'').toLowerCase())}</strong> por dia, é uma base sólida. O desafio agora é manter esse ritmo até a prova.`)
-        : `<div class="box"><h4>1 · Sua rotina não está protegendo o seu tempo</h4>
+        : `<div class="box crit"><h4>1 · Sua rotina não está protegendo o seu tempo</h4>
         <p>Estudar <strong>${S((a.dias||'').toLowerCase())}</strong> por semana e <strong>${S((a.horas||'').toLowerCase())}</strong> por dia, ${semPlano?'sem um plano que você consiga cumprir,':'sem priorizar o que mais cai,'} deixa a preparação irregular justo no último mês.</p></div>`}
       ${okPrior ? caixaOk('2 · Você já estuda com prioridade','Você sabe o que mais cai e já tem o conteúdo organizado. Falta só distribuir o tempo entre as matérias para nenhuma ficar para trás.')
-        : `<div class="box"><h4>2 · Você está estudando sem prioridade</h4>
+        : `<div class="box crit"><h4>2 · Você está estudando sem prioridade</h4>
         <p>${(a.resumos||'').startsWith('Sei e tenho')?'Mesmo com resumos, sem saber quanto tempo dedica a cada matéria fica difícil equilibrar.':'Sem saber quais temas mais caem, o tempo vai para o que menos pesa na prova.'}</p></div>`}
       ${okDesemp ? caixaOk('3 · Você acompanha o seu desempenho','Fazer simulados com frequência mostra onde estão os pontos fracos. O próximo passo é transformar isso em revisão por matéria.')
-        : `<div class="box"><h4>3 · Você não sabe onde está perdendo pontos</h4>
+        : `<div class="box crit"><h4>3 · Você não sabe onde está perdendo pontos</h4>
         <p>${(a.simulados==='Nunca fiz um'||a.simulados==='Há mais de 3 meses')?'Sem simulados recentes e sem acompanhar o desempenho por matéria,':'Sem acompanhar o desempenho por matéria,'} você não enxerga em qual matéria o tempo rende mais.</p></div>`}
       <div style="background:#eef3fc;border:1px solid #d5e0f3;border-radius:14px;padding:20px;margin:6px 0 0;text-align:center;">
         <p style="color:var(--verde-escuro);font-size:15.5px;font-weight:800;line-height:1.55;">${forte?'Você já está no caminho. Com um plano pronto, os temas certos e o seu desempenho acompanhado, <strong>dá para aproveitar ainda melhor o último mês</strong>.':'Mas ainda dá para reagir. Com um plano pronto, os temas certos e o seu desempenho acompanhado, <strong>o último mês pode ser muito mais bem aproveitado</strong>.'}</p></div>
