@@ -312,3 +312,96 @@ details.acc .ct{padding:0 16px 14px;font-size:14px;line-height:1.6;}
 .tp-check.on{background:var(--verde);border-color:var(--verde);color:#fff;}
 .tp-resumo{padding:4px 14px 14px;}
 .bloco-acoes{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* =========================================================
+   REDESIGN: ícones de contorno, logo, cabeçalho em degradê,
+   campos com ícone, grade de matérias e menu com pílula.
+   (títulos e botões seguem na escala compacta, sem exagero)
+   ========================================================= */
+svg{flex:none;}
+.logo-mk{width:38px;height:38px;border-radius:12px;background:#fff;color:var(--azul2);display:inline-flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(11,31,77,.18);}
+.logo-mk svg{width:22px;height:22px;}
+.logo{font-weight:500;font-size:19px;gap:10px;}
+.logo b{font-weight:800;}
+.logo-esc{color:var(--navy);margin-bottom:22px;}
+.logo-esc .logo-mk{background:var(--navy);color:#fff;}
+
+/* ícone de matéria */
+.mi{display:inline-flex;vertical-align:-4px;width:20px;height:20px;color:var(--azul2);}
+.mi svg{width:100%;height:100%;}
+.mi-mat{color:#e6a100}.mi-fis{color:#f0a000}.mi-qui{color:#12a36a}.mi-bio{color:#2fa24f}.mi-his{color:#e0702f}.mi-geo{color:#2a8fd0}.mi-fil{color:#7b61ff}.mi-soc{color:#e0489a}.mi-lin{color:#d6457a}.mi-red{color:#3b6fd8}.mi-revisao{color:#3b6fd8}
+
+/* login */
+.login-hero{padding:44px 26px 74px;text-align:center;}
+.login-hero .logo{justify-content:center;}
+.login-hero::before{width:300px;height:300px;right:-110px;top:-90px;background:rgba(255,255,255,.07);}
+.login-hero::after{width:220px;height:220px;left:-90px;bottom:-110px;background:rgba(255,255,255,.06);}
+.login-hero h1{font-size:27px;}
+.abas{background:var(--suave2);border:none;border-radius:16px;}
+.abas button{border-radius:13px;}
+.abas button.on{background:var(--suave);color:var(--azul);box-shadow:none;}
+.inp-w{position:relative;margin-bottom:12px;}
+.inp-i{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--cinza);display:flex;pointer-events:none;}
+.inp-i svg{width:21px;height:21px;}
+.inp-w .inp{border-radius:16px;padding:16px 46px 16px 50px;}
+.inp-olho{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:var(--cinza);}
+.inp-olho svg{width:21px;height:21px;}
+.login-box .btn{margin-top:6px;}
+.btn svg{width:18px;height:18px;}
+.selos{gap:10px 14px;}
+.selos span{display:inline-flex;align-items:center;gap:5px;}
+.selos svg{width:16px;height:16px;color:var(--azul2);}
+
+/* onboarding */
+.ob .voltar{border-radius:14px;background:var(--suave);border:none;color:var(--azul);}
+.ob-prog{height:8px;}
+.esc button .r{border-width:2px;}
+.esc button.on .r{background:#fff;border-color:var(--azul2);position:relative;}
+.esc button.on .r::after{content:'';width:11px;height:11px;border-radius:50%;background:var(--azul2);}
+.grade-mat{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.grade-mat button{display:flex;align-items:center;gap:11px;padding:15px 14px;border:1.5px solid var(--borda);border-radius:16px;background:#fff;font-weight:600;font-size:15px;color:var(--texto);text-align:left;}
+.grade-mat button svg{width:24px;height:24px;color:var(--azul);}
+.grade-mat button.on{background:var(--navy);border-color:var(--navy);color:#fff;}
+.grade-mat button.on svg{color:#fff;}
+.gerando .logo-esc{margin-bottom:26px;}
+.resumo-plano .linha .e{width:42px;height:42px;border-radius:12px;background:var(--suave2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+
+/* início: cabeçalho em degradê com os cartões por cima */
+.topo-hero{background:linear-gradient(160deg,var(--navy),var(--azul) 70%,#2a55b8);color:#fff;padding:22px 20px 58px;position:relative;overflow:hidden;border-radius:0 0 28px 28px;}
+.topo-hero::before{content:'';position:absolute;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.07);right:-80px;top:-90px;}
+.th-linha{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;margin-bottom:18px;}
+.topo-hero .logo{color:#fff;}
+.topo-hero .sino{margin:0;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#fff;box-shadow:none;}
+.topo-hero .sino svg{width:21px;height:21px;}
+.topo-hero .saud{color:rgba(255,255,255,.8);position:relative;z-index:1;}
+.topo-hero .nome{color:#fff;position:relative;z-index:1;}
+.topo-hero .fogo svg{width:15px;height:15px;color:#ff7a1a;}
+.topo-hero + .tela{margin-top:-30px;position:relative;z-index:2;}
+.atalho .ic svg{width:22px;height:22px;}
+.atalho .seta svg,.seta svg{width:20px;height:20px;}
+.atalho .tag-lock svg{width:19px;height:19px;color:var(--cinza);}
+
+/* menu inferior com pílula no item ativo */
+.nav button{margin:6px 3px 8px;padding:8px 2px 7px;border-radius:16px;}
+.nav button.on{background:var(--suave);color:var(--azul2);}
+.nav button.on svg{stroke:var(--azul2);}
+
+/* plano */
+.bloco .mi{width:22px;height:22px;vertical-align:-5px;}
+.btn.sm svg{width:14px;height:14px;}
+
+/* progresso e perfil */
+.stats>div{display:flex;flex-direction:column;align-items:flex-start;gap:2px;}
+.stats .si{width:36px;height:36px;border-radius:11px;background:var(--suave);color:var(--azul2);display:flex;align-items:center;justify-content:center;margin-bottom:4px;}
+.stats .si svg{width:20px;height:20px;}
+.stats .si-f{background:#fff0e6;color:#ff7a1a;}
+.stats .si-c{background:#fff6dc;color:#e6a100;}
+.nivel .topo-n{align-items:center;gap:12px;}
+.nivel .tr{width:46px;height:46px;border-radius:14px;background:#fff;color:var(--azul2);display:flex;align-items:center;justify-content:center;flex:none;}
+.nivel .tr svg{width:26px;height:26px;}
+.voltar svg,.barra-topo .voltar svg{width:20px;height:20px;}
+.topo-hero .saud{font-size:14px;}
+.topo-hero .nome{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;display:flex;align-items:center;gap:10px;line-height:1.15;}
+.nav .in{padding:0 6px;}
+.nav button{margin:6px 1px 8px;min-width:0;}
+.stats>div b{font-family:'Plus Jakarta Sans',sans-serif;}

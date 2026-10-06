@@ -56,7 +56,55 @@ function mat(id){ return M.find(m=>m.id===id); }
 function checkout(prod){ const url=C.CHECKOUT[prod]; if(!url){ toast('Link de compra ainda não configurado.'); return; } location.href=url; }
 function saudacao(){ const h=new Date().getHours(); return h<12?'Bom dia':h<18?'Boa tarde':'Boa noite'; }
 function primeiroNome(){ const p=perfil(); return ((p&&p.nome)||Conta.nome()||'').split(' ')[0]; }
-function barraTopo(titulo, voltar){ return `<div class="barra-topo">${voltar?`<button class="voltar" onclick="history.back()" aria-label="Voltar">←</button>`:''}<h1>${titulo}</h1></div>`; }
+/* ícones de contorno (SVG) no lugar dos emojis */
+const _sv=(d,w)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w||1.9}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const ICO = {
+  mat:'<path d="M4 4v16h16z"/><path d="M8.5 15.5h3"/>',
+  fis:'<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+  qui:'<path d="M9 3h6M10 3v6l-5.5 9.5A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-2.5L14 9V3"/><path d="M7.5 15h9"/>',
+  bio:'<path d="M8 3c0 5 8 5 8 9s-8 4-8 9M16 3c0 5-8 5-8 9s8 4 8 9"/><path d="M9.5 6.5h5M9.5 17.5h5M8.7 12h6.6"/>',
+  his:'<path d="M3 9l9-5 9 5"/><path d="M5 9v9M9.5 9v9M14.5 9v9M19 9v9M3 21h18"/>',
+  geo:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3.3 3.2 3.3 14.8 0 18M12 3c-3.3 3.2-3.3 14.8 0 18"/>',
+  fil:'<path d="M7 17.5a4 4 0 0 1-.7-7.9A5.5 5.5 0 0 1 17 8.3a4 4 0 0 1 .5 9.2z"/><circle cx="4.5" cy="21" r="1"/>',
+  soc:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.6 2.7-6 6-6s6 2.4 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M16.2 14.3c2.9.3 4.8 2.3 4.8 5.7"/>',
+  lin:'<path d="M12 6C10 4.5 7 4 4 4v14c3 0 6 .5 8 2 2-1.5 5-2 8-2V4c-3 0-6 .5-8 2zM12 6v14"/>',
+  red:'<path d="M4 20l1-4L16 5l3 3L8 19z"/><path d="M14 7l3 3"/>',
+  revisao:'<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/>',
+  usuario:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',
+  email:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/>',
+  senha:'<rect x="5" y="11" width="14" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+  olho:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  olhoX:'<path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.7 6.7A17 17 0 0 0 2 12s3.6 7 10 7a9.7 9.7 0 0 0 4.3-1"/>',
+  cadeado:'<rect x="5" y="11" width="14" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+  celular:'<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18h2"/>',
+  nuvem:'<path d="M7 18a4.5 4.5 0 0 1-.6-8.9A6 6 0 0 1 18 9.5 4 4 0 0 1 17.5 18z"/>',
+  calendario:'<rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18"/>',
+  livros:'<path d="M12 3 2.5 8 12 13l9.5-5z"/><path d="M5.5 11v5c0 1.2 3 3 6.5 3s6.5-1.8 6.5-3v-5"/>',
+  prova:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>',
+  camera:'<path d="M4 8h3l1.5-2.5h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/>',
+  barras:'<path d="M5 20V11M12 20V4M19 20v-6"/>',
+  sino:'<path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 21a2 2 0 0 0 4 0"/>',
+  seta:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  volta:'<path d="M19 12H5M11 6l-6 6 6 6"/>',
+  chevD:'<path d="M6 9l6 6 6-6"/>',
+  chevR:'<path d="M9 6l6 6-6 6"/>',
+  play:'<path d="M7 4.5v15l13-7.5z" fill="currentColor"/>',
+  trofeu:'<path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H4v1a4 4 0 0 0 4 4M16 6h4v1a4 4 0 0 1-4 4M12 13v4M8 21h8M10 17h4"/>',
+  relogio:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  coroa:'<path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/>',
+  chama:'<path d="M12 22c4 0 7-2.8 7-7 0-3-1.8-5.2-3.5-7-.4 1.6-1.3 2.6-2.5 3 .3-3.2-1-6.2-4-9-.2 3.6-1.8 5.4-3 7.2C4.7 11.2 5 13 5 15c0 4.2 3 7 7 7z"/>',
+  engrenagem:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/>',
+  alarme:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M4 4 2 6M20 4l2 2"/>',
+  arquivo:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
+  chave:'<circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M16 7l3 3"/>',
+  sair:'<path d="M9 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3M16 17l5-5-5-5M21 12H9"/>',
+  alerta:'<path d="M12 3 2 20h20z"/><path d="M12 10v5M12 18v.1"/>'
+};
+const ic = (k,w)=>_sv(ICO[k]||'',w);
+const LOGO = `<span class="logo-mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 12.8 10 17.3 18.5 7.5"/></svg></span>`;
+function svgMat(id){ return `<span class="mi mi-${id}">${ic(id)}</span>`; }
+
+function barraTopo(titulo, voltar){ return `<div class="barra-topo">${voltar?`<button class="voltar" onclick="history.back()" aria-label="Voltar">${ic('volta',2.2)}</button>`:''}<h1>${titulo}</h1></div>`; }
 function anel(pct, valor, rotulo, cls, cor){
   const r=42, c=2*Math.PI*r, p=Math.max(0,Math.min(100,pct||0));
   return `<div class="anel ${cls||''}"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="${r}" fill="none" stroke="#eaf0fb" stroke-width="9"/><circle cx="50" cy="50" r="${r}" fill="none" stroke="${cor||'url(#gAzul)'}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-p/100)}"/><defs><linearGradient id="gAzul" x1="0" x2="1"><stop offset="0" stop-color="#1d3f8f"/><stop offset="1" stop-color="#3b6fd8"/></linearGradient></defs></svg><div class="c"><b>${valor}</b>${rotulo?`<span>${rotulo}</span>`:''}</div></div>`;
@@ -104,7 +152,7 @@ function gerarPlano(p){
   return plano;
 }
 function nomeBloco(id){ return id==='revisao' ? 'Revisão da semana' : (mat(id)?mat(id).nome:id); }
-function iconeBloco(id){ return id==='revisao' ? '🔁' : (mat(id)?mat(id).icone:'📘'); }
+function iconeBloco(id){ return ICO[id] ? svgMat(id) : '📘'; }
 function proximosTemas(mid, n){ const m=mat(mid); if(!m) return []; const L=lidos(); return m.temas.filter(t=>!L.includes(t.id)).sort((a,b)=>(a.prio==='alta'?0:1)-(b.prio==='alta'?0:1)).slice(0,n||1); }
 function blocoFeito(dIso, b){ const feito = sessoes().filter(s=>s.d===dIso && s.m===b.m).reduce((a,s)=>a+s.min,0); return feito >= Math.round(b.min*0.8); }
 function blocosHoje(){ const p=perfil(); return (p.plano[new Date().getDay()]||[]); }
@@ -199,22 +247,25 @@ function telaLogin(msg, erro){
   nav.style.display='none';
   const v = id=>{ const e=document.getElementById(id); return e?e.value:''; };
   const keep = {nome:v('lNome'), email:v('lEmail')};
+  const cmp=(icone,html)=>`<div class="inp-w"><span class="inp-i">${ic(icone,1.8)}</span>${html}</div>`;
   app.innerHTML = `<div class="login">
     <div class="login-hero">
-      <div class="logo"><i>✓</i>Plano ENEM</div>
+      <div class="logo">${LOGO}<span>Plano <b>ENEM</b></span></div>
       <h1>${modoLogin==='recuperar'?'Vamos recuperar o seu acesso':'O seu plano de estudos até o ENEM'}</h1>
       <p>${modoLogin==='recuperar'?'Enviaremos um link para você criar uma senha nova.':'Crie a sua conta para salvar o seu progresso e acessar de qualquer aparelho.'}</p>
     </div>
     <div class="login-box">
       ${modoLogin!=='recuperar'?`<div class="abas"><button class="${modoLogin==='criar'?'on':''}" onclick="modoLogin='criar';telaLogin()">Criar conta</button><button class="${modoLogin==='entrar'?'on':''}" onclick="modoLogin='entrar';telaLogin()">Entrar</button></div>`:''}
-      ${modoLogin==='criar'?`<div class="campo"><label for="lNome">Seu primeiro nome</label><input class="inp" id="lNome" autocomplete="given-name" maxlength="30" placeholder="Como quer ser chamado(a)"></div>`:''}
-      <div class="campo"><label for="lEmail">E-mail</label><input class="inp" id="lEmail" type="email" inputmode="email" autocomplete="email" placeholder="o mesmo da compra"></div>
-      ${modoLogin!=='recuperar'?`<div class="campo"><label for="lSenha">Senha</label><input class="inp" id="lSenha" type="password" autocomplete="${modoLogin==='criar'?'new-password':'current-password'}" placeholder="${modoLogin==='criar'?'Mínimo de 6 caracteres':'Sua senha'}"></div>`:''}
+      ${modoLogin==='criar'?cmp('usuario',`<input class="inp" id="lNome" aria-label="Seu primeiro nome" autocomplete="given-name" maxlength="30" placeholder="Seu primeiro nome">`):''}
+      ${cmp('email',`<input class="inp" id="lEmail" aria-label="E-mail" type="email" inputmode="email" autocomplete="email" placeholder="E-mail (o mesmo da compra)">`)}
+      ${modoLogin!=='recuperar'?cmp('senha',`<input class="inp" id="lSenha" aria-label="Senha" type="password" autocomplete="${modoLogin==='criar'?'new-password':'current-password'}" placeholder="${modoLogin==='criar'?'Senha (mínimo de 6 caracteres)':'Senha'}"><button type="button" class="inp-olho" id="lOlho" aria-label="Mostrar a senha">${ic('olhoX',1.8)}</button>`):''}
       ${msg?`<p class="${erro?'erro-msg':'ok-msg'}">${S(msg)}</p>`:''}
-      <button class="btn" id="lOk">${modoLogin==='criar'?'Criar minha conta':modoLogin==='entrar'?'Entrar':'Enviar link'}</button>
+      <button class="btn" id="lOk">${modoLogin==='criar'?'Criar minha conta':modoLogin==='entrar'?'Entrar':'Enviar link'} ${modoLogin==='criar'?ic('seta',2.2):''}</button>
       <p style="text-align:center;margin-top:16px;">${modoLogin==='entrar'?'<a href="#" class="link" onclick="modoLogin=\'recuperar\';telaLogin();return false;">Esqueci a minha senha</a>':modoLogin==='recuperar'?'<a href="#" class="link" onclick="modoLogin=\'entrar\';telaLogin();return false;">Voltar para entrar</a>':''}</p>
-      <div class="selos"><span>🔒 Dados protegidos</span><span>📱 Funciona no celular</span><span>☁️ Progresso salvo</span></div>
+      <div class="selos"><span>${ic('cadeado',1.8)}Dados protegidos</span><span>${ic('celular',1.8)}Funciona no celular</span><span>${ic('nuvem',1.8)}Progresso salvo</span></div>
     </div></div>`;
+  const olho=document.getElementById('lOlho');
+  if(olho) olho.onclick=()=>{ const i=document.getElementById('lSenha'); const ver=i.type==='password'; i.type=ver?'text':'password'; olho.innerHTML=ic(ver?'olho':'olhoX',1.8); };
   if(keep.nome && document.getElementById('lNome')) document.getElementById('lNome').value=keep.nome;
   if(keep.email) document.getElementById('lEmail').value=keep.email;
   const ok=document.getElementById('lOk');
@@ -283,13 +334,13 @@ function telaOnboarding(){
   nav.style.display='none';
   const d = ob.d, passo = PASSOS[ob.passo], n = PASSOS.length;
   let titulo='', sub='', corpo='', pode=true;
-  const esc = (lista, campo, val)=>`<div class="esc">${lista.map(o=>`<button class="${d[campo]===o[1]?'on':''}" onclick="ob.d.${campo}='${o[1]}';${val?`ob.d.hora='${o[2]}';`:''}telaOnboarding()"><span class="e">${o[0]}</span>${S(o[1])}<span class="r">${d[campo]===o[1]?'✓':''}</span></button>`).join('')}</div>`;
+  const esc = (lista, campo, val)=>`<div class="esc">${lista.map(o=>`<button class="${d[campo]===o[1]?'on':''}" onclick="ob.d.${campo}='${o[1]}';${val?`ob.d.hora='${o[2]}';`:''}telaOnboarding()"><span class="e">${o[0]}</span>${S(o[1])}<span class="r"></span></button>`).join('')}</div>`;
   if(passo==='nome'){ titulo='Como você quer ser chamado(a)?'; sub='É assim que o app vai falar com você.'; corpo=`<input class="inp" id="obNome" value="${S(d.nome)}" placeholder="Seu primeiro nome" maxlength="30" autocomplete="given-name">`; }
   if(passo==='curso'){ titulo='Qual curso você quer fazer?'; sub='Vamos lembrar você do seu objetivo todos os dias.'; corpo=esc(CURSOS,'curso'); pode=!!d.curso; }
   if(passo==='meta'){ titulo='Qual nota você quer tirar?'; sub='A sua meta define o ritmo do plano.'; corpo=esc(METAS,'meta'); pode=!!d.meta; }
   if(passo==='momento'){ titulo='Como você está em relação à prova?'; sub='Assim o plano equilibra conteúdo novo e revisão.'; corpo=esc(MOMENTOS,'momento'); pode=!!d.momento; }
   if(passo==='dificeis'){ titulo='Em quais matérias você tem mais dificuldade?'; sub='Escolha até 4. Elas vão aparecer com mais frequência no seu plano.';
-    corpo=`<div class="chips">${M.map(m=>`<button class="${d.dificeis.includes(m.id)?'on':''}" onclick="togDif('${m.id}')">${m.icone} ${S(m.nome)}</button>`).join('')}</div>`; }
+    corpo=`<div class="grade-mat">${M.map(m=>`<button class="${d.dificeis.includes(m.id)?'on':''}" onclick="togDif('${m.id}')">${ic(m.id,1.7)}<span>${S(m.nome)}</span></button>`).join('')}</div>`; }
   if(passo==='minutos'){ titulo='Quanto tempo por dia você consegue estudar?'; sub='Seja realista: é melhor cumprir 45 minutos do que abandonar 3 horas.';
     corpo=`<div class="esc">${[[30,'⚡','Rápido e constante'],[45,'🙂','Leve'],[60,'📘','Equilibrado'],[90,'💪','Puxado'],[120,'🔥','Intenso'],[150,'🚀','Reta final total']].map(o=>`<button class="${d.minutos===o[0]?'on':''}" onclick="ob.d.minutos=${o[0]};telaOnboarding()"><span class="e">${o[1]}</span><div><b style="display:block;">${fmtMin(o[0])} por dia</b><span style="font-size:12.5px;color:var(--cinza);font-weight:500;">${o[2]}</span></div><span class="r">${d.minutos===o[0]?'✓':''}</span></button>`).join('')}</div>`; pode=!!d.minutos; }
   if(passo==='dias'){ titulo='Em quais dias da semana?'; sub='Os outros dias ficam livres para descansar.';
@@ -297,7 +348,7 @@ function telaOnboarding(){
   if(passo==='periodo'){ titulo='Qual é o melhor horário para você?'; sub='É quando o lembrete vai chegar.';
     corpo=esc(PERIODOS,'periodo',true)+`<div class="campo" style="margin-top:16px;"><label for="obHora">Horário exato</label><input class="inp" id="obHora" type="time" value="${S(d.hora)}"></div>`; pode=!!d.periodo; }
   app.innerHTML = `<div class="ob">
-    <div class="ob-top">${ob.passo>0||ob.editar?`<button class="voltar" onclick="voltarOb()" aria-label="Voltar">←</button>`:''}<div class="ob-prog"><i style="width:${(ob.passo+1)/n*100}%"></i></div><span class="ob-passo">${ob.passo+1}/${n}</span></div>
+    <div class="ob-top">${ob.passo>0||ob.editar?`<button class="voltar" onclick="voltarOb()" aria-label="Voltar">${ic('volta',2.2)}</button>`:''}<div class="ob-prog"><i style="width:${(ob.passo+1)/n*100}%"></i></div><span class="ob-passo">${ob.passo+1}/${n}</span></div>
     <div class="corpo fade"><h2>${titulo}</h2><p class="sub">${sub}</p>${corpo}</div>
     <button class="btn" id="obOk" ${pode?'':'disabled'} style="margin-top:20px;">${ob.passo===n-1?'Montar meu plano':'Continuar'}</button>
   </div>`;
@@ -313,7 +364,7 @@ function togDif(id){ const a=ob.d.dificeis; ob.d.dificeis = a.includes(id) ? a.f
 function togDia(x){ const a=ob.d.dias; ob.d.dias = a.includes(x) ? a.filter(y=>y!==x) : [...a,x]; telaOnboarding(); }
 function telaGerando(){
   const etapas = ['Analisando as suas matérias','Distribuindo o tempo na semana','Priorizando os temas que mais caem','Encaixando revisões e redação'];
-  app.innerHTML = `<div class="ob"><div class="gerando">${anel(0,'0%','montando','', '')}<h2 style="margin-top:22px;">Montando o seu plano, ${S(ob.d.nome.split(' ')[0])}...</h2><div class="passos-ger">${etapas.map((e,i)=>`<div id="pg${i}"><i></i>${e}</div>`).join('')}</div></div></div>`;
+  app.innerHTML = `<div class="ob"><div class="gerando"><div class="logo logo-esc">${LOGO}<span>Plano <b>ENEM</b></span></div>${anel(0,'0%','montando','', '')}<h2 style="margin-top:22px;">Montando o seu plano, ${S(ob.d.nome.split(' ')[0])}...</h2><div class="passos-ger">${etapas.map((e,i)=>`<div id="pg${i}"><i></i>${e}</div>`).join('')}</div></div></div>`;
   const t0=performance.now(), DUR=3200;
   (function tick(now){
     const t=Math.min(1,(now-t0)/DUR), e=t*t*(3-2*t), pct=Math.round(e*100);
@@ -364,10 +415,13 @@ function telaInicio(){
   const semana = ORDEM_SEMANA.map(x=>{ const dt=new Date(); dt.setDate(dt.getDate()-((dt.getDay()+6)%7)+((x+6)%7)); const iso=hojeISO(dt); const blx=p.plano[x]||[]; const mins=minutosDia(iso); const meta=blx.reduce((a,b)=>a+b.min,0);
     const cls = iso===h?'hoje':''; const st = !blx.length?'folga':(mins>=meta*0.8?'ok':(mins>0?'meio':'')); return `<div class="d ${cls} ${st}"><div class="l">${DIAS[x].toUpperCase()}</div><div class="n">${st==='ok'?'✓':dt.getDate()}</div></div>`; }).join('');
   app.innerHTML = `
-  <div class="topo"><div><div class="saud">${saudacao()}</div><div class="nome">${S(primeiroNome())} ${seq?`<span class="fogo">🔥 ${seq}</span>`:''}</div></div>
-    <button class="sino" onclick="irPara('notificacoes')" aria-label="Notificações"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>${notif?`<span class="bolha">${notif}</span>`:''}</button></div>
+  <div class="topo-hero">
+    <div class="th-linha"><div class="logo">${LOGO}<span>Plano <b>ENEM</b></span></div>
+      <button class="sino" onclick="irPara('notificacoes')" aria-label="Notificações">${ic('sino',2)}${notif?`<span class="bolha">${notif}</span>`:''}</button></div>
+    <div class="saud">${saudacao()}</div><div class="nome">${S(primeiroNome())} ${seq?`<span class="fogo">${ic('chama',2)} ${seq}</span>`:''}</div>
+  </div>
   <div class="tela fade">
-    ${pend.length?`<button class="card alerta-card" onclick="irPara('plano')" style="width:100%;text-align:left;"><span class="ic">📌</span><div><b>${pend.length} ${pend.length>1?'blocos':'bloco'} de estudo ainda hoje</b><span>${pend.map(b=>nomeBloco(b.m)).join(', ')}</span></div><span class="seta">›</span></button>`:''}
+    ${pend.length?`<button class="card alerta-card" onclick="irPara('plano')" style="width:100%;text-align:left;"><span class="ic">📌</span><div><b>${pend.length} ${pend.length>1?'blocos':'bloco'} de estudo ainda hoje</b><span>${pend.map(b=>nomeBloco(b.m)).join(', ')}</span></div><span class="seta">${ic('chevR',2.2)}</span></button>`:''}
     ${d?`<div class="card hero"><div class="fase"><span class="ic">${f.ic}</span><div><div class="k">Faltam ${d} dias para o ENEM · Fase ${f.n}</div><div class="grande" style="font-size:21px;">${f.nome}</div><p style="font-size:13px;">${f.txt}</p></div></div></div>`:''}
     <button class="card meta-card" onclick="irPara('progresso')" style="width:100%;text-align:left;">
       <div class="meta-topo"><div><div class="k">Seu plano até o ENEM</div><div class="v">${fmtMin(feitoTot)} <small>de ${fmtMin(planejado)}</small></div></div><div class="pct"><b>${pctPlano}%</b><span>concluído</span></div></div>
@@ -382,17 +436,17 @@ function telaInicio(){
              :`<div class="mh-linha">${anel(rv.length?0:100, rv.length, 'revisões', '')}<div class="anel-info"><div class="t">Revisões</div><div class="v">${rv.length?rv.length+' para hoje':'Em dia'}</div><div class="s">Revisar no tempo certo fixa o conteúdo</div></div></div>`}
     </div>
     <div class="card"><div class="card-tt">📆 Sua semana</div><div class="semana">${semana}</div></div>
-    ${rv.length?`<div class="secao">🧠 Revisar hoje <span class="tag azul">${rv.length}</span></div><div class="card" style="padding:0;overflow:hidden;">${rv.slice(0,4).map(r=>`<button class="atalho" onclick="irPara('tema/${r.t.id}')"><span class="ic">${r.m.icone}</span><div><b>${S(r.t.titulo)}</b><span>${S(r.m.nome)} · lido há ${r.dias} ${r.dias>1?'dias':'dia'}</span></div><span class="seta">›</span></button>`).join('')}</div>`:''}
+    ${rv.length?`<div class="secao">🧠 Revisar hoje <span class="tag azul">${rv.length}</span></div><div class="card" style="padding:0;overflow:hidden;">${rv.slice(0,4).map(r=>`<button class="atalho" onclick="irPara('tema/${r.t.id}')"><span class="ic">${r.m.icone}</span><div><b>${S(r.t.titulo)}</b><span>${S(r.m.nome)} · lido há ${r.dias} ${r.dias>1?'dias':'dia'}</span></div><span class="seta">${ic('chevR',2.2)}</span></button>`).join('')}</div>`:''}
     <div class="card"><div class="card-tt">💬 Como você está hoje?</div>
       <div class="humor">${HUMORES.map(x=>`<button class="${hum===x.id?'on':''}" onclick="checkin('${x.id}')">${x.e}<span>${x.l}</span></button>`).join('')}</div>
       ${hum?`<div class="dica">${S(HUMORES.find(x=>x.id===hum).dica)}</div>`:''}</div>
     <div class="secao">Continuar de onde parou</div>
     <div class="card" style="padding:0;overflow:hidden;">
-      <button class="atalho" onclick="irPara('plano')"><span class="ic">📅</span><div><b>Plano de ${DIAS_LONGO[new Date().getDay()].toLowerCase()}</b><span>${bl.length?bl.map(b=>nomeBloco(b.m)).join(' + '):'Dia de descanso'}</span></div><span class="seta">›</span></button>
-      <button class="atalho" onclick="irPara('resumos')"><span class="ic">📚</span><div><b>Resumos do que mais cai</b><span>${lidos().length} de ${totalTemas} temas lidos</span></div><span class="seta">›</span></button>
-      <button class="atalho" onclick="irPara('exercicios')"><span class="ic">📝</span><div><b>Exercícios e simulados</b><span>No estilo do ENEM</span></div>${temEx?'<span class="seta">›</span>':'<span class="tag-lock">🔒</span>'}</button>
-      <button class="atalho" onclick="location.href='/redacao#corrigir'"><span class="ic">📸</span><div><b>Corrigir redação pela foto</b><span>Nota estimada por competência</span></div><span class="seta">›</span></button>
-      <button class="atalho" onclick="irPara('progresso')"><span class="ic">📊</span><div><b>Seu progresso</b><span>Nível ${nivel().n}: ${nivel().nome}</span></div><span class="seta">›</span></button>
+      <button class="atalho" onclick="irPara('plano')"><span class="ic">${ic('calendario',1.9)}</span><div><b>Plano de ${DIAS_LONGO[new Date().getDay()].toLowerCase()}</b><span>${bl.length?bl.map(b=>nomeBloco(b.m)).join(' + '):'Dia de descanso'}</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
+      <button class="atalho" onclick="irPara('resumos')"><span class="ic">${ic('livros',1.9)}</span><div><b>Resumos do que mais cai</b><span>${lidos().length} de ${totalTemas} temas lidos</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
+      <button class="atalho" onclick="irPara('exercicios')"><span class="ic">${ic('prova',1.9)}</span><div><b>Exercícios e simulados</b><span>No estilo do ENEM</span></div>${temEx?`<span class="seta">${ic('chevR',2.2)}</span>`:`<span class="tag-lock">${ic('cadeado',1.9)}</span>`}</button>
+      <button class="atalho" onclick="location.href='/redacao#corrigir'"><span class="ic">${ic('camera',1.9)}</span><div><b>Corrigir redação pela foto</b><span>Nota estimada por competência</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
+      <button class="atalho" onclick="irPara('progresso')"><span class="ic">${ic('barras',1.9)}</span><div><b>Seu progresso</b><span>Nível ${nivel().n}: ${nivel().nome}</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
     </div>
   </div>`;
 }
@@ -465,7 +519,7 @@ function telaPlano(){
               <div class="dica-enem"><b>💡 Como cai no ENEM:</b> ${S(t.dica)}</div></div>
           </div>`; }).join('')}
           ${materialArq(b.m)?`<button class="btn sec sm" onclick="baixarMaterial('${b.m}')">⬇ Baixar o material de ${S(nomeBloco(b.m))}</button>`:''}
-          <div class="bloco-acoes">${diaSel===hoje?(feito?'<span class="tag verde">Concluído</span>':`<button class="btn sm" onclick="irPara('timer/${b.m}/${b.min}')">▶ Começar</button>`):''}
+          <div class="bloco-acoes">${diaSel===hoje?(feito?'<span class="tag verde">Concluído</span>':`<button class="btn sm" onclick="irPara('timer/${b.m}/${b.min}')">${ic('play')} Começar</button>`):''}
           ${b.m==='red'&&diaSel===hoje?' <button class="btn sm sec" onclick="location.href=\'/redacao#corrigir\'">📸 Corrigir</button>':''}</div>
         </div></div>`; }).join('')
       :'<p class="nota" style="padding:6px 0;">Dia livre. Descansar também faz parte do plano: o cérebro fixa o que você estudou.</p>'}
@@ -528,7 +582,7 @@ function telaMateria(id){
   app.innerHTML = `${barraTopo(m.icone+' '+S(m.nome),true)}
   <div class="tela fade">
     <div class="stats" style="margin-bottom:12px;"><div><b>${m.temas.filter(t=>L.includes(t.id)).length}/${m.temas.length}</b><span>temas lidos</span></div><div><b>${fmtMin(mins)}</b><span>estudados</span></div><div><b>${m.temas.filter(t=>t.prio==='alta').length}</b><span>caem muito</span></div></div>
-    ${m.temas.map(t=>`<button class="tema-item ${L.includes(t.id)?'lido':''}" onclick="irPara('tema/${t.id}')"><span class="ck">${L.includes(t.id)?'✓':''}</span><div style="flex:1;"><b>${S(t.titulo)}</b><span class="tag ${t.prio==='alta'?'alta':'media'}">${t.prio==='alta'?'Cai muito':'Cai às vezes'}</span></div><span class="seta">›</span></button>`).join('')}
+    ${m.temas.map(t=>`<button class="tema-item ${L.includes(t.id)?'lido':''}" onclick="irPara('tema/${t.id}')"><span class="ck">${L.includes(t.id)?'✓':''}</span><div style="flex:1;"><b>${S(t.titulo)}</b><span class="tag ${t.prio==='alta'?'alta':'media'}">${t.prio==='alta'?'Cai muito':'Cai às vezes'}</span></div><span class="seta">${ic('chevR',2.2)}</span></button>`).join('')}
   </div>`;
 }
 function telaTema(id){
@@ -563,9 +617,9 @@ function telaProgresso(){
   const med=MEDALHAS.map(x=>({...x, on:x.ok()})), ganhas=med.filter(x=>x.on).length;
   app.innerHTML = `${barraTopo('📊 Seu progresso')}
   <div class="tela fade">
-    <div class="card nivel"><div class="topo-n"><div><div class="n">Nível ${nv.n}</div><div class="nm">${nv.nome}</div></div><div class="xp"><b>${nv.xp}</b><span>XP</span></div></div>
+    <div class="card nivel"><div class="topo-n"><span class="tr">${ic('trofeu',1.9)}</span><div style="flex:1;"><div class="n">Nível ${nv.n}</div><div class="nm">${nv.nome}</div></div><div class="xp"><b>${nv.xp}</b><span>XP</span></div></div>
       <div class="barra"><i style="width:${nv.pct}%"></i></div><div class="falta">${nv.prox?`Faltam <b>${nv.falta} XP</b> para ${nv.prox}`:'Nível máximo! 🏆'}</div></div>
-    <div class="stats"><div><b>🔥 ${sequencia()}</b><span>dias seguidos</span></div><div><b>${fmtMin(totSem)}</b><span>nesta semana</span></div><div><b>${melhorSequencia()}</b><span>recorde</span></div></div>
+    <div class="stats"><div><i class="si si-f">${ic('chama',2)}</i><b>${sequencia()}</b><span>dias seguidos</span></div><div><i class="si">${ic('relogio',2)}</i><b>${fmtMin(totSem)}</b><span>nesta semana</span></div><div><i class="si si-c">${ic('coroa',2)}</i><b>${melhorSequencia()}</b><span>recorde</span></div></div>
     <div class="card" style="margin-top:12px;"><div class="card-tt">⏱️ Últimos 7 dias</div>
       <div class="graf">${d7.map((x,i)=>`<div class="col"><div class="v">${x.min||''}</div><div class="b ${x.min?'on':''}" style="height:${Math.max(6,x.min/max7*96)}px"></div><div class="l">${i===6?'Hoje':x.l}</div></div>`).join('')}</div></div>
     <div class="card"><div class="card-tt">📚 Por matéria</div>
@@ -592,7 +646,7 @@ function telaPerfil(){
   app.innerHTML = `${barraTopo('Perfil')}
   <div class="tela fade">
     <div class="perfil-topo"><div class="avatar">${S((p.nome||'E')[0].toUpperCase())}</div><h2>${S(p.nome)}</h2><p>${u?S(u.email):'Progresso salvo neste aparelho'}</p><div style="margin-top:8px;"><span class="tag azul">Nível ${nv.n} · ${nv.nome}</span></div></div>
-    <div class="stats" style="margin-top:16px;"><div><b>${fmtMin(totalMin())}</b><span>estudados</span></div><div><b>${lidos().length}</b><span>temas lidos</span></div><div><b>${melhorSequencia()}</b><span>recorde 🔥</span></div></div>
+    <div class="stats" style="margin-top:16px;"><div><i class="si">${ic('relogio',2)}</i><b>${fmtMin(totalMin())}</b><span>estudados</span></div><div><i class="si">${ic('livros',2)}</i><b>${lidos().length}</b><span>temas lidos</span></div><div><i class="si si-f">${ic('chama',2)}</i><b>${melhorSequencia()}</b><span>recorde</span></div></div>
     <div class="secao">Seu objetivo</div>
     <div class="card resumo-plano" style="padding:4px 16px;">
       <div class="linha"><span class="e">🎯</span><div><b>${S(p.curso)}</b><span>Meta: ${S(p.meta).toLowerCase()}</span></div></div>
@@ -600,13 +654,13 @@ function telaPerfil(){
       <div class="linha"><span class="e">📌</span><div><b>Prioridades</b><span>${p.dificeis.length?p.dificeis.map(id=>mat(id).nome).join(', '):'Todas as matérias'}</span></div></div>
     </div>
     <div class="card" style="padding:0;overflow:hidden;">
-      <button class="atalho" onclick="iniciarOnboarding(true)"><span class="ic">⚙️</span><div><b>Ajustar o meu plano</b><span>Curso, meta, matérias, tempo e dias</span></div><span class="seta">›</span></button>
-      <button class="atalho" onclick="irPara('lembretes')"><span class="ic">⏰</span><div><b>Lembretes</b><span>Todo dia de estudo às ${S(p.hora)}</span></div><span class="seta">›</span></button>
-      <button class="atalho" onclick="irPara('materiais')"><span class="ic">📄</span><div><b>Meus materiais em PDF</b><span>Os resumos completos de cada matéria</span></div><span class="seta">›</span></button>
-      <button class="atalho" onclick="irPara('exercicios')"><span class="ic">📝</span><div><b>Exercícios e simulados</b><span>No estilo do ENEM</span></div>${Acesso.tem('exercicios')?'<span class="seta">›</span>':'<span class="tag-lock">🔒</span>'}</button>
-      <button class="atalho" onclick="location.href='/redacao'"><span class="ic">✍️</span><div><b>Redação</b><span>Arsenal de Redações e correção por foto</span></div><span class="seta">›</span></button>
-      <button class="atalho" onclick="irPara('codigo')"><span class="ic">🔑</span><div><b>Liberar um produto</b><span>Inserir um código de acesso</span></div><span class="seta">›</span></button>
-      ${u?`<button class="atalho" onclick="sairConta()"><span class="ic">🚪</span><div><b>Sair da conta</b><span>${S(u.email)}</span></div></button>`:''}
+      <button class="atalho" onclick="iniciarOnboarding(true)"><span class="ic">${ic('engrenagem',1.9)}</span><div><b>Ajustar o meu plano</b><span>Curso, meta, matérias, tempo e dias</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
+      <button class="atalho" onclick="irPara('lembretes')"><span class="ic">${ic('alarme',1.9)}</span><div><b>Lembretes</b><span>Todo dia de estudo às ${S(p.hora)}</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
+      <button class="atalho" onclick="irPara('materiais')"><span class="ic">${ic('arquivo',1.9)}</span><div><b>Meus materiais em PDF</b><span>Os resumos completos de cada matéria</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
+      <button class="atalho" onclick="irPara('exercicios')"><span class="ic">${ic('prova',1.9)}</span><div><b>Exercícios e simulados</b><span>No estilo do ENEM</span></div>${Acesso.tem('exercicios')?`<span class="seta">${ic('chevR',2.2)}</span>`:`<span class="tag-lock">${ic('cadeado',1.9)}</span>`}</button>
+      <button class="atalho" onclick="location.href='/redacao'"><span class="ic">${ic('red',1.9)}</span><div><b>Redação</b><span>Arsenal de Redações e correção por foto</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
+      <button class="atalho" onclick="irPara('codigo')"><span class="ic">${ic('chave',1.9)}</span><div><b>Liberar um produto</b><span>Inserir um código de acesso</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
+      ${u?`<button class="atalho" onclick="sairConta()"><span class="ic">${ic('sair',1.9)}</span><div><b>Sair da conta</b><span>${S(u.email)}</span></div></button>`:''}
     </div>
     <p class="legal">Produto independente, sem vínculo com o INEP, o MEC ou o Governo Federal. O app é uma ferramenta de apoio aos estudos e não garante nota ou aprovação.</p>
   </div>`;
@@ -670,7 +724,7 @@ function telaExercicios(){
   <div class="tela fade">
     <div class="card hero"><div class="k">Mini simulado</div><div class="grande" style="font-size:22px;">10 questões, cronometrado</div><p>Todas as matérias. O resultado entra no seu progresso.</p><div style="height:12px"></div><button class="btn sec" style="background:#fff;" onclick="iniciarQ('simulado')">Começar simulado</button></div>
     <div class="secao">Treinar por matéria</div>
-    ${ordem.map(m=>{ const qs=Q.map((q,i)=>({q,i})).filter(x=>x.q.m===m.id); if(!qs.length) return ''; const f=qs.filter(x=>x.i in R).length; return `<button class="tema-item" onclick="iniciarQ('treino','${m.id}')"><span class="ck" style="background:${COR_MAT[m.id]};border:none;font-size:15px;">${m.icone}</span><div style="flex:1;"><b>${S(m.nome)}</b><span class="nota">${f}/${qs.length} feitas${p&&p.dificeis.includes(m.id)?' · sua prioridade':''}</span></div><span class="seta">›</span></button>`; }).join('')}
+    ${ordem.map(m=>{ const qs=Q.map((q,i)=>({q,i})).filter(x=>x.q.m===m.id); if(!qs.length) return ''; const f=qs.filter(x=>x.i in R).length; return `<button class="tema-item" onclick="iniciarQ('treino','${m.id}')"><span class="ck" style="background:${COR_MAT[m.id]};border:none;font-size:15px;">${m.icone}</span><div style="flex:1;"><b>${S(m.nome)}</b><span class="nota">${f}/${qs.length} feitas${p&&p.dificeis.includes(m.id)?' · sua prioridade':''}</span></div><span class="seta">${ic('chevR',2.2)}</span></button>`; }).join('')}
     <button class="btn sec" onclick="irPara('erros')">📒 Caderno de erros</button>
     <p class="legal">Questões originais, elaboradas no estilo do ENEM para treino. Não são questões oficiais.</p>
   </div>`;
