@@ -102,3 +102,5 @@ html.escuro .alerta.amarelo{background:#2a2108;}
 html.escuro .alerta.amarelo p{color:#ffd24d;}
 html.escuro .box.crit{border-left-color:#e0a400;}
 html.escuro .box.crit h4{color:#ffd24d;}
+
+html.escuro .preco-card .pc-faixa{background:#22b3d2;color:#021a20;}
