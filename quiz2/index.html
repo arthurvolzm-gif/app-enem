@@ -378,27 +378,7 @@ const RENDER = {
       <h2 class="q-title" style="margin-bottom:6px;">Seu último mês com o ${S(QUIZ.APP_NOME)}</h2>
       <p class="sec-s">Montado com as suas respostas: suas dificuldades, o tempo que você tem e a sua meta.</p>
 
-      <div class="sec-h" style="margin-top:6px;">📅 Sua semana de estudos</div>
-      <div class="phone"><div class="phone-top"><span><i class="dot"></i>Plano da semana</span><span>${S(a.horas||'')}</span></div>
-        <table class="plano">${plano.map(p=>`<tr><td class="d">${p.d}</td><td class="m">${S(p.m)}</td><td class="h">${p.t}</td></tr>`).join('')}</table>
-        <p class="note" style="margin-top:8px;">As matérias em que você tem mais dificuldade aparecem com mais frequência. Você ajusta os dias no app.</p></div>
-
-      ${tema?`<div class="sec-h">📚 Um resumo do que mais cai</div>
-      <div class="phone"><div class="phone-top"><span><i class="dot"></i>${S(M.nome)}</span><span>Prioridade ${S(tema.prio)}</span></div>
-        <b style="color:var(--verde-escuro);font-size:15px;">${S(tema.titulo)}</b>
-        <ul style="padding-left:18px;margin:8px 0;">${(tema.secoes[0][2]||[tema.secoes[0][1]]).slice(0,3).map(r=>`<li style="font-size:13.5px;line-height:1.55;margin-bottom:5px;">${S(r).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')}</li>`).join('')}</ul>
-        <div style="background:var(--verde-suave);border-radius:10px;padding:9px 12px;font-size:13px;font-weight:800;color:var(--verde-escuro);text-align:center;">✓ Marcar como lido: entra no seu desempenho</div></div>`:''}
-
-      <div class="sec-h">📊 Seu desempenho por matéria</div>
-      <span class="exemplo">Exemplo ilustrativo</span>
-      <div class="phone"><div class="phone-top"><span><i class="dot"></i>Desempenho</span><span>Temas lidos</span></div>
-        ${nomes.slice(0,3).map((m,i)=>{ const [x,y]=[[3,8],[1,6],[0,7]][i]; return `<div class="mat-row"><div class="l">${S(m)}<span>${x} de ${y} temas</span></div><div class="t"><div class="f" style="width:${Math.round(x/y*100)}%"></div></div></div>`;}).join('')}
-        <p class="note" style="text-align:left;margin-top:6px;">O tempo de cada sessão e os temas lidos ficam salvos por matéria.</p></div>
-
-      <div class="sec-h">⏰ Lembrete na hora certa</div>
-      <div class="phone" style="display:flex;gap:12px;align-items:center;"><div style="font-size:30px;">🔔</div><div><b style="color:var(--verde-escuro);">Hora de estudar!</b><div style="font-size:13px;color:#6b7590;">Hoje: ${S(plano[0].m)}, ${plano[0].t}</div></div></div>
-
-      <div class="sec-h">🎯 Do seu ponto de partida à sua meta</div>
+      <div class="sec-h" style="margin-top:6px;">🎯 Do seu ponto de partida à sua meta</div>
       <div class="box" style="background:#fff;">
         <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:10px;">
           <div style="text-align:center;flex:1;"><div style="font-size:11px;font-weight:800;letter-spacing:1px;color:${niv.cor};text-transform:uppercase;">Hoje</div><div style="font-family:'Open Sans';font-size:40px;font-weight:900;color:${niv.cor};line-height:1.1;">${P.idx}</div></div>
@@ -414,6 +394,12 @@ const RENDER = {
         <div class="c a"><h4>Como você está</h4><ul><li>Estudo sem plano</li><li>Tudo com o mesmo peso</li><li>Sem saber o desempenho</li><li>Esquece de estudar</li></ul></div>
         <div class="c b"><h4>Com o app</h4><ul><li>Plano pronto por dia</li><li>Resumo do que mais cai</li><li>Desempenho por matéria</li><li>Lembrete na hora certa</li></ul></div>
       </div>
+
+      <div class="sec-h" style="margin-top:6px;">📅 Sua semana de estudos</div>
+      <div class="phone"><div class="phone-top"><span><i class="dot"></i>Plano da semana</span><span>${S(a.horas||'')}</span></div>
+        <table class="plano">${plano.map(p=>`<tr><td class="d">${p.d}</td><td class="m">${S(p.m)}</td><td class="h">${p.t}</td></tr>`).join('')}</table>
+        <p class="note" style="margin-top:8px;">As matérias em que você tem mais dificuldade aparecem com mais frequência. Você ajusta os dias no app.</p></div>
+
       <button class="btn" style="margin-top:14px;" onclick="go(1)">Quero ativar o meu plano →</button>
     </div></div>`;
   },
