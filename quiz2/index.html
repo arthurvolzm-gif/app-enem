@@ -254,25 +254,39 @@ const RENDER = {
     const P = calcPreparo(), niv = nivel(P.idx);
     const mats = matsDificeis();
     const semPlano = /quando dá|não consigo|sem saber/.test(a.rotina||'');
+    /* o diagnóstico acompanha as respostas: ponto forte vira elogio, ponto fraco continua crítico */
+    const okRotina = ['5 a 6 dias','Todos os dias'].includes(a.dias) && ['De 2 a 4 horas','Mais de 4 horas'].includes(a.horas);
+    const okPrior  = (a.resumos||'').startsWith('Sei e tenho') && !(a.rotina||'').startsWith('Estudo bastante');
+    const okDesemp = ['No último mês','Faço toda semana'].includes(a.simulados);
+    const nCrit = [okRotina,okPrior,okDesemp].filter(x=>!x).length;
+    const forte = nCrit<=1;
+    const VERDE = 'background:#eaf8f0;border-color:#b7e4c9;';
+    const caixaOk = (t,txt)=>`<div class="box" style="border-left:4px solid #1f9d63;"><h4 style="color:#16764a;">✅ ${t}</h4><p>${txt}</p></div>`;
     app.innerHTML = `
     <div class="wrap fade"><div class="card">
       ${backBtn()}<div class="brand-sub" style="margin-bottom:6px;">Diagnóstico personalizado</div>
       <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-      <div class="alerta"><p>⚠️ ${n?n+', o':'O'} seu preparo para o ENEM está <strong>${niv.txt}</strong>.</p>
-        <p class="s">Com base nas suas respostas, hoje a sua rotina e o seu conteúdo não estão no ritmo que a sua meta exige.</p></div>
+      ${forte
+        ? `<div class="alerta" style="${VERDE}"><p style="color:#16764a;">✅ ${n?n+', você':'Você'} já tem uma boa base para o ENEM.</p>
+        <p class="s">Com base nas suas respostas, a sua rotina e o seu conteúdo estão bem encaminhados. O índice abaixo mostra onde ainda dá para ganhar no último mês.</p></div>`
+        : `<div class="alerta"><p>⚠️ ${n?n+', o':'O'} seu preparo para o ENEM está <strong>${niv.txt}</strong>.</p>
+        <p class="s">Com base nas suas respostas, hoje a sua rotina e o seu conteúdo não estão no ritmo que a sua meta exige.</p></div>`}
       ${medidorHTML(P.idx, niv.cor, 'Seu Índice de Preparo para o ENEM')}
         ${barrasHTML(P.areas)}
         <p class="note">Estimativa educativa calculada a partir das suas respostas. Não é uma avaliação oficial e não prevê a sua nota.</p>
       </div>
-      <div class="alerta" style="margin-top:20px;"><p style="font-size:15px;letter-spacing:.4px;">⚠️ 3 PONTOS CRÍTICOS FORAM IDENTIFICADOS</p></div>
-      <div class="box"><h4>1 · Sua rotina não está protegendo o seu tempo</h4>
-        <p>Estudar <strong>${S((a.dias||'').toLowerCase())}</strong> por semana e <strong>${S((a.horas||'').toLowerCase())}</strong> por dia, ${semPlano?'sem um plano que você consiga cumprir,':'sem priorizar o que mais cai,'} deixa a preparação irregular justo no último mês.</p></div>
-      <div class="box"><h4>2 · Você está estudando sem prioridade</h4>
-        <p>${(a.resumos||'').startsWith('Sei e tenho')?'Mesmo com resumos, sem saber quanto tempo dedica a cada matéria fica difícil equilibrar.':'Sem saber quais temas mais caem, o tempo vai para o que menos pesa na prova.'}${mats.length?` E você marcou <strong>${S(mats.join(', '))}</strong> como dificuldade.`:''}</p></div>
-      <div class="box"><h4>3 · Você não sabe onde está perdendo pontos</h4>
-        <p>${(a.simulados==='Nunca fiz um'||a.simulados==='Há mais de 3 meses')?'Sem simulados recentes e sem acompanhar o desempenho por matéria,':'Sem acompanhar o desempenho por matéria,'} você não enxerga em qual matéria o tempo rende mais.</p></div>
+      <div class="alerta" style="margin-top:20px;${nCrit===0?VERDE:''}"><p style="font-size:15px;letter-spacing:.4px;${nCrit===0?'color:#16764a;':''}">${nCrit===0?'✅ TODOS OS PONTOS ESTÃO BEM ENCAMINHADOS':nCrit===1?'⚠️ 1 PONTO PARA MELHORAR FOI IDENTIFICADO':`⚠️ ${nCrit} PONTOS CRÍTICOS FORAM IDENTIFICADOS`}</p></div>
+      ${okRotina ? caixaOk('1 · Sua rotina é um ponto forte',`${a.dias==='Todos os dias'?'Estudar <strong>todos os dias</strong>':'Estudar <strong>'+S((a.dias||'').toLowerCase())+'</strong> por semana'}, <strong>${S((a.horas||'').toLowerCase())}</strong> por dia, é uma base sólida. O desafio agora é manter esse ritmo até a prova.`)
+        : `<div class="box"><h4>1 · Sua rotina não está protegendo o seu tempo</h4>
+        <p>Estudar <strong>${S((a.dias||'').toLowerCase())}</strong> por semana e <strong>${S((a.horas||'').toLowerCase())}</strong> por dia, ${semPlano?'sem um plano que você consiga cumprir,':'sem priorizar o que mais cai,'} deixa a preparação irregular justo no último mês.</p></div>`}
+      ${okPrior ? caixaOk('2 · Você já estuda com prioridade','Você sabe o que mais cai e já tem o conteúdo organizado. Falta só distribuir o tempo entre as matérias para nenhuma ficar para trás.')
+        : `<div class="box"><h4>2 · Você está estudando sem prioridade</h4>
+        <p>${(a.resumos||'').startsWith('Sei e tenho')?'Mesmo com resumos, sem saber quanto tempo dedica a cada matéria fica difícil equilibrar.':'Sem saber quais temas mais caem, o tempo vai para o que menos pesa na prova.'}</p></div>`}
+      ${okDesemp ? caixaOk('3 · Você acompanha o seu desempenho','Fazer simulados com frequência mostra onde estão os pontos fracos. O próximo passo é transformar isso em revisão por matéria.')
+        : `<div class="box"><h4>3 · Você não sabe onde está perdendo pontos</h4>
+        <p>${(a.simulados==='Nunca fiz um'||a.simulados==='Há mais de 3 meses')?'Sem simulados recentes e sem acompanhar o desempenho por matéria,':'Sem acompanhar o desempenho por matéria,'} você não enxerga em qual matéria o tempo rende mais.</p></div>`}
       <div style="background:#eef3fc;border:1px solid #d5e0f3;border-radius:14px;padding:20px;margin:6px 0 0;text-align:center;">
-        <p style="color:var(--verde-escuro);font-size:15.5px;font-weight:800;line-height:1.55;">Mas ainda dá para reagir. Com um plano pronto, os temas certos e o seu desempenho acompanhado, <strong>o último mês pode ser muito mais bem aproveitado</strong>.</p></div>
+        <p style="color:var(--verde-escuro);font-size:15.5px;font-weight:800;line-height:1.55;">${forte?'Você já está no caminho. Com um plano pronto, os temas certos e o seu desempenho acompanhado, <strong>dá para aproveitar ainda melhor o último mês</strong>.':'Mas ainda dá para reagir. Com um plano pronto, os temas certos e o seu desempenho acompanhado, <strong>o último mês pode ser muito mais bem aproveitado</strong>.'}</p></div>
       <button class="btn" style="margin-top:20px;" onclick="go(1)">Ver como resolver →</button>
     </div></div>`;
     px('DiagnosticoGerado');
