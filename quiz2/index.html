@@ -26,9 +26,19 @@
 </style>
 <style>
 .hero-sub{font-family:'Open Sans',sans-serif;font-size:17px;font-weight:700;color:var(--verde-claro);line-height:1.5;text-align:center;margin:18px 0 6px;}
-.prints{position:relative;width:62%;max-width:240px;margin:24px auto 0;aspect-ratio:390/844;border-radius:22px;overflow:hidden;background:#fff;border:6px solid #0b1f4d;box-shadow:0 14px 34px rgba(11,31,77,.35);}
+.prints-stage{position:relative;}
+.prints{position:relative;width:50%;max-width:210px;margin:24px auto 0;aspect-ratio:390/844;border-radius:22px;overflow:hidden;background:#fff;border:6px solid #0b1f4d;box-shadow:0 14px 34px rgba(11,31,77,.35);}
 #prints-track{display:flex;height:100%;will-change:transform;backface-visibility:hidden;transform:translate3d(0,0,0);}
 #prints-track img{flex:1 1 0;min-width:0;height:100%;object-fit:cover;display:block;backface-visibility:hidden;}
+.print-call{position:absolute;z-index:3;display:flex;align-items:center;transition:opacity .3s ease;pointer-events:none;}
+.print-call .pc-seta{width:24px;height:10px;flex:none;}
+.print-call .pc-card{width:90px;background:#fff;border:1.5px solid #cfdaf0;border-radius:12px;padding:8px 9px;text-align:left;box-shadow:0 8px 20px rgba(11,31,77,.16);}
+.print-call .pc-card b{display:block;font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:#3b6fd8;font-weight:800;}
+.print-call .pc-card span{display:block;font-size:12px;line-height:1.3;color:#0b1f4d;font-weight:700;margin-top:2px;}
+.print-call.dir{left:calc(50% + min(25%, 105px) - 6px);flex-direction:row;}
+.print-call.esq{right:calc(50% + min(25%, 105px) - 6px);flex-direction:row-reverse;}
+.print-call.esq .pc-seta{transform:scaleX(-1);}
+.print-call.apaga{opacity:0;}
 .prints-dots{display:flex;gap:6px;justify-content:center;margin-top:14px;}
 .prints-dots i{width:7px;height:7px;border-radius:50%;background:#cfdaf0;}
 .prints-dots i.on{background:var(--verde);width:18px;border-radius:6px;}
@@ -187,7 +197,23 @@ const PRINTS = ['/img/print-app-inicio.jpg','/img/print-app-plano.jpg','/img/pri
 let printsIdx = 0, printsTimer = null;
 /* pré-carrega e decodifica tudo antes de começar, para a troca não travar */
 function precarregar(lista){ lista.forEach(src=>{ const im = new Image(); im.src = src; if(im.decode) im.decode().catch(()=>{}); }); }
-function iniciarPrints(){ clearInterval(printsTimer); printsIdx = 0; precarregar(PRINTS); printsTimer = setInterval(avancarPrints, 2600); }
+/* cartão ao lado do celular, com uma seta saindo da tela e um resumo dela em poucas palavras */
+const CHAMADAS = [
+  {t:'Início', d:'Seu dia em um olhar', y:34, lado:'dir'},
+  {t:'Plano', d:'O que estudar em cada dia', y:26, lado:'esq'},
+  {t:'Meta', d:'Quanto você já cobriu da semana', y:52, lado:'dir'},
+  {t:'Matérias', d:'Os temas de cada uma', y:38, lado:'esq'},
+  {t:'Resumo', d:'O tema, direto ao ponto', y:30, lado:'dir'},
+  {t:'Progresso', d:'Seu tempo e seu desempenho', y:36, lado:'esq'}
+];
+function mostrarChamada(i, animar){
+  const el = document.getElementById('prints-call'); if(!el) return;
+  const c = CHAMADAS[i % CHAMADAS.length];
+  const aplicar = ()=>{ el.className = 'print-call '+c.lado; el.style.top = c.y+'%'; el.querySelector('b').textContent = c.t; el.querySelector('span').textContent = c.d; };
+  if(!animar){ aplicar(); return; }
+  el.classList.add('apaga'); setTimeout(aplicar, 320);
+}
+function iniciarPrints(){ clearInterval(printsTimer); printsIdx = 0; precarregar(PRINTS); mostrarChamada(0,false); printsTimer = setInterval(avancarPrints, 2600); }
 function pausarPrints(){ clearInterval(printsTimer); }
 function retomarPrints(){ clearInterval(printsTimer); printsTimer = setInterval(avancarPrints, 2600); }
 function avancarPrints(){
@@ -198,6 +224,7 @@ function avancarPrints(){
   track.style.transition = 'transform .7s cubic-bezier(.45,.05,.25,1)';
   track.style.transform = `translate3d(-${printsIdx * pct}%,0,0)`;
   document.querySelectorAll('#prints-dots i').forEach((d,i)=>d.classList.toggle('on', i === (printsIdx % PRINTS.length)));
+  mostrarChamada(printsIdx % PRINTS.length, true);
   if(printsIdx === PRINTS.length){
     setTimeout(()=>{
       if(!document.body.contains(track)) return;
@@ -322,6 +349,7 @@ const RENDER = {
       <p class="sec-s" style="margin-bottom:6px;">${abre}</p>
       <p class="hero-sub">Por isso, o seu plano de estudos, o material de cada matéria, o seu desempenho e os lembretes ficam em um aplicativo só.</p>
 
+      <div class="prints-stage">
       <div id="prints-wrap" class="prints"
            onmousedown="pausarPrints()" onmouseup="retomarPrints()" onmouseleave="retomarPrints()"
            ontouchstart="pausarPrints()" ontouchend="retomarPrints()" ontouchcancel="retomarPrints()">
@@ -329,8 +357,9 @@ const RENDER = {
           ${PRINTS.concat([PRINTS[0]]).map(src=>`<img src="${src}" alt="Telas do aplicativo Plano ENEM" onerror="this.style.visibility='hidden'">`).join('')}
         </div>
       </div>
+      <div id="prints-call" class="print-call esq"><svg class="pc-seta" viewBox="0 0 40 16" aria-hidden="true"><circle cx="3" cy="8" r="3" fill="#3b6fd8"/><path d="M3 8h30M27 2l7 6-7 6" fill="none" stroke="#3b6fd8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="pc-card"><b></b><span></span></div></div>
+      </div>
       <div class="prints-dots" id="prints-dots">${PRINTS.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join('')}</div>
-      <p class="prints-leg">Telas do aplicativo (exemplo)</p>
 
       <div class="pdf-bloco">
         <span class="tag" style="margin-bottom:10px;">E tem mais: o material completo</span>
