@@ -405,3 +405,10 @@ svg{flex:none;}
 .nav .in{padding:0 6px;}
 .nav button{margin:6px 1px 8px;min-width:0;}
 .stats>div b{font-family:'Plus Jakarta Sans',sans-serif;}
+.tp-n{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;border-radius:7px;background:#fff;color:var(--azul2);font-size:12px;font-weight:800;margin-right:8px;}
+.tp-botoes{display:flex;gap:8px;padding:10px 12px;flex-wrap:wrap;}
+.tp-botoes button{flex:1 1 130px;font-size:13px;font-weight:700;padding:10px 12px;border-radius:12px;font-family:inherit;cursor:pointer;}
+.tp-ver{background:var(--suave);border:1.5px solid var(--suave);color:var(--azul);}
+.tp-botoes .tp-check{border-radius:12px;}
+.tema-plano .tp-resumo{display:none;border-top:1px solid var(--borda);}
+.tema-plano.com-resumo .tp-resumo{display:block;}

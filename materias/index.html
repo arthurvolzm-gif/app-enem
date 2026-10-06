@@ -453,7 +453,12 @@ function telaInicio(){
 function checkin(id){ const c=checkins(); c[hojeISO()]=id; lsSet('mat_checkin',c); telaInicio(); }
 
 /* ===================== PLANO: blocos que abrem ===================== */
-const blocosAbertos = new Set();
+const blocosAbertos = new Set(), resumosAbertos = new Set();
+function alternarResumo(id){
+  if(resumosAbertos.has(id)) resumosAbertos.delete(id); else resumosAbertos.add(id);
+  const el=document.querySelector('.tema-plano[data-t="'+id+'"]'); if(el) el.classList.toggle('com-resumo', resumosAbertos.has(id));
+  const bt=el&&el.querySelector('.tp-ver'); if(bt) bt.innerHTML=resumosAbertos.has(id)?'Ocultar resumo':'📖 Ver resumo';
+}
 function alternarBloco(k){
   if(blocosAbertos.has(k)) blocosAbertos.delete(k); else blocosAbertos.add(k);
   const el=document.querySelector('.bloco[data-k="'+k+'"]'); if(el) el.classList.toggle('aberto', blocosAbertos.has(k));
@@ -466,7 +471,7 @@ function temasDoBloco(iso,i,b,gravar){
   if(d[i]) return d[i].map(acharTema).filter(Boolean);
   const m=mat(b.m); if(!m) return [];
   const usados=[].concat(...Object.values(d)), L=lidos();
-  const lista=m.temas.filter(t=>!L.includes(t.id)&&!usados.includes(t.id)).sort((x,y)=>(x.prio==='alta'?0:1)-(y.prio==='alta'?0:1)).slice(0,temasPorBloco(b));
+  const lista=m.temas.filter(t=>!L.includes(t.id)&&!usados.includes(t.id)).slice(0,temasPorBloco(b));   /* na ordem do material */
   if(gravar && lista.length){
     d[i]=lista.map(t=>t.id); A[iso]=d;
     Object.keys(A).sort().slice(0,-21).forEach(k=>delete A[k]);
@@ -512,8 +517,9 @@ function telaPlano(){
           <svg class="chev" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
         </div>
         <div class="bloco-det">
-          ${temas.map(t=>{ const ok=L.includes(t.id); return `<div class="tema-plano ${ok?'ok':''}">
-            <div class="tp-topo"><div class="tp-tt">${t.prio==='alta'?'🔥 ':''}${S(t.titulo)}</div>
+          ${temas.map(t=>{ const ok=L.includes(t.id), ab=resumosAbertos.has(t.id), nº=(mat(b.m).temas.findIndex(x=>x.id===t.id)+1); return `<div class="tema-plano ${ok?'ok':''} ${ab?'com-resumo':''}" data-t="${t.id}">
+            <div class="tp-topo"><div class="tp-tt"><span class="tp-n">${nº}</span>${t.prio==='alta'?'🔥 ':''}${S(t.titulo)}</div></div>
+            <div class="tp-botoes"><button class="tp-ver" onclick="alternarResumo('${t.id}')">${ab?'Ocultar resumo':'📖 Ver resumo'}</button>
               <button class="tp-check ${ok?'on':''}" onclick="concluirTemaPlano('${t.id}')">${ok?'✓ Concluído':'Marcar concluído'}</button></div>
             <div class="tp-resumo">${t.secoes.map(sc=>`<div class="sec-app"><div class="sec-rot">${S(sc[0])}</div>${sc[1]?`<p>${F(sc[1])}</p>`:''}${sc[2]&&sc[2].length?`<ul>${sc[2].map(i=>`<li>${F(i)}</li>`).join('')}</ul>`:''}${sc[3]?`<p class="sec-fecho">${F(sc[3])}</p>`:''}</div>`).join('')}
               <div class="dica-enem"><b>💡 Como cai no ENEM:</b> ${S(t.dica)}</div></div>
