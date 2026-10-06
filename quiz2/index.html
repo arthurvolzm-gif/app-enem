@@ -285,7 +285,7 @@ const RENDER = {
         <p class="s">Com base nas suas respostas, hoje a sua rotina e o seu conteúdo não estão no ritmo que a sua meta exige.</p></div>`}
       ${medidorHTML(P.idx, niv.cor, 'Seu Índice de Preparo para o ENEM')}
         ${barrasHTML(P.areas, true)}
-        <p class="note">Estimativa educativa calculada a partir das suas respostas. Não é uma avaliação oficial e não prevê a sua nota.</p>
+        <p class="note">Estimativa educativa calculada a partir das suas respostas.</p>
       </div>
       <div class="alerta" style="margin-top:20px;${nCrit===0?VERDE:''}"><p style="font-size:15px;letter-spacing:.4px;${nCrit===0?'color:#16764a;':''}">${nCrit===0?'✅ TODOS OS PONTOS ESTÃO BEM ENCAMINHADOS':nCrit===1?'⚠️ 1 PONTO PARA MELHORAR FOI IDENTIFICADO':`⚠️ ${nCrit} PONTOS CRÍTICOS FORAM IDENTIFICADOS`}</p></div>
       ${okRotina ? caixaOk('1 · Sua rotina é um ponto forte',`${a.dias==='Todos os dias'?'Estudar <strong>todos os dias</strong>':'Estudar <strong>'+S((a.dias||'').toLowerCase())+'</strong> por semana'}, <strong>${S((a.horas||'').toLowerCase())}</strong> por dia, é uma base sólida. O desafio agora é manter esse ritmo até a prova.`)
