@@ -8,6 +8,7 @@ em `testegratuitoenem.vercel.app` a partir deste repositório. Cores: branco e v
 - `quiz2/index.html`: quiz de preparo para as **matérias** → oferta dos 9 resumos em PDF + app Plano ENEM. Cores branco e azul escuro (`shared/quiz-azul.css`).
 - `redacao/index.html`: app 1 (Arsenal + montador + correção por foto). Rota também em `/redação`.
 - `materias/index.html` + `materias/app.css`: app 2 Plano ENEM (azul escuro): onboarding, plano, temas da semana, modo foco, resumos, progresso, conquistas, revisão espaçada, exercícios. Rota também em `/matérias`.
+- Versão escura (preto + ciano): `/quiz2/escuro` e `/materias/escuro` (também `?tema=escuro`). A página detecta a URL, põe `html.escuro` e carrega `shared/escuro-quiz.css` / `shared/escuro-app.css`. Rotas em `vercel.json` (rewrites). Em `materias/app.css`, fundo branco é `var(--card)`: não escrever `background:#fff` em regra nova.
 - `api/corrigir.js`: função Vercel que corrige a redação pela foto com a API do Claude.
 - `shared/`: `quiz.css` e `quiz-base.js` (motor comum dos quizzes), `app.css`, `config.js`,
   `conta.js` (login Supabase e sincronização do progresso), `acesso.js` (códigos por produto, só hashes), `arsenal.js`, `questoes.js`.

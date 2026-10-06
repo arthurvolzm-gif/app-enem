@@ -5,9 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Plano ENEM</title>
 <meta name="theme-color" content="#0b1f4d" />
+<script>if(/\/escuro\/?$/.test(location.pathname)||/[?&]tema=escuro/.test(location.search)){document.write('<meta name="theme-color" content="#000000">');}</script>
 <meta name="robots" content="noindex" />
 <link rel="manifest" href="/materias/manifest.json" />
 <link rel="stylesheet" href="/materias/app.css" />
+<script>
+/* versão escura: /materias/escuro (ou ?tema=escuro) */
+if(/\/escuro\/?$/.test(location.pathname)||/[?&]tema=escuro/.test(location.search)){document.documentElement.classList.add('escuro');document.write('<link rel="stylesheet" href="/shared/escuro-app.css">');}
+</script>
 <script src="/shared/config.js"></script>
 <script src="/shared/conta.js"></script>
 <script src="/shared/acesso.js"></script>
@@ -40,7 +45,8 @@ const nav = document.getElementById('nav');
 const DIAS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 const DIAS_LONGO = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
 const ORDEM_SEMANA = [1,2,3,4,5,6,0];
-const COR_MAT = { mat:'#e8f0ff', fis:'#fff4dc', qui:'#e9fbf2', bio:'#e6f8ec', his:'#fdeee6', geo:'#e5f5fb', fil:'#f1ecff', soc:'#fdeef7', lin:'#ffeef4', red:'#eef1f8' };
+const ESCURO = document.documentElement.classList.contains('escuro');
+const COR_MAT = ESCURO ? { mat:'#1c1a0a', fis:'#1f1a08', qui:'#07231a', bio:'#08240f', his:'#241208', geo:'#07202c', fil:'#17122b', soc:'#2a0f1e', lin:'#2a0d17', red:'#0d1c26' } : { mat:'#e8f0ff', fis:'#fff4dc', qui:'#e9fbf2', bio:'#e6f8ec', his:'#fdeee6', geo:'#e5f5fb', fil:'#f1ecff', soc:'#fdeef7', lin:'#ffeef4', red:'#eef1f8' };
 
 /* ===================== util ===================== */
 function F(s){ return S(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>'); }
@@ -107,7 +113,7 @@ function svgMat(id){ return `<span class="mi mi-${id}">${ic(id)}</span>`; }
 function barraTopo(titulo, voltar){ return `<div class="barra-topo">${voltar?`<button class="voltar" onclick="history.back()" aria-label="Voltar">${ic('volta',2.2)}</button>`:''}<h1>${titulo}</h1></div>`; }
 function anel(pct, valor, rotulo, cls, cor){
   const r=42, c=2*Math.PI*r, p=Math.max(0,Math.min(100,pct||0));
-  return `<div class="anel ${cls||''}"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="${r}" fill="none" stroke="#eaf0fb" stroke-width="9"/><circle cx="50" cy="50" r="${r}" fill="none" stroke="${cor||'url(#gAzul)'}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-p/100)}"/><defs><linearGradient id="gAzul" x1="0" x2="1"><stop offset="0" stop-color="#1d3f8f"/><stop offset="1" stop-color="#3b6fd8"/></linearGradient></defs></svg><div class="c"><b>${valor}</b>${rotulo?`<span>${rotulo}</span>`:''}</div></div>`;
+  return `<div class="anel ${cls||''}"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="${r}" fill="none" stroke="#eaf0fb" stroke-width="9"/><circle cx="50" cy="50" r="${r}" fill="none" stroke="${cor||'url(#gAzul)'}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-p/100)}"/><defs><linearGradient id="gAzul" x1="0" x2="1"><stop class="g0" offset="0" stop-color="#1d3f8f"/><stop class="g1" offset="1" stop-color="#3b6fd8"/></linearGradient></defs></svg><div class="c"><b>${valor}</b>${rotulo?`<span>${rotulo}</span>`:''}</div></div>`;
 }
 
 /* ===================== dados do aluno ===================== */
@@ -835,7 +841,7 @@ function telaExercicios(){
   const ordem = M.slice().sort((a,b)=>((p&&p.dificeis.includes(b.id))?1:0)-((p&&p.dificeis.includes(a.id))?1:0));
   app.innerHTML = `${barraTopo('📝 Exercícios e simulados', !!perfil())}
   <div class="tela fade">
-    <div class="card hero"><div class="k">Mini simulado</div><div class="grande" style="font-size:22px;">10 questões, cronometrado</div><p>Todas as matérias. O resultado entra no seu progresso.</p><div style="height:12px"></div><button class="btn sec" style="background:#fff;" onclick="iniciarQ('simulado')">Começar simulado</button></div>
+    <div class="card hero"><div class="k">Mini simulado</div><div class="grande" style="font-size:22px;">10 questões, cronometrado</div><p>Todas as matérias. O resultado entra no seu progresso.</p><div style="height:12px"></div><button class="btn sec" style="background:var(--card);" onclick="iniciarQ('simulado')">Começar simulado</button></div>
     <div class="secao">Treinar por matéria</div>
     ${ordem.map(m=>{ const qs=Q.map((q,i)=>({q,i})).filter(x=>x.q.m===m.id); if(!qs.length) return ''; const f=qs.filter(x=>x.i in R).length; return `<button class="tema-item" onclick="iniciarQ('treino','${m.id}')"><span class="ck" style="background:${COR_MAT[m.id]};border:none;font-size:15px;">${m.icone}</span><div style="flex:1;"><b>${S(m.nome)}</b><span class="nota">${f}/${qs.length} feitas${p&&p.dificeis.includes(m.id)?' · sua prioridade':''}</span></div><span class="seta">${ic('chevR',2.2)}</span></button>`; }).join('')}
     <button class="btn sec" onclick="irPara('erros')">📒 Caderno de erros</button>

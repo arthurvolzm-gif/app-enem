@@ -56,6 +56,25 @@
           "value": "noindex"
         }
       ]
+    },
+    {
+      "source": "/quiz2/escuro",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/quiz2/escuro",
+      "destination": "/quiz2"
+    },
+    {
+      "source": "/materias/escuro",
+      "destination": "/materias"
     }
   ]
 }

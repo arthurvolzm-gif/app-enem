@@ -1,0 +1,98 @@
+/* =========================================================
+   VERSÃO ESCURA DO QUIZ 2 (/quiz2/escuro): fundo preto + ciano.
+   Carregado por quiz2/index.html quando a URL termina em /escuro
+   (ou tem ?tema=escuro). Redefine as variáveis do tema azul e
+   corrige os trechos com cor fixa.
+   ========================================================= */
+html.escuro{
+  color-scheme:dark;
+  --verde:#22b3d2;          /* acento (antes azul) */
+  --verde-claro:#3cd0ea;
+  --verde-suave:#0f2730;
+  --verde-escuro:#f1fafc;   /* títulos: antes azul-escuro, agora claro */
+  --cinza:#c3d3d8;
+  --cinza-claro:#0d1114;
+  --borda:#1b2a31;
+  --vermelho:#ff6b6b;
+  --ciano-fundo:#0b6f86; --ciano-fundo2:#0a4f61; --ciano-profundo:#04222b;
+  --txt2:#a9bcc3; --txt3:#7e949c; --card:#0d1114;
+}
+html.escuro body{background:#000;color:var(--cinza);}
+html.escuro .card,
+html.escuro .res .blk{background:var(--card);border-color:var(--borda);box-shadow:0 12px 44px rgba(0,0,0,.7);}
+html.escuro .progress-bar,html.escuro .lib-bar{background:#14232a;}
+html.escuro .progress-fill,html.escuro .lib-fill{background:linear-gradient(90deg,var(--ciano-fundo),var(--verde-claro));}
+html.escuro .back-btn{color:#5d737b;}
+
+/* opções */
+html.escuro .opt{background:#0b0e10;border-color:var(--borda);color:#dce8ec;}
+html.escuro .opt:hover{border-color:var(--verde-claro);box-shadow:0 6px 20px rgba(34,179,210,.18);}
+html.escuro .opt-radio{border-color:#2c424b;}
+html.escuro .opt.sel{background:var(--verde-suave);border-color:var(--verde);}
+html.escuro .opt.sel .opt-radio{background:var(--verde);border-color:var(--verde);}
+html.escuro .opts.grid2 .opt{background:linear-gradient(135deg,var(--ciano-fundo2),var(--ciano-fundo));color:#fff;border:none;}
+html.escuro .opts.grid2 .opt.sel{background:linear-gradient(135deg,var(--ciano-fundo),var(--verde));}
+html.escuro .opts.grid2 .foto-card{box-shadow:0 6px 18px rgba(0,0,0,.6);}
+html.escuro .text-input{background:#0b0e10;border-color:var(--borda);color:#e7f1f4;}
+
+/* botões */
+html.escuro .btn,
+html.escuro .pc-btn{background:linear-gradient(135deg,var(--ciano-fundo),#1496b3);color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.55);}
+html.escuro .btn-ghost{background:transparent;color:var(--verde);border-color:var(--borda);}
+html.escuro .sticky-cta{background:#06090b;border-top-color:var(--borda);}
+
+/* textos */
+html.escuro .intro-sub,html.escuro .big-leg,html.escuro .sec-s,html.escuro .q-sub,
+html.escuro .inter-text,html.escuro .box p,html.escuro .tl span,html.escuro .feat p,
+html.escuro .fb,html.escuro .faq p,html.escuro .lista li,html.escuro .cmp li{color:var(--txt2);}
+html.escuro .note,html.escuro .legal,html.escuro .brand-sub,html.escuro .meter-l,html.escuro .mat-row .l span,
+html.escuro .meter-num small{color:var(--txt3);}
+html.escuro .intro-h1 span,html.escuro .sec-h span{color:var(--verde-claro);}
+html.escuro .tag{background:var(--ciano-fundo);color:#fff;}
+html.escuro .tag.red{background:#2a1111;color:#ff8f8f;}
+html.escuro .intro-badge,html.escuro .chip,html.escuro .saida-selo{background:var(--verde-suave);color:var(--verde);}
+html.escuro .alerta{background:#2a1111;}
+html.escuro .box{background:#0a0d0f;border-color:var(--borda);}
+html.escuro .exemplo{background:#2a2108;color:#e0b24d;}
+
+/* mocks, cartões e tabelas */
+html.escuro .phone,html.escuro .feat,html.escuro .cmp .c{background:#0a0d0f;border-color:var(--borda);box-shadow:none;}
+html.escuro .plano td{border-bottom-color:#16242a;}
+html.escuro .mat-row .t,html.escuro .sb .t{background:#14232a;}
+html.escuro .red-demo{background:#0a0d0f;border-color:#1b2a31;color:var(--txt2);}
+html.escuro .tl::before{border-color:#000;}
+html.escuro .meter i{background:#fff;}
+html.escuro .lista li,html.escuro .faq details{border-bottom-color:#16242a;}
+html.escuro .price-box{background:linear-gradient(150deg,var(--ciano-profundo),var(--ciano-fundo));}
+html.escuro .price-box .off{background:var(--verde);color:#001a21;}
+html.escuro .garantia .sel{background:var(--ciano-fundo);}
+
+/* trechos com cor fixa dentro do HTML do quiz */
+html.escuro [style*="color:#8a98b5"],html.escuro [style*="color:#9ba8c2"],html.escuro [style*="color:#9aa2b4"]{color:var(--txt3) !important;}
+html.escuro [style*="color:#525d78"],html.escuro [style*="color:#6b7590"]{color:var(--txt2) !important;}
+html.escuro [style*="color:#16764a"]{color:#53d89a !important;}
+html.escuro [style*="background:#eef3fc"],html.escuro [style*="background:#eaf8f0"],html.escuro [style*="background:#fff;"]{background:#0a0d0f !important;border-color:var(--borda) !important;}
+html.escuro [style*="background:#eaf8f0"]{background:#07231a !important;border-color:#145a3a !important;}
+html.escuro [style*="color:#0b1f4d"]{color:var(--verde-escuro) !important;}
+
+/* tela do produto */
+html.escuro .prints{border-color:#1b2a31;background:#000;}
+html.escuro .prints-dots i{background:#1b2a31;}
+html.escuro .prints-dots i.on{background:var(--verde);}
+html.escuro .print-call .pc-card{background:#0d1114;border-color:#1b2a31;}
+html.escuro .print-call .pc-card b{color:var(--verde);}
+html.escuro .print-call .pc-card span{color:#e7f1f4;}
+html.escuro .print-call .pc-seta circle{fill:#22b3d2;}
+html.escuro .print-call .pc-seta path{stroke:#22b3d2;}
+html.escuro .pdf-vitrine{background:#0d1114;border-color:#1b2a31;box-shadow:0 16px 36px rgba(0,0,0,.7);}
+html.escuro .pdf-h,html.escuro .pdf-fecho{color:var(--verde-escuro);}
+html.escuro .pdf-p{color:var(--txt2);}
+html.escuro .pdf-bloco,html.escuro .res-aplicativo{border-top-color:var(--borda);}
+html.escuro .res-prints img{border-color:#1b2a31;}
+html.escuro .res-prints figcaption{color:var(--txt3);}
+html.escuro .preco-card{background:var(--card);border-color:#1f3a44;box-shadow:0 10px 28px rgba(0,0,0,.6);}
+html.escuro .preco-card .pc-l{color:var(--txt3);}
+html.escuro .preco-card .pc-de{color:#5d737b;}
+html.escuro .preco-card .pc-desc,html.escuro .preco-card .pc-vista{color:var(--txt2);}
+html.escuro .preco-card .pc-parc{color:#fff;}
+html.escuro .preco-card .pc-nota{color:var(--txt3);}

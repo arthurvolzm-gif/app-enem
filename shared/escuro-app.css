@@ -1,0 +1,113 @@
+/* =========================================================
+   VERSÃO ESCURA DO APP (/materias/escuro): fundo preto + ciano.
+   Só redefine variáveis e os poucos trechos que usavam o azul-escuro
+   como fundo. Carregado por materias/index.html quando a URL termina
+   em /escuro (ou tem ?tema=escuro).
+   ========================================================= */
+html.escuro{
+  color-scheme:dark;
+  --fundo:#000; --card:#0d1114; --texto:#e7f1f4; --cinza:#8fa6ae; --cinza2:#5d737b; --borda:#1b2a31;
+  --navy:#f1fafc;                     /* títulos (antes azul-escuro sobre branco) */
+  --azul:#33bcd6; --azul2:#22b3d2; --azul3:#7ed6e8;
+  --suave:#0f2730; --suave2:#0a1a20;
+  --ciano-fundo:#0b6f86; --ciano-fundo2:#0a4f61; --ciano-profundo:#04222b;
+  --sombra:0 8px 28px rgba(0,0,0,.65);
+  --topo-bg:rgba(0,0,0,.92); --nav-bg:rgba(6,9,11,.97);
+}
+html.escuro body{background:#000;color:var(--texto);}
+html.escuro .app{background:transparent;}
+
+/* blocos que usavam o azul-escuro como fundo: viram ciano profundo */
+html.escuro .hero,
+html.escuro .login-hero,
+html.escuro .topo-hero,
+html.escuro .nivel,
+html.escuro .md-capa{background:linear-gradient(150deg,var(--ciano-profundo),var(--ciano-fundo2) 62%,var(--ciano-fundo));color:#fff;}
+html.escuro .btn,
+html.escuro .dias-tabs button.on,
+html.escuro .chips button.on,
+html.escuro .grade-mat button.on,
+html.escuro .tm-bar,
+html.escuro .tm-painel .play,
+html.escuro .foco .ctrl .play,
+html.escuro .aj-n,
+html.escuro .logo-esc .logo-mk,
+html.escuro .toast{background:var(--ciano-fundo);border-color:var(--ciano-fundo);color:#fff;box-shadow:0 10px 24px rgba(0,0,0,.5);}
+html.escuro .btn.sec{background:transparent;border:1.5px solid var(--azul2);color:var(--azul);box-shadow:none;}
+html.escuro .btn:disabled{background:#16242a;color:#5d737b;box-shadow:none;}
+html.escuro .logo-mk{background:#fff;color:#0b6f86;}
+html.escuro .tm-bar .tm-play{background:#fff;color:#0b6f86;}
+
+/* cartões e superfícies */
+html.escuro .card,
+html.escuro .mat-card,
+html.escuro .tema-item,
+html.escuro .atalho,
+html.escuro .login-box,
+html.escuro .ob,
+html.escuro .inp,
+html.escuro .esc button,
+html.escuro .grade-mat button,
+html.escuro .chips button,
+html.escuro .dias-tabs button,
+html.escuro .tema-plano,
+html.escuro .md-tema{background:var(--card);border-color:var(--borda);color:var(--texto);}
+html.escuro .card.hero,
+html.escuro .card.nivel{background:linear-gradient(150deg,var(--ciano-profundo),var(--ciano-fundo2) 62%,var(--ciano-fundo));border:none;}
+html.escuro .esc button.on,
+html.escuro .esc.grade button.on{background:var(--suave);border-color:var(--azul2);}
+html.escuro .esc button.on .r{background:var(--card);border-color:var(--azul2);}
+html.escuro .esc button.on .r::after{background:var(--azul2);}
+html.escuro .inp{color:var(--texto);}
+html.escuro .inp::placeholder{color:var(--cinza2);}
+html.escuro .inp-w .inp{background:var(--card);}
+html.escuro .abas{background:var(--suave2);}
+html.escuro .abas button.on{background:var(--suave);color:var(--azul);}
+html.escuro .barra,html.escuro .ob-prog{background:var(--suave);}
+html.escuro .barra i,html.escuro .ob-prog i{background:linear-gradient(90deg,var(--ciano-fundo),var(--azul2));}
+html.escuro .barra-topo{border-bottom-color:var(--borda);}
+html.escuro .nav{border-top-color:var(--borda);}
+html.escuro .nav button.on{background:var(--suave);color:var(--azul);}
+html.escuro .nav button.on svg{stroke:var(--azul);}
+html.escuro .voltar{background:var(--card);border-color:var(--borda);color:var(--texto);}
+html.escuro .ob .voltar{background:var(--suave);color:var(--azul);}
+html.escuro .tp-topo{background:var(--suave);}
+html.escuro .tp-n{background:var(--card);color:var(--azul);}
+html.escuro .tp-ver{background:var(--suave);border-color:var(--suave);color:var(--azul);}
+html.escuro .tp-check{background:transparent;color:var(--azul);border-color:var(--azul2);}
+html.escuro .tp-check.on{background:var(--verde);border-color:var(--verde);color:#fff;}
+html.escuro .tm-painel{background:var(--suave2);border-color:var(--borda);}
+html.escuro .tm-painel .fim{background:var(--card);border-color:var(--borda);}
+html.escuro .tm-full{background:var(--card);border-color:var(--borda);color:var(--azul);}
+html.escuro .aj-item{background:var(--suave2);border-color:var(--borda);}
+html.escuro .aj-item button{background:var(--card);border-color:var(--borda);color:var(--azul);}
+html.escuro .tag.azul{background:var(--suave);color:var(--azul);}
+html.escuro .alerta-card{background:#1d1608;border-color:#4a3510;}
+html.escuro .alerta-card .ic{background:#2a1e0a;}
+html.escuro .meta-card{border-color:var(--ciano-fundo);}
+html.escuro .fogo{background:#2a1a0a;border-color:#5a3a12;color:#ffb066;}
+html.escuro .humor button{background:var(--suave2);}
+html.escuro .humor button.on{background:var(--card);border-color:var(--azul2);}
+html.escuro .dica{background:var(--suave);color:var(--texto);}
+html.escuro .dica-enem{background:#1d1808;border-color:#4a3d10;color:#f3e3a8;}
+html.escuro .sec-rot{background:var(--suave);color:var(--azul);}
+html.escuro .sec-app p,html.escuro .sec-app li{color:var(--texto);}
+html.escuro .stats>div{background:var(--card);border-color:var(--borda);}
+html.escuro .stats .si{background:var(--suave);}
+html.escuro .graf .b{background:linear-gradient(180deg,var(--azul2),var(--ciano-fundo));}
+html.escuro .graf .b:not(.on){background:var(--suave);}
+html.escuro .medalha{background:var(--card);border-color:var(--borda);}
+html.escuro .notif.nova{background:var(--suave2);}
+html.escuro .mat-card .e,html.escuro .atalho .ic{background:var(--suave);}
+html.escuro .semana .d{background:var(--suave2);border-color:var(--borda);}
+html.escuro .semana .d.hoje{background:var(--suave);border-color:var(--azul2);}
+
+/* anéis de progresso */
+html.escuro .anel circle:first-child{stroke:var(--suave);}
+html.escuro .anel stop.g0{stop-color:#0b6f86;}
+html.escuro .anel stop.g1{stop-color:#3cd0ea;}
+html.escuro .anel .c b{color:var(--navy);}
+
+/* material completo na tela */
+html.escuro .md-tema h2{color:var(--navy);}
+@media print{html.escuro body,html.escuro .md-tema{background:#fff !important;color:#16213f !important;}html.escuro .md-tema h2{color:#0b1f4d !important;}html.escuro .sec-app p,html.escuro .sec-app li{color:#16213f !important;}}
