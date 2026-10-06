@@ -210,7 +210,9 @@ function montaPlano(){
    ========================================================= */
 /* carrossel de prints reais do aplicativo: desliza sozinho, pausa enquanto a pessoa segura a imagem.
    A última "foto" é cópia da primeira: ao chegar nela, volta ao início sem transição (sem salto). */
-const PRINTS = ['/img/print-app-inicio.jpg','/img/print-app-plano.jpg','/img/print-app-meta.jpg','/img/print-app-resumos.jpg','/img/print-app-tema.jpg','/img/print-app-progresso.jpg'];
+/* na versão escura (/quiz2/escuro) usa os prints do aplicativo escuro */
+const SUF_IMG = document.documentElement.classList.contains('escuro') ? '-escuro' : '';
+const PRINTS = ['inicio','plano','meta','resumos','tema','progresso'].map(n=>'/img/print-app-'+n+SUF_IMG+'.jpg');
 let printsIdx = 0, printsTimer = null;
 /* pré-carrega e decodifica tudo antes de começar, para a troca não travar */
 function precarregar(lista){ lista.forEach(src=>{ const im = new Image(); im.src = src; if(im.decode) im.decode().catch(()=>{}); }); }
@@ -399,8 +401,8 @@ const RENDER = {
         <div class="res-aplicativo">
           <h3 class="pdf-h" style="font-size:19px;">E cada tema também tem um resumo dentro do aplicativo</h3>
           <div class="res-prints">
-            <figure><img src="/img/print-app-plano-resumo.jpg" alt="Resumo de um tema aberto no plano" loading="lazy" onerror="this.parentNode.style.display='none'"><figcaption>O resumo aparece no seu plano, ao tocar em "Ver resumo"</figcaption></figure>
-            <figure><img src="/img/print-app-tema.jpg" alt="Tela de um tema do aplicativo" loading="lazy" onerror="this.parentNode.style.display='none'"><figcaption>E o tema completo, com a dica "Como cai no ENEM"</figcaption></figure>
+            <figure><img src="/img/print-app-plano-resumo${SUF_IMG}.jpg" alt="Resumo de um tema aberto no plano" loading="lazy" onerror="this.parentNode.style.display='none'"><figcaption>O resumo aparece no seu plano, ao tocar em "Ver resumo"</figcaption></figure>
+            <figure><img src="/img/print-app-tema${SUF_IMG}.jpg" alt="Tela de um tema do aplicativo" loading="lazy" onerror="this.parentNode.style.display='none'"><figcaption>E o tema completo, com a dica "Como cai no ENEM"</figcaption></figure>
           </div>
         </div>
         <p class="pdf-fecho">Quem estuda sem direção chega na prova com a sensação de que faltou alguma coisa. Com o conteúdo completo e um plano para cada dia, você chega mais preparado(a).</p>
