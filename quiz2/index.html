@@ -27,8 +27,8 @@
 <style>
 .hero-sub{font-family:'Open Sans',sans-serif;font-size:17px;font-weight:700;color:var(--verde-claro);line-height:1.5;text-align:center;margin:18px 0 6px;}
 .prints{position:relative;width:62%;max-width:240px;margin:24px auto 0;aspect-ratio:390/844;border-radius:22px;overflow:hidden;background:#fff;border:6px solid #0b1f4d;box-shadow:0 14px 34px rgba(11,31,77,.35);}
-#prints-track{display:flex;height:100%;}
-#prints-track img{flex:1 1 0;min-width:0;height:100%;object-fit:cover;display:block;}
+#prints-track{display:flex;height:100%;will-change:transform;backface-visibility:hidden;transform:translate3d(0,0,0);}
+#prints-track img{flex:1 1 0;min-width:0;height:100%;object-fit:cover;display:block;backface-visibility:hidden;}
 .prints-dots{display:flex;gap:6px;justify-content:center;margin-top:14px;}
 .prints-dots i{width:7px;height:7px;border-radius:50%;background:#cfdaf0;}
 .prints-dots i.on{background:var(--verde);width:18px;border-radius:6px;}
@@ -43,7 +43,7 @@
 .pdf-h{font-family:'Open Sans',sans-serif;font-size:21px;font-weight:900;color:var(--verde-escuro);line-height:1.3;margin-bottom:8px;}
 .pdf-p{font-size:14.5px;color:#46506a;line-height:1.6;margin-bottom:16px;}
 .pdf-vitrine{position:relative;width:78%;max-width:330px;margin:0 auto;border-radius:10px;overflow:hidden;background:#fff;border:1px solid #dbe3f2;box-shadow:0 16px 36px rgba(11,31,77,.28);transform:rotate(-1.2deg);}
-.pdf-vitrine img{display:block;width:100%;height:auto;transition:opacity .26s ease;}
+.pdf-vitrine img{display:block;width:100%;height:auto;transition:opacity .35s ease;will-change:opacity;}
 .pdf-leg{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(0deg,rgba(11,31,77,.92),rgba(11,31,77,0));padding:26px 12px 9px;display:flex;flex-direction:column;align-items:center;color:#fff;line-height:1.25;}
 .pdf-leg b{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#ffd84d;font-weight:800;}
 .pdf-leg span{font-size:13px;font-weight:700;}
@@ -173,22 +173,24 @@ function montaPlano(){
    A última "foto" é cópia da primeira: ao chegar nela, volta ao início sem transição (sem salto). */
 const PRINTS = ['/img/print-app-inicio.jpg','/img/print-app-plano.jpg','/img/print-app-meta.jpg','/img/print-app-resumos.jpg','/img/print-app-tema.jpg','/img/print-app-progresso.jpg'];
 let printsIdx = 0, printsTimer = null;
-function iniciarPrints(){ clearInterval(printsTimer); printsIdx = 0; printsTimer = setInterval(avancarPrints, 2200); }
+/* pré-carrega e decodifica tudo antes de começar, para a troca não travar */
+function precarregar(lista){ lista.forEach(src=>{ const im = new Image(); im.src = src; if(im.decode) im.decode().catch(()=>{}); }); }
+function iniciarPrints(){ clearInterval(printsTimer); printsIdx = 0; precarregar(PRINTS); printsTimer = setInterval(avancarPrints, 2600); }
 function pausarPrints(){ clearInterval(printsTimer); }
-function retomarPrints(){ clearInterval(printsTimer); printsTimer = setInterval(avancarPrints, 2200); }
+function retomarPrints(){ clearInterval(printsTimer); printsTimer = setInterval(avancarPrints, 2600); }
 function avancarPrints(){
   const track = document.getElementById('prints-track');
   if(!track || !document.body.contains(track)){ clearInterval(printsTimer); return; }
   const pct = 100 / (PRINTS.length + 1);
   printsIdx++;
-  track.style.transition = 'transform .55s cubic-bezier(.4,0,.2,1)';
-  track.style.transform = `translateX(-${printsIdx * pct}%)`;
+  track.style.transition = 'transform .7s cubic-bezier(.45,.05,.25,1)';
+  track.style.transform = `translate3d(-${printsIdx * pct}%,0,0)`;
   document.querySelectorAll('#prints-dots i').forEach((d,i)=>d.classList.toggle('on', i === (printsIdx % PRINTS.length)));
   if(printsIdx === PRINTS.length){
     setTimeout(()=>{
       if(!document.body.contains(track)) return;
-      track.style.transition = 'none'; track.style.transform = 'translateX(0)'; printsIdx = 0;
-    }, 600);
+      track.style.transition = 'none'; track.style.transform = 'translate3d(0,0,0)'; printsIdx = 0;
+    }, 760);
   }
 }
 
@@ -208,13 +210,18 @@ function mostrarPagina(){
   const img = document.getElementById('pdf-img');
   if(!img || !document.body.contains(img)){ clearInterval(pdfTimer); return; }
   const pg = proximaPagina();
-  img.style.opacity = 0;
-  setTimeout(()=>{
-    img.src = pg.s;
-    const leg = document.getElementById('pdf-leg');
-    if(leg) leg.innerHTML = '<b>'+S(pg.m)+'</b><span>'+S(pg.t)+'</span>';
-    img.style.opacity = 1;
-  }, 260);
+  const nova = new Image();
+  nova.onload = ()=>{
+    if(!document.body.contains(img)) return;
+    img.style.opacity = 0;
+    setTimeout(()=>{
+      img.src = pg.s;
+      const leg = document.getElementById('pdf-leg');
+      if(leg) leg.innerHTML = '<b>'+S(pg.m)+'</b><span>'+S(pg.t)+'</span>';
+      img.style.opacity = 1;
+    }, 360);
+  };
+  nova.src = pg.s;
 }
 function iniciarPdf(){
   clearInterval(pdfTimer); pdfFila = []; pdfUltimo = 0;
@@ -222,10 +229,10 @@ function iniciarPdf(){
   const dif = matsDificeis();
   pdfFila = PAGINAS_PDF.map((_,i)=>i).filter(i=>i!==0).sort(()=>Math.random()-0.5)
     .sort((a,b)=>(dif.includes(PAGINAS_PDF[b].m)?1:0)-(dif.includes(PAGINAS_PDF[a].m)?1:0));
-  pdfTimer = setInterval(mostrarPagina, 3200);
+  precarregar(PAGINAS_PDF.slice(0,6).map(x=>x.s)); pdfTimer = setInterval(mostrarPagina, 3600);
 }
 function pausarPdf(){ clearInterval(pdfTimer); }
-function retomarPdf(){ clearInterval(pdfTimer); pdfTimer = setInterval(mostrarPagina, 3200); }
+function retomarPdf(){ clearInterval(pdfTimer); pdfTimer = setInterval(mostrarPagina, 3600); }
 
 const RENDER = {
   intro(q){
@@ -234,7 +241,7 @@ const RENDER = {
       <span class="intro-badge">Teste grátis · 2 minutos</span>
       <h1 class="intro-h1">Você está <span>preparado</span> para o ENEM?</h1>
       <p class="intro-sub">${S(prazoTxt())}. Faça o teste e descubra o seu <strong>Índice de Preparo</strong>. Ao final você recebe um plano para o último mês.</p>
-      <img src="/img/mockup-quiz2.png" alt="Resumos em PDF e o app Plano ENEM" style="width:100%;max-width:520px;display:block;margin:22px auto 0;border-radius:16px;" onerror="this.remove()">
+      <img src="/img/mockup-quiz2.png" alt="Material e app Plano ENEM" style="width:100%;max-width:520px;display:block;margin:22px auto 0;border-radius:16px;" onerror="this.remove()">
       <h2 class="intro-h1" style="font-size:24px;margin:30px 0 4px;">Qual é a sua situação?</h2>
       <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:#9aa2b4;margin:8px 0 18px;">Toque para escolher</p>
       ${introCards(q)}
@@ -287,7 +294,7 @@ const RENDER = {
       <span class="tag red" style="margin-top:6px;">${S(prazoTxt())}</span>
       <h2 class="q-title" style="margin:6px 0 10px;">Você não precisa estudar tudo. Precisa saber o que estudar.</h2>
       <p class="sec-s" style="margin-bottom:6px;">${abre}</p>
-      <p class="hero-sub">Por isso, o seu plano de estudos, os resumos de cada matéria, o seu desempenho e os lembretes ficam em um app só.</p>
+      <p class="hero-sub">Por isso, o seu plano de estudos, o material de cada matéria, o seu desempenho e os lembretes ficam em um app só.</p>
 
       <div id="prints-wrap" class="prints"
            onmousedown="pausarPrints()" onmouseup="retomarPrints()" onmouseleave="retomarPrints()"
@@ -310,23 +317,26 @@ const RENDER = {
 
       <div class="pdf-bloco">
         <span class="tag" style="margin-bottom:10px;">E tem mais: o material completo</span>
-        <h3 class="pdf-h">Tudo o que você precisa estudar, em 9 resumos em PDF</h3>
-        <p class="pdf-p">${listaMats ? `Você marcou <b>${S(listaMats)}</b> como dificuldade. Os resumos dessas matérias estão aqui, com cada tema explicado do zero.` : 'Cada matéria tem o seu resumo, com cada tema explicado do zero.'} É assim que você vai receber:</p>
+        <h3 class="pdf-h">Tudo o que você precisa estudar, em 9 materiais</h3>
+        <p class="pdf-p">${listaMats ? `Você marcou <b>${S(listaMats)}</b> como dificuldade. O material dessas matérias está aqui, com cada tema explicado do zero.` : 'Cada matéria tem o seu material, com cada tema explicado do zero.'} É assim que você vai receber:</p>
 
         <div class="pdf-vitrine" id="pdf-vitrine"
              onmousedown="pausarPdf()" onmouseup="retomarPdf()" onmouseleave="retomarPdf()"
              ontouchstart="pausarPdf()" ontouchend="retomarPdf()" ontouchcancel="retomarPdf()">
-          <img id="pdf-img" src="${PAGINAS_PDF[0].s}" alt="Página de um dos resumos em PDF">
+          <img id="pdf-img" src="${PAGINAS_PDF[0].s}" alt="Página de um dos materiais">
           <div class="pdf-leg" id="pdf-leg"><b>${S(PAGINAS_PDF[0].m)}</b><span>${S(PAGINAS_PDF[0].t)}</span></div>
         </div>
         <p class="prints-leg">Páginas reais do material, de matérias diferentes</p>
 
-        <div class="pdf-explica">
-          <div class="pdf-item"><b>📄 O que é</b><span>Um resumo em PDF para cada matéria, com os <b>25 temas que mais caem</b> no ENEM. Cada tema ocupa uma página, em linguagem simples, com os pontos principais e a dica "Como cai no ENEM".</span></div>
-          <div class="pdf-item"><b>🎯 Para quem se sente perdido(a)</b><span>É <b>todo o conteúdo necessário</b> reunido em um só lugar. Você para de procurar o que estudar em vídeos e apostilas soltas e segue o material, tema por tema, na ordem do seu plano.</span></div>
-          <div class="pdf-item"><b>📚 Para quem já estudou</b><span>Serve também como <b>resumo de tudo o que você já viu</b>: leia rápido, marque o que ainda está fraco e revise antes da prova.</span></div>
+        <div class="com-lista" style="margin-top:20px;text-align:left;">
+          <div class="com-tt">Com o material você tem:</div>
+          <div class="com-item"><span class="ck">✓</span>O material de <b>todas as matérias</b> do ENEM, em 9 arquivos para baixar</div>
+          <div class="com-item"><span class="ck">✓</span>Não é um resumo solto: é o <b>conteúdo que dá para estudar em menos de 30 dias</b> para chegar mais preparado(a)</div>
+          <div class="com-item"><span class="ck">✓</span>Os <b>25 temas que mais caem</b> em cada matéria, um por página, em linguagem simples</div>
+          <div class="com-item"><span class="ck">✓</span>Os pontos principais e a dica "Como cai no ENEM" em cada tema</div>
+          <div class="com-item"><span class="ck">✓</span>Tudo reunido em um só lugar, na ordem do seu plano, sem procurar vídeo e apostila solta</div>
         </div>
-        <p class="pdf-fecho">Quem estuda sem direção chega na prova com a sensação de que faltou alguma coisa. Com o conteúdo completo e um plano para cada dia, você chega sabendo que viu o que mais cai. O resultado depende de você, mas o caminho deixa de ser um mistério.</p>
+        <p class="pdf-fecho">Quem estuda sem direção chega na prova com a sensação de que faltou alguma coisa. Com o conteúdo completo e um plano para cada dia, você chega mais preparado(a), sabendo que viu o que mais cai. O resultado depende de você, mas o caminho deixa de ser um mistério.</p>
       </div>
 
       <button class="btn" style="margin-top:24px;" onclick="go(1)">Ver o meu plano →</button>
@@ -398,12 +408,12 @@ const RENDER = {
       <div class="blk" style="text-align:center;">
         <span class="tag red">${S(prazoTxt())}</span>
         <h1 class="intro-h1" style="font-size:27px;">${n?n+', c':'C'}omece hoje o plano do seu último mês</h1>
-        <p class="intro-sub" style="font-size:15px;">Seu Índice de Preparo hoje é <strong style="color:${nivel(P.idx).cor};">${P.idx}/100</strong>. Os resumos trazem o que mais cai, e o app diz o que estudar em cada dia até a prova.</p>
+        <p class="intro-sub" style="font-size:15px;">Seu Índice de Preparo hoje é <strong style="color:${nivel(P.idx).cor};">${P.idx}/100</strong>. O material traz o que mais cai, e o app diz o que estudar em cada dia até a prova.</p>
       </div>
       <div class="blk">
         <h3 class="sec-h" style="margin-top:0;">O que você recebe</h3>
         <ul class="lista">
-          <li><span><b>9 resumos completos em PDF:</b> Matemática, Física, Química, Biologia, História, Geografia, Filosofia, Sociologia e Linguagens</span></li>
+          <li><span><b>9 materiais completos:</b> Matemática, Física, Química, Biologia, História, Geografia, Filosofia, Sociologia e Linguagens</span></li>
           <li><span><b>25 temas por matéria</b> (225 no total), com os que mais caem marcados com 🔥</span></li>
           <li><span><b>"Como cai no ENEM"</b> no fim de cada tema</span></li>
           <li><span>Feito para ler no celular ou imprimir, com espaço para anotações</span></li>
@@ -418,7 +428,7 @@ const RENDER = {
       </div>
       <div class="blk">
         <div class="price-box">
-          <div class="label">9 resumos em PDF + app</div>
+          <div class="label">9 materiais + app</div>
           <div class="val">${S(QUIZ.PRECO_POR)}</div>
           <div style="font-size:13px;opacity:.9;">pagamento único, sem mensalidade</div>
           <span class="off">Receba agora no seu e-mail</span>
@@ -429,7 +439,7 @@ const RENDER = {
       <div class="blk garantia">
         <img src="/img/garantia-7-dias.png" alt="Garantia de 7 dias" onerror="this.outerHTML='<div class=&quot;sel&quot;>7 DIAS<br>DE GARANTIA</div>'">
         <div><h3 style="font-family:'Open Sans';font-size:18px;font-weight:900;color:var(--verde-escuro);margin-bottom:6px;">Garantia de 7 dias</h3>
-        <p style="font-size:14px;color:#525d78;line-height:1.6;">Use os resumos e o app por 7 dias. Se não gostar, peça o reembolso dentro do prazo e devolvemos o valor pago.</p></div>
+        <p style="font-size:14px;color:#525d78;line-height:1.6;">Use o material e o app por 7 dias. Se não gostar, peça o reembolso dentro do prazo e devolvemos o valor pago.</p></div>
       </div>
       <div class="blk faq">
         <h3 class="sec-h" style="margin-top:0;">Dúvidas frequentes</h3>
@@ -437,7 +447,7 @@ const RENDER = {
         <details><summary>Não tenho tempo para estudar muito. Serve para mim?</summary><p>Serve. O plano parte do tempo que você tem hoje, a partir de 30 minutos por dia, e cada dia já mostra o que estudar.</p></details>
         <details><summary>Já tentei cronograma e larguei. O que muda?</summary><p>No app o plano já vem pronto e você recebe lembretes na hora de estudar. Você não precisa montar nem lembrar de nada sozinho.</p></details>
         <details><summary>Tem exercícios e correção de redação?</summary><p>No checkout você pode incluir os Exercícios e simulados no estilo do ENEM e a Correção da redação pela foto.</p></details>
-        <details><summary>Como recebo os resumos?</summary><p>Logo após a compra, os 9 PDFs chegam no seu e-mail, junto com o link do app. Você pode ler no celular, no computador ou imprimir.</p></details>
+        <details><summary>Como recebo o material?</summary><p>Logo após a compra, os 9 materiais chegam no seu e-mail, junto com o link do app. Você pode ler no celular, no computador ou imprimir.</p></details>
         <details><summary>Preciso estudar os 225 temas?</summary><p>Não precisa ler tudo de uma vez. O app distribui alguns temas por semana até o ENEM, começando pelos que mais caem, de acordo com o tempo que você tem.</p></details>
         <details><summary>Preciso instalar algum aplicativo?</summary><p>Não. O app abre no navegador do celular e você pode adicioná-lo à tela inicial.</p></details>
         <details><summary>E se eu não gostar?</summary><p>Você tem 7 dias de garantia. Se não gostar, peça o reembolso dentro do prazo.</p></details>

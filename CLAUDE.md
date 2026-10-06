@@ -30,8 +30,9 @@ em `testegratuitoenem.vercel.app` a partir deste repositório. Cores: branco e v
 - Login: conta única (e-mail e senha) para os dois apps. Toda chave nova de progresso no localStorage
   precisa entrar na lista `SINCRONIZAR` de `shared/conta.js`, senão não vai para a conta.
 - O app 2 lê as respostas do quiz 2 (`localStorage.enem_quiz2`) para pré-preencher o plano: os nomes
-  das matérias no quiz precisam bater com `shared/resumos.js`.
+  das matérias no quiz precisam bater com `shared/materias.js`.
 - Playbook de copy e funil: skill `vturb-ouro` do repositório `Quiz-Emagecimento`.
 
 - **Nunca** ler e gravar o mesmo arquivo na mesma linha em script (`open(dst,'w')` antes de ler apaga o arquivo): já apagou o quiz 2 uma vez.
-- Os PDFs não vão para o git (repositório público).
+- Os PDFs não vão para o git (repositório público). Dentro do app o download vem do bucket privado `materiais` do Supabase (`Conta.urlMaterial`, ver fim de `supabase/schema.sql`).
+- Na copy do quiz 2 e do app, o PDF se chama "material" (não "resumo"): é o conteúdo estudável em menos de 30 dias, sem prometer resultado.

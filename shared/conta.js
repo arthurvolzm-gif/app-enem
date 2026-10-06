@@ -14,7 +14,7 @@
   const SINCRONIZAR = [
     'red_favs','red_correcoes','red_montar','red_ultimo_tema',
     'mat_perfil','mat_lidos','mat_tempo','mat_resp','mat_dias_leitura',
-    'mat_lidos_em','mat_revisoes','mat_resp_dia','mat_checkin','mat_notif_lidas','mat_madrugou','mat_coruja',
+    'mat_lidos_em','mat_atrib','mat_revisoes','mat_resp_dia','mat_checkin','mat_notif_lidas','mat_madrugou','mat_coruja',
     'enem_quiz1','enem_quiz2'
   ];
   const PENDENTE = 'enem_codigo_pendente';
@@ -166,6 +166,12 @@
       if(error) throw new Error(traduzErro(error));
     },
 
+    /* link temporário (5 min) de um PDF do bucket privado 'materiais'; só quem tem o plano consegue */
+    async urlMaterial(arquivo){
+      const { data, error } = await sb.storage.from('materiais').createSignedUrl(arquivo, 300);
+      if(error) throw error;
+      return data && data.signedUrl;
+    },
     resgatar,
 
     /* chamado a cada mudança no progresso: salva na conta 1,5 s depois */

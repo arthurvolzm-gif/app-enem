@@ -86,3 +86,16 @@ $$;
 
 revoke all on function public.resgatar_codigo(text) from public, anon;
 grant execute on function public.resgatar_codigo(text) to authenticated;
+
+-- ---------- 5. Materiais em PDF (download dentro do app) ----------
+-- Crie o bucket PRIVADO "materiais" (Storage > New bucket, desmarque Public) e suba os 9 PDFs:
+-- Resumo-Matematica.pdf, Resumo-Fisica.pdf, Resumo-Quimica.pdf, Resumo-Biologia.pdf,
+-- Resumo-Historia.pdf, Resumo-Geografia.pdf, Resumo-Filosofia.pdf, Resumo-Sociologia.pdf, Resumo-Linguagens.pdf
+-- Só quem está logado consegue baixar (o app já só abre com conta). O arquivo nunca fica público.
+insert into storage.buckets (id, name, public) values ('materiais', 'materiais', false)
+on conflict (id) do nothing;
+
+drop policy if exists "plano baixa materiais" on storage.objects;
+create policy "plano baixa materiais" on storage.objects
+  for select to authenticated
+  using (bucket_id = 'materiais');
