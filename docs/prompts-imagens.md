@@ -135,5 +135,25 @@ Estilo: premium, minimalista, muito espaço negro, tipografia nítida, luz de es
 
 **Variação sem texto:** mesma composição, sem nenhum texto abaixo do selo e sem o texto curvo dentro do selo (só o escudo com check), deixando o espaço livre.
 
+## Quiz 2: tela de início (imagem principal e imagens dos 4 botões)
+Para a abertura do quiz 2. Sem rosto, para servir a homens e mulheres. Confira a ortografia dos textos na imagem gerada; se o gerador errar, use a variação sem texto.
+
+**Imagem principal, versão clara** (4:3, 1200x900, salvar como `img/mockup-quiz2.png`)
+Ilustração de produto em 3D leve, fundo branco com um degradê azul-claro muito sutil, luz suave de estúdio, cantos limpos e sombras suaves. No centro, um celular em perspectiva leve mostrando um medidor de "Índice de Preparo" em semicírculo (de vermelho a verde, ponteiro no início) e quatro barras finas de progresso abaixo. Atrás do celular, à direita, uma tela do aplicativo de estudos mostrando a semana (SEG a SÁB) com cartões de matérias, e à esquerda quatro folhas de material de estudo em leque, com títulos de matérias e listas curtas. Um balão simples flutuando acima do celular com o texto "Teste + plano de estudo personalizado". Poucos ícones de contorno ao redor (calendário, livro aberto, relógio). Paleta: branco, azul-escuro #0b1f4d, azul #3b6fd8, com verde apenas no medidor. Sem pessoas, sem rostos, sem logo, sem nomes de marca, sem notas, sem promessa de aprovação, sem travessões.
+
+**Imagem principal, versão escura** (4:3, 1200x900, salvar como `img/mockup-quiz2-escuro.png`)
+Mesma composição e mesmos textos, mas com fundo totalmente preto (#000000) e um brilho ciano sutil atrás do celular. O aplicativo em modo escuro (fundo preto, cartões grafite #0d1114, detalhes ciano #22b3d2). Folhas de material em tema escuro com títulos claros e marcadores ciano. Ícones de contorno em ciano com leve brilho. Medidor de vermelho a verde, com o ponteiro no início. Sem pessoas, sem rostos, sem logo, sem promessa de aprovação, sem travessões.
+
+**Variação sem texto:** a mesma imagem, sem o balão e sem nenhum texto legível nas telas (apenas formas), para eu escrever o texto em HTML.
+
+**Imagens dos 4 botões** (quadradas, 800x800, mesmo estilo nas quatro: ilustração 3D leve, cantos suaves, luz de estúdio, fundo em degradê azul médio #2a55b8 para azul-escuro #0b1f4d, que funciona nas versões clara e escura; sem pessoas, sem rostos, sem texto, sem logo)
+
+1. `img/situacao-3ano.jpg` (Estou no 3º ano do ensino médio): mochila escolar azul, dois cadernos empilhados com marca-texto, um calendário de parede com uma data circulada em amarelo e um lápis, sobre uma mesa de sala de aula.
+2. `img/situacao-sozinho.jpg` (Já terminei e estudo por conta própria): mesa de estudos à noite com notebook aberto, caderno com anotações, fones de ouvido, uma xícara e um abajur aceso, janela com céu azul-escuro ao fundo.
+3. `img/situacao-cursinho.jpg` (Faço cursinho / pré-vestibular): sala de aula vista de trás, carteiras azuis enfileiradas, uma lousa com fórmulas e esquemas simples e um projetor ligado, ambiente iluminado e acolhedor.
+4. `img/situacao-tentar-de-novo.jpg` (Já fiz o ENEM e vou tentar de novo): uma folha de prova com um cartão de respostas preenchido, uma seta circular de recomeço ao lado e um calendário novo com uma data circulada, sobre uma mesa limpa.
+
+Em todas: composição centralizada, o objeto principal ocupando cerca de 70% do quadro, bordas limpas para o recorte quadrado do cartão, resolução alta.
+
 ## Regras de compliance para os criativos
 Sem promessa de nota ou aprovação, sem "nota 1000 garantida", sem depoimento inventado, sem "antes e depois". Não usar logo do INEP, do MEC nem do Governo Federal.
