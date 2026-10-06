@@ -436,3 +436,14 @@ svg{flex:none;}
 .tm-bar .tm-ok{background:rgba(255,255,255,.14);color:#fff;font-size:17px;}
 body.tem-timer .app{padding-top:54px;}
 body.tem-timer .barra-topo{top:54px;}
+
+/* ---- ajustar o plano ---- */
+.aj-lista{display:flex;flex-direction:column;gap:8px;}
+.aj-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--borda);border-radius:14px;background:var(--suave2);}
+.aj-item b{flex:1;font-size:14.5px;color:var(--navy);}
+.aj-n{width:24px;height:24px;border-radius:8px;background:var(--navy);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
+.aj-item button{width:34px;height:34px;border-radius:10px;background:#fff;border:1px solid var(--borda);color:var(--azul);display:flex;align-items:center;justify-content:center;flex:none;}
+.aj-item button svg{width:18px;height:18px;}
+.aj-item button:nth-of-type(1) svg{transform:rotate(180deg);}
+.aj-item button[disabled]{opacity:.35;}
+.aj-item .aj-x{color:var(--vermelho);font-weight:800;}
