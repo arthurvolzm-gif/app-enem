@@ -67,14 +67,14 @@
 .res-prints figure{flex:1 1 0;min-width:0;margin:0;}
 .res-prints img{display:block;width:100%;aspect-ratio:390/844;object-fit:cover;object-position:top;border-radius:14px;border:4px solid #0b1f4d;box-shadow:0 10px 22px rgba(11,31,77,.25);background:#fff;}
 .res-prints figcaption{font-size:11.5px;color:#6b7590;font-weight:600;margin-top:7px;line-height:1.3;}
-.preco-card{margin-top:16px;background:#0b1f4d;border:1px solid #1f3a78;border-radius:22px;padding:26px 18px 22px;text-align:center;box-shadow:0 14px 34px rgba(11,31,77,.3);}
-.preco-card .pc-l{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;color:#9fb4e0;}
-.preco-card .pc-de{font-family:'Open Sans',sans-serif;font-size:24px;font-weight:700;color:#7f93bd;text-decoration:line-through;margin-top:12px;}
-.preco-card .pc-desc{font-size:14px;color:#c9d6f2;margin-top:14px;}
-.preco-card .pc-parc{font-family:'Open Sans',sans-serif;font-size:42px;font-weight:900;color:#fff;line-height:1.1;margin-top:4px;}
-.preco-card .pc-vista{font-size:15px;color:#c9d6f2;margin-top:4px;}
-.preco-card .pc-btn{display:block;width:100%;margin-top:20px;background:#fff;color:#0b1f4d;font-weight:800;font-size:15px;letter-spacing:.3px;padding:17px 12px;border-radius:50px;border:none;cursor:pointer;}
-.preco-card .pc-nota{font-size:12px;line-height:1.7;color:#8da2cf;margin-top:16px;}
+.preco-card{margin-top:16px;background:#fff;border:1.5px solid #cfdaf0;border-radius:22px;padding:26px 18px 22px;text-align:center;box-shadow:0 10px 28px rgba(11,31,77,.12);}
+.preco-card .pc-l{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;color:#6b7590;}
+.preco-card .pc-de{font-family:'Open Sans',sans-serif;font-size:24px;font-weight:700;color:#9aa8c4;text-decoration:line-through;margin-top:12px;}
+.preco-card .pc-desc{font-size:14px;color:#46506a;margin-top:14px;}
+.preco-card .pc-parc{font-family:'Open Sans',sans-serif;font-size:42px;font-weight:900;color:#0b1f4d;line-height:1.1;margin-top:4px;}
+.preco-card .pc-vista{font-size:15px;color:#46506a;margin-top:4px;}
+.preco-card .pc-btn{display:block;width:100%;margin-top:20px;background:linear-gradient(135deg,#0b1f4d,#2a55b8);color:#fff;font-weight:800;font-size:15px;letter-spacing:.3px;padding:17px 12px;border-radius:50px;border:none;cursor:pointer;box-shadow:0 10px 24px rgba(11,31,77,.25);}
+.preco-card .pc-nota{font-size:12px;line-height:1.7;color:#8a98b5;margin-top:16px;}
 .pdf-fecho{margin-top:16px;font-size:14.5px;font-weight:700;color:var(--verde-escuro);line-height:1.6;}
 </style>
 </head>
@@ -214,10 +214,17 @@ const CHAMADAS = [
   {t:'Resumo', d:'O tema, direto ao ponto', y:30, lado:'dir'},
   {t:'Progresso', d:'Seu tempo e seu desempenho', y:36, lado:'esq'}
 ];
+const PRINTS_ORIG = PRINTS.slice(), CHAMADAS_ORIG = CHAMADAS.slice();
+/* começa o carrossel pela tela que combina com a resposta da pessoa */
+function ordenarPrints(ini){
+  const n = PRINTS_ORIG.length;
+  PRINTS.splice(0, n, ...PRINTS_ORIG.map((_,k)=>PRINTS_ORIG[(k+ini)%n]));
+  CHAMADAS.splice(0, n, ...CHAMADAS_ORIG.map((_,k)=>CHAMADAS_ORIG[(k+ini)%n]));
+}
 function mostrarChamada(i, animar){
   const el = document.getElementById('prints-call'); if(!el) return;
   const c = CHAMADAS[i % CHAMADAS.length];
-  const aplicar = ()=>{ el.className = 'print-call '+c.lado; el.style.top = c.y+'%'; el.querySelector('b').textContent = c.t; el.querySelector('span').textContent = c.d; };
+  const aplicar = ()=>{ el.className = 'print-call '+((i % CHAMADAS.length)%2===0?'dir':'esq'); el.style.top = c.y+'%'; el.querySelector('b').textContent = c.t; el.querySelector('span').textContent = c.d; };
   if(!animar){ aplicar(); return; }
   el.classList.add('apaga'); setTimeout(aplicar, 320);
 }
@@ -349,14 +356,14 @@ const RENDER = {
       sent.startsWith('🌀') ? 'Você disse que está perdido(a), sem saber por onde começar. Todo mundo que chega no último mês se sente assim. O que muda é ter um caminho pronto.' :
       sent.startsWith('😟') ? 'Você estuda, mas não sabe se é o suficiente. Essa dúvida some quando você enxerga tudo o que a prova cobra, em ordem.' :
       'Você quer garantir o máximo no tempo que sobrou. Para isso, só falta ter tudo o que cai reunido em um lugar.';
-    app.innerHTML = `
-    <div class="wrap fade"><div class="card" style="text-align:center;padding-top:34px;padding-bottom:40px;">
-      ${backBtn()}
-      <span class="tag red" style="margin-top:6px;">${S(prazoTxt())}</span>
-      <h2 class="q-title" style="margin:6px 0 10px;">Você não precisa estudar tudo. Precisa saber o que estudar.</h2>
-      <p class="hero-sub">Por isso, o seu plano de estudos, o material de cada matéria, o seu desempenho e os lembretes ficam em um aplicativo só.</p>
-
-      <div class="prints-stage">
+    /* o que a pessoa disse que mais ajudaria vem primeiro: no texto, no carrossel e na ordem dos blocos */
+    const aj = a.ajuda || '';
+    const foco = aj.startsWith('📅') ? 'plano' : aj.startsWith('📚') ? 'resumos' : aj.startsWith('📊') ? 'desempenho' : aj.startsWith('⏰') ? 'lembretes' : 'todas';
+    ordenarPrints({plano:1, desempenho:5, resumos:3, lembretes:0, todas:0}[foco]);
+    const ITENS = {plano:'o seu plano de estudos', resumos:'o material de cada matéria', desempenho:'o seu desempenho', lembretes:'os lembretes'};
+    const ordItens = [foco, ...Object.keys(ITENS).filter(k=>k!==foco)].filter(k=>ITENS[k]).map(k=>ITENS[k]);
+    const listaItens = ordItens.slice(0,-1).join(', ')+' e '+ordItens[ordItens.length-1];
+    const blocoApp = `      <div class="prints-stage">
       <div id="prints-wrap" class="prints"
            onmousedown="pausarPrints()" onmouseup="retomarPrints()" onmouseleave="retomarPrints()"
            ontouchstart="pausarPrints()" ontouchend="retomarPrints()" ontouchcancel="retomarPrints()">
@@ -366,9 +373,8 @@ const RENDER = {
       </div>
       <div id="prints-call" class="print-call esq"><svg class="pc-seta" viewBox="0 0 40 16" aria-hidden="true"><circle cx="3" cy="8" r="3" fill="#3b6fd8"/><path d="M3 8h30M27 2l7 6-7 6" fill="none" stroke="#3b6fd8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="pc-card"><b></b><span></span></div></div>
       </div>
-      <div class="prints-dots" id="prints-dots">${PRINTS.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join('')}</div>
-
-      <div class="pdf-bloco">
+      <div class="prints-dots" id="prints-dots">${PRINTS.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join('')}</div>`;
+    const blocoMat = `      <div class="pdf-bloco">
         <span class="tag" style="margin-bottom:10px;">E tem mais: o material completo</span>
         <h3 class="pdf-h">Tudo o que você precisa estudar, para chegar preparado no <span style="color:#1f9d63;">Enem</span> em menos de <span style="color:#1f9d63;">30 dias</span></h3>
         <p class="pdf-p">O conteúdo de cada matéria está reunido em nossos materiais, com cada tema explicado do zero. É assim que você vai receber:</p>
@@ -389,7 +395,15 @@ const RENDER = {
           </div>
         </div>
         <p class="pdf-fecho">Quem estuda sem direção chega na prova com a sensação de que faltou alguma coisa. Com o conteúdo completo e um plano para cada dia, você chega mais preparado(a).</p>
-      </div>
+      </div>`;
+    app.innerHTML = `
+    <div class="wrap fade"><div class="card" style="text-align:center;padding-top:34px;padding-bottom:40px;">
+      ${backBtn()}
+      <span class="tag red" style="margin-top:6px;">${S(prazoTxt())}</span>
+      <h2 class="q-title" style="margin:6px 0 10px;">Você não precisa estudar tudo. Precisa saber o que estudar.</h2>
+      <p class="hero-sub">Por isso, ${listaItens} ficam em um aplicativo só.</p>
+
+      ${foco==='resumos' ? blocoMat+blocoApp : blocoApp+blocoMat}
 
       <button class="btn" style="margin-top:24px;" onclick="go(1)">Ver o meu plano →</button>
       <p style="font-size:13px;color:#8a98b5;margin:12px 0 0;">✅ Falta só um passo</p>
