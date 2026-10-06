@@ -133,21 +133,22 @@ function acertosTotal(){ return Object.values(respostas()).filter(Boolean).lengt
 const totalTemas = M.reduce((s,m)=>s+m.temas.length,0);
 
 /* ===================== plano ===================== */
+/* plano semanal: todas as matérias entram na semana. Quando há mais matérias do que dias,
+   o dia leva 2 (ou 3) matérias e o tempo é dividido entre elas. As prioritárias vêm primeiro e se repetem mais. */
 function gerarPlano(p){
   const dif = (p.dificeis||[]).filter(id=>mat(id));
-  const outras = M.map(m=>m.id).filter(id=>!dif.includes(id));
-  const fila = []; const metade = Math.ceil(outras.length/2);
-  [outras.slice(0,metade), outras.slice(metade)].forEach(parte=>{
-    const rodada=[...dif]; parte.forEach((o,i)=>rodada.splice(Math.min(rodada.length,i*2+1),0,o)); fila.push(...rodada);
-  });
-  if(fila.filter(x=>x==='red').length<2) fila.splice(3,0,'red');
+  const fila = [...dif, ...M.map(m=>m.id).filter(id=>!dif.includes(id))];
   const diasEstudo = (p.dias||[1,2,3,4,5]).slice().sort((a,b)=>((a+6)%7)-((b+6)%7));
-  const blocos = p.minutos>=90 ? 2 : 1, minBloco = Math.round(p.minutos/blocos);
+  const comRev = diasEstudo.includes(0) && diasEstudo.length>1;
+  const diasMat = comRev ? diasEstudo.filter(d=>d!==0) : diasEstudo;
+  const porDia = Math.max(1, Math.min(3, Math.ceil(fila.length/Math.max(1,diasMat.length))));
+  const base = Math.floor(p.minutos/porDia/5)*5; let sobra = p.minutos - base*porDia;
+  const mins = [...Array(porDia)].map(()=>{ const x = base + (sobra>=5?5:0); if(sobra>=5) sobra-=5; return x; });
   const plano = {}; let k=0;
   diasEstudo.forEach(d=>{
-    if(d===0 && diasEstudo.length>1){ plano[d]=[{m:'revisao',min:p.minutos}]; return; }
+    if(comRev && d===0){ plano[d]=[{m:'revisao',min:p.minutos}]; return; }
     plano[d]=[];
-    for(let b=0;b<blocos;b++){ let m=fila[k%fila.length]; k++; if(plano[d].some(x=>x.m===m)){ m=fila[k%fila.length]; k++; } plano[d].push({m,min:minBloco}); }
+    for(let i=0;i<porDia;i++){ plano[d].push({m:fila[k%fila.length],min:mins[i]}); k++; }
   });
   return plano;
 }
@@ -377,7 +378,7 @@ function telaGerando(){
 function salvarPerfil(){
   const ant = perfil();
   const np = Object.assign({}, ob.d, { dificeis: ob.d.dificeis.slice(0,4), criadoEm: (ant&&ant.criadoEm)||hojeISO() });
-  np.plano = gerarPlano(np);
+  np.plano = gerarPlano(np); np.planoV = 2;
   lsSet('mat_perfil', np);
   const editar = ob.editar; ob=null;
   telaPlanoPronto(editar);
@@ -495,7 +496,20 @@ async function baixarMaterial(mid){
     const url = window.Conta && Conta.ativo ? await Conta.urlMaterial(arq) : null;
     if(url){ window.open(url,'_blank','noopener'); return; }
   }catch(e){}
-  toast('Material ainda não disponível. Ele também chega no seu e-mail de compra.');
+  irPara('material/'+mid);   /* sem o arquivo no servidor, abre a versão do material para salvar em PDF */
+}
+/* material completo da matéria, montado a partir do conteúdo do app: cada tema numa página, pronto para "Salvar como PDF" */
+function telaMaterialDoc(mid){
+  const m=mat(mid); if(!m||!materialArq(mid)){ irPara('materiais'); return; }
+  app.innerHTML = `<div class="no-print">${barraTopo('Material de '+S(m.nome),true)}
+    <div class="tela fade" style="padding-bottom:0;"><div class="card"><p class="nota" style="margin-bottom:12px;">Toque em <b>Baixar em PDF</b> e, na janela que abrir, escolha <b>Salvar como PDF</b>. Cada tema fica em uma página.</p>
+    <button class="btn" onclick="window.print()">${ic('arquivo',2)} Baixar em PDF</button></div></div></div>
+  <div class="mat-doc">
+    <div class="md-capa"><div class="md-tag">Plano ENEM</div><h1>${S(m.nome)}</h1><p>Material completo: ${m.temas.length} temas que mais caem no ENEM.</p></div>
+    ${m.temas.map((t,i)=>`<section class="md-tema"><div class="md-n">Tema ${i+1} de ${m.temas.length}${t.prio==='alta'?' · cai muito':''}</div><h2>${S(t.titulo)}</h2>
+      ${t.secoes.map(sc=>`<div class="sec-app"><div class="sec-rot">${S(sc[0])}</div>${sc[1]?`<p>${F(sc[1])}</p>`:''}${sc[2]&&sc[2].length?`<ul>${sc[2].map(x=>`<li>${F(x)}</li>`).join('')}</ul>`:''}${sc[3]?`<p class="sec-fecho">${F(sc[3])}</p>`:''}</div>`).join('')}
+      <div class="dica-enem"><b>💡 Como cai no ENEM:</b> ${S(t.dica)}</div></section>`).join('')}
+  </div>`;
 }
 
 /* ===================== PLANO ===================== */
@@ -571,7 +585,7 @@ function ajTirar(id){ aj.dificeis=aj.dificeis.filter(x=>x!==id); telaAjustar(); 
 function ajAdd(id){ if(aj.dificeis.length<4) aj.dificeis.push(id); telaAjustar(); }
 function ajSalvar(){
   const ant=perfil(), np=Object.assign({}, ant, { dias:aj.dias, minutos:aj.minutos, hora:aj.hora, dificeis:aj.dificeis.slice(0,4) });
-  np.plano=gerarPlano(np); lsSet('mat_perfil',np);
+  np.plano=gerarPlano(np); np.planoV=2; lsSet('mat_perfil',np);
   /* os temas já sorteados de hoje em diante não valem mais para o plano novo */
   const A=ls('mat_atrib',{}), h=hojeISO(); Object.keys(A).forEach(k=>{ if(k>=h) delete A[k]; }); lsSet('mat_atrib',A);
   blocosAbertos.clear(); aj=null; diaSel=null; toast('Plano atualizado!'); irPara('plano');
@@ -881,10 +895,11 @@ function render(){
   if(pt[0]==='codigo' || (!temPlano && !temEx)){ telaCodigo(); return; }
   if(!temPlano){ nav.style.display='none'; if(pt[0]==='questao') return telaQuestao(); if(pt[0]==='erros') return telaErros(); if(pt[0]==='treino') return iniciarQ('treino',null,pt[2]); return telaExercicios(); }
   if(!perfil()){ if(!ob) iniciarOnboarding(false); else telaOnboarding(); return; }
+  { const pf=perfil(); if(pf.planoV!==2){ pf.plano=gerarPlano(pf); pf.planoV=2; lsSet('mat_perfil',pf); const A=ls('mat_atrib',{}), h=hojeISO(); Object.keys(A).forEach(k=>{ if(k>=h) delete A[k]; }); lsSet('mat_atrib',A); } }
   nav.style.display='';
   const aba = {inicio:'inicio',notificacoes:'inicio',timer:'plano',ajustar:'plano',plano:'plano',resumos:'resumos',materia:'resumos',tema:'resumos',progresso:'progresso',erros:'progresso'}[pt[0]] || 'perfil';
   nav.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.r===aba));
-  const T = { ajustar:telaAjustar, plano:telaPlano, resumos:telaResumos, progresso:telaProgresso, perfil:telaPerfil, notificacoes:telaNotificacoes, lembretes:telaLembretes, materiais:telaMateriais, exercicios:telaExercicios, questao:telaQuestao, erros:telaErros };
+  const T = { material:()=>telaMaterialDoc(pt[1]), ajustar:telaAjustar, plano:telaPlano, resumos:telaResumos, progresso:telaProgresso, perfil:telaPerfil, notificacoes:telaNotificacoes, lembretes:telaLembretes, materiais:telaMateriais, exercicios:telaExercicios, questao:telaQuestao, erros:telaErros };
   if(pt[0]==='materia') telaMateria(pt[1]);
   else if(pt[0]==='tema') telaTema(pt[1]);
   else if(pt[0]==='timer') telaTimer(pt[1], +pt[2]||30);

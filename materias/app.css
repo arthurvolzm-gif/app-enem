@@ -447,3 +447,20 @@ body.tem-timer .barra-topo{top:54px;}
 .aj-item button:nth-of-type(1) svg{transform:rotate(180deg);}
 .aj-item button[disabled]{opacity:.35;}
 .aj-item .aj-x{color:var(--vermelho);font-weight:800;}
+
+/* ---- material completo (tela e impressão em PDF) ---- */
+.mat-doc{padding:0 16px 30px;}
+.md-capa{background:linear-gradient(160deg,var(--navy),var(--azul));color:#fff;border-radius:20px;padding:28px 22px;margin-bottom:14px;}
+.md-tag{font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;opacity:.8;}
+.md-capa h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:800;margin:6px 0;}
+.md-tema{background:#fff;border:1px solid var(--borda);border-radius:18px;padding:18px;margin-bottom:12px;}
+.md-n{font-size:11.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--azul2);}
+.md-tema h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:21px;color:var(--navy);margin:4px 0 8px;}
+@media print{
+  body{background:#fff !important;}
+  .no-print,.nav,.tm-bar,.toast{display:none !important;}
+  body.tem-timer .app{padding-top:0;}
+  .mat-doc{padding:0;}
+  .md-capa{border-radius:0;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact;min-height:40vh;}
+  .md-tema{border:none;border-radius:0;padding:0;margin:0;page-break-after:always;break-inside:avoid-page;}
+}
