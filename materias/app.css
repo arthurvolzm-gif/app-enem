@@ -412,3 +412,27 @@ svg{flex:none;}
 .tp-botoes .tp-check{border-radius:12px;}
 .tema-plano .tp-resumo{display:none;border-top:1px solid var(--borda);}
 .tema-plano.com-resumo .tp-resumo{display:block;}
+
+/* ---- cronômetro dentro do card do Plano e barra fixa no topo ---- */
+.tm-painel{background:var(--suave2);border:1px solid var(--borda);border-radius:16px;padding:14px 12px;text-align:center;}
+.tm-painel .anel{width:170px;height:170px;margin:0 auto;}
+.tm-painel .anel .c b{font-size:34px;font-variant-numeric:tabular-nums;}
+.tm-painel .ctrl{display:flex;gap:12px;justify-content:center;margin-top:12px;}
+.tm-painel .redondo{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.tm-painel .play{background:var(--navy);color:#fff;box-shadow:0 10px 22px rgba(11,31,77,.28);}
+.tm-painel .fim{background:#fff;border:1.5px solid var(--borda);color:var(--verde);font-size:22px;}
+.tm-full{margin-top:12px;font-size:13px;font-weight:700;color:var(--azul2);padding:8px 14px;border-radius:12px;background:#fff;border:1px solid var(--borda);}
+.foco .ctrl .play svg{width:26px;height:26px;}
+.tm-bar{position:fixed;top:0;left:0;right:0;z-index:70;display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--navy);color:#fff;box-shadow:0 6px 18px rgba(11,31,77,.3);}
+.tm-bar .tm-ir{flex:1;min-width:0;display:flex;align-items:center;gap:10px;color:#fff;text-align:left;}
+.tm-bar .tm-mat{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tm-bar .tm-mat .mi{color:#fff;}
+.tm-bar .tm-tempo{font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-variant-numeric:tabular-nums;margin-left:auto;}
+.tm-bar .tm-de{font-size:11px;opacity:.7;white-space:nowrap;}
+.tm-bar.pausado .tm-tempo{opacity:.6;}
+.tm-bar .tm-play,.tm-bar .tm-ok{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;}
+.tm-bar .tm-play{background:#fff;color:var(--navy);}
+.tm-bar .tm-play svg{width:18px;height:18px;}
+.tm-bar .tm-ok{background:rgba(255,255,255,.14);color:#fff;font-size:17px;}
+body.tem-timer .app{padding-top:54px;}
+body.tem-timer .barra-topo{top:54px;}

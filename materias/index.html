@@ -509,7 +509,7 @@ function telaPlano(){
     <div class="dias-tabs">${ORDEM_SEMANA.map(x=>{ const d2=new Date(); d2.setDate(d2.getDate()-((d2.getDay()+6)%7)+((x+6)%7)); const i2=hojeISO(d2); const b2=p.plano[x]||[]; const ok=b2.length&&b2.every(b=>blocoFeito(i2,b)); return `<button class="${x===diaSel?'on':''} ${b2.length?'tem':''} ${ok?'ok':''}" onclick="diaSel=${x};telaPlano()">${DIAS[x].toUpperCase()}<span class="p"></span></button>`; }).join('')}</div>
     <div class="card">
       <div class="card-tt">${DIAS_LONGO[diaSel]}${diaSel===hoje?' <span class="tag azul">Hoje</span>':''}<span style="margin-left:auto;font-family:Inter;font-size:13px;color:var(--cinza);font-weight:600;">${bl.length?fmtMin(bl.reduce((a,b)=>a+b.min,0)):'Descanso'}</span></div>
-      ${bl.length?bl.map((b,i)=>{ const feito=blocoFeito(iso,b); const temas=temasDoBloco(iso,i,b,diaSel===hoje); const key=iso+'|'+i; const aberto=blocosAbertos.has(key); const L=lidos(); const feitos=temas.filter(t=>L.includes(t.id)).length; return `<div class="bloco ${feito?'feito':''} ${aberto?'aberto':''}" data-k="${key}">
+      ${bl.length?bl.map((b,i)=>{ const feito=blocoFeito(iso,b); const temas=temasDoBloco(iso,i,b,diaSel===hoje); const key=iso+'|'+i; const tmx=tmGet(), tmAqui=tmAtivo(tmx)&&tmx.m===b.m&&diaSel===hoje; const aberto=blocosAbertos.has(key)||tmAqui; const L=lidos(); const feitos=temas.filter(t=>L.includes(t.id)).length; return `<div class="bloco ${feito?'feito':''} ${aberto?'aberto':''}" data-k="${key}">
         <div class="bloco-cab" onclick="alternarBloco('${key}')">
           <div class="num">${feito?'✓':i+1}</div>
           <div class="info"><b>${iconeBloco(b.m)} ${S(nomeBloco(b.m))}</b><div class="s">${b.m==='revisao'?'Releia os temas da semana e faça questões':b.m==='red'?'Escreva 1 redação e corrija pela foto':temas.length?`${temas.length} ${temas.length>1?'temas':'tema'} · ${feitos} concluído${feitos===1?'':'s'}`:'Toque para ver o conteúdo'}</div></div>
@@ -517,6 +517,7 @@ function telaPlano(){
           <svg class="chev" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
         </div>
         <div class="bloco-det">
+          ${tmAqui?tmPainel(b.m,tmx.min||b.min):''}
           ${temas.map(t=>{ const ok=L.includes(t.id), ab=resumosAbertos.has(t.id), nº=(mat(b.m).temas.findIndex(x=>x.id===t.id)+1); return `<div class="tema-plano ${ok?'ok':''} ${ab?'com-resumo':''}" data-t="${t.id}">
             <div class="tp-topo"><div class="tp-tt"><span class="tp-n">${nº}</span>${t.prio==='alta'?'🔥 ':''}${S(t.titulo)}</div></div>
             <div class="tp-botoes"><button class="tp-ver" onclick="alternarResumo('${t.id}')">${ab?'Ocultar resumo':'📖 Ver resumo'}</button>
@@ -525,7 +526,7 @@ function telaPlano(){
               <div class="dica-enem"><b>💡 Como cai no ENEM:</b> ${S(t.dica)}</div></div>
           </div>`; }).join('')}
           ${materialArq(b.m)?`<button class="btn sec sm" onclick="baixarMaterial('${b.m}')">⬇ Baixar o material de ${S(nomeBloco(b.m))}</button>`:''}
-          <div class="bloco-acoes">${diaSel===hoje?(feito?'<span class="tag verde">Concluído</span>':`<button class="btn sm" onclick="irPara('timer/${b.m}/${b.min}')">${ic('play')} Começar</button>`):''}
+          <div class="bloco-acoes">${diaSel===hoje?(feito?'<span class="tag verde">Concluído</span>':tmAqui?'':`<button class="btn sm" onclick="tmComecar('${b.m}',${b.min})">${ic('play')} Começar</button>`):''}
           ${b.m==='red'&&diaSel===hoje?' <button class="btn sm sec" onclick="location.href=\'/redacao#corrigir\'">📸 Corrigir</button>':''}</div>
         </div></div>`; }).join('')
       :'<p class="nota" style="padding:6px 0;">Dia livre. Descansar também faz parte do plano: o cérebro fixa o que você estudou.</p>'}
@@ -536,41 +537,96 @@ function telaPlano(){
     <div class="card">${ORDEM_SEMANA.map(x=>{ const b2=p.plano[x]||[]; return `<div class="row" style="display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--borda);font-size:14px;"><b style="color:var(--navy);width:44px;">${DIAS[x]}</b><span style="flex:1;color:${b2.length?'var(--texto)':'var(--cinza2)'};">${b2.length?b2.map(b=>iconeBloco(b.m)+' '+nomeBloco(b.m)).join(' · '):'Descanso'}</span><span style="color:var(--azul2);font-weight:700;">${b2.length?fmtMin(b2.reduce((a,b)=>a+b.min,0)):''}</span></div>`; }).join('')}</div>
     <button class="btn sec" onclick="iniciarOnboarding(true)">⚙️ Ajustar o meu plano</button>
   </div>`;
+  tmTick();
 }
 
 /* ===================== MODO FOCO (TIMER) ===================== */
-let timerInt=null;
+/* cronômetro global: um só relógio, que aparece no card do Plano, na tela cheia ou fixo no topo em qualquer aba */
+const tmGet = ()=>ls('mat_timer',null);
+const tmSeg = t=>t ? t.acumulado+(t.inicio?(Date.now()-t.inicio)/1000:0) : 0;
+const tmAtivo = t=>!!(t && (t.inicio || t.acumulado>0));
+const tmFmt = sg=>String(Math.floor(sg/60)).padStart(2,'0')+':'+String(Math.floor(sg)%60).padStart(2,'0');
+const TM_PLAY = '<svg viewBox="0 0 24 24" width="22" height="22"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg>';
+const TM_PAUSE = '<svg viewBox="0 0 24 24" width="22" height="22"><path d="M7 4h3.5v16H7zM13.5 4H17v16h-3.5z" fill="currentColor"/></svg>';
+function tmIniciar(mid,min){
+  let t=tmGet();
+  if(tmAtivo(t) && t.m!==mid){ if(!confirm('Você já tem um cronômetro de '+nomeBloco(t.m)+' em andamento. Descartar e começar o novo?')) return false; t=null; }
+  if(!t || t.m!==mid) t={m:mid,min:min,acumulado:0,inicio:null};
+  t.min=min; if(!t.inicio) t.inicio=Date.now();
+  lsSet('mat_timer',t); tmTick(); return true;
+}
+function tmAlternar(){
+  const t=tmGet(); if(!t) return;
+  if(t.inicio){ t.acumulado=tmSeg(t); t.inicio=null; } else t.inicio=Date.now();
+  lsSet('mat_timer',t); tmTick();
+}
+function tmFim(){
+  const t=tmGet(); if(!t) return;
+  const min=Math.round(tmSeg(t)/60), mid=t.m; lsSet('mat_timer',null);
+  const emTela=(location.hash||'').startsWith('#timer');
+  if(min<1) toast('Menos de 1 minuto: nada foi salvo.');
+  else {
+    const reg=sessoes(); reg.push({d:hojeISO(), m:mid, min}); lsSet('mat_tempo', reg.slice(-2000));
+    const hr=new Date().getHours(); if(hr<8) lsSet('mat_madrugou',true); if(hr>=22) lsSet('mat_coruja',true);
+    toast(`+${fmtMin(min)} de ${nomeBloco(mid)} no seu progresso!`);
+  }
+  if(emTela) irPara('plano'); else render();
+}
+function tmComecar(mid,min){
+  if(!tmIniciar(mid,min)) return;
+  blocosAbertos.add(hojeISO()+'|'+(perfil().plano[diaSel]||[]).findIndex(b=>b.m===mid));
+  telaPlano();
+}
+function tmPainel(mid,min){
+  return `<div class="tm-painel" id="tInline"><div id="tAnel"></div>
+    <div class="ctrl"><button class="redondo play tm-play" onclick="tmAlternar()" aria-label="Pausar ou continuar"></button><button class="redondo fim" onclick="tmFim()" aria-label="Terminar">✓</button></div>
+    <button class="tm-full" onclick="irPara('timer/${mid}/${min}')">⛶ Tela cheia</button></div>`;
+}
+function tmTick(){
+  const t=tmGet(), ativo=tmAtivo(t), sg=tmSeg(t);
+  const anelBox=document.getElementById('tAnel');
+  if(anelBox && t){ anelBox.innerHTML = anel(sg/60/(t.min||45)*100, tmFmt(sg), 'de '+fmtMin(t.min||45), ''); }
+  document.querySelectorAll('.tm-play').forEach(b=>{ b.innerHTML = t&&t.inicio ? TM_PAUSE : TM_PLAY; });
+  /* barra fixa no topo: só quando o relógio não está à vista e o app está aberto */
+  let bar=document.getElementById('tmBar');
+  const mostrar = ativo && !anelBox && nav.style.display!=='none';
+  document.body.classList.toggle('tem-timer', !!mostrar);
+  if(!mostrar){ if(bar) bar.remove(); return; }
+  if(!bar){
+    bar=document.createElement('div'); bar.id='tmBar'; bar.className='tm-bar';
+    bar.innerHTML = `<button class="tm-ir" aria-label="Abrir o cronômetro"><span class="tm-mat"></span><b class="tm-tempo"></b><span class="tm-de"></span></button><button class="tm-play" aria-label="Pausar ou continuar" onclick="tmAlternar()"></button><button class="tm-ok" aria-label="Terminar" onclick="tmFim()">✓</button>`;
+    bar.querySelector('.tm-ir').onclick=()=>irPara('timer/'+t.m+'/'+(t.min||45));
+    document.body.appendChild(bar);
+    bar.querySelector('.tm-play').innerHTML = t.inicio ? TM_PAUSE : TM_PLAY;
+  }
+  bar.querySelector('.tm-mat').innerHTML = iconeBloco(t.m)+' '+S(nomeBloco(t.m));
+  bar.querySelector('.tm-tempo').textContent = tmFmt(sg);
+  bar.querySelector('.tm-de').textContent = 'de '+fmtMin(t.min||45);
+  bar.classList.toggle('pausado', !t.inicio);
+}
+setInterval(tmTick,1000);
+
 function telaTimer(mid, minAlvo){
-  const st=ls('mat_timer',null);
-  let t=(st&&st.m===mid)?st:{m:mid,acumulado:0,inicio:null}; lsSet('mat_timer',t);
-  const tema = mid!=='revisao' ? proximosTemas(mid,1)[0] : null;
+  let t=tmGet();
+  if(!t || t.m!==mid){ t={m:mid,min:minAlvo,acumulado:0,inicio:null}; lsSet('mat_timer',t); }
+  t.min=minAlvo||t.min;
+  /* só mostra o que ainda falta estudar nos blocos de hoje, nunca o que já foi concluído */
+  const hoje=hojeISO(), L=lidos(), atrib=(ls('mat_atrib',{})[hoje])||{};
+  const pend=[].concat(...Object.values(atrib)).map(acharTema).filter(x=>x&&x.id.startsWith(mid)&&!L.includes(x.id));
+  const tema = pend.length ? pend : (mid==='revisao' ? [] : []);
   app.innerHTML = `${barraTopo('Modo foco',true)}
   <div class="tela fade">
     <div class="card foco">
       <div class="tag azul">${iconeBloco(mid)} ${S(nomeBloco(mid))}</div>
-      <div id="tAnel">${anel(0,'00:00','de '+fmtMin(minAlvo),'')}</div>
+      <div id="tAnel"></div>
       <p class="nota">Deixe o celular no silencioso. Só você e o conteúdo.</p>
-      <div class="ctrl"><button class="redondo play" id="tPlay" aria-label="Iniciar">▶</button><button class="redondo fim" id="tFim" aria-label="Terminar">✓</button></div>
+      <div class="ctrl"><button class="redondo play tm-play" onclick="tmAlternarFoco()" aria-label="Iniciar"></button><button class="redondo fim" onclick="tmFim()" aria-label="Terminar">✓</button></div>
     </div>
-    ${tema?`<div class="card"><div class="card-tt">📖 Para estudar agora</div><button class="tema-item" onclick="irPara('tema/${tema.id}')" style="margin:0;"><span class="ck"></span><div><b>${S(tema.titulo)}</b><span class="tag ${tema.prio==='alta'?'alta':'media'}">Prioridade ${tema.prio}</span></div></button></div>`:''}
+    ${tema.length?`<div class="card"><div class="card-tt">📖 Para estudar agora</div>${tema.map(x=>`<button class="tema-item" onclick="irPara('tema/${x.id}')" style="margin:0 0 8px;"><span class="ck"></span><div><b>${S(x.titulo)}</b><span class="tag ${x.prio==='alta'?'alta':'media'}">Prioridade ${x.prio}</span></div></button>`).join('')}</div>`:''}
   </div>`;
-  const play=document.getElementById('tPlay');
-  const dec=()=>t.acumulado+(t.inicio?(Date.now()-t.inicio)/1000:0);
-  function pinta(){
-    const s=Math.floor(dec()); const box=document.getElementById('tAnel'); if(!box) return;
-    box.innerHTML = anel(s/60/minAlvo*100, String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'), 'de '+fmtMin(minAlvo), '');
-    play.textContent = t.inicio?'❚❚':'▶';
-  }
-  play.onclick=()=>{ if(t.inicio){ t.acumulado=dec(); t.inicio=null; } else t.inicio=Date.now(); lsSet('mat_timer',t); pinta(); };
-  document.getElementById('tFim').onclick=()=>{
-    const min=Math.round(dec()/60); lsSet('mat_timer',null); clearInterval(timerInt);
-    if(min<1){ toast('Menos de 1 minuto: nada foi salvo.'); history.back(); return; }
-    const reg=sessoes(); reg.push({d:hojeISO(), m:mid, min}); lsSet('mat_tempo', reg.slice(-2000));
-    const hr=new Date().getHours(); if(hr<8) lsSet('mat_madrugou',true); if(hr>=22) lsSet('mat_coruja',true);
-    toast(`+${fmtMin(min)} de ${nomeBloco(mid)} no seu progresso!`); irPara('inicio');
-  };
-  clearInterval(timerInt); timerInt=setInterval(pinta,1000); pinta();
+  tmTick();
 }
+function tmAlternarFoco(){ const t=tmGet(); if(t && !t.inicio && t.acumulado===0) t.inicio=Date.now(), lsSet('mat_timer',t), tmTick(); else tmAlternar(); }
 
 /* ===================== RESUMOS ===================== */
 function telaResumos(){
@@ -781,7 +837,6 @@ function telaFimQ(){
 function irPara(r){ if(location.hash==='#'+r) render(); else location.hash=r; }
 function sairConta(){ Conta.sair().then(()=>{ diaSel=null; location.hash=''; render(); }); }
 function render(){
-  clearInterval(timerInt);
   if(Conta.ativo && Conta.recuperando){ nav.style.display='none'; Conta.telaNovaSenha(app,'Plano ENEM',()=>{ Conta.recuperando=false; toast('Senha salva!'); render(); }); return; }
   if(Conta.ativo && !Conta.usuario()){ telaLogin(); return; }
   const r=(location.hash||'#inicio').slice(1), pt=r.split('/');
@@ -802,6 +857,7 @@ function render(){
 }
 nav.querySelectorAll('button').forEach(b=>b.onclick=()=>{ if(b.dataset.r==='plano') diaSel=null; irPara(b.dataset.r); });
 window.addEventListener('hashchange', render);
+window.addEventListener('hashchange', ()=>setTimeout(tmTick,0));
 (async()=>{
   let lib=[];
   try{ lib=await Conta.iniciar(); }catch(e){ console.error(e); toast(e.message); }
