@@ -410,17 +410,6 @@ const RENDER = {
         <table class="plano">${plano.map(p=>`<tr><td class="d">${p.d}</td><td class="m">${p.itens.map(i=>`<div>${S(i.m)}${p.itens.length>1?` <span style="color:#8a98b5;font-weight:600;font-size:12.5px;">${fmt(i.min)}</span>`:''}</div>`).join('')}</td><td class="h">${fmt(p.total)}</td></tr>`).join('')}</table>
         <p class="note" style="margin-top:8px;">Todas as matérias entram na semana, em 2 por dia quando preciso, com o tempo dividido entre elas. As que você marcou como dificuldade vêm primeiro e se repetem mais. Você ajusta os dias e o tempo no app.</p></div>
 
-      <div class="sec-h">📋 Resumo do seu plano</div>
-      <div class="com-lista" style="text-align:left;">
-        <div class="com-item"><span class="ck">✓</span><span style="font-weight:500;"><b>${fmt(semanaMin)} por semana</b> de estudo, de segunda a sábado, mais a revisão no domingo</span></div>
-        <div class="com-item"><span class="ck">✓</span><span style="font-weight:500;"><b>As ${TODAS_MATS.length} matérias</b> da prova cobertas na semana, incluindo a Redação</span></div>
-        ${dif.length?`<div class="com-item"><span class="ck">✓</span><span style="font-weight:500;"><b>Foco em ${S(dif.join(', ').replace(/, ([^,]*)$/, ' e $1'))}</b>, que aparecem mais vezes</span></div>`:''}
-        <div class="com-item"><span class="ck">✓</span><span style="font-weight:500;"><b>Os 225 temas que mais caem</b>, dos que mais pesam para os que menos pesam</span></div>
-        <div class="com-item"><span class="ck">✓</span><span style="font-weight:500;"><b>Revisão no tempo certo</b> e o seu desempenho por matéria salvos a cada tema lido</span></div>
-        <div class="com-item"><span class="ck">✓</span><span style="font-weight:500;"><b>${S(prazoTxt())}</b>: o plano foi pensado para esse prazo</span></div>
-      </div>
-      <p class="note" style="margin-top:8px;">Plano montado com as suas respostas. Você ajusta tudo no app. O resultado depende da sua dedicação.</p>
-
       <img src="/img/o-que-voce-recebe.webp" alt="Tudo o que você recebe: plano de estudos, material de cada matéria, resumos, cronômetro e desempenho" loading="lazy" style="display:block;width:100%;height:auto;border-radius:16px;margin:22px 0 4px;" onerror="this.remove()">
       <button class="btn" style="margin-top:14px;" onclick="go(1)">Quero ativar o meu plano →</button>
     </div></div>`;
