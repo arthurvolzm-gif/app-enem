@@ -90,9 +90,9 @@ html.escuro .pdf-p{color:var(--txt2);}
 html.escuro .pdf-bloco,html.escuro .res-aplicativo{border-top-color:var(--borda);}
 html.escuro .res-prints img{border-color:#1b2a31;}
 html.escuro .res-prints figcaption{color:var(--txt3);}
-html.escuro .preco-card{background:var(--card);border-color:#1f3a44;box-shadow:0 10px 28px rgba(0,0,0,.6);}
+html.escuro .preco-card{background:var(--card);border-color:#17a673;box-shadow:0 10px 28px rgba(0,0,0,.6);}
 html.escuro .preco-card .pc-l{color:var(--txt3);}
 html.escuro .preco-card .pc-de{color:#5d737b;}
-html.escuro .preco-card .pc-desc,html.escuro .preco-card .pc-vista{color:var(--txt2);}
+html.escuro .preco-card .pc-vista{color:var(--txt2);}
 html.escuro .preco-card .pc-parc{color:#fff;}
 html.escuro .preco-card .pc-nota{color:var(--txt3);}
