@@ -155,5 +155,19 @@ Mesma composição e mesmos textos, mas com fundo totalmente preto (#000000) e u
 
 Em todas: composição centralizada, o objeto principal ocupando cerca de 70% do quadro, bordas limpas para o recorte quadrado do cartão, resolução alta.
 
+## Quiz 2: imagem principal do início, versão "mesa de estudos completa"
+Versão mais cheia da imagem principal (mesmo uso: `img/mockup-quiz2.png` e `img/mockup-quiz2-escuro.png`). Sem pessoas. Confira a ortografia dos textos na imagem gerada.
+
+**Versão clara** (4:3, 1200x900)
+Cena de mesa de estudos vista de cima em perspectiva leve, ilustração 3D realista e limpa, luz suave de estúdio, sombras suaves. Fundo de mesa branca com um degradê azul-claro muito sutil. No centro, em destaque, um celular mostrando o medidor "Índice de Preparo" em semicírculo (de vermelho a verde, ponteiro no início) e quatro barras finas de progresso. À esquerda do celular, um notebook aberto exibindo o aplicativo de estudos com a semana (SEG a SÁB) em cartões de matérias. À direita, um caderno espiral aberto com anotações à mão e um marca-texto amarelo ao lado, e um segundo caderno fechado de capa azul-escura por baixo. Espalhados com naturalidade pela mesa: lápis, canetas azul e preta, um marca-texto rosa, uma borracha, post-its coloridos, clipes e um pequeno calendário. Quatro folhas de material de estudo em leque atrás do celular, com títulos de matérias e listas curtas. Um balão simples acima do celular: "Teste + plano de estudo personalizado". Composição equilibrada, o celular continua sendo o ponto principal e legível, sem poluir. Paleta: branco, azul-escuro #0b1f4d, azul #3b6fd8, amarelo e rosa apenas nos marca-textos, verde apenas no medidor. Sem pessoas, sem mãos, sem rostos, sem logo, sem nomes de marca, sem notas, sem promessa de aprovação, sem travessões.
+
+**Versão escura** (4:3, 1200x900)
+Mesma cena e mesmos objetos (celular com o medidor, notebook com o aplicativo, caderno espiral aberto, caderno azul fechado, lápis, canetas, marca-textos, borracha, post-its, clipes, calendário e as folhas de material em leque), mas sobre uma mesa preta (#000000) com reflexos suaves e um brilho ciano sutil atrás do celular. Telas do celular e do notebook em modo escuro (fundo preto, cartões grafite #0d1114, detalhes ciano #22b3d2). Papéis e cadernos em tons de grafite e azul-petróleo, com anotações em ciano. Balão simples: "Teste + plano de estudo personalizado". Luz de contorno ciano nas bordas dos objetos para destacar do fundo. Sem pessoas, sem mãos, sem rostos, sem logo, sem promessa de aprovação, sem travessões.
+
+**Variação sem texto (para escrever o texto em HTML)**
+A mesma cena, sem o balão e com as telas mostrando apenas formas (barras, cartões e linhas), sem texto legível.
+
+**Dica de uso:** se o gerador deixar a cena carregada demais, peça "menos objetos soltos e mais espaço vazio ao redor do celular". O ideal é que, no tamanho do celular do cliente, dê para ler o medidor e o balão.
+
 ## Regras de compliance para os criativos
 Sem promessa de nota ou aprovação, sem "nota 1000 garantida", sem depoimento inventado, sem "antes e depois". Não usar logo do INEP, do MEC nem do Governo Federal.
