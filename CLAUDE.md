@@ -24,7 +24,7 @@ em `testegratuitoenem.vercel.app` a partir deste repositório. Cores: branco e v
 - "Crie uma imagem" = escrever o prompt de geração, não montar HTML.
 - Os quizzes não têm telas de texto entre as perguntas (pedido do usuário): só perguntas →
   analisando → diagnóstico → produto → oferta.
-- O Índice de Preparo fica sempre entre 14 e 38 (decisão do usuário), rotulado como estimativa educativa.
+- Índice de Preparo: quem está mal fica entre 14 e 24; quem está bem sobe (até cerca de 88) e as cores ficam verdes (decisão do usuário), sempre rotulado como estimativa educativa. No quiz 1 o limite 14–38 continua.
   A pontuação lê o texto das alternativas: ao mudar uma opção, revise `calcRedacao()` / `calcPreparo()`.
 - Notas de corte em `CURSOS` (quiz 2) e `DATA_ENEM` são provisórias: validar com INEP e SISU.
 - Login: conta única (e-mail e senha) para os dois apps. Toda chave nova de progresso no localStorage

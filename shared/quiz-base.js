@@ -211,8 +211,10 @@ function medidorHTML(idx, cor, titulo){
     <div class="meter"><i style="left:${idx}%;border-color:${cor};"></i></div>
     <div class="meter-l"><span>Crítico</span><span>Em evolução</span><span>Preparado</span></div>`;
 }
-function barrasHTML(areas){
-  return `<div class="sub-bars">${areas.map(r=>`<div class="sb"><div class="l"><span>${S(r.n)}</span><span>${r.v}%</span></div><div class="t"><div class="f" style="width:${r.v}%"></div></div></div>`).join('')}</div>`;
+/* colorir=true: a cor da barra acompanha o valor (vermelho, amarelo, verde) */
+function barrasHTML(areas, colorir){
+  const cor = v => v>=60 ? 'linear-gradient(90deg,#1f9d63,#43c985)' : v>=35 ? 'linear-gradient(90deg,#e8a400,#f2c94c)' : '';
+  return `<div class="sub-bars">${areas.map(r=>`<div class="sb"><div class="l"><span>${S(r.n)}</span><span>${r.v}%</span></div><div class="t"><div class="f" style="width:${r.v}%;${colorir&&cor(r.v)?'background:'+cor(r.v)+';':''}"></div></div></div>`).join('')}</div>`;
 }
 function pts(ans, tabela){ const i = tabela.indexOf(ans); return i<0 ? 0 : i; }
 

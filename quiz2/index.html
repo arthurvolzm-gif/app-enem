@@ -138,8 +138,9 @@ function calcPreparo(){
   const simu  = pts(a.simulados,opts('simulados')) / 3;
   const rn    = pts(a.red_nota,opts('red_nota')) / 5;
   const raw = horas*20 + dias*15 + rot*15 + tent*5 + resu*15 + simu*15 + rn*15;   // 0..100
-  const idx = Math.round(14 + raw*0.24);
-  const barra = r => Math.min(46, Math.round(8 + r*38));
+  /* quem está mal continua entre 14 e 24; quem está bem sobe de verdade, até cerca de 88 */
+  const idx = Math.round(raw<=40 ? 14 + raw*0.24 : 23.6 + (raw-40)*1.073);
+  const barra = r => Math.min(96, Math.round(8 + r*88));
   return { idx, areas:[
     {n:'Rotina e constância', v:barra((dias*15+rot*15+tent*5)/35)},
     {n:'Tempo de estudo',     v:barra(horas)},
@@ -148,7 +149,9 @@ function calcPreparo(){
     {n:'Redação',             v:barra(rn)}
   ]};
 }
-function nivel(i){ return i<24 ? {txt:'MUITO BAIXO', cor:'#d64545'} : {txt:'BAIXO', cor:'#e0703a'}; }
+function nivel(i){
+  return i<24 ? {txt:'MUITO BAIXO', cor:'#d64545'} : i<45 ? {txt:'BAIXO', cor:'#e0703a'} : i<65 ? {txt:'EM EVOLUÇÃO', cor:'#d99a00'} : {txt:'BOM', cor:'#1f9d63'};
+}
 function matsDificeis(){ return (state.answers.materias||[]).filter(m=>m!=='Redação'); }
 
 /* plano da semana montado com as respostas */
@@ -268,11 +271,11 @@ const RENDER = {
       <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
       ${forte
         ? `<div class="alerta" style="${VERDE}"><p style="color:#16764a;">✅ ${n?n+', você':'Você'} já tem uma boa base para o ENEM.</p>
-        <p class="s">Com base nas suas respostas, a sua rotina e o seu conteúdo estão bem encaminhados. O índice abaixo mostra onde ainda dá para ganhar no último mês.</p></div>`
+        <p class="s" style="color:#16764a;">Com base nas suas respostas, a sua rotina e o seu conteúdo estão bem encaminhados. O índice abaixo mostra onde ainda dá para ganhar no último mês.</p></div>`
         : `<div class="alerta"><p>⚠️ ${n?n+', o':'O'} seu preparo para o ENEM está <strong>${niv.txt}</strong>.</p>
         <p class="s">Com base nas suas respostas, hoje a sua rotina e o seu conteúdo não estão no ritmo que a sua meta exige.</p></div>`}
       ${medidorHTML(P.idx, niv.cor, 'Seu Índice de Preparo para o ENEM')}
-        ${barrasHTML(P.areas)}
+        ${barrasHTML(P.areas, true)}
         <p class="note">Estimativa educativa calculada a partir das suas respostas. Não é uma avaliação oficial e não prevê a sua nota.</p>
       </div>
       <div class="alerta" style="margin-top:20px;${nCrit===0?VERDE:''}"><p style="font-size:15px;letter-spacing:.4px;${nCrit===0?'color:#16764a;':''}">${nCrit===0?'✅ TODOS OS PONTOS ESTÃO BEM ENCAMINHADOS':nCrit===1?'⚠️ 1 PONTO PARA MELHORAR FOI IDENTIFICADO':`⚠️ ${nCrit} PONTOS CRÍTICOS FORAM IDENTIFICADOS`}</p></div>
@@ -363,6 +366,7 @@ const RENDER = {
     const a = state.answers, n = nomeA();
     const P = calcPreparo(), niv = nivel(P.idx);
     const plano = montaPlano();
+    const metaIdx = P.idx>=65 ? 90 : P.idx>=45 ? 75 : 60, metaFaixa = P.idx>=65 ? 'Preparado' : P.idx>=45 ? 'Preparado' : 'Em evolução';
     const nomes = matsDificeis().length ? matsDificeis() : ['Matemática','Biologia'];
     /* resumo real do app para a 1ª matéria difícil */
     const M = (window.MATERIAS||[]).find(m=>m.nome===nomes[0]) || (window.MATERIAS||[])[0];
@@ -397,13 +401,13 @@ const RENDER = {
       <div class="sec-h">🎯 Do seu ponto de partida à sua meta</div>
       <div class="box" style="background:#fff;">
         <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:10px;">
-          <div style="text-align:center;flex:1;"><div style="font-size:11px;font-weight:800;letter-spacing:1px;color:var(--vermelho);text-transform:uppercase;">Hoje</div><div style="font-family:'Open Sans';font-size:40px;font-weight:900;color:${niv.cor};line-height:1.1;">${P.idx}</div></div>
+          <div style="text-align:center;flex:1;"><div style="font-size:11px;font-weight:800;letter-spacing:1px;color:${niv.cor};text-transform:uppercase;">Hoje</div><div style="font-family:'Open Sans';font-size:40px;font-weight:900;color:${niv.cor};line-height:1.1;">${P.idx}</div></div>
           <div style="font-size:24px;color:#9ba8c2;padding-bottom:8px;">→</div>
-          <div style="text-align:center;flex:1;"><div style="font-size:11px;font-weight:800;letter-spacing:1px;color:var(--verde);text-transform:uppercase;">Meta do plano</div><div style="font-family:'Open Sans';font-size:40px;font-weight:900;color:var(--verde);line-height:1.1;">60+</div></div>
+          <div style="text-align:center;flex:1;"><div style="font-size:11px;font-weight:800;letter-spacing:1px;color:var(--verde);text-transform:uppercase;">Meta do plano</div><div style="font-family:'Open Sans';font-size:40px;font-weight:900;color:var(--verde);line-height:1.1;">${metaIdx}+</div></div>
         </div>
         <div class="meter"><i style="left:${P.idx}%;border-color:${niv.cor};"></i></div>
         <div class="meter-l"><span>Crítico</span><span>Em evolução</span><span>Preparado</span></div>
-        <p class="note">A meta é chegar à faixa "Em evolução" seguindo o plano. É uma estimativa educativa: o resultado depende da sua dedicação, e não garantimos nota nem aprovação.</p>
+        <p class="note">A meta é chegar à faixa "${metaFaixa}" seguindo o plano. É uma estimativa educativa: o resultado depende da sua dedicação, e não garantimos nota nem aprovação.</p>
       </div>
 
       <div class="cmp">
