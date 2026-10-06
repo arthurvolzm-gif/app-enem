@@ -50,5 +50,30 @@ Anúncio quadrado, caderno espiral com o título "O QUE MAIS CAI NO ENEM" e uma 
 **Criativo "Índice de preparo"**
 Anúncio quadrado, fundo branco e verde, título "QUAL É O SEU ÍNDICE DE PREPARO PARA O ENEM?", um medidor em semicírculo de vermelho a verde com o ponteiro no vermelho, e abaixo quatro barras curtas: "Rotina", "Tempo de estudo", "Conteúdo", "Simulados". Botão verde "DESCUBRA GRÁTIS EM 2 MINUTOS". Visual limpo, estilo infográfico.
 
+## Quiz 2: imagem "Tudo o que você vai receber" (vertical 1080x1350)
+Para colocar na tela do plano do quiz 2, depois do resumo do plano. Peça ao gerador em formato vertical 4:5. Confira a ortografia dos textos na imagem gerada (geradores costumam errar acento).
+
+**Prompt**
+Imagem vertical 4:5 para uma página de vendas no celular, estilo moderno e limpo, fundo branco com detalhes em azul-escuro e azul-royal, cantos arredondados e sombras suaves. Paleta: azul-escuro #0b1f4d, azul #3b6fd8, branco, e verde #1f9d63 apenas nos checks.
+
+PARTE DE CIMA (cerca de 55% da imagem): uma composição de imagens do que a pessoa recebe, sem texto grande. No centro, um celular em perspectiva leve mostrando a tela "Seu plano" de um app azul-escuro e branco, com abas de dias da semana (SEG a SÁB) e um cartão "Segunda" com dois blocos de estudo (Química 25 min e Matemática 20 min) e botões "Ver resumo" e "Marcar concluído". À esquerda do celular, um segundo celular menor mostrando o cronômetro circular do modo foco (anel azul, tempo "18:42", botões de pausar e concluir). À direita, um terceiro celular menor com a tela de progresso (barras dos últimos 7 dias e um cartão de nível). Atrás dos celulares, em leque, quatro páginas de PDF de material de estudo em papel branco, cada uma com título de tema e listas curtas com marcadores azuis, em capas de cores diferentes (azul para Matemática, verde para Química, laranja para História, roxo para Filosofia). Pequenos ícones de contorno flutuando ao redor (calendário, sino, livro aberto, relógio, gráfico de barras), sem exagero.
+
+PARTE DE BAIXO (cerca de 45% da imagem): um cartão branco grande com cantos arredondados, título em azul-escuro em negrito: "O que você recebe". Lista com checks verdes redondos, uma linha por item, texto em azul-escuro, tamanho legível no celular:
+- Plano de estudos pronto, dia a dia
+- Todas as 10 matérias da prova, incluindo Redação
+- Os 225 temas que mais caem, em ordem
+- Material completo de cada matéria para baixar
+- Resumo de cada tema, quando você quiser ler
+- Cronômetro de estudo e modo foco
+- Seu desempenho por matéria, salvo no app
+- Revisão no tempo certo
+- Lembrete na hora de estudar
+- Ajuste do plano quando a sua rotina mudar
+
+Sem o logo de nenhuma marca, sem nomes de pessoas, sem depoimentos, sem notas, sem promessa de aprovação e sem números de resultado. Texto sem travessões. Resolução alta, nítida, legível em tela de celular.
+
+**Variação sem texto na lista (para você aplicar a lista em HTML)**
+Mesma composição da parte de cima, e na parte de baixo apenas um cartão branco vazio com cantos arredondados, para eu escrever a lista por cima.
+
 ## Regras de compliance para os criativos
 Sem promessa de nota ou aprovação, sem "nota 1000 garantida", sem depoimento inventado, sem "antes e depois". Não usar logo do INEP, do MEC nem do Governo Federal.
