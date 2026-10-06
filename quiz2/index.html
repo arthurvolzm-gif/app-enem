@@ -422,11 +422,6 @@ const RENDER = {
         <div class="c b"><h4>Com o aplicativo</h4><ul><li>Plano pronto por dia</li><li>Resumo do que mais cai</li><li>Desempenho por matéria</li><li>Lembrete na hora certa</li></ul></div>
       </div>
 
-      <div class="sec-h" style="margin-top:6px;">📅 Sua semana de estudos</div>
-      <div class="phone"><div class="phone-top"><span><i class="dot"></i>Plano da semana</span><span>${S(a.horas||'')}</span></div>
-        <table class="plano">${plano.map(p=>`<tr><td class="d">${p.d}</td><td class="m">${p.itens.map(i=>`<div>${S(i.m)}${p.itens.length>1?` <span style="color:#8a98b5;font-weight:600;font-size:12.5px;">${fmt(i.min)}</span>`:''}</div>`).join('')}</td><td class="h">${fmt(p.total)}</td></tr>`).join('')}</table>
-        <p class="note" style="margin-top:8px;">Todas as matérias entram na semana, em 2 por dia quando preciso, com o tempo dividido entre elas. As que você marcou como dificuldade vêm primeiro e se repetem mais. Você ajusta os dias e o tempo no aplicativo.</p></div>
-
       <img src="/img/o-que-voce-recebe.webp" alt="Tudo o que você recebe: plano de estudos, material de cada matéria, resumos, cronômetro e desempenho" loading="lazy" style="display:block;width:100%;height:auto;border-radius:16px;margin:22px 0 4px;" onerror="this.remove()">
       <button class="btn" style="margin-top:14px;" onclick="go(1)">Quero ativar o meu plano →</button>
     </div></div>`;
