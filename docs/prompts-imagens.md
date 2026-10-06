@@ -75,5 +75,25 @@ Sem o logo de nenhuma marca, sem nomes de pessoas, sem depoimentos, sem notas, s
 **Variação sem texto na lista (para você aplicar a lista em HTML)**
 Mesma composição da parte de cima, e na parte de baixo apenas um cartão branco vazio com cantos arredondados, para eu escrever a lista por cima.
 
+## Quiz 2: imagem de garantia de 7 dias (vertical 4:5, 1080x1350)
+Mesma linha da imagem "Garantia total 7 dias" do outro quiz (selo em relevo, "7" grande de fundo, título em serifa, moldura fina), mas com fundo branco e cores azuis. Confira a ortografia dos textos na imagem gerada.
+
+**Prompt**
+Imagem vertical 4:5, cartão elegante com cantos arredondados e uma moldura fina em azul-royal metálico a poucos milímetros da borda, sobre fundo totalmente branco (sem tom de verde ou creme). Ao fundo, um grande número "7" em serifa clássica, ocupando a parte de cima, em azul muito claro e translúcido (#e6eefb), como marca d'água.
+
+No centro da parte de cima, sobre o "7", um selo circular em relevo, estilo medalha premium: anel externo em azul-escuro metálico com reflexos prateados e azuis (sem dourado), texto curvo em maiúsculas serifadas na borda superior "GARANTIA TOTAL" e na borda inferior "7 DIAS", separados por dois pontinhos. No miolo do selo, um escudo com um check, em azul-royal com leve brilho, sobre fundo branco-perolado. Sombra suave e realista sob o selo.
+
+Abaixo do selo, centralizado:
+- Linha pequena em maiúsculas com espaçamento largo, azul-royal: "SEM RISCO"
+- Título grande em serifa elegante e pesada, azul-escuro #0b1f4d, em duas linhas: "Compre hoje." e "Decida em 7 dias."
+- Texto de apoio em sans-serif limpa, cinza-azulado escuro, em duas linhas: "Sete dias para testar o plano e o material na sua rotina." e "Se não gostar, devolvemos o valor pago."
+
+No rodapé, uma linha fina azul com um pequeno ornamento no centro (um check dentro de um círculo ou uma folha estilizada em azul), simétrico.
+
+Estilo: limpo, premium, muito espaço em branco, tipografia nítida, luz suave de estúdio. Paleta: branco, azul-escuro #0b1f4d, azul-royal #3b6fd8, azul-claro #e6eefb e prata. Sem dourado, sem verde, sem pessoas, sem logo, sem nomes de marca, sem promessa de nota ou aprovação, sem travessões. Resolução alta e legível em tela de celular.
+
+**Variação sem texto (para você escrever o texto em HTML)**
+Mesma composição, mas sem nenhum texto abaixo do selo e sem o texto curvo dentro do selo (só o escudo com check), deixando o espaço livre.
+
 ## Regras de compliance para os criativos
 Sem promessa de nota ou aprovação, sem "nota 1000 garantida", sem depoimento inventado, sem "antes e depois". Não usar logo do INEP, do MEC nem do Governo Federal.
