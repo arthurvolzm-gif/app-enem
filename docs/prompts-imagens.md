@@ -95,5 +95,45 @@ Estilo: limpo, premium, muito espaço em branco, tipografia nítida, luz suave d
 **Variação sem texto (para você escrever o texto em HTML)**
 Mesma composição, mas sem nenhum texto abaixo do selo e sem o texto curvo dentro do selo (só o escudo com check), deixando o espaço livre.
 
+## Quiz 2, versão escura (preto + ciano): imagens "O que você recebe" e "Garantia de 7 dias"
+Para usar em /quiz2/escuro. Mesmos textos das versões claras; fundo preto e acento ciano. Confira a ortografia dos textos na imagem gerada.
+
+**Prompt: "O que você recebe" (vertical 4:5, 1080x1350)**
+Imagem vertical 4:5 para uma página de vendas no celular, estilo moderno e premium, fundo totalmente preto (#000000) com um brilho ciano muito sutil atrás dos celulares, cantos arredondados e sombras profundas. Paleta: preto #000000, grafite #0d1114, ciano #22b3d2, ciano escuro #0b6f86, branco para os textos e verde #3ddc97 apenas nos checks.
+
+PARTE DE CIMA (cerca de 55% da imagem): composição do que a pessoa recebe, sem texto grande. No centro, um celular em perspectiva leve mostrando a tela "Seu plano" de um aplicativo no modo escuro (fundo preto, cartões grafite, detalhes ciano), com abas de dias (SEG a SÁB) e um cartão "Segunda" com dois blocos (Química 25 min e Matemática 20 min) e botões "Ver resumo" e "Marcar concluído". À esquerda, um segundo celular menor com o cronômetro circular do modo foco (anel ciano, "18:42", botões de pausar e concluir). À direita, um terceiro celular menor com a tela de progresso (barras ciano dos últimos 7 dias e um cartão de nível). Atrás dos celulares, em leque, quatro páginas de material de estudo em tema escuro (fundo grafite, títulos claros, marcadores ciano), com capas de cores diferentes (ciano para Matemática, verde para Química, laranja para História, roxo para Filosofia). Ícones de contorno em ciano flutuando ao redor (calendário, sino, livro aberto, relógio, gráfico de barras), com leve brilho.
+
+PARTE DE BAIXO (cerca de 45% da imagem): um cartão grafite #0d1114 com borda fina ciano e cantos arredondados, título em branco, negrito: "O que você recebe". Lista com checks verdes redondos, uma linha por item, texto branco-gelo, legível no celular:
+- Plano de estudos pronto, dia a dia
+- Todas as 10 matérias da prova, incluindo Redação
+- Os 225 temas que mais caem, em ordem
+- Material completo de cada matéria para baixar
+- Resumo de cada tema, quando você quiser ler
+- Cronômetro de estudo e modo foco
+- Seu desempenho por matéria, salvo no aplicativo
+- Revisão no tempo certo
+- Lembrete na hora de estudar
+- Ajuste do plano quando a sua rotina mudar
+
+Sem logo de marca, sem nomes de pessoas, sem depoimentos, sem notas, sem promessa de aprovação e sem números de resultado. Texto sem travessões. Resolução alta, nítida, legível em celular.
+
+**Variação sem texto na lista:** mesma composição, e na parte de baixo apenas um cartão grafite vazio com borda ciano e cantos arredondados, para eu escrever a lista por cima.
+
+**Prompt: "Garantia de 7 dias" (vertical 4:5, 1080x1350)**
+Imagem vertical 4:5, cartão elegante com cantos arredondados e uma moldura fina em ciano metálico a poucos milímetros da borda, sobre fundo totalmente preto (#000000). Ao fundo, um grande número "7" em serifa clássica, ocupando a parte de cima, em ciano muito escuro e translúcido (#0a2a33), como marca d'água.
+
+No centro da parte de cima, sobre o "7", um selo circular em relevo, estilo medalha premium: anel externo em ciano e prata metálicos com reflexos suaves (sem dourado), texto curvo em maiúsculas serifadas na borda superior "GARANTIA TOTAL" e na borda inferior "7 DIAS", separados por dois pontinhos. No miolo, um escudo com um check em ciano brilhante sobre fundo grafite. Brilho suave ciano ao redor do selo e sombra profunda.
+
+Abaixo do selo, centralizado:
+- Linha pequena em maiúsculas com espaçamento largo, ciano: "SEM RISCO"
+- Título grande em serifa elegante e pesada, branco, em duas linhas: "Compre hoje." e "Decida em 7 dias."
+- Texto de apoio em sans-serif limpa, cinza-azulado claro #a9bcc3, em duas linhas: "Sete dias para testar o plano e o material na sua rotina." e "Se não gostar, devolvemos o valor pago."
+
+No rodapé, uma linha fina ciano com um pequeno ornamento no centro (check dentro de um círculo), simétrico.
+
+Estilo: premium, minimalista, muito espaço negro, tipografia nítida, luz de estúdio com contraste suave. Paleta: preto, grafite #0d1114, ciano #22b3d2, ciano escuro #0b6f86, branco e prata. Sem dourado, sem verde, sem pessoas, sem logo, sem nomes de marca, sem promessa de nota ou aprovação, sem travessões. Resolução alta e legível em celular.
+
+**Variação sem texto:** mesma composição, sem nenhum texto abaixo do selo e sem o texto curvo dentro do selo (só o escudo com check), deixando o espaço livre.
+
 ## Regras de compliance para os criativos
 Sem promessa de nota ou aprovação, sem "nota 1000 garantida", sem depoimento inventado, sem "antes e depois". Não usar logo do INEP, do MEC nem do Governo Federal.
