@@ -442,7 +442,7 @@ const RENDER = {
     const a = state.answers, n = nomeA();
     const P = calcPreparo(), niv = nivel(P.idx);
     const plano = montaPlano(), dif = matsDificeis(), semanaMin = plano.reduce((x,p)=>x+p.total,0);
-    const metaIdx = P.idx>=65 ? 90 : P.idx>=45 ? 75 : 60, metaFaixa = P.idx>=65 ? 'Preparado' : P.idx>=45 ? 'Preparado' : 'Em evolução';
+    const metaIdx = 80, metaFaixa = P.idx>=65 ? 'Preparado' : P.idx>=45 ? 'Preparado' : 'Em evolução';
     const nomes = matsDificeis().length ? matsDificeis() : ['Matemática','Biologia'];
     /* resumo real do aplicativo para a 1ª matéria difícil */
     const M = (window.MATERIAS||[]).find(m=>m.nome===nomes[0]) || (window.MATERIAS||[])[0];
@@ -451,13 +451,11 @@ const RENDER = {
     <div class="wrap fade"><div class="card">
       ${backBtn()}<div class="brand-sub" style="margin-bottom:6px;">Seu plano personalizado</div>
       <span class="tag">${n?n+', veja':'Veja'} como fica usando o aplicativo</span>
-      <h2 class="q-title" style="margin-bottom:6px;">Seu último mês com o ${S(QUIZ.APP_NOME)}</h2>
-      <p class="sec-s">Montado com as suas respostas: suas dificuldades, o tempo que você tem e a sua meta.</p>
 
       <div class="sec-h" style="margin-top:6px;">🎯 Do seu ponto de partida à sua meta</div>
       <div class="box" style="background:#fff;">
         <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:10px;">
-          <div style="text-align:center;flex:1;"><div style="font-size:11px;font-weight:800;letter-spacing:1px;color:${niv.cor};text-transform:uppercase;">Hoje</div><div style="font-family:'Open Sans';font-size:40px;font-weight:900;color:${niv.cor};line-height:1.1;">${P.idx}</div></div>
+          <div style="text-align:center;flex:1;"><div style="font-size:11px;font-weight:800;letter-spacing:1px;color:${niv.cor};text-transform:uppercase;">Seu preparo hoje</div><div style="font-family:'Open Sans';font-size:40px;font-weight:900;color:${niv.cor};line-height:1.1;">${P.idx}</div></div>
           <div style="font-size:24px;color:#9ba8c2;padding-bottom:8px;">→</div>
           <div style="text-align:center;flex:1;"><div style="font-size:11px;font-weight:800;letter-spacing:1px;color:#1f9d63;text-transform:uppercase;">Meta do plano</div><div style="font-family:'Open Sans';font-size:40px;font-weight:900;color:#1f9d63;line-height:1.1;">${metaIdx}+</div></div>
         </div>

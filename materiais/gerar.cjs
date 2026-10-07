@@ -39,6 +39,10 @@ function carregarExt(id){
   fs.readdirSync(path.join(__dirname, 'ext')).filter(f => new RegExp('^' + id + '-\\d+\\.cjs$').test(f))
     .sort((x, y) => parseInt(x.split('-')[1]) - parseInt(y.split('-')[1]))
     .forEach(f => require(path.join(__dirname, 'ext', f)).forEach(d => { mapa[d.t] = d; }));
+  /* textos corridos: ext/<id>-t1.cjs, ext/<id>-t2.cjs... ([{t, txt:[{h, p:[parágrafos]}]}]) */
+  fs.readdirSync(path.join(__dirname, 'ext')).filter(f => new RegExp('^' + id + '-t\\d+\\.cjs$').test(f))
+    .sort((x, y) => parseInt(x.split('-t')[1]) - parseInt(y.split('-t')[1]))
+    .forEach(f => require(path.join(__dirname, 'ext', f)).forEach(d => { if(mapa[d.t]) mapa[d.t].txt = d.txt; }));
   return mapa;
 }
 const LETRAS = ['A','B','C','D','E'];
@@ -49,6 +53,8 @@ function validarExt(mat, ext){
     const d = ext[t.t];
     if(!d){ avisos.push(t.t + ': SEM conteúdo estendido'); return; }
     ['d1','d2'].forEach(k => { if(!d[k] || d[k].length < 2) avisos.push(t.t + ': ' + k + ' com poucas seções'); });
+    if(!d.txt || d.txt.length < 5) avisos.push(t.t + ': menos de 5 páginas de texto corrido');
+    else d.txt.forEach((x, k) => { const pal = (x.p || []).join(' ').split(/\s+/).length; if(!x.h || !x.p || x.p.length < 2) avisos.push(t.t + ' texto ' + (k+1) + ': precisa de título e 2+ parágrafos'); else if(pal < 170) avisos.push(t.t + ' texto ' + (k+1) + ': curto (' + pal + ' palavras)'); else if(pal > 430) avisos.push(t.t + ' texto ' + (k+1) + ': longo (' + pal + ' palavras)'); if(/—/.test(JSON.stringify(x))) avisos.push(t.t + ' texto ' + (k+1) + ': travessão'); });
     if(!d.erros || d.erros.length < 3) avisos.push(t.t + ': poucos erros comuns');
     if(!d.check || d.check.length < 3) avisos.push(t.t + ': checklist curto');
   });
@@ -91,7 +97,7 @@ function temaPaginas(tema, i, mat, ext, n0){
   const cor = PALETA[i % PALETA.length];
   const pags = [];
   const dados = (ext && ext[tema.t]) || null;
-  const total = dados ? 5 : 1;
+  const nT = dados && dados.txt ? dados.txt.length : 0; const TOT = 5 + nT; const total = dados ? TOT : 1;
   pags.push({ fit:false, html:`<section class="tema" data-t="${esc(tema.t)}">
     <div class="tema-topo"><h2 style="color:${cor.t};">${esc(tema.t)}</h2><div class="ic">${tema.ic || mat.icone}</div></div>
     ${tema.prio === 'a' || tema.p === 'a' ? `<div class="selo">🔥 Cai muito no ENEM</div>` : ''}
@@ -103,14 +109,18 @@ function temaPaginas(tema, i, mat, ext, n0){
   if(!dados) return pags;
   const destaques = [].concat(tema.s, dados.d1, dados.d2).filter(sec => sec[3]).slice(0, 3).map(sec => `<div class="enem"><b>💡 ${esc(sec[0])}:</b> ${fmt(sec[3])}</div>`).join('');
   const rev = [].concat(tema.s, dados.d1, dados.d2).map(sec => `<li><b>${esc(sec[0])}</b></li>`).join('');
-  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 2)">${topoParte(tema, cor, 'Parte 2 de 5', 'Desenvolvimento do conteúdo')}${dados.d1.map(sec => secaoHTML(sec, cor)).join('')}</section>` });
-  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 3)">${topoParte(tema, cor, 'Parte 3 de 5', 'Aprofundando e conectando')}${dados.d2.map(sec => secaoHTML(sec, cor)).join('')}</section>` });
-  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 4)">${topoParte(tema, cor, 'Parte 4 de 5', 'Erros comuns e pontos de atenção')}
+  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 2)">${topoParte(tema, cor, 'Parte 2 de ' + TOT, 'Desenvolvimento do conteúdo')}${dados.d1.map(sec => secaoHTML(sec, cor)).join('')}</section>` });
+  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 3)">${topoParte(tema, cor, 'Parte 3 de ' + TOT, 'Aprofundando e conectando')}${dados.d2.map(sec => secaoHTML(sec, cor)).join('')}</section>` });
+  const nTxt = (dados.txt || []).length;
+  (dados.txt || []).forEach((x, k) => {
+    pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (texto ${k + 1})">${topoParte(tema, cor, 'Parte ' + (4 + k) + ' de ' + TOT, 'Entendendo a fundo')}<div class="prosa"><h4 style="color:${cor.t};">${esc(x.h)}</h4>${x.p.map(par => `<p>${fmt(par)}</p>`).join('')}</div></section>` });
+  });
+  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 4)">${topoParte(tema, cor, 'Parte ' + (4 + nTxt) + ' de ' + TOT, 'Erros comuns e pontos de atenção')}
     <div class="erros"><div class="erros-t">⚠️ Erros comuns</div><ul>${dados.erros.map(e => `<li>${fmt(e)}</li>`).join('')}</ul></div>
     ${tema.enem ? `<div class="enem"><b>💡 Como cai no ENEM:</b> ${fmt(tema.enem)}</div>` : ''}
     ${destaques}
   </section>` });
-  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 5)">${topoParte(tema, cor, 'Parte 5 de 5', 'Revisão e checklist')}
+  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 5)">${topoParte(tema, cor, 'Parte ' + TOT + ' de ' + TOT, 'Revisão e checklist')}
     <div class="erros"><div class="erros-t" style="color:${cor.t};">📌 O que você viu neste tema</div><ul>${rev}</ul></div>
     <div class="check"><div class="check-t">✅ Antes de seguir, você consegue...</div><ul>${dados.check.map(e => `<li><span class="cx"></span>${fmt(e)}</li>`).join('')}</ul></div>
     <div class="anot"><div class="anot-t">✍️ Minhas anotações</div></div>
@@ -179,6 +189,8 @@ body{font-family:'Nunito',sans-serif;color:#1d1d1d;-webkit-print-color-adjust:ex
 .erros-t,.check-t{font-family:'Lilita One',cursive;font-size:11.5pt;margin-bottom:1mm;color:#b02a2a;}
 .check-t{color:#2f7d2f;}
 .erros ul,.check ul{list-style:none;}
+.prosa h4{font-family:'Lilita One',cursive;font-size:calc(var(--fs,13pt) + 3pt);text-transform:uppercase;margin:0 0 3mm;}
+.prosa p{font-size:var(--fs,13pt);line-height:1.5;text-align:justify;margin-bottom:2.6mm;hyphens:auto;}
 .erros li{font-size:calc(var(--fs,11pt) - .5pt);line-height:1.4;margin-bottom:.8mm;padding-left:4mm;position:relative;}
 .erros li::before{content:'•';position:absolute;left:0;color:#b02a2a;}
 .check{margin-top:3mm;background:#f1faf1;border:2px solid #a8d8a2;border-radius:10px;padding:2.5mm 4.5mm;}
@@ -215,7 +227,7 @@ body{font-family:'Nunito',sans-serif;color:#1d1d1d;-webkit-print-color-adjust:ex
 </div>
 ${folha(`<div class="sumario"><h2>CONTEÚDOS ABORDADOS</h2><ol>${mat.temas.map(t => `<li>${esc(t.t)}</li>`).join('')}</ol></div>`, 1)}
 ${folha(`<div class="como"><h2>COMO USAR</h2>
-  <div class="bloco"><h3>1. Um tema por vez</h3>Cada tema tem <b>5 partes</b>: visão geral, desenvolvimento do conteúdo, aprofundamento, erros comuns e revisão com checklist. Estude uma parte por vez, sem pressa.</div>
+  <div class="bloco"><h3>1. Um tema por vez</h3>Cada tema tem <b>10 partes ou mais</b>: visão geral, desenvolvimento, aprofundamento, textos explicativos, erros comuns e revisão com checklist. Estude uma parte por vez, sem pressa.</div>
   <div class="bloco"><h3>2. Comece pelo 🔥</h3>Os temas com o selo <b>"Cai muito no ENEM"</b> aparecem com frequência nas provas. Se o tempo estiver curto, priorize esses.</div>
   <div class="bloco"><h3>3. Feche cada tema com o checklist</h3>Na parte 5, confira se você consegue fazer tudo o que está no checklist. O que não conseguir, releia nas partes 2 e 3 e anote com as suas palavras.</div>
   <div class="bloco"><h3>4. Siga o seu plano</h3>No aplicativo <b>Plano ENEM</b>, o seu plano semanal diz quais temas estudar em cada dia. Depois de estudar, toque em <b>"Marcar concluído"</b> para o tema entrar no seu desempenho.</div>
