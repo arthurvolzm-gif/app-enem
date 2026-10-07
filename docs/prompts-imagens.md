@@ -171,3 +171,74 @@ A mesma cena, sem o balão e com as telas mostrando apenas formas (barras, cart�
 
 ## Regras de compliance para os criativos
 Sem promessa de nota ou aprovação, sem "nota 1000 garantida", sem depoimento inventado, sem "antes e depois". Não usar logo do INEP, do MEC nem do Governo Federal.
+
+---
+
+# Funil Acelera Enem (checkout escuro)
+
+Paleta: preto `#000` e grafite `#0d1114`, ciano `#2ee6ff` e `#00cfee`, verde `#3ddc97` só nos checks e na garantia. Fonte geométrica pesada (estilo Inter Black). Confira a ortografia dos textos na imagem gerada. Sem promessa de nota ou aprovação.
+
+## 1. Garantia do checkout (substitui `img/garantia-7-dias-escuro.webp`, vertical 4:5, 1080x1350)
+Imagem vertical 4:5, fundo preto profundo com um leve brilho verde-escuro no centro e vinheta nas bordas, sem textura. Na metade de cima, o número "7" gigante em letras 3D arredondadas e pesadas, em degradê verde-menta (#8ff5c0 para #3ddc97), com brilho neon suave ao redor. Logo abaixo, a palavra "DIAS" em letras 3D do mesmo estilo e cor, um pouco menores. À direita do "7", sobrepondo a borda do número, um selo circular com anel verde luminoso e um check verde grosso no centro. Mais abaixo, o título "Garantia 100%" em verde-menta, negrito, centralizado. Abaixo do título, o texto em cinza-claro, regular, centralizado, em três linhas: "Experimente o Acelera Enem por 7 dias. Se você não gostar, devolvemos o seu dinheiro. Você não tem nada a perder!". Composição limpa, muito espaço escuro em volta, estética premium e minimalista, igual à referência de "30 DIAS".
+(Se a garantia do checkout for de 30 dias, troque "7" por "30" e "7 dias" por "30 dias" no texto.)
+
+## 2. Banner do checkout, escuro (1600x500 desktop, e uma versão 1080x600 para celular)
+Banner horizontal, fundo preto com um brilho ciano suave atrás do lado direito e finas linhas de velocidade em ciano saindo da esquerda. À esquerda, o logotipo em texto "ACELERA ENEM" em letras pesadas e levemente inclinadas, "ACELERA" em branco e "ENEM" em ciano brilhante, com uma seta de aceleração estilizada. Abaixo, em branco, a frase "Plano de estudos, resumos e desempenho em um aplicativo só". À direita, um celular em perspectiva mostrando o aplicativo em tema escuro (cartão "Seu plano até o ENEM" com barra de progresso ciano e a lista de matérias), com dois cartões flutuantes ao redor escritos "Resumos" e "Progresso" e um tablet ao fundo com um resumo aberto. Acabamento premium, reflexos suaves, sombras profundas, muito espaço vazio no centro.
+
+## 3. Capa do Acelera Enem (produto, vertical 3:4, 1200x1600)
+Capa vertical, fundo preto com brilho ciano no centro e partículas de luz. No centro, um celular grande em perspectiva leve com a tela do aplicativo em tema escuro (início com "Seu plano até o ENEM", barra ciano e cartões das matérias). Atrás do celular, em leque, as capas de 9 materiais em PDF em cores diferentes, escritas "Matemática", "Física", "Química", "Biologia", "História", "Geografia", "Filosofia", "Sociologia" e "Linguagens". No topo, o título "ACELERA ENEM" em letras pesadas e inclinadas, "ACELERA" em branco e "ENEM" em ciano neon, com linhas de velocidade. Na base, a faixa "Plano de estudos + Resumos + Desempenho". Brilho neon ciano nas bordas dos cartões, sombras profundas.
+
+## 4. Capas dos order bumps (quadradas 1080x1080, mesmo estilo entre si)
+Fundo preto com brilho ciano suave, título grande em branco e ciano no topo, mockup no centro, selo pequeno no canto inferior direito. Cantos arredondados nos cartões, acabamento premium.
+
+**OB1: Exercícios e Simulados Preparatórios**
+Título "EXERCÍCIOS E SIMULADOS" em branco, com "PREPARATÓRIOS" em ciano. No centro, um tablet com uma questão no estilo ENEM na tela (enunciado em linhas, alternativas A, B, C, D e E, uma marcada em ciano) e um cronômetro no canto. Ao lado, uma pilha de folhas de prova com um gabarito marcado em verde e um lápis. Selo no canto: "Gabarito comentado".
+
+**OB2: Material Preparatório para Redação**
+Título "MATERIAL PREPARATÓRIO PARA REDAÇÃO", com "REDAÇÃO" em ciano. No centro, um tablet com a capa do e-book "ARSENAL de REDAÇÕES PARA O ENEM" (capa azul royal com letras amarelas, livro aberto, fones e despertador), em cima de um caderno aberto com anotações de redação e marca-textos amarelo e rosa. Selo no canto: "E-book em PDF".
+
+**OB3: Correção de Redação por Foto com IA**
+Título "CORREÇÃO DE REDAÇÃO POR FOTO", com "COM IA" em ciano. À esquerda, um celular fotografando uma folha de redação manuscrita, com uma moldura de escaneamento em ciano nos cantos. À direita, um cartão flutuante com a lista "Competência 1" até "Competência 5", cada uma com uma barra ciano de tamanhos diferentes (sem números) e um trecho do texto sublinhado em amarelo. Selo no canto: "Estimativa feita por IA".
+
+**Upsell: Comunidade de Estudantes (extra)**
+Título "COMUNIDADE DE ESTUDANTES", com "ESTUDANTES" em ciano. No centro, um celular com um chat em grupo no tema escuro, balões de conversa em ciano e grafite e pequenos avatares circulares de estudantes diversos, com ícones de pergunta, lâmpada e check ao redor. Selo no canto: "Dúvidas e dicas".
+
+## 5. Rota ENEM: logo e capa (1024x1024 e 1080x1080)
+**Logo (ícone 1024x1024, fundo transparente, e versão em fundo preto):** um marcador de mapa (pin) em azul-petróleo (#0891b2) com degradê para ciano (#2ee6ff), cuja ponta se desfaz numa linha de rota tracejada que sobe curvando até uma pequena bandeira com um check. Traço grosso, formas simples, boa leitura em tamanho de ícone de celular, sem texto dentro do ícone.
+**Logotipo horizontal:** o ícone à esquerda e, à direita, a palavra "Rota" em branco e "ENEM" em ciano, fonte geométrica pesada, alinhados na mesma linha de base.
+**Capa quadrada (1080x1080):** fundo preto com brilho ciano, o logotipo centralizado e grande, linhas de rota tracejadas em ciano atravessando o fundo e a frase pequena embaixo "Seu plano de estudos até o ENEM".
+
+---
+
+# Descrições dos order bumps no checkout
+
+Sem promessa de nota ou aprovação. Botão de aceite sugerido: "Sim, quero adicionar por R$ X".
+
+**OB1: Exercícios e Simulados Preparatórios (R$ 14,90)**
+Pratique no estilo do ENEM depois de estudar cada tema. Você recebe exercícios de todas as matérias com gabarito comentado, simulados no aplicativo e um aviso toda semana, no dia e no horário que você escolher, para não esquecer de treinar.
+- PDFs de exercícios das 9 matérias, para baixar
+- Gabarito comentado de cada questão
+- Simulados no aplicativo
+- Aviso semanal do seu simulado
+
+**OB2: Material Preparatório para Redação (R$ 9,90)**
+E-book em PDF para você montar a sua redação mais rápido: modelos de introdução e de tese, 50 tópicos frasais, alusões históricas, 50 frases coringas, 50 frases filosóficas, frases de efeito para a proposta de intervenção e conectivos com exemplos de uso. Os modelos são uma referência para você adaptar ao tema e escrever com as suas palavras.
+- Modelos prontos para introdução e para tese
+- 50 tópicos frasais e 50 frases coringas
+- Alusões históricas e 50 frases filosóficas
+- Frases de efeito para a proposta de intervenção
+- Conectivos com exemplos de uso
+- Bônus: estrutura, competências e o que zera a redação
+
+**OB3: Correção de Redação por Foto com IA (R$ 19,90)**
+Tire uma foto da sua redação e receba a correção nas 5 competências do ENEM, com os erros apontados, sugestões de reescrita e o próximo passo para melhorar. A nota é uma estimativa feita por inteligência artificial, e não a nota oficial. Inclui até 10 correções em 30 dias.
+- Correção nas 5 competências
+- Erros apontados com sugestão de reescrita
+- Pontos fortes e próximo passo
+- Funciona pela foto, direto do celular
+
+**Upsell: Comunidade de Estudantes (R$ 37,90)**
+Entre na comunidade para tirar dúvidas, trocar dicas de estudo e se manter motivado até o ENEM, junto com outros estudantes. Você ainda recebe um aviso toda semana no aplicativo com as novidades.
+- Tire dúvidas com outros estudantes
+- Dicas e rotina de estudo
+- Acesso pelo link liberado no aplicativo
