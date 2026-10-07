@@ -42,6 +42,26 @@ function carregarExt(id){
   return mapa;
 }
 const LETRAS = ['A','B','C','D','E'];
+/* confere o conteúdo estendido: 5 alternativas diferentes, gabarito válido, tamanho mínimo */
+function validarExt(mat, ext){
+  const avisos = [];
+  mat.temas.forEach(t => {
+    const d = ext[t.t];
+    if(!d){ avisos.push(t.t + ': SEM conteúdo estendido'); return; }
+    const quest = [].concat((d.ex||[]).map(q => ['ex', q]), (d.pr||[]).map(q => ['pr', q]));
+    if((d.ex||[]).length < 2) avisos.push(t.t + ': menos de 2 exemplos resolvidos');
+    if((d.pr||[]).length < 4) avisos.push(t.t + ': menos de 4 exercícios');
+    quest.forEach(([k, q], i) => {
+      if(!q.a || q.a.length !== 5) avisos.push(t.t + ' ' + k + (i+1) + ': precisa de 5 alternativas');
+      else if(new Set(q.a.map(x => String(x).trim())).size !== 5) avisos.push(t.t + ' ' + k + (i+1) + ': alternativas repetidas');
+      if(!LETRAS.includes(q.g)) avisos.push(t.t + ' ' + k + (i+1) + ': gabarito inválido');
+    });
+    ['d1','d2'].forEach(k => { if(!d[k] || d[k].length < 2) avisos.push(t.t + ': ' + k + ' com poucas seções'); });
+    if(!d.erros || d.erros.length < 3) avisos.push(t.t + ': poucos erros comuns');
+    if(!d.check || d.check.length < 3) avisos.push(t.t + ': checklist curto');
+  });
+  return avisos;
+}
 const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
 /* **negrito** dentro do texto */
 const fmt = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/→/g, '<span class="seta-t">→</span>');
@@ -220,7 +240,7 @@ ${(() => { let n = 3; return mat.temas.map((t, i) => temaPaginas(t, i, mat, ext,
     const mat = carregar(id);
     const nome = 'Resumo-' + mat.nome.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-');
     const arq = path.join(__dirname, '_tmp_' + id + '.html');
-    const ext = carregarExt(id); fs.writeFileSync(arq, html(mat, ext));
+    const ext = carregarExt(id); const av = validarExt(mat, ext); if(av.length) console.log('  ⚠️ ' + id + ' (' + av.length + ' avisos):\n     ' + av.join('\n     ')); fs.writeFileSync(arq, html(mat, ext));
     await p.goto('file://' + arq, { waitUntil: 'load' });
     await p.evaluate(() => document.fonts.ready);
     /* páginas extras: reduz a letra até caber (mínimo 8,5pt) */
