@@ -48,15 +48,6 @@ function validarExt(mat, ext){
   mat.temas.forEach(t => {
     const d = ext[t.t];
     if(!d){ avisos.push(t.t + ': SEM conteúdo estendido'); return; }
-    const quest = [].concat((d.ex||[]).map(q => ['ex', q]), (d.pr||[]).map(q => ['pr', q]));
-    if((d.ex||[]).length < 2) avisos.push(t.t + ': menos de 2 exemplos resolvidos');
-    if((d.pr||[]).length < 4) avisos.push(t.t + ': menos de 4 exercícios');
-    quest.forEach(([k, q], i) => {
-      if(!q.a || q.a.length !== 5) avisos.push(t.t + ' ' + k + (i+1) + ': precisa de 5 alternativas');
-      else if(new Set(q.a.map(x => String(x).trim())).size !== 5) avisos.push(t.t + ' ' + k + (i+1) + ': alternativas repetidas');
-      if(!LETRAS.includes(q.g)) avisos.push(t.t + ' ' + k + (i+1) + ': gabarito inválido');
-      if(/\?|Confirme|alternativa [A-E]|mais próxima|Atenção ao cálculo/i.test(q.c || '')) avisos.push(t.t + ' ' + k + (i+1) + ': comentário com cara de rascunho');
-    });
     ['d1','d2'].forEach(k => { if(!d[k] || d[k].length < 2) avisos.push(t.t + ': ' + k + ' com poucas seções'); });
     if(!d.erros || d.erros.length < 3) avisos.push(t.t + ': poucos erros comuns');
     if(!d.check || d.check.length < 3) avisos.push(t.t + ': checklist curto');
@@ -100,7 +91,7 @@ function temaPaginas(tema, i, mat, ext, n0){
   const cor = PALETA[i % PALETA.length];
   const pags = [];
   const dados = (ext && ext[tema.t]) || null;
-  const total = dados ? 6 : 1;
+  const total = dados ? 5 : 1;
   pags.push({ fit:false, html:`<section class="tema" data-t="${esc(tema.t)}">
     <div class="tema-topo"><h2 style="color:${cor.t};">${esc(tema.t)}</h2><div class="ic">${tema.ic || mat.icone}</div></div>
     ${tema.prio === 'a' || tema.p === 'a' ? `<div class="selo">🔥 Cai muito no ENEM</div>` : ''}
@@ -110,14 +101,17 @@ function temaPaginas(tema, i, mat, ext, n0){
     <div class="anot"><div class="anot-t">✍️ Minhas anotações</div></div>
   </section>` });
   if(!dados) return pags;
-  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 2)">${topoParte(tema, cor, 'Parte 2 de 6', 'Desenvolvimento do conteúdo')}${dados.d1.map(sec => secaoHTML(sec, cor)).join('')}</section>` });
-  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 3)">${topoParte(tema, cor, 'Parte 3 de 6', 'Aprofundando e conectando')}${dados.d2.map(sec => secaoHTML(sec, cor)).join('')}</section>` });
-  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 4)">${topoParte(tema, cor, 'Parte 4 de 6', 'Exemplos resolvidos no estilo ENEM')}${dados.ex.map((q, k) => questaoHTML(q, k + 1, 'Exemplo', true)).join('')}</section>` });
-  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 5)">${topoParte(tema, cor, 'Parte 5 de 6', 'Agora é com você: exercícios')}${dados.pr.map((q, k) => questaoHTML(q, k + 1, 'Questão', false)).join('')}<div class="resp-linha">Minhas respostas: ${dados.pr.map((_, k) => `<b>${k + 1}</b> ____`).join('&nbsp;&nbsp;')}</div></section>` });
-  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 6)">${topoParte(tema, cor, 'Parte 6 de 6', 'Gabarito, erros comuns e checklist')}
-    <div class="gab"><b>Gabarito:</b> ${dados.pr.map((q, k) => `${k + 1}-${q.g}`).join('&nbsp;&nbsp;·&nbsp;&nbsp;')}</div>
-    ${dados.pr.map((q, k) => `<div class="gab-c"><b>${k + 1}. Resposta ${q.g}.</b> ${fmt(q.c)}</div>`).join('')}
+  const destaques = [].concat(tema.s, dados.d1, dados.d2).filter(sec => sec[3]).slice(0, 3).map(sec => `<div class="enem"><b>💡 ${esc(sec[0])}:</b> ${fmt(sec[3])}</div>`).join('');
+  const rev = [].concat(tema.s, dados.d1, dados.d2).map(sec => `<li><b>${esc(sec[0])}</b></li>`).join('');
+  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 2)">${topoParte(tema, cor, 'Parte 2 de 5', 'Desenvolvimento do conteúdo')}${dados.d1.map(sec => secaoHTML(sec, cor)).join('')}</section>` });
+  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 3)">${topoParte(tema, cor, 'Parte 3 de 5', 'Aprofundando e conectando')}${dados.d2.map(sec => secaoHTML(sec, cor)).join('')}</section>` });
+  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 4)">${topoParte(tema, cor, 'Parte 4 de 5', 'Erros comuns e pontos de atenção')}
     <div class="erros"><div class="erros-t">⚠️ Erros comuns</div><ul>${dados.erros.map(e => `<li>${fmt(e)}</li>`).join('')}</ul></div>
+    ${tema.enem ? `<div class="enem"><b>💡 Como cai no ENEM:</b> ${fmt(tema.enem)}</div>` : ''}
+    ${destaques}
+  </section>` });
+  pags.push({ fit:true, html:`<section class="tema" data-t="${esc(tema.t)} (parte 5)">${topoParte(tema, cor, 'Parte 5 de 5', 'Revisão e checklist')}
+    <div class="erros"><div class="erros-t" style="color:${cor.t};">📌 O que você viu neste tema</div><ul>${rev}</ul></div>
     <div class="check"><div class="check-t">✅ Antes de seguir, você consegue...</div><ul>${dados.check.map(e => `<li><span class="cx"></span>${fmt(e)}</li>`).join('')}</ul></div>
     <div class="anot"><div class="anot-t">✍️ Minhas anotações</div></div>
   </section>` });
@@ -221,9 +215,9 @@ body{font-family:'Nunito',sans-serif;color:#1d1d1d;-webkit-print-color-adjust:ex
 </div>
 ${folha(`<div class="sumario"><h2>CONTEÚDOS ABORDADOS</h2><ol>${mat.temas.map(t => `<li>${esc(t.t)}</li>`).join('')}</ol></div>`, 1)}
 ${folha(`<div class="como"><h2>COMO USAR</h2>
-  <div class="bloco"><h3>1. Um tema por vez</h3>Cada tema tem <b>6 partes</b>: visão geral, desenvolvimento do conteúdo, aprofundamento, exemplos resolvidos, exercícios e gabarito. Estude uma parte por vez, sem pressa.</div>
+  <div class="bloco"><h3>1. Um tema por vez</h3>Cada tema tem <b>5 partes</b>: visão geral, desenvolvimento do conteúdo, aprofundamento, erros comuns e revisão com checklist. Estude uma parte por vez, sem pressa.</div>
   <div class="bloco"><h3>2. Comece pelo 🔥</h3>Os temas com o selo <b>"Cai muito no ENEM"</b> aparecem com frequência nas provas. Se o tempo estiver curto, priorize esses.</div>
-  <div class="bloco"><h3>3. Resolva antes de olhar o gabarito</h3>Faça os exercícios da parte 5 sem consultar nada. Só depois confira o gabarito comentado da parte 6 e releia o que errou.</div>
+  <div class="bloco"><h3>3. Feche cada tema com o checklist</h3>Na parte 5, confira se você consegue fazer tudo o que está no checklist. O que não conseguir, releia nas partes 2 e 3 e anote com as suas palavras.</div>
   <div class="bloco"><h3>4. Siga o seu plano</h3>No aplicativo <b>Plano ENEM</b>, o seu plano semanal diz quais temas estudar em cada dia. Depois de estudar, toque em <b>"Marcar concluído"</b> para o tema entrar no seu desempenho.</div>
   <div class="bloco"><h3>5. Revise no tempo certo</h3>Releia a visão geral e refaça os erros <b>1 dia, 3 dias e 7 dias</b> depois do primeiro estudo. O aplicativo avisa quando chega a hora.</div>
 </div>`, 2)}
