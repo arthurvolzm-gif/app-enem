@@ -449,7 +449,7 @@ body.tem-timer .barra-topo{top:54px;}
 .aj-item .aj-x{color:var(--vermelho);font-weight:800;}
 
 /* ---- material completo (tela e impressão em PDF) ---- */
-.mat-doc{padding:0 16px 30px;}
+.mat-doc{display:none;padding:0 16px 30px;}   /* na tela só aparece o botão de baixar; o conteúdo só existe para a impressão em PDF */
 .md-capa{background:linear-gradient(160deg,var(--navy),var(--azul));color:#fff;border-radius:20px;padding:28px 22px;margin-bottom:14px;}
 .md-tag{font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;opacity:.8;}
 .md-capa h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:800;margin:6px 0;}
@@ -460,7 +460,7 @@ body.tem-timer .barra-topo{top:54px;}
   body{background:var(--card) !important;}
   .no-print,.nav,.tm-bar,.toast{display:none !important;}
   body.tem-timer .app{padding-top:0;}
-  .mat-doc{padding:0;}
+  .mat-doc{display:block;padding:0;}
   .md-capa{border-radius:0;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact;min-height:40vh;}
   .md-tema{border:none;border-radius:0;padding:0;margin:0;page-break-after:always;break-inside:avoid-page;}
 }
