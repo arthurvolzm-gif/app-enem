@@ -53,13 +53,44 @@ function F(s){ return S(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>'); }
 function S(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function toast(t){ const d=document.createElement('div'); d.className='toast'; d.textContent=t; document.body.appendChild(d); setTimeout(()=>d.remove(),2200); }
 function ls(k,def){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):def; }catch(e){ return def; } }
-function lsSet(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} if(window.Conta) Conta.agendar(); }
+function lsSet(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} if(window.Conta) Conta.agendar(); if(k==='mat_perfil'&&window.prefsAgendar) prefsAgendar(); }
 function hojeISO(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function diasEntre(a,b){ return Math.round((new Date(b+'T12:00:00')-new Date(a+'T12:00:00'))/86400000); }
 function diasEnem(){ if(!C.DATA_ENEM) return null; const d=Math.ceil((new Date(C.DATA_ENEM+'T09:00:00')-new Date())/86400000); return d>0?d:null; }
 function fmtMin(m){ m=Math.round(m||0); return m>=60 ? Math.floor(m/60)+'h'+(m%60?String(m%60).padStart(2,'0'):'') : m+' min'; }
 function mat(id){ return M.find(m=>m.id===id); }
 function checkout(prod){ const url=C.CHECKOUT[prod]; if(!url){ toast('Link de compra ainda não configurado.'); return; } location.href=url; }
+/* mensagem antes de levar ao checkout (bump ou upsell ainda não comprado) */
+function pedirCompra(prod, titulo, texto, preco){
+  fecharCompra();
+  const d=document.createElement('div'); d.id='modalCompra'; d.className='modal-fundo';
+  d.innerHTML=`<div class="modal-cx"><div class="e">🔒</div><h3>${S(titulo)}</h3><p>${S(texto)}</p>
+    <button class="btn" onclick="checkout('${prod}')">Desbloquear${preco?' por '+S(preco):''}</button>
+    <button class="btn sec" onclick="jaComprei()">Já comprei: atualizar meu acesso</button>
+    <button class="btn-link" onclick="fecharCompra()">Agora não</button></div>`;
+  d.addEventListener('click',e=>{ if(e.target===d) fecharCompra(); });
+  document.body.appendChild(d);
+}
+function fecharCompra(){ const d=document.getElementById('modalCompra'); if(d) d.remove(); }
+async function jaComprei(){
+  toast('Conferindo a sua compra...');
+  try{ if(window.Conta && Conta.ativo) await Conta.atualizarAcessos(); }catch(e){}
+  fecharCompra(); render();
+  setTimeout(()=>toast(Acesso.tem('exercicios')?'Acesso liberado! 🎉':'Ainda não encontramos a compra. Use o mesmo e-mail do pedido e tente de novo em 1 minuto.'),400);
+}
+const ARQ_EX = {mat:'Matematica',fis:'Fisica',qui:'Quimica',bio:'Biologia',his:'Historia',geo:'Geografia',fil:'Filosofia',soc:'Sociologia',lin:'Linguagens'};
+async function baixarExercicios(mid){
+  if(!ARQ_EX[mid]) return;
+  const nome=(mat(mid)||{}).nome||'';
+  if(!Acesso.tem('exercicios')){ pedirCompra('exercicios','Exercícios de '+nome,'Os exercícios de cada tema, no estilo do ENEM e com gabarito comentado, fazem parte de Exercícios e Simulados. Desbloqueie para baixar o PDF de '+nome+' e fazer os simulados no app.','R$ 14,90'); return; }
+  try{
+    const url = window.Conta && Conta.ativo ? await Conta.urlMaterial('Exercicios-'+ARQ_EX[mid]+'.pdf') : null;
+    if(url){ window.open(url,'_blank','noopener'); return; }
+  }catch(e){}
+  toast('O PDF de exercícios ainda está sendo preparado. Enquanto isso, pratique no app em Exercícios e simulados.');
+  irPara('exercicios');
+}
+
 function saudacao(){ const h=new Date().getHours(); return h<12?'Bom dia':h<18?'Boa tarde':'Boa noite'; }
 function primeiroNome(){ const p=perfil(); return ((p&&p.nome)||Conta.nome()||'').split(' ')[0]; }
 /* ícones de contorno (SVG) no lugar dos emojis */
@@ -235,6 +266,9 @@ const HUMORES = [
   {id:'focado',  e:'💪', l:'Focado',  dica:'Aproveite a energia: depois do plano, adiante uma revisão ou faça questões extras.'}
 ];
 
+/* semana atual (segunda-feira como início), para não repetir aviso na mesma semana */
+function semanaISO(){ const d=new Date(); d.setDate(d.getDate()-((d.getDay()+6)%7)); return hojeISO(d); }
+
 /* ===================== notificações ===================== */
 function notificacoes(){
   const L=[], h=hojeISO(), p=perfil(), d=diasEnem();
@@ -243,6 +277,9 @@ function notificacoes(){
   const rv=revisoesPendentes(); if(rv.length) L.push({id:'rev'+h, ic:'🧠', t:`${rv.length} ${rv.length>1?'revisões':'revisão'} para hoje`, s:'Revisar no tempo certo ajuda a guardar o conteúdo.', r:'inicio'});
   const sq=sequencia(); if(sq>=2) L.push({id:'seq'+h, ic:'🔥', t:`${sq} dias seguidos!`, s: sq>=melhorSequencia()?'É o seu recorde. Não deixe a sequência cair hoje.':'Continue: falta pouco para o seu recorde.', r:'progresso'});
   if(d) L.push({id:'enem'+h, ic:'⏳', t:`Faltam ${d} dias para o ENEM`, s:`Fase ${fase().n}: ${fase().nome}. ${fase().txt}`, r:'plano'});
+  if(!Acesso.tem('exercicios')) L.push({id:'simpromo'+semanaISO(), ic:'📝', t:'Simulado da semana bloqueado', s:'Desbloqueie Exercícios e simulados e receba um aviso toda semana para treinar.', r:'exercicios'});
+  else if(!(ls('mat_simulado_pref',null)||{}).dia && (ls('mat_simulado_pref',null)||{}).dia!==0) L.push({id:'simesc', ic:'📝', t:'Escolha o dia do seu simulado', s:'Defina o dia e a hora do simulado semanal.', r:'lembretes'});
+  L.push({id:'com'+semanaISO(), ic:'👥', t:'Comunidade de estudantes', s:Acesso.tem('comunidade')?'Troque dúvidas e dicas com quem também está estudando para o ENEM.':'Estude junto: conheça a comunidade de estudantes do ENEM.', r:'comunidade'});
   if(!('Notification' in window) || Notification.permission!=='granted') L.push({id:'lemb', ic:'⏰', t:'Ative os lembretes', s:`Receba um aviso às ${p.hora} nos seus dias de estudo.`, r:'lembretes'});
   const lid = ls('mat_notif_lidas',[]);
   return L.map(n=>Object.assign(n,{nova:!lid.includes(n.id)}));
@@ -541,6 +578,7 @@ function telaPlano(){
               <div class="dica-enem"><b>💡 Como cai no ENEM:</b> ${S(t.dica)}</div></div>
           </div>`; }).join('')}
           ${materialArq(b.m)?`<button class="btn sec sm" onclick="baixarMaterial('${b.m}')">⬇ Baixar o material de ${S(nomeBloco(b.m))}</button>`:''}
+          ${ARQ_EX[b.m]?`<button class="btn sec sm" style="margin-top:8px;" onclick="baixarExercicios('${b.m}')">📝 Baixar exercícios do tema${Acesso.tem('exercicios')?'':' 🔒'}</button>`:''}
           <div class="bloco-acoes">${diaSel===hoje?(feito?'<span class="tag verde">Concluído</span>':tmAqui?'':`<button class="btn sm" onclick="tmComecar('${b.m}',${b.min})">${ic('play')} Começar</button>`):''}
           ${b.m==='red'&&diaSel===hoje?' <button class="btn sm sec" onclick="location.href=\'/redacao#corrigir\'">📸 Corrigir</button>':''}</div>
         </div></div>`; }).join('')
@@ -806,10 +844,76 @@ function telaLembretes(){
     <div class="card hero"><div class="k">Seu lembrete</div><div class="grande">${S(p.hora)}</div><p>${p.dias.slice().sort((a,b)=>((a+6)%7)-((b+6)%7)).map(x=>DIAS_LONGO[x]).join(', ')}</p></div>
     <div class="card"><div class="card-tt">📅 No calendário do celular</div><p class="nota" style="margin-bottom:12px;">O jeito mais garantido: o próprio celular avisa no horário, mesmo com o app fechado.</p><button class="btn" id="cal">Adicionar ao calendário</button></div>
     <div class="card"><div class="card-tt">🔔 Notificações do app</div><p class="nota" style="margin-bottom:12px;">${perm==='granted'?'Ativadas. O aviso aparece no horário quando o app está aberto ou instalado na tela inicial.':'Avisos do próprio app no horário escolhido, enquanto ele estiver aberto ou instalado na tela inicial.'}</p>${sup&&perm!=='granted'?'<button class="btn sec" id="notif">Ativar notificações</button>':''}</div>
+    ${cardSimulado()}
+    ${cardPush()}
     <button class="btn sec" onclick="irAjustar()">Mudar horário e dias</button>
   </div>`;
-  document.getElementById('cal').onclick=baixarICS;
+  document.getElementById('cal').onclick=baixarICS; pushMarcar();
   const n=document.getElementById('notif'); if(n) n.onclick=async()=>{ const r=await Notification.requestPermission(); toast(r==='granted'?'Notificações ativadas!':'Permissão negada no navegador.'); telaLembretes(); };
+}
+
+/* ===================== simulado semanal, comunidade e notificações no celular ===================== */
+function simuladoPref(){ const x=ls('mat_simulado_pref',null)||{}; return { dia:(x.dia===0||x.dia)?x.dia:null, hora:x.hora||'10:00' }; }
+function cardSimulado(){
+  if(!Acesso.tem('exercicios')){
+    return `<div class="card"><div class="card-tt">📝 Simulado semanal 🔒</div><p class="nota" style="margin-bottom:12px;">Escolha um dia e um horário e o app avisa toda semana para você fazer um simulado. Faz parte de Exercícios e simulados.</p><button class="btn" onclick="pedirCompra('exercicios','Simulado semanal','Receba um aviso toda semana no dia e na hora que você escolher, com um simulado no estilo do ENEM para treinar.','R$ 14,90')">Desbloquear Exercícios e simulados</button></div>`;
+  }
+  const sp=simuladoPref();
+  return `<div class="card"><div class="card-tt">📝 Simulado semanal</div><p class="nota" style="margin-bottom:12px;">Escolha o dia e a hora do aviso para fazer um simulado.</p>
+    <div class="chips">${[1,2,3,4,5,6,0].map(d=>`<button class="${sp.dia===d?'on':''}" onclick="simDia(${d})">${DIAS[d]}</button>`).join('')}</div>
+    <label class="f" for="simHora" style="display:block;margin:14px 0 6px;font-weight:700;font-size:13px;color:var(--cinza);">Horário</label>
+    <input class="inp" id="simHora" type="time" value="${S(sp.hora)}" onchange="simHora(this.value)" style="max-width:160px;">
+    ${sp.dia===null?'<p class="nota" style="margin-top:10px;">Toque em um dia para ativar o aviso.</p>':`<p class="nota" style="margin-top:10px;">Aviso toda ${DIAS_LONGO[sp.dia].toLowerCase()} às ${S(sp.hora)}.</p>`}
+    <button class="btn sec sm" style="margin-top:10px;" onclick="irPara('exercicios')">Fazer um simulado agora</button></div>`;
+}
+function simDia(d){ const sp=simuladoPref(); lsSet('mat_simulado_pref',{dia:d,hora:sp.hora}); prefsAgendar(); telaLembretes(); toast('Simulado toda '+DIAS_LONGO[d].toLowerCase()+'.'); }
+function simHora(h){ const sp=simuladoPref(); lsSet('mat_simulado_pref',{dia:sp.dia,hora:h||'10:00'}); prefsAgendar(); }
+
+/* envia ao servidor o que ele precisa para avisar: dias e hora de estudo, dia e hora do simulado */
+let _prefsT=null;
+function prefsAgendar(){ clearTimeout(_prefsT); _prefsT=setTimeout(prefsSincronizar,1200); }
+async function prefsSincronizar(){
+  if(!(window.Conta&&Conta.ativo&&Conta.usuario())) return;
+  const p=perfil(); if(!p) return; const sp=simuladoPref();
+  await Conta.salvarPrefs({ nome:primeiroNome()||null, estudo_dias:p.dias||[], estudo_hora:p.hora||'19:00', simulado_dia:sp.dia, simulado_hora:sp.hora });
+}
+
+function pushSuportado(){ return ('serviceWorker' in navigator) && ('PushManager' in window) && ('Notification' in window); }
+function b64ParaBytes(b){ const pad='='.repeat((4-b.length%4)%4); const raw=atob((b+pad).replace(/-/g,'+').replace(/_/g,'/')); return Uint8Array.from([...raw].map(c=>c.charCodeAt(0))); }
+async function pushAtivo(){ try{ const r=await navigator.serviceWorker.ready; return !!(await r.pushManager.getSubscription()); }catch(e){ return false; } }
+async function ativarPush(){
+  if(!pushSuportado()){ toast('Este navegador não recebe notificações. No iPhone, adicione o app à tela inicial primeiro.'); return; }
+  if(!C.VAPID_PUBLICA){ toast('Notificações ainda não configuradas no servidor.'); return; }
+  const perm = await Notification.requestPermission();
+  if(perm!=='granted'){ toast('Permissão negada. Libere as notificações nas configurações do navegador.'); return; }
+  try{
+    const reg=await navigator.serviceWorker.ready;
+    let sub=await reg.pushManager.getSubscription();
+    if(!sub) sub=await reg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey:b64ParaBytes(C.VAPID_PUBLICA) });
+    const ok=await Conta.salvarPush(sub); await prefsSincronizar();
+    toast(ok?'Notificações no celular ativadas! 🔔':'Não foi possível salvar. Tente de novo.');
+  }catch(e){ console.error(e); toast('Não foi possível ativar as notificações.'); }
+  telaLembretes();
+}
+async function desativarPush(){
+  try{ const reg=await navigator.serviceWorker.ready; const sub=await reg.pushManager.getSubscription(); if(sub){ await sub.unsubscribe(); } }catch(e){}
+  toast('Notificações no celular desativadas.'); telaLembretes();
+}
+function cardPush(){
+  const sup=pushSuportado();
+  return `<div class="card"><div class="card-tt">📲 Notificações no celular</div>
+    <p class="nota" style="margin-bottom:12px;">Receba os avisos de estudo, do simulado semanal e da comunidade direto no celular, mesmo com o app fechado.</p>
+    ${sup?`<button class="btn" id="pushBtn" onclick="ativarPush()">Ativar notificações no celular</button>`:'<p class="nota">No iPhone, toque em Compartilhar e em "Adicionar à Tela de Início", abra o app por lá e ative aqui.</p>'}
+    <p class="nota" id="pushEst" style="margin-top:10px;"></p></div>`;
+}
+async function pushMarcar(){ const b=document.getElementById('pushBtn'); if(!b) return; if(await pushAtivo()){ b.textContent='Desativar notificações no celular'; b.className='btn sec'; b.onclick=desativarPush; const e=document.getElementById('pushEst'); if(e) e.textContent='Ativadas neste aparelho.'; } }
+
+function telaComunidade(){
+  const tem=Acesso.tem('comunidade'), link=C.COMUNIDADE_LINK;
+  app.innerHTML = `${barraTopo('👥 Comunidade',true)}<div class="tela fade"><div class="card bloq"><div class="e">👥</div><h2>Comunidade de estudantes</h2>
+    <p>Um espaço para tirar dúvidas, trocar dicas de estudo e se manter motivado até o ENEM, junto com outros estudantes.</p>
+    ${tem?(link?`<button class="btn" onclick="window.open('${S(link)}','_blank','noopener')">Entrar na comunidade</button>`:'<p class="nota">O link da comunidade será liberado em breve.</p>'):`<button class="btn" onclick="pedirCompra('comunidade','Comunidade de estudantes','Entre na comunidade para tirar dúvidas, trocar dicas e estudar acompanhado até o ENEM.','R$ 37,90')">Quero entrar na comunidade</button>`}
+  </div></div>`;
 }
 function baixarICS(){
   const p=perfil(); const [hh,mm]=(p.hora||'19:00').split(':');
@@ -904,7 +1008,7 @@ function render(){
   nav.style.display='';
   const aba = {inicio:'inicio',notificacoes:'inicio',timer:'plano',ajustar:'plano',plano:'plano',resumos:'resumos',materia:'resumos',tema:'resumos',progresso:'progresso',erros:'progresso'}[pt[0]] || 'perfil';
   nav.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.r===aba));
-  const T = { material:()=>telaMaterialDoc(pt[1]), ajustar:telaAjustar, plano:telaPlano, resumos:telaResumos, progresso:telaProgresso, perfil:telaPerfil, notificacoes:telaNotificacoes, lembretes:telaLembretes, materiais:telaMateriais, exercicios:telaExercicios, questao:telaQuestao, erros:telaErros };
+  const T = { comunidade:telaComunidade, material:()=>telaMaterialDoc(pt[1]), ajustar:telaAjustar, plano:telaPlano, resumos:telaResumos, progresso:telaProgresso, perfil:telaPerfil, notificacoes:telaNotificacoes, lembretes:telaLembretes, materiais:telaMateriais, exercicios:telaExercicios, questao:telaQuestao, erros:telaErros };
   if(pt[0]==='materia') telaMateria(pt[1]);
   else if(pt[0]==='tema') telaTema(pt[1]);
   else if(pt[0]==='timer') telaTimer(pt[1], +pt[2]||30);
@@ -921,7 +1025,15 @@ window.addEventListener('hashchange', ()=>setTimeout(tmTick,0));
   lib=lib.concat(await Acesso.lerDaUrl());
   if(lib.length) setTimeout(()=>toast('Acesso liberado! 🎉'),300);
   render();
+  prefsAgendar();
 })();
+/* ao voltar para o app (ex.: depois de comprar um bump), confere se o acesso novo já chegou */
+document.addEventListener('visibilitychange',async()=>{
+  if(document.visibilityState!=='visible'||!(window.Conta&&Conta.ativo&&Conta.usuario())) return;
+  const antes=JSON.stringify(Object.keys(ls('enem_acessos',{})).sort());
+  try{ await Conta.atualizarAcessos(); }catch(e){ return; }
+  if(JSON.stringify(Object.keys(ls('enem_acessos',{})).sort())!==antes){ render(); toast('Acesso atualizado! 🎉'); }
+});
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js').catch(()=>{}); }
 </script>
 </body>

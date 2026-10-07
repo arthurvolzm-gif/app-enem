@@ -15,8 +15,24 @@ self.addEventListener('fetch', e => {
     }).catch(() => caches.match(req))
   );
 });
-/* toque na notificação de lembrete abre o app das matérias */
+/* notificação enviada pelo servidor (Web Push): título, texto e para onde abrir */
+self.addEventListener('push', e => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (err) { d = { titulo: 'Acelera Enem', corpo: e.data ? e.data.text() : '' }; }
+  e.waitUntil(self.registration.showNotification(d.titulo || 'Acelera Enem', {
+    body: d.corpo || '',
+    icon: '/shared/icone.svg',
+    badge: '/shared/icone.svg',
+    tag: d.tag || undefined,
+    data: { url: d.url || '/materias#inicio' }
+  }));
+});
+/* toque na notificação abre o app (na tela indicada) */
 self.addEventListener('notificationclick', e => {
   e.notification.close();
-  e.waitUntil(self.clients.openWindow('/materias#hoje'));
+  const url = (e.notification.data && e.notification.data.url) || '/materias#hoje';
+  e.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(lista => {
+    for (const c of lista) { if (c.url.includes('/materias') && 'focus' in c) { c.navigate(url); return c.focus(); } }
+    return self.clients.openWindow(url);
+  }));
 });

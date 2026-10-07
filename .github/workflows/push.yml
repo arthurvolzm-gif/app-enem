@@ -1,0 +1,16 @@
+# Dispara o envio das notificações no celular (api/cron-push) a cada 30 minutos.
+# Configure em Settings > Secrets and variables > Actions:
+#   CRON_URL    = https://SEU-SITE.vercel.app/api/cron-push
+#   CRON_SECRET = o mesmo valor da variável CRON_SECRET na Vercel
+name: Notificações push
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+jobs:
+  disparar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chamar o servidor
+        run: |
+          curl -fsS --max-time 60 "${{ secrets.CRON_URL }}?token=${{ secrets.CRON_SECRET }}"
