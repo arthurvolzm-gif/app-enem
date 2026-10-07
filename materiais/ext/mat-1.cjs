@@ -1,0 +1,52 @@
+/* Matemática: páginas extras (partes 2 a 6) dos temas 1 a 5. Seção: [rótulo, texto, [itens], fecho] */
+module.exports = [
+{ t:'Conjuntos numéricos e operações',
+d1:[
+ ['Naturais e inteiros', 'Os conjuntos numéricos foram surgindo conforme a humanidade precisou resolver problemas novos. Primeiro contar (naturais), depois lidar com dívidas e temperaturas abaixo de zero (inteiros).', ['**Naturais (ℕ):** 0, 1, 2, 3... usados para contar e ordenar','**Inteiros (ℤ):** ... −3, −2, −1, 0, 1, 2, 3... incluem os negativos','Todo natural é inteiro, mas nem todo inteiro é natural (−5 é inteiro e não é natural)','O oposto de um número tem o mesmo "tamanho" e sinal contrário: o oposto de 7 é −7'], 'Na reta numérica, quanto mais à direita, maior o número: −1 é maior que −10.'],
+ ['Racionais e irracionais', 'Racional é todo número que pode ser escrito como fração de dois inteiros (com denominador diferente de zero). Isso inclui decimais exatos e dízimas periódicas.', ['**Decimal exato:** 0,25 = 1/4','**Dízima periódica:** 0,333... = 1/3 (o "3" se repete para sempre)','**Irracionais (𝕀):** não viram fração. Têm infinitas casas decimais sem repetição: π ≈ 3,14159..., √2 ≈ 1,414...','**Reais (ℝ):** racionais e irracionais juntos, ou seja, todos os pontos da reta'], 'Raiz quadrada de número que não é quadrado perfeito (√3, √5, √7) é irracional.'],
+ ['Como transformar dízima em fração', 'Esse truque aparece em questões que pedem a "fração geratriz".', ['Para 0,777...: chame de x. Então 10x = 7,777... Subtraindo: 9x = 7, logo x = 7/9','Para 0,2323...: 100x − x = 23 → x = 23/99','Para 1,5 (decimal exato): 15/10 = 3/2'], 'Regra rápida: o período vai no numerador e tantos noves no denominador quantos forem os algarismos do período.']
+],
+d2:[
+ ['Operações e propriedades', 'Conhecer as propriedades poupa conta e evita erros de sinal.', ['**Comutativa:** a + b = b + a e a × b = b × a','**Associativa:** (a + b) + c = a + (b + c)','**Distributiva:** a × (b + c) = a × b + a × c. Ex.: 7 × 102 = 7 × 100 + 7 × 2 = 714','**Elemento neutro:** somar 0 ou multiplicar por 1 não muda o número','Divisão por zero não existe'], null],
+ ['Múltiplos, divisores e primos', 'Número primo tem exatamente dois divisores: 1 e ele mesmo (2, 3, 5, 7, 11, 13...). O 2 é o único primo par.', ['**Critérios de divisibilidade:** por 2 (termina em par), por 3 (soma dos algarismos divisível por 3), por 5 (termina em 0 ou 5), por 9 (soma dos algarismos divisível por 9)','**Fatoração:** 60 = 2² × 3 × 5','**MMC:** fatores comuns e não comuns, com o maior expoente. MMC(12, 18) = 2² × 3² = 36','**MDC:** só fatores comuns, com o menor expoente. MDC(12, 18) = 2 × 3 = 6'], 'Truque: MMC × MDC = produto dos dois números (36 × 6 = 12 × 18 = 216).'],
+ ['Problemas típicos', 'O ENEM gosta de contextualizar MMC e MDC.', ['**MMC (encontro de novo):** dois ônibus saem de 15 em 15 min e de 20 em 20 min. Saem juntos de novo após MMC(15, 20) = 60 min','**MDC (dividir em partes iguais):** cortar duas fitas de 24 m e 36 m em pedaços iguais, o maior possível: MDC(24, 36) = 12 m','Se a pergunta envolve "ao mesmo tempo, de novo": pense em MMC. Se envolve "maior tamanho possível, sem sobrar": pense em MDC'], null]
+],
+ex:[
+ { q:'Duas luzes piscam em intervalos diferentes: uma a cada 12 segundos e outra a cada 18 segundos. Se acabam de piscar juntas, depois de quantos segundos piscarão juntas novamente pela primeira vez?', a:['6','24','30','36','72'], g:'D', c:'Piscam juntas de novo no MMC dos intervalos. 12 = 2² × 3 e 18 = 2 × 3². O MMC pega os maiores expoentes: 2² × 3² = 36 segundos.' },
+ { q:'Um comerciante quer dividir 120 maçãs e 150 laranjas em caixas iguais, sem sobras e com o maior número possível de frutas em cada caixa, usando só um tipo de fruta por caixa. Quantas frutas deve haver em cada caixa?', a:['10','15','20','30','60'], g:'D', c:'"Maior possível, sem sobra" indica MDC. 120 = 2³ × 3 × 5 e 150 = 2 × 3 × 5². Fatores comuns com menor expoente: 2 × 3 × 5 = 30 frutas por caixa.' }
+],
+pr:[
+ { q:'A fração geratriz da dízima periódica 0,666... é:', a:['1/6','2/3','6/10','66/100','3/2'], g:'B', c:'Chamando x = 0,666..., temos 10x = 6,666... Subtraindo: 9x = 6, então x = 6/9 = 2/3.' },
+ { q:'Qual dos números abaixo é irracional?', a:['0,25','√49','√10','22/7','0,333...'], g:'C', c:'√49 = 7 e 0,25 = 1/4 são racionais; 22/7 é fração; 0,333... = 1/3. Já √10 não é raiz exata e tem infinitas casas sem repetição: irracional.' },
+ { q:'Três ciclistas partem juntos de um mesmo ponto de uma pista circular e dão uma volta em 10, 12 e 15 minutos, respectivamente. Depois de quantos minutos eles se encontrarão novamente no ponto de partida?', a:['30','45','60','90','120'], g:'C', c:'Encontro no ponto de partida é MMC(10, 12, 15). 10 = 2 × 5, 12 = 2² × 3, 15 = 3 × 5. MMC = 2² × 3 × 5 = 60 minutos.' },
+ { q:'Qual é o valor da expressão 2 + 3 × (8 − 5)² ÷ 9?', a:['3','5','7','9','11'], g:'B', c:'Primeiro o parêntese: 8 − 5 = 3. Depois a potência: 3² = 9. Depois multiplicação e divisão da esquerda para a direita: 3 × 9 = 27, 27 ÷ 9 = 3. Por fim a soma: 2 + 3 = 5.' }
+],
+erros:['Esquecer a ordem das operações e somar antes de multiplicar (2 + 3 × 4 não é 20).','Trocar MMC por MDC: leia se o problema fala em "encontrar de novo" (MMC) ou em "dividir em partes iguais, o maior possível" (MDC).','Achar que dízima periódica é irracional: toda dízima periódica é racional.','Errar a regra de sinais ao multiplicar dois negativos (o resultado é positivo).'],
+check:['diferenciar naturais, inteiros, racionais, irracionais e reais e dar um exemplo de cada','transformar uma dízima periódica simples em fração','calcular MMC e MDC por fatoração','resolver expressões respeitando a ordem das operações']
+},
+
+{ t:'Frações, decimais e arredondamento',
+d1:[
+ ['Tipos de fração', 'Fração é uma divisão indicada. Conhecer os tipos ajuda a interpretar o enunciado.', ['**Própria:** numerador menor que o denominador (3/5). Vale menos que 1','**Imprópria:** numerador maior ou igual ao denominador (7/4). Vale 1 ou mais','**Mista:** parte inteira e fração (1 3/4 = 7/4)','**Equivalentes:** representam o mesmo valor (1/2 = 2/4 = 50/100)','**Irredutível:** não dá para simplificar mais (3/4)'], 'Para simplificar, divida numerador e denominador pelo mesmo número (MDC).'],
+ ['Somar e subtrair', 'Só dá para somar frações com o mesmo denominador. Se forem diferentes, use o MMC dos denominadores.', ['Mesmo denominador: conserva-se o denominador e somam-se os numeradores. 2/7 + 3/7 = 5/7','Denominadores diferentes: 1/2 + 1/3 → MMC = 6 → 3/6 + 2/6 = 5/6','Com número inteiro: 2 + 1/4 = 8/4 + 1/4 = 9/4'], 'Erro clássico: somar numerador com numerador e denominador com denominador (1/2 + 1/3 não é 2/5).'],
+ ['Multiplicar e dividir', 'Aqui não precisa de denominador comum.', ['**Multiplicação:** multiplique em cima e embaixo. 2/3 × 3/5 = 6/15 = 2/5','**Dividir:** conserve a primeira, inverta a segunda e multiplique. 3/4 ÷ 3/2 = 3/4 × 2/3 = 6/12 = 1/2','**"De" significa multiplicar:** 3/5 de 200 = 3/5 × 200 = 120'], null]
+],
+d2:[
+ ['Fração, decimal e porcentagem', 'São três jeitos de escrever a mesma quantidade. Saber converter agiliza comparações.', ['Fração → decimal: divida numerador por denominador. 3/8 = 0,375','Decimal → fração: use potência de 10. 0,45 = 45/100 = 9/20','Decimal → porcentagem: multiplique por 100. 0,45 = 45%','Frações de referência: 1/2 = 50%, 1/4 = 25%, 3/4 = 75%, 1/5 = 20%, 1/10 = 10%, 1/8 = 12,5%'], 'Para comparar frações, converta tudo para decimal ou use denominador comum.'],
+ ['Operações com decimais', 'Os decimais seguem as mesmas regras, com atenção à vírgula.', ['**Soma e subtração:** alinhe vírgula embaixo de vírgula (2,5 + 0,75 = 3,25)','**Multiplicação:** multiplique como se fossem inteiros e depois conte as casas (0,3 × 0,2 = 0,06)','**Divisão:** iguale as casas decimais antes de dividir (1,2 ÷ 0,4 = 12 ÷ 4 = 3)','Multiplicar por 10, 100, 1000 anda a vírgula para a direita; dividir anda para a esquerda'], null],
+ ['Arredondamento e aproximação', 'O ENEM costuma pedir um valor aproximado, principalmente em contas com dinheiro e medidas.', ['Olhe o algarismo seguinte à casa que será mantida: 5 ou mais, aumenta; menos de 5, mantém','3,478 com duas casas → 3,48; com uma casa → 3,5; inteiro → 3','**Truncar** é cortar sem arredondar: 3,478 truncado em uma casa → 3,4','Se a questão fala em "cédulas necessárias" ou "unidades inteiras", arredonde para cima mesmo que a vírgula seja baixa'], 'Exemplo: 7,2 caixas exigem 8 caixas, porque não existe 0,2 de caixa.']
+],
+ex:[
+ { q:'Uma receita pede 3/4 de xícara de açúcar. Um cozinheiro quer fazer apenas metade da receita. Quanto de açúcar, em xícara, ele deve usar?', a:['1/4','3/8','1/2','2/3','3/2'], g:'B', c:'Metade de 3/4 é 3/4 × 1/2 = 3/8 de xícara. "De" indica multiplicação.' },
+ { q:'Um tanque de combustível tem capacidade de 60 litros. Ele estava com 2/5 da capacidade e foram colocados mais 18 litros. Que fração do tanque está cheia agora?', a:['3/5','7/10','4/5','9/10','1'], g:'C', c:'2/5 de 60 = 24 litros. Com 18 litros a mais, são 42 litros. A fração é 42/60 = 7/10 (simplificando por 6).' }
+],
+pr:[
+ { q:'O resultado de 1/2 + 1/3 + 1/6 é:', a:['1/3','1/2','2/3','5/6','1'], g:'E', c:'MMC = 6: 3/6 + 2/6 + 1/6 = 6/6 = 1.' },
+ { q:'Em uma turma, 3/8 dos alunos usam óculos. Se a turma tem 40 alunos, quantos não usam óculos?', a:['15','20','25','30','35'], g:'C', c:'Usam óculos: 3/8 de 40 = 15 alunos. Não usam: 40 − 15 = 25.' },
+ { q:'Em uma conta, o valor a pagar foi R$ 47,86. Arredondando para a casa dos reais mais próxima, qual o valor?', a:['R$ 47,00','R$ 47,90','R$ 48,00','R$ 50,00','R$ 47,80'], g:'C', c:'A casa seguinte à dos reais é 8 (maior que 5), então o inteiro aumenta: R$ 48,00.' },
+ { q:'Qual das alternativas apresenta os números em ordem crescente?', a:['0,5 ; 1/3 ; 3/4','1/3 ; 0,5 ; 3/4','3/4 ; 0,5 ; 1/3','1/3 ; 3/4 ; 0,5','0,5 ; 3/4 ; 1/3'], g:'B', c:'Em decimais: 1/3 ≈ 0,33; 0,5; 3/4 = 0,75. A ordem crescente é 1/3 ; 0,5 ; 3/4.' }
+],
+erros:['Somar numeradores e denominadores ao mesmo tempo (1/2 + 1/3 ≠ 2/5).','Esquecer de inverter a segunda fração na divisão.','Errar a posição da vírgula ao multiplicar decimais: conte as casas.','Arredondar para baixo quando o problema exige unidades inteiras (embalagens, ônibus, caixas).'],
+check:['simplificar frações e reconhecer frações equivalentes','somar, subtrair, multiplicar e dividir frações','converter entre fração, decimal e porcentagem','arredondar corretamente conforme o contexto do problema']
+}
+];
