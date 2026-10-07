@@ -282,3 +282,18 @@ O mesmo logotipo com "Acelera" em azul-escuro #0b1f4d e "ENEM" em ciano escuro #
 Fundo preto com brilho ciano no centro, o logotipo grande centralizado, linhas finas de velocidade em ciano saindo para a direita atrás do ícone, e embaixo a frase pequena "Seu plano de estudos até o ENEM".
 
 Pedidos para a ferramenta de imagem: vetor limpo, bordas nítidas, sem ruído, sem gradientes complexos, sem texto fora do logotipo, sem marcas de outras empresas.
+
+---
+
+# Capas dos bumps: versões novas (mockup e foto de cima)
+
+Quadradas 1080x1080, fundo escuro do checkout. Confira a ortografia dos textos na imagem gerada. Sem pessoas, sem mãos, sem logo de outras marcas, sem promessa de nota ou aprovação, sem travessões.
+
+**OB1: Exercícios e Simulados (foto de cima, mesa de estudos escura)**
+Fotografia realista vista diretamente de cima (flat lay), em mesa preta (#000000) com reflexos suaves e um brilho ciano sutil no centro. No centro, em destaque, três folhas brancas de prova levemente sobrepostas e em ângulos diferentes, com questões em linhas de texto e alternativas A, B, C, D e E com bolinhas, uma delas preenchida em ciano, e um gabarito marcado numa das folhas. Ao redor, espalhados com naturalidade como na mesa de estudos do quiz: um caderno espiral aberto com anotações à mão, lápis, canetas azul e preta, marca-textos amarelo e rosa, borracha, post-its coloridos, clipes e um pequeno cronômetro ciano. Luz de contorno ciano nas bordas dos objetos. As folhas ocupam cerca de 60% do quadro, para ler em miniatura. Textos das folhas só como linhas, sem palavras legíveis.
+(Se você quis dizer folhas de redação, troque as folhas de prova por três folhas de redação pautadas com texto manuscrito e uma caneta ciano.)
+
+**OB2: Material Preparatório para Redação (mockup do produto)**
+Mockup de produto digital em 3D realista, fundo preto liso (#0b0f12) com brilho ciano suave atrás. No centro, a capa do e-book em pé, levemente inclinada, com lombada e sombra, capa azul royal com título em letras amarelas pesadas "ARSENAL de REDAÇÕES PARA O ENEM" e uma ilustração simples de livro aberto, fones de ouvido e despertador. Atrás dela, à direita, um tablet mostrando a mesma capa na tela, e à esquerda uma pilha pequena de folhas de redação pautadas. Selo redondo pequeno no canto superior direito com a palavra "PDF". O e-book ocupa cerca de 55% do quadro, com margem em volta. Acabamento premium, reflexos suaves.
+
+**Se o gerador errar o texto da capa:** gere o mockup com a capa só em azul royal e formas amarelas, sem texto, e coloque o título no Canva.
