@@ -14,7 +14,7 @@
   const SINCRONIZAR = [
     'red_favs','red_correcoes','red_montar','red_ultimo_tema',
     'mat_perfil','mat_lidos','mat_tempo','mat_resp','mat_dias_leitura',
-    'mat_lidos_em','mat_atrib','mat_revisoes','mat_resp_dia','mat_checkin','mat_notif_lidas','mat_madrugou','mat_coruja',
+    'mat_lidos_em','mat_atrib','mat_revisoes','mat_resp_dia','mat_checkin','mat_notif_lidas','mat_madrugou','mat_coruja','mat_simulado_pref',
     'enem_quiz1','enem_quiz2'
   ];
   const PENDENTE = 'enem_codigo_pendente';
@@ -45,6 +45,8 @@
 
   /* traz o progresso e os acessos da conta para o aparelho */
   async function baixar(){
+    /* compras feitas com o mesmo e-mail antes da conta (webhook) viram acesso agora */
+    try{ await sb.rpc('sincronizar_acessos'); }catch(e){}
     const [dados, acessos] = await Promise.all([
       sb.from('dados_usuario').select('dados').eq('user_id', usuario.id).maybeSingle(),
       sb.from('acessos').select('produto')
@@ -173,6 +175,30 @@
       return data && data.signedUrl;
     },
     resgatar,
+
+    /* atualiza os acessos da conta (ex.: depois de comprar um bump) sem recarregar a página */
+    async atualizarAcessos(){
+      if(!sb || !usuario) return;
+      try{ await sb.rpc('sincronizar_acessos'); }catch(e){}
+      const { data } = await sb.from('acessos').select('produto');
+      const mapa = {}; (data||[]).forEach(a=>{ mapa[a.produto] = 'conta'; });
+      try{ localStorage.setItem('enem_acessos', JSON.stringify(mapa)); }catch(e){}
+      return Object.keys(mapa);
+    },
+
+    /* grava as preferências de aviso e a inscrição de push da pessoa */
+    async salvarPrefs(prefs){
+      if(!sb || !usuario) return;
+      const { error } = await sb.from('notif_prefs').upsert(Object.assign({ user_id: usuario.id, atualizado_em: new Date().toISOString() }, prefs));
+      if(error) console.error('Erro ao salvar avisos:', error.message);
+    },
+    async salvarPush(sub){
+      if(!sb || !usuario || !sub) return false;
+      const j = sub.toJSON();
+      const { error } = await sb.from('push_inscricoes').upsert({ endpoint: j.endpoint, user_id: usuario.id, p256dh: j.keys.p256dh, auth: j.keys.auth });
+      if(error){ console.error('Erro ao salvar push:', error.message); return false; }
+      return true;
+    },
 
     /* chamado a cada mudança no progresso: salva na conta 1,5 s depois */
     agendar(){

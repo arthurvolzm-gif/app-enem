@@ -99,3 +99,131 @@ drop policy if exists "plano baixa materiais" on storage.objects;
 create policy "plano baixa materiais" on storage.objects
   for select to authenticated
   using (bucket_id = 'materiais');
+
+
+-- =========================================================
+-- FUNIL ACELERA ENEM: liberação automática pelo webhook da Zuptos
+-- Produtos: plano (front), exercicios (OB1), correcao (OB3), comunidade (upsell).
+-- O material de redação (OB2) é entregue só pela plataforma, sem acesso no app.
+-- =========================================================
+
+-- ---------- 6. Compras feitas antes de a pessoa criar a conta ----------
+-- O webhook grava aqui pelo e-mail da compra. Quando a pessoa cria a conta (ou entra),
+-- sincronizar_acessos() copia para a tabela acessos. Reembolso apaga a linha.
+create table if not exists public.acessos_email (
+  email     text not null,
+  produto   text not null,
+  origem    text,                         -- id da venda na Zuptos
+  criado_em timestamptz not null default now(),
+  primary key (email, produto)
+);
+alter table public.acessos_email enable row level security;   -- sem política: só o servidor lê e escreve
+
+-- ---------- 7. Registro de tudo que o webhook recebeu (auditoria) ----------
+create table if not exists public.webhook_log (
+  id        bigserial primary key,
+  recebido  timestamptz not null default now(),
+  evento    text,
+  email     text,
+  produto   text,
+  acao      text,
+  payload   jsonb
+);
+alter table public.webhook_log enable row level security;
+
+-- ---------- 8. Liberar / revogar por e-mail (só o servidor com a chave service_role) ----------
+create or replace function public.liberar_por_email(p_email text, p_produto text, p_origem text default null)
+returns void language plpgsql security definer set search_path = public, auth as $$
+declare uid uuid;
+begin
+  p_email := lower(trim(p_email));
+  insert into public.acessos_email (email, produto, origem) values (p_email, p_produto, p_origem)
+    on conflict (email, produto) do nothing;
+  select id into uid from auth.users where lower(email) = p_email limit 1;
+  if uid is not null then
+    insert into public.acessos (user_id, produto) values (uid, p_produto) on conflict do nothing;
+  end if;
+end $$;
+
+create or replace function public.revogar_por_email(p_email text, p_produto text)
+returns void language plpgsql security definer set search_path = public, auth as $$
+declare uid uuid;
+begin
+  p_email := lower(trim(p_email));
+  delete from public.acessos_email where email = p_email and produto = p_produto;
+  select id into uid from auth.users where lower(email) = p_email limit 1;
+  if uid is not null then
+    delete from public.acessos where user_id = uid and produto = p_produto;
+  end if;
+end $$;
+
+revoke all on function public.liberar_por_email(text,text,text) from public, anon, authenticated;
+revoke all on function public.revogar_por_email(text,text) from public, anon, authenticated;
+grant execute on function public.liberar_por_email(text,text,text) to service_role;
+grant execute on function public.revogar_por_email(text,text) to service_role;
+
+-- ---------- 9. Quem acabou de entrar recebe o que comprou com o mesmo e-mail ----------
+create or replace function public.sincronizar_acessos()
+returns void language plpgsql security definer set search_path = public, auth as $$
+begin
+  if auth.uid() is null then return; end if;
+  insert into public.acessos (user_id, produto)
+    select auth.uid(), e.produto from public.acessos_email e
+     where e.email = lower((select email from auth.users where id = auth.uid()))
+  on conflict do nothing;
+end $$;
+revoke all on function public.sincronizar_acessos() from public, anon;
+grant execute on function public.sincronizar_acessos() to authenticated;
+
+-- ---------- 10. Notificações no celular (Web Push) ----------
+create table if not exists public.push_inscricoes (
+  endpoint  text primary key,
+  user_id   uuid not null references auth.users on delete cascade,
+  p256dh    text not null,
+  auth      text not null,
+  criado_em timestamptz not null default now()
+);
+alter table public.push_inscricoes enable row level security;
+drop policy if exists "dono le as proprias inscricoes" on public.push_inscricoes;
+create policy "dono le as proprias inscricoes" on public.push_inscricoes for select using (auth.uid() = user_id);
+drop policy if exists "dono cria as proprias inscricoes" on public.push_inscricoes;
+create policy "dono cria as proprias inscricoes" on public.push_inscricoes for insert with check (auth.uid() = user_id);
+drop policy if exists "dono apaga as proprias inscricoes" on public.push_inscricoes;
+create policy "dono apaga as proprias inscricoes" on public.push_inscricoes for delete using (auth.uid() = user_id);
+
+-- Preferências de aviso de cada pessoa. O app grava; o envio (api/cron) lê.
+create table if not exists public.notif_prefs (
+  user_id        uuid primary key references auth.users on delete cascade,
+  estudo_dias    int[]  not null default '{}',     -- 0=domingo ... 6=sábado
+  estudo_hora    text   not null default '19:00',
+  nome           text,
+  simulado_dia   int,                              -- null = a pessoa não escolheu
+  simulado_hora  text   not null default '10:00',
+  ultimo_estudo  date,
+  ultimo_simulado date,
+  ultima_promo_simulado date,
+  ultima_comunidade date,
+  atualizado_em  timestamptz not null default now()
+);
+alter table public.notif_prefs enable row level security;
+drop policy if exists "dono le as proprias prefs" on public.notif_prefs;
+create policy "dono le as proprias prefs" on public.notif_prefs for select using (auth.uid() = user_id);
+drop policy if exists "dono cria as proprias prefs" on public.notif_prefs;
+create policy "dono cria as proprias prefs" on public.notif_prefs for insert with check (auth.uid() = user_id);
+drop policy if exists "dono atualiza as proprias prefs" on public.notif_prefs;
+create policy "dono atualiza as proprias prefs" on public.notif_prefs for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+-- (o app NÃO grava as colunas ultimo_*; só o servidor. Se quiser travar de vez, use uma função.)
+
+-- ---------- 11. Exercícios em PDF: só quem comprou Exercícios e simulados baixa ----------
+-- Suba no bucket "materiais" os arquivos Exercicios-Matematica.pdf, Exercicios-Fisica.pdf, ... (9 arquivos).
+-- O resumo (Resumo-*.pdf) passa a exigir o produto "plano"; os exercícios, o produto "exercicios".
+drop policy if exists "plano baixa materiais" on storage.objects;
+create policy "plano baixa materiais" on storage.objects
+  for select to authenticated
+  using (
+    bucket_id = 'materiais' and (
+      (name like 'Resumo-%'     and exists (select 1 from public.acessos a where a.user_id = auth.uid() and a.produto = 'plano'))
+      or
+      (name like 'Exercicios-%' and exists (select 1 from public.acessos a where a.user_id = auth.uid() and a.produto = 'exercicios'))
+    )
+  );
