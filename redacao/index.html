@@ -96,7 +96,7 @@ function itemHTML(it, sec){
 function bloqueadoHTML(prod, titulo, texto){
   return `<div class="card bloq fade"><div class="i">🔒</div><h2>${titulo}</h2><p class="muted" style="margin:6px 0 16px;">${texto}</p>
     <button class="btn" onclick="checkout('${prod}')">Desbloquear agora</button>
-    <button class="btn sec" onclick="irPara('codigo')">Já comprei: inserir código</button></div>`;
+    <button class="btn sec" onclick="verificarAcesso()">Já comprei: verificar acesso</button></div>`;
 }
 
 /* ===== telas ===== */
@@ -105,30 +105,27 @@ function topo(titulo, voltar){
   return `<div class="top">${voltar?`<button class="voltar" onclick="history.back()" aria-label="Voltar">←</button>`:''}<h1>${titulo}</h1>${d?`<span class="dias">⏳ ${d} dias</span>`:''}</div>`;
 }
 
+async function verificarAcesso(){
+  toast('Verificando sua compra...');
+  const a = await Conta.atualizarAcessos();
+  toast(a && a.length ? 'Acesso liberado! 🎉' : 'Ainda não encontramos a compra. Pode levar alguns minutos.');
+  render();
+}
 function telaCodigo(){
   nav.style.display='none';
+  const u = Conta.usuario();
   app.innerHTML = `${topo('Arsenal de Redações ENEM')}
   <div class="pg fade">
-    <div class="card hero"><h2>Bem-vindo(a)! ✍️</h2><p>Digite o código de acesso que chegou no seu e-mail de compra. Se você abriu pelo link do e-mail, o acesso já é liberado sozinho.</p></div>
+    <div class="card hero"><h2>Ainda não encontramos a compra ✍️</h2><p>O acesso é liberado automaticamente, sem código, quando o pagamento é aprovado no e-mail da sua conta.${u?` Conta atual: <b>${S(u.email)}</b>.`:''}</p></div>
     <div class="card">
-      <label class="f" for="cod">Código de acesso</label>
-      <input class="inp" id="cod" placeholder="Ex.: ARS-XXXXXX-XXXX" autocomplete="off" style="text-transform:uppercase;">
+      <button class="btn" onclick="checkout('arsenal')">Desbloquear agora</button>
       <div class="sp"></div>
-      <button class="btn" id="okCod">Liberar acesso</button>
-      <p class="muted" style="margin-top:12px;text-align:center;">${C.SUPORTE_EMAIL?'Problemas? Fale com '+S(C.SUPORTE_EMAIL):'O código vem no e-mail de confirmação da compra.'}</p>
-      ${Conta.usuario()?`<p class="muted" style="margin-top:8px;text-align:center;">Logado como ${S(Conta.usuario().email)} · <a href="#" onclick="sairConta();return false;" style="color:inherit;">Sair</a></p>`:''}
+      <button class="btn sec" onclick="verificarAcesso()">Já comprei: verificar de novo</button>
+      <p class="muted" style="margin-top:12px;text-align:center;">Comprou com outro e-mail? Saia e crie a conta com o e-mail da compra.${C.SUPORTE_EMAIL?' Problemas? Fale com '+S(C.SUPORTE_EMAIL):''}</p>
+      ${u?`<p class="muted" style="margin-top:8px;text-align:center;"><a href="#" onclick="sairConta();return false;" style="color:inherit;">Sair da conta</a></p>`:''}
     </div>
     ${(Acesso.tem('arsenal')||Acesso.tem('correcao'))?'<button class="btn sec" onclick="irPara(\'inicio\')">Voltar ao app</button>':''}
   </div>`;
-  const f=document.getElementById('cod');
-  async function ok(){
-    const p = await Acesso.resgatar(f.value);
-    if(!p){ toast('Código não encontrado. Confira e tente de novo.'); return; }
-    if(p==='plano'||p==='exercicios'){ toast('Esse código é do app das matérias. Abrindo...'); setTimeout(()=>location.href='/materias',900); return; }
-    toast('Acesso liberado! 🎉'); irPara('inicio');
-  }
-  document.getElementById('okCod').onclick=ok;
-  f.addEventListener('keydown',e=>{ if(e.key==='Enter') ok(); });
 }
 
 function telaInicio(){
@@ -146,7 +143,7 @@ function telaInicio(){
       <div class="tile full" onclick="irPara('corrigir')">${!temC?'<span class="lock">🔒</span>':''}<span class="i">📸</span><div><b>Corrigir redação pela foto</b><br><span>Tire a foto do caderno e veja os erros por competência${hist.length?' · '+hist.length+' corrigida(s)':''}</span></div></div>
       <div class="tile full" onclick="location.href='/materias'"><span class="i">📚</span><div><b>Plano de estudos das matérias</b><br><span>Plano semanal, resumos, desempenho e lembretes</span></div></div>
     </div>
-    <p class="legal">Produto independente, sem vínculo com o INEP, o MEC ou o Governo Federal. <a href="#" onclick="irPara('codigo');return false;" style="color:inherit;">Inserir outro código</a>${Conta.usuario()?' · <a href="#" onclick="sairConta();return false;" style="color:inherit;">Sair da conta</a>':''}</p>
+    <p class="legal">Produto independente, sem vínculo com o INEP, o MEC ou o Governo Federal. <a href="#" onclick="verificarAcesso();return false;" style="color:inherit;">Atualizar meus acessos</a>${Conta.usuario()?' · <a href="#" onclick="sairConta();return false;" style="color:inherit;">Sair da conta</a>':''}</p>
   </div>`;
 }
 

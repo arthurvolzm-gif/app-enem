@@ -326,27 +326,26 @@ function telaLogin(msg, erro){
   app.querySelectorAll('.inp').forEach(i=>i.addEventListener('keydown',e=>{ if(e.key==='Enter') enviar(); }));
 }
 
-/* ===================== CÓDIGO (sem login, ou para liberar bumps) ===================== */
+/* ===================== SEM ACESSO (a compra é liberada pelo webhook, sem código) ===================== */
+async function verificarAcesso(){
+  toast('Verificando sua compra...');
+  const a = await Conta.atualizarAcessos();
+  toast(a && a.length ? 'Acesso liberado! 🎉' : 'Ainda não encontramos a compra. Pode levar alguns minutos.');
+  render();
+}
 function telaCodigo(){
   nav.style.display = perfil() ? '' : 'none';
-  app.innerHTML = `${barraTopo('Liberar um produto', !!perfil())}
+  const u = Conta.usuario();
+  app.innerHTML = `${barraTopo('Acesso', !!perfil())}
   <div class="tela fade">
-    <div class="card hero"><div class="k">Código de acesso</div><div class="grande" style="font-size:22px;">Comprou um produto extra?</div><p>Abra o link que chegou no seu e-mail de compra ou digite o código aqui.</p></div>
+    <div class="card hero"><div class="k">Acesso</div><div class="grande" style="font-size:22px;">Ainda não encontramos a compra</div><p>O acesso é liberado automaticamente, sem código, quando o pagamento é aprovado no e-mail da sua conta.${u?` Conta atual: <b>${S(u.email)}</b>.`:''}</p></div>
     <div class="card">
-      <div class="campo"><label for="cod">Código</label><input class="inp" id="cod" placeholder="Ex.: EXE-XXXXXX-XXXX" autocomplete="off" style="text-transform:uppercase;"></div>
-      <button class="btn" id="okCod">Liberar</button>
-      ${C.SUPORTE_EMAIL?`<p class="nota" style="text-align:center;margin-top:12px;">Problemas? ${S(C.SUPORTE_EMAIL)}</p>`:''}
+      <button class="btn" onclick="checkout('plano')">Desbloquear agora</button>
+      <button class="btn sec" style="margin-top:10px;" onclick="verificarAcesso()">Já comprei: verificar de novo</button>
+      <p class="nota" style="text-align:center;margin-top:12px;">Comprou com outro e-mail? Saia e crie a conta com o e-mail da compra.${C.SUPORTE_EMAIL?` Problemas? ${S(C.SUPORTE_EMAIL)}`:''}</p>
+      ${u?`<button class="btn sec" style="margin-top:6px;" onclick="sairConta()">Sair da conta</button>`:''}
     </div>
   </div>`;
-  const f=document.getElementById('cod');
-  async function ok(){
-    const p = await Acesso.resgatar(f.value);
-    if(!p){ toast('Código não encontrado. Confira e tente de novo.'); return; }
-    if(p==='arsenal'||p==='correcao'){ toast('Esse código é do app de redação. Abrindo...'); setTimeout(()=>location.href='/redacao',900); return; }
-    toast('Liberado! 🎉'); irPara(p==='exercicios'?'exercicios':'inicio');
-  }
-  document.getElementById('okCod').onclick=ok;
-  f.addEventListener('keydown',e=>{ if(e.key==='Enter') ok(); });
 }
 
 /* ===================== ONBOARDING ===================== */
@@ -815,7 +814,7 @@ function telaPerfil(){
       <button class="atalho" onclick="irPara('materiais')"><span class="ic">${ic('arquivo',1.9)}</span><div><b>Meus materiais em PDF</b><span>Os resumos completos de cada matéria</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
       <button class="atalho" onclick="irPara('exercicios')"><span class="ic">${ic('prova',1.9)}</span><div><b>Exercícios e simulados</b><span>No estilo do ENEM</span></div>${Acesso.tem('exercicios')?`<span class="seta">${ic('chevR',2.2)}</span>`:`<span class="tag-lock">${ic('cadeado',1.9)}</span>`}</button>
       <button class="atalho" onclick="location.href='/redacao'"><span class="ic">${ic('red',1.9)}</span><div><b>Redação</b><span>Arsenal de Redações e correção por foto</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
-      <button class="atalho" onclick="irPara('codigo')"><span class="ic">${ic('chave',1.9)}</span><div><b>Liberar um produto</b><span>Inserir um código de acesso</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
+      <button class="atalho" onclick="verificarAcesso()"><span class="ic">${ic('chave',1.9)}</span><div><b>Já comprei um produto</b><span>Atualizar os meus acessos</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
       ${u?`<button class="atalho" onclick="sairConta()"><span class="ic">${ic('sair',1.9)}</span><div><b>Sair da conta</b><span>${S(u.email)}</span></div></button>`:''}
     </div>
     <p class="legal">Produto independente, sem vínculo com o INEP, o MEC ou o Governo Federal. O app é uma ferramenta de apoio aos estudos e não garante nota ou aprovação.</p>
@@ -937,7 +936,7 @@ setInterval(checaLembrete,30000);
 
 /* ===================== EXERCÍCIOS (order bump) ===================== */
 let sQ=null;
-function bloqueado(prod,titulo,texto){ return `<div class="card bloq"><div class="e">🔒</div><h2>${titulo}</h2><p>${texto}</p><button class="btn" onclick="checkout('${prod}')">Desbloquear agora</button><button class="btn sec" onclick="irPara('codigo')">Já comprei: inserir código</button></div>`; }
+function bloqueado(prod,titulo,texto){ return `<div class="card bloq"><div class="e">🔒</div><h2>${titulo}</h2><p>${texto}</p><button class="btn" onclick="checkout('${prod}')">Desbloquear agora</button><button class="btn sec" onclick="verificarAcesso()">Já comprei: verificar acesso</button></div>`; }
 function telaExercicios(){
   if(!Acesso.tem('exercicios')){ app.innerHTML = barraTopo('📝 Exercícios e simulados', !!perfil())+`<div class="tela">${bloqueado('exercicios','Exercícios e simulados','Pratique com questões no estilo do ENEM, com a explicação de cada resposta, e faça simulados cronometrados.')}</div>`; return; }
   const R=respostas(), p=perfil();
