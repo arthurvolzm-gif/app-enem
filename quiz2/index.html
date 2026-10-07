@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Teste ENEM | Você está preparado?</title>
 <meta name="description" content="Faça o teste grátis e descubra o seu Índice de Preparo para o ENEM. Receba um plano para o último mês." />
-<meta name="theme-color" content="#0aa7c4" />
+<meta name="theme-color" content="#0891b2" />
 <link rel="stylesheet" href="/shared/quiz-azul.css" />
 <script>
 /* versão escura: /quiz2/escuro (ou ?tema=escuro) */
@@ -37,7 +37,7 @@ if(/\/escuro\/?$/.test(location.pathname)||/[?&]tema=escuro/.test(location.searc
 .print-call{position:absolute;z-index:3;display:flex;align-items:center;transition:opacity .3s ease;pointer-events:none;}
 .print-call .pc-seta{width:24px;height:10px;flex:none;}
 .print-call .pc-card{width:90px;background:#fff;border:1.5px solid #cfdaf0;border-radius:12px;padding:8px 9px;text-align:left;box-shadow:0 8px 20px rgba(4,34,43,.16);}
-.print-call .pc-card b{display:block;font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:#00b8d9;font-weight:800;}
+.print-call .pc-card b{display:block;font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:#0899b8;font-weight:800;}
 .print-call .pc-card span{display:block;font-size:12px;line-height:1.3;color:#04222b;font-weight:700;margin-top:2px;}
 .print-call.dir{left:calc(50% + min(25%, 105px) - 6px);flex-direction:row;}
 .print-call.esq{right:calc(50% + min(25%, 105px) - 6px);flex-direction:row-reverse;}
@@ -80,14 +80,14 @@ if(/\/escuro\/?$/.test(location.pathname)||/[?&]tema=escuro/.test(location.searc
 .res-prints figure{flex:1 1 0;min-width:0;margin:0;}
 .res-prints img{display:block;width:100%;aspect-ratio:390/844;object-fit:cover;object-position:top;border-radius:14px;border:4px solid #04222b;box-shadow:0 10px 22px rgba(4,34,43,.25);background:#fff;}
 .res-prints figcaption{font-size:11.5px;color:#6b7590;font-weight:600;margin-top:7px;line-height:1.3;}
-.preco-card{margin-top:16px;background:#fff;border:2px solid #00b8d9;border-radius:20px;overflow:hidden;text-align:center;box-shadow:0 10px 28px rgba(4,34,43,.12);}
-.preco-card .pc-faixa{background:#00b8d9;color:#fff;font-weight:800;font-size:15px;padding:10px 12px;}
+.preco-card{margin-top:16px;background:#fff;border:2px solid #0899b8;border-radius:20px;overflow:hidden;text-align:center;box-shadow:0 10px 28px rgba(4,34,43,.12);}
+.preco-card .pc-faixa{background:#0899b8;color:#fff;font-weight:800;font-size:15px;padding:10px 12px;}
 .preco-card .pc-corpo{padding:22px 18px 22px;}
 .preco-card .pc-l{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;color:#6b7590;}
 .preco-card .pc-de{font-family:'Open Sans',sans-serif;font-size:24px;font-weight:700;color:#9aa8c4;text-decoration:line-through;margin-top:12px;}
 .preco-card .pc-parc{font-family:'Open Sans',sans-serif;font-size:42px;font-weight:900;color:#04222b;line-height:1.1;margin-top:12px;}
 .preco-card .pc-vista{font-size:15px;color:#46506a;margin-top:4px;}
-.preco-card .pc-btn{display:block;width:100%;margin-top:20px;background:linear-gradient(135deg,#00d4f5,#6ff1ff);color:#00212a;font-weight:800;font-size:15px;letter-spacing:.3px;padding:17px 12px;border-radius:50px;border:none;cursor:pointer;box-shadow:0 10px 24px rgba(4,34,43,.25);}
+.preco-card .pc-btn{display:block;width:100%;margin-top:20px;background:linear-gradient(135deg,#00b4d4,#35cfe6);color:#00212a;font-weight:800;font-size:15px;letter-spacing:.3px;padding:17px 12px;border-radius:50px;border:none;cursor:pointer;box-shadow:0 10px 24px rgba(4,34,43,.25);}
 .preco-card .pc-nota{font-size:12px;line-height:1.7;color:#6f9aa5;margin-top:16px;}
 .alerta.amarelo{background:#fff6d6;}
 .alerta.amarelo p{color:#8a5a00;}
@@ -399,7 +399,7 @@ const RENDER = {
           ${PRINTS.concat([PRINTS[0]]).map(src=>`<img src="${src}" alt="Telas do aplicativo Plano ENEM" onerror="this.style.visibility='hidden'">`).join('')}
         </div>
       </div>
-      <div id="prints-call" class="print-call esq"><svg class="pc-seta" viewBox="0 0 40 16" aria-hidden="true"><circle cx="3" cy="8" r="3" fill="#00b8d9"/><path d="M3 8h30M27 2l7 6-7 6" fill="none" stroke="#00b8d9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="pc-card"><b></b><span></span></div></div>
+      <div id="prints-call" class="print-call esq"><svg class="pc-seta" viewBox="0 0 40 16" aria-hidden="true"><circle cx="3" cy="8" r="3" fill="#0899b8"/><path d="M3 8h30M27 2l7 6-7 6" fill="none" stroke="#0899b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="pc-card"><b></b><span></span></div></div>
       </div>
       <div class="prints-dots" id="prints-dots">${PRINTS.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join('')}</div>`;
     const blocoMat = `      <div class="pdf-bloco">
