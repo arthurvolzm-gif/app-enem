@@ -42,7 +42,7 @@ function carregarExt(id){
   /* textos corridos: ext/<id>-t1.cjs, ext/<id>-t2.cjs... ([{t, txt:[{h, p:[parágrafos]}]}]) */
   fs.readdirSync(path.join(__dirname, 'ext')).filter(f => new RegExp('^' + id + '-t\\d+\\.cjs$').test(f))
     .sort((x, y) => parseInt(x.split('-t')[1]) - parseInt(y.split('-t')[1]))
-    .forEach(f => require(path.join(__dirname, 'ext', f)).forEach(d => { if(mapa[d.t]) mapa[d.t].txt = d.txt; }));
+    .forEach(f => require(path.join(__dirname, 'ext', f)).forEach(d => { if(mapa[d.t]) mapa[d.t].txt = (mapa[d.t].txt || []).concat(d.txt); }));
   return mapa;
 }
 const LETRAS = ['A','B','C','D','E'];
