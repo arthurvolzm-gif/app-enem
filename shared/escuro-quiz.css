@@ -36,8 +36,8 @@ html.escuro .opts.grid2 .foto-card{box-shadow:0 6px 18px rgba(0,0,0,.6);}
 html.escuro .text-input{background:#0b0e10;border-color:var(--borda);color:#e7f1f4;}
 
 /* botões */
-html.escuro .btn,
-html.escuro .pc-btn{background:linear-gradient(135deg,#00d4f5,#6ff1ff);color:#00212a;box-shadow:0 8px 26px rgba(0,229,255,.32);}
+html.escuro .btn{background:linear-gradient(135deg,#00d4f5,#6ff1ff);color:#00212a;box-shadow:0 8px 26px rgba(0,229,255,.32);}
+html.escuro .preco-card .pc-btn,html.escuro .pc-btn{background:var(--card);color:#2ee6ff;border:2px solid #2ee6ff;border-radius:0;box-shadow:none;}
 html.escuro .btn-ghost{background:transparent;color:var(--verde);border-color:var(--borda);}
 html.escuro .sticky-cta{background:#06090b;border-top-color:var(--borda);}
 
