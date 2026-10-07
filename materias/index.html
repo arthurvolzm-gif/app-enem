@@ -79,6 +79,21 @@ async function jaComprei(){
   setTimeout(()=>toast(Acesso.tem('exercicios')?'Acesso liberado! 🎉':'Ainda não encontramos a compra. Use o mesmo e-mail do pedido e tente de novo em 1 minuto.'),400);
 }
 const ARQ_EX = {mat:'Matematica',fis:'Fisica',qui:'Quimica',bio:'Biologia',his:'Historia',geo:'Geografia',fil:'Filosofia',soc:'Sociologia',lin:'Linguagens'};
+/* botões do plano: exercícios rápidos dos temas estudados e simulado (só com Exercícios e simulados) */
+function pedirExercicios(){ pedirCompra('exercicios','Exercícios e simulados','Exercícios rápidos dos temas que você estuda e simulados cronometrados no estilo do ENEM, com a explicação de cada resposta.','R$ 14,90'); }
+function exerciciosRapidos(mid, temasCsv){
+  if(!Acesso.tem('exercicios')){ pedirExercicios(); return; }
+  const ts=(temasCsv||'').split(',').filter(Boolean);
+  let idx=Q.map((q,i)=>i).filter(i=>ts.includes(Q[i].t));
+  if(!idx.length) idx=Q.map((q,i)=>i).filter(i=>Q[i].m===mid);
+  if(!idx.length){ toast('Ainda não há exercícios desta matéria no app.'); return; }
+  idx=embaralhar(idx).slice(0,6);
+  sQ={lista:idx,i:0,acertos:0,modo:'treino',inicio:Date.now(),marcadas:{}}; irPara('questao');
+}
+function fazerSimulado(){
+  if(!Acesso.tem('exercicios')){ pedirExercicios(); return; }
+  iniciarQ('simulado');
+}
 async function baixarExercicios(mid){
   if(!ARQ_EX[mid]) return;
   const nome=(mat(mid)||{}).nome||'';
@@ -577,15 +592,13 @@ function telaPlano(){
               <div class="dica-enem"><b>💡 Como cai no ENEM:</b> ${S(t.dica)}</div></div>
           </div>`; }).join('')}
           ${materialArq(b.m)?`<button class="btn sec sm" onclick="baixarMaterial('${b.m}')">⬇ Baixar o material de ${S(nomeBloco(b.m))}</button>`:''}
-          ${ARQ_EX[b.m]?`<button class="btn sec sm" style="margin-top:8px;" onclick="baixarExercicios('${b.m}')">📝 Baixar exercícios do tema${Acesso.tem('exercicios')?'':' 🔒'}</button>`:''}
+          ${ARQ_EX[b.m]?`<div style="display:flex;gap:8px;margin-top:8px;"><button class="btn sec sm" style="flex:1;margin:0;" onclick="exerciciosRapidos('${b.m}','${temas.map(t=>t.id).join(',')}')">📝 Exercícios rápidos${Acesso.tem('exercicios')?'':' 🔒'}</button><button class="btn sm" style="flex:1;margin:0;" onclick="fazerSimulado()">Fazer simulado${Acesso.tem('exercicios')?'':' 🔒'}</button></div>`:''}
           <div class="bloco-acoes">${diaSel===hoje?(feito?'<span class="tag verde">Concluído</span>':tmAqui?'':`<button class="btn sm" onclick="tmComecar('${b.m}',${b.min})">${ic('play')} Começar</button>`):''}
           ${b.m==='red'&&diaSel===hoje?' <button class="btn sm sec" onclick="location.href=\'/redacao#corrigir\'">📸 Corrigir</button>':''}</div>
         </div></div>`; }).join('')
       :'<p class="nota" style="padding:6px 0;">Dia livre. Descansar também faz parte do plano: o cérebro fixa o que você estudou.</p>'}
     </div>
     ${(()=>{ const ms=metaSemana(); return `<div class="card"><div class="meta-topo"><div><div class="k">Meta de temas da semana</div><div class="v">${ms.feitos} <small>de ${ms.meta} temas</small></div></div><div class="pct"><b>${Math.min(100,Math.round(ms.feitos/ms.meta*100))}%</b><span>da semana</span></div></div><div class="barra"><i style="width:${Math.min(100,ms.feitos/ms.meta*100)}%"></i></div><div class="nota">No seu ritmo, você cobre cerca de <b>${ms.cobertos} dos ${totalTemas} temas</b> até o ENEM, começando pelos que mais caem.</div>
-      <div class="nota" style="margin-top:10px;">Você pode concluir todas as matérias aumentando seu tempo para <b>+4 horas</b>, assim você conclui 100% dos temas cobrados.</div>
-      <div class="nota" style="margin-top:10px;">Veja a quantidade de temas estudados de acordo com o seu tempo de estudo diário:</div>
       <div class="chips" style="margin-top:8px;pointer-events:none;display:grid;grid-template-columns:1fr 1fr;gap:6px;">${[[60,50],[90,65],[120,70],[150,80],[180,90],[240,100]].map(([m,pc])=>`<button style="padding:9px 6px;font-size:12.5px;text-align:center;" class="${m===240?'on':''}">${fmtMin(m)}${m===240?' ou mais':''}: ${pc}% (${Math.round(totalTemas*pc/100)} temas)</button>`).join('')}</div>
       <button class="btn" style="margin-top:12px;" onclick="irAjustar()">Ajustar meu Plano</button></div>`; })()}
     <div class="card hero"><div class="fase"><span class="ic">${f.ic}</span><div><div class="k">Fase ${f.n} de 3</div><div class="grande" style="font-size:20px;">${f.nome}</div><p style="font-size:13px;">${f.txt}</p></div></div></div>
@@ -825,7 +838,7 @@ function telaMateriais(){
   app.innerHTML = `${barraTopo('📄 Meus materiais',true)}
   <div class="tela fade">
     <div class="card hero"><div class="k">Material completo</div><div class="grande" style="font-size:21px;">Um material para cada matéria</div><p>Use junto com o plano: o app diz o que estudar, o material aprofunda. Ele também chega no seu e-mail de compra.</p></div>
-    ${lista.map(m=>`<div class="tema-item" style="cursor:default;"><span class="ck" style="background:var(--suave);border:none;">${m.icone}</span><div style="flex:1;"><b>Material de ${S(m.nome)}</b><span class="nota">PDF completo</span></div><button class="btn sm" onclick="baixarMaterial('${m.id}')">Baixar</button></div>`).join('')}
+    ${lista.map(m=>`<div class="tema-item" style="cursor:default;"><span class="ck" style="background:var(--suave);border:none;">${m.icone}</span><div style="flex:1;"><b>Material de ${S(m.nome)}</b><span class="nota">PDF completo</span></div><button class="btn sm" onclick="baixarMaterial('${m.id}')">Baixar</button></div>${ARQ_EX[m.id]?`<div class="tema-item" style="cursor:default;"><span class="ck" style="background:var(--suave);border:none;">📝</span><div style="flex:1;"><b>Exercícios de ${S(m.nome)}</b><span class="nota">PDF com gabarito comentado${Acesso.tem('exercicios')?'':' 🔒'}</span></div><button class="btn sm" onclick="baixarExercicios('${m.id}')">Baixar</button></div>`:''}`).join('')}
   </div>`;
 }
 
