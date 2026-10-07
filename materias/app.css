@@ -469,3 +469,7 @@ body.tem-timer .barra-topo{top:54px;}
 .topo-sino{display:flex;justify-content:flex-end;padding:14px 16px 0;}
 .topo-sino .sino{margin:0;}
 .topo-sino .sino svg{width:21px;height:21px;}
+.topo-sino{align-items:center;justify-content:space-between;}
+.saud-nome{min-width:0;}
+.saud-nome span{display:block;font-size:13.5px;color:var(--cinza);font-weight:500;line-height:1.2;}
+.saud-nome b{display:block;font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:var(--navy);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
