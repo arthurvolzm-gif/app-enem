@@ -10,6 +10,8 @@
    - CORRECAO_MODELO     (opcional) troca o modelo; padrão claude-opus-5-5
    - SUPABASE_URL e SUPABASE_KEY (com login ligado) os mesmos de shared/config.js;
      com eles, quem está logado com a Correção liberada na conta é aceito sem código
+   - SUPABASE_SERVICE_KEY (opcional, recomendado) chave service_role: liga o LIMITE de correções
+     por conta (cada correção tem custo na API). CORRECAO_LIMITE (padrão 10) e CORRECAO_DIAS (padrão 30).
    ========================================================= */
 import Anthropic from "@anthropic-ai/sdk";
 import { createHash } from "node:crypto";
@@ -112,6 +114,25 @@ async function contaTemCorrecao(authHeader) {
   }
 }
 
+/* limite de correções por conta no período (protege o custo da API). Só vale para quem entra por conta. */
+async function usarCota(authHeader) {
+  const url = process.env.SUPABASE_URL, service = process.env.SUPABASE_SERVICE_KEY;
+  if (!url || !service || !/^Bearer\s+\S+/.test(String(authHeader || ""))) return { ok: true };
+  try {
+    const u = await fetch(`${url}/auth/v1/user`, { headers: { apikey: service, Authorization: authHeader } });
+    if (!u.ok) return { ok: true };
+    const id = (await u.json()).id; if (!id) return { ok: true };
+    const limite = parseInt(process.env.CORRECAO_LIMITE || "10", 10), dias = parseInt(process.env.CORRECAO_DIAS || "30", 10);
+    const desde = new Date(Date.now() - dias * 86400000).toISOString();
+    const h = { apikey: service, Authorization: `Bearer ${service}` };
+    const c = await fetch(`${url}/rest/v1/correcoes_uso?select=id&user_id=eq.${id}&criado_em=gte.${desde}`, { headers: { ...h, Prefer: "count=exact", Range: "0-0" } });
+    const total = parseInt((c.headers.get("content-range") || "0/0").split("/")[1], 10) || 0;
+    if (total >= limite) return { ok: false, limite, dias };
+    await fetch(`${url}/rest/v1/correcoes_uso`, { method: "POST", headers: { ...h, "Content-Type": "application/json", Prefer: "return=minimal" }, body: JSON.stringify({ user_id: id }) });
+    return { ok: true };
+  } catch (e) { console.error("Falha na cota:", e.message); return { ok: true }; }
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -127,6 +148,8 @@ export default async function handler(req, res) {
   if (!m || !TIPOS_ACEITOS.includes(m[1].toLowerCase())) {
     return res.status(400).json({ erro: "Envie uma foto em JPG, PNG ou WEBP." });
   }
+  const cota = await usarCota((req.headers || {}).authorization);
+  if (!cota.ok) return res.status(429).json({ erro: `Você já usou as ${cota.limite} correções deste período (${cota.dias} dias). Em breve você poderá liberar mais.` });
   const mediaType = m[1].toLowerCase();
   const dados = m[2];
   if (dados.length > MAX_BASE64) {

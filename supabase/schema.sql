@@ -227,3 +227,12 @@ create policy "plano baixa materiais" on storage.objects
       (name like 'Exercicios-%' and exists (select 1 from public.acessos a where a.user_id = auth.uid() and a.produto = 'exercicios'))
     )
   );
+
+-- ---------- 12. Uso da correção por foto (limite por conta, protege o custo da API) ----------
+create table if not exists public.correcoes_uso (
+  id        bigserial primary key,
+  user_id   uuid not null references auth.users on delete cascade,
+  criado_em timestamptz not null default now()
+);
+create index if not exists correcoes_uso_user_idx on public.correcoes_uso (user_id, criado_em);
+alter table public.correcoes_uso enable row level security;   -- sem política: só o servidor lê e escreve
