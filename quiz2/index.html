@@ -56,6 +56,15 @@ if(/\/escuro\/?$/.test(location.pathname)||/[?&]tema=escuro/.test(location.searc
 .pdf-bloco{margin-top:30px;padding-top:24px;border-top:1px solid var(--borda);text-align:center;}
 .pdf-h{font-family:'Open Sans',sans-serif;font-size:21px;font-weight:900;color:var(--verde-escuro);line-height:1.3;margin-bottom:8px;}
 .pdf-p{font-size:14.5px;color:#46506a;line-height:1.6;margin-bottom:16px;}
+.pdf-stage{position:relative;width:100%;max-width:420px;aspect-ratio:1/.9;margin:0 auto;overflow:hidden;}
+.pdf-sheet{position:absolute;left:50%;top:50%;width:50%;border-radius:8px;overflow:hidden;background:#fff;border:1px solid #dbe3f2;box-shadow:0 14px 30px rgba(11,31,77,.28);transition:transform .45s cubic-bezier(.3,.7,.2,1),opacity .45s ease;will-change:transform,opacity;backface-visibility:hidden;}
+.pdf-sheet img{display:block;width:100%;height:auto;}
+.pdf-sheet[data-pos="0"]{transform:translate(-50%,-50%) scale(1);z-index:3;opacity:1;}
+.pdf-sheet[data-pos="-1"]{transform:translate(-50%,-50%) translateX(-60%) scale(.82);z-index:2;opacity:.95;}
+.pdf-sheet[data-pos="1"]{transform:translate(-50%,-50%) translateX(60%) scale(.82);z-index:2;opacity:.95;}
+.pdf-sheet[data-pos="-2"]{transform:translate(-50%,-50%) translateX(-120%) scale(.65);z-index:1;opacity:0;}
+.pdf-sheet[data-pos="2"]{transform:translate(-50%,-50%) translateX(120%) scale(.65);z-index:1;opacity:0;}
+.pdf-sheet:not([data-pos="0"]) .pdf-leg{opacity:0;}
 .pdf-vitrine{position:relative;width:78%;max-width:330px;margin:0 auto;border-radius:10px;overflow:hidden;background:#fff;border:1px solid #dbe3f2;box-shadow:0 16px 36px rgba(11,31,77,.28);transform:rotate(-1.2deg);}
 .pdf-vitrine img{display:block;width:100%;height:auto;transition:opacity .35s ease;will-change:opacity;}
 .pdf-leg{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(0deg,rgba(11,31,77,.92),rgba(11,31,77,0));padding:26px 12px 9px;display:flex;flex-direction:column;align-items:center;color:#fff;line-height:1.25;}
@@ -271,33 +280,42 @@ function proximaPagina(){
   if(PAGINAS_PDF[i].m === mAnt && pdfFila.length){ const j = pdfFila.findIndex(k=>PAGINAS_PDF[k].m!==mAnt); if(j>=0){ pdfFila.push(i); i = pdfFila.splice(j,1)[0]; } }
   pdfUltimo = i; return PAGINAS_PDF[i];
 }
-function mostrarPagina(){
-  const img = document.getElementById('pdf-img');
-  if(!img || !document.body.contains(img)){ clearInterval(pdfTimer); return; }
-  const pg = proximaPagina();
-  const nova = new Image();
-  nova.onload = ()=>{
-    if(!document.body.contains(img)) return;
-    img.style.opacity = 0;
-    setTimeout(()=>{
-      img.src = pg.s;
-      const leg = document.getElementById('pdf-leg');
-      if(leg) leg.innerHTML = '<b>'+S(pg.m)+'</b><span>'+S(pg.t)+'</span>';
-      img.style.opacity = 1;
-    }, 360);
-  };
-  nova.src = pg.s;
+/* três folhas visíveis (esquerda, meio, direita) e uma esperando à direita: a da direita vai para o meio,
+   a do meio vai para a esquerda, a da esquerda sai e uma nova entra pela direita */
+function pintarFolha(el, pg){
+  el.querySelector('img').src = pg.s; el.querySelector('img').style.visibility = 'visible';
+  el.querySelector('.pdf-leg b').textContent = pg.m; el.querySelector('.pdf-leg span').textContent = pg.t;
+}
+function avancarPdf(){
+  const stage = document.getElementById('pdf-stage');
+  if(!stage || !document.body.contains(stage)){ clearInterval(pdfTimer); return; }
+  const folhas = [...stage.querySelectorAll('.pdf-sheet')];
+  folhas.forEach(f=>{ f.dataset.pos = String(+f.dataset.pos - 1); });
+  const saiu = folhas.find(f=>f.dataset.pos === '-2');
+  setTimeout(()=>{
+    if(!saiu || !document.body.contains(stage)) return;
+    saiu.style.transition = 'none';
+    pintarFolha(saiu, proximaPagina());
+    saiu.dataset.pos = '2';
+    void saiu.offsetWidth;            // aplica sem animar
+    saiu.style.transition = '';
+  }, 480);
 }
 function iniciarPdf(){
   clearInterval(pdfTimer); pdfFila = []; pdfUltimo = 0;
-  /* a primeira troca já mostra uma matéria que a pessoa marcou como dificuldade, se houver */
+  /* depois da primeira página, as que a pessoa marcou como dificuldade vêm primeiro */
   const dif = matsDificeis();
   pdfFila = PAGINAS_PDF.map((_,i)=>i).filter(i=>i!==0).sort(()=>Math.random()-0.5)
     .sort((a,b)=>(dif.includes(PAGINAS_PDF[b].m)?1:0)-(dif.includes(PAGINAS_PDF[a].m)?1:0));
-  precarregar(PAGINAS_PDF.slice(0,6).map(x=>x.s)); pdfTimer = setInterval(mostrarPagina, 3600);
+  const stage = document.getElementById('pdf-stage'); if(!stage) return;
+  const por = pos=>stage.querySelector('.pdf-sheet[data-pos="'+pos+'"]');
+  pintarFolha(por(0), PAGINAS_PDF[0]);
+  [-1,1,2].forEach(pos=>pintarFolha(por(pos), proximaPagina()));
+  precarregar(PAGINAS_PDF.slice(0,9).map(x=>x.s));
+  pdfTimer = setInterval(avancarPdf, 2600);
 }
 function pausarPdf(){ clearInterval(pdfTimer); }
-function retomarPdf(){ clearInterval(pdfTimer); pdfTimer = setInterval(mostrarPagina, 3600); }
+function retomarPdf(){ clearInterval(pdfTimer); pdfTimer = setInterval(avancarPdf, 2600); }
 
 const RENDER = {
   intro(q){
@@ -389,11 +407,10 @@ const RENDER = {
         <h3 class="pdf-h">Tudo o que você precisa estudar, para chegar preparado no <span style="color:#1f9d63;">Enem</span> em menos de <span style="color:#1f9d63;">30 dias</span></h3>
         <p class="pdf-p">O conteúdo de cada matéria está reunido em nossos materiais, com cada tema explicado do zero. É assim que você vai receber:</p>
 
-        <div class="pdf-vitrine" id="pdf-vitrine"
+        <div class="pdf-stage" id="pdf-stage"
              onmousedown="pausarPdf()" onmouseup="retomarPdf()" onmouseleave="retomarPdf()"
              ontouchstart="pausarPdf()" ontouchend="retomarPdf()" ontouchcancel="retomarPdf()">
-          <img id="pdf-img" src="${PAGINAS_PDF[0].s}" alt="Página de um dos materiais">
-          <div class="pdf-leg" id="pdf-leg"><b>${S(PAGINAS_PDF[0].m)}</b><span>${S(PAGINAS_PDF[0].t)}</span></div>
+          ${[-1,0,1,2].map(pos=>`<div class="pdf-sheet" data-pos="${pos}"><img alt="Página de um dos materiais" onerror="this.style.visibility='hidden'"><div class="pdf-leg"><b></b><span></span></div></div>`).join('')}
         </div>
         <p class="prints-leg">Páginas reais do material, de matérias diferentes</p>
 
