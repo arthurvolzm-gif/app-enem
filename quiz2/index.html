@@ -388,7 +388,7 @@ const RENDER = {
     const aj = a.ajuda || '';
     const foco = aj.startsWith('📅') ? 'plano' : aj.startsWith('📚') ? 'resumos' : aj.startsWith('📊') ? 'desempenho' : aj.startsWith('⏰') ? 'lembretes' : 'todas';
     ordenarPrints({plano:1, desempenho:5, resumos:3, lembretes:0, todas:0}[foco]);
-    const ITENS = {plano:'o seu plano de estudos', resumos:'o material de cada matéria', desempenho:'o seu desempenho', lembretes:'os lembretes'};
+    const ITENS = {plano:'seu plano de estudos', resumos:'o material de cada matéria', desempenho:'seu desempenho', lembretes:'os lembretes'};
     const ordItens = [foco, ...Object.keys(ITENS).filter(k=>k!==foco)].filter(k=>ITENS[k]).map(k=>ITENS[k]);
     const listaItens = ordItens.slice(0,-1).join(', ')+' e '+ordItens[ordItens.length-1];
     const blocoApp = `      <div class="prints-stage">
@@ -428,7 +428,7 @@ const RENDER = {
       ${backBtn()}
       <span class="tag red" style="margin-top:6px;">${S(prazoTxt())}</span>
       <h2 class="q-title" style="margin:6px 0 10px;">Você não precisa estudar tudo. Precisa saber o que estudar.</h2>
-      <p class="hero-sub">Por isso, ${listaItens} ficam em um aplicativo só.</p>
+      <p class="hero-sub">Com o aplicativo Acelera Enem, ${listaItens} ficam em um lugar só.</p>
 
       ${foco==='resumos' ? blocoMat+blocoApp : blocoApp+blocoMat}
 
