@@ -39,12 +39,15 @@ function acharStatus(folhas) {
   return folhas.filter(([c]) => /(status|event|evento|situacao|state)$/.test(c) || /\.(status|event|evento)(\.|$)/.test(c)).map(([, v]) => v);
 }
 
+/* chaves novas do Supabase (sb_secret_...) não são JWT: vão só no cabeçalho apikey */
+function cab(chave) { return chave.startsWith("sb_") ? { apikey: chave } : { apikey: chave, Authorization: `Bearer ${chave}` }; }
+
 async function rpc(nome, args) {
   const url = `${process.env.SUPABASE_URL}/rest/v1/rpc/${nome}`;
   const chave = process.env.SUPABASE_SERVICE_KEY;
   const r = await fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json", apikey: chave, Authorization: `Bearer ${chave}` },
+    headers: { "Content-Type": "application/json", ...cab(chave) },
     body: JSON.stringify(args),
   });
   if (!r.ok) throw new Error(`${nome}: ${r.status} ${await r.text()}`);
@@ -54,12 +57,7 @@ async function registrar(linha) {
   try {
     await fetch(`${process.env.SUPABASE_URL}/rest/v1/webhook_log`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        apikey: process.env.SUPABASE_SERVICE_KEY,
-        Authorization: `Bearer ${process.env.SUPABASE_SERVICE_KEY}`,
-        Prefer: "return=minimal",
-      },
+      headers: { "Content-Type": "application/json", ...cab(process.env.SUPABASE_SERVICE_KEY), Prefer: "return=minimal" },
       body: JSON.stringify(linha),
     });
   } catch (e) { /* o log nunca derruba o webhook */ }

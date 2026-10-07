@@ -124,7 +124,7 @@ async function usarCota(authHeader) {
     const id = (await u.json()).id; if (!id) return { ok: true };
     const limite = parseInt(process.env.CORRECAO_LIMITE || "10", 10), dias = parseInt(process.env.CORRECAO_DIAS || "30", 10);
     const desde = new Date(Date.now() - dias * 86400000).toISOString();
-    const h = { apikey: service, Authorization: `Bearer ${service}` };
+    const h = service.startsWith("sb_") ? { apikey: service } : { apikey: service, Authorization: `Bearer ${service}` };
     const c = await fetch(`${url}/rest/v1/correcoes_uso?select=id&user_id=eq.${id}&criado_em=gte.${desde}`, { headers: { ...h, Prefer: "count=exact", Range: "0-0" } });
     const total = parseInt((c.headers.get("content-range") || "0/0").split("/")[1], 10) || 0;
     if (total >= limite) return { ok: false, limite, dias };

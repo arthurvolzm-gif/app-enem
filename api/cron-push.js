@@ -35,11 +35,13 @@ const minutos = (hhmm) => { const [h, m] = String(hhmm || "00:00").split(":"); r
 const venceu = (hora, min) => min >= minutos(hora) && min - minutos(hora) <= JANELA_MIN;
 const diasEntre = (a, b) => Math.round((new Date(b + "T12:00:00") - new Date(a + "T12:00:00")) / 86400000);
 
+const cab = (chave) => (chave.startsWith("sb_") ? { apikey: chave } : { apikey: chave, Authorization: `Bearer ${chave}` });
+
 async function rest(caminho, opcoes = {}) {
   const chave = process.env.SUPABASE_SERVICE_KEY;
   const r = await fetch(`${process.env.SUPABASE_URL}/rest/v1/${caminho}`, {
     ...opcoes,
-    headers: { apikey: chave, Authorization: `Bearer ${chave}`, "Content-Type": "application/json", ...(opcoes.headers || {}) },
+    headers: { ...cab(chave), "Content-Type": "application/json", ...(opcoes.headers || {}) },
   });
   if (!r.ok) throw new Error(`${caminho}: ${r.status} ${await r.text()}`);
   return r.status === 204 ? null : r.json();
