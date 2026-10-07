@@ -55,6 +55,7 @@ function validarExt(mat, ext){
       if(!q.a || q.a.length !== 5) avisos.push(t.t + ' ' + k + (i+1) + ': precisa de 5 alternativas');
       else if(new Set(q.a.map(x => String(x).trim())).size !== 5) avisos.push(t.t + ' ' + k + (i+1) + ': alternativas repetidas');
       if(!LETRAS.includes(q.g)) avisos.push(t.t + ' ' + k + (i+1) + ': gabarito inválido');
+      if(/\?|Confirme|alternativa [A-E]|mais próxima|Atenção ao cálculo/i.test(q.c || '')) avisos.push(t.t + ' ' + k + (i+1) + ': comentário com cara de rascunho');
     });
     ['d1','d2'].forEach(k => { if(!d[k] || d[k].length < 2) avisos.push(t.t + ': ' + k + ' com poucas seções'); });
     if(!d.erros || d.erros.length < 3) avisos.push(t.t + ': poucos erros comuns');
