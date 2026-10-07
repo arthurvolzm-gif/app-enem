@@ -547,9 +547,9 @@ function telaPlano(){
       :'<p class="nota" style="padding:6px 0;">Dia livre. Descansar também faz parte do plano: o cérebro fixa o que você estudou.</p>'}
     </div>
     ${(()=>{ const ms=metaSemana(); return `<div class="card"><div class="meta-topo"><div><div class="k">Meta de temas da semana</div><div class="v">${ms.feitos} <small>de ${ms.meta} temas</small></div></div><div class="pct"><b>${Math.min(100,Math.round(ms.feitos/ms.meta*100))}%</b><span>da semana</span></div></div><div class="barra"><i style="width:${Math.min(100,ms.feitos/ms.meta*100)}%"></i></div><div class="nota">No seu ritmo, você cobre cerca de <b>${ms.cobertos} dos ${totalTemas} temas</b> até o ENEM, começando pelos que mais caem.</div>
-      <div class="nota" style="margin-top:10px;">Você pode concluir todas as matérias aumentando seu tempo para <b>+3 horas</b>, assim você conclui 100% dos temas cobrados.</div>
+      <div class="nota" style="margin-top:10px;">Você pode concluir todas as matérias aumentando seu tempo para <b>+4 horas</b>, assim você conclui 100% dos temas cobrados.</div>
       <div class="nota" style="margin-top:10px;">Veja a quantidade de temas estudados de acordo com o seu tempo de estudo diário:</div>
-      <div class="chips" style="margin-top:8px;pointer-events:none;">${[60,90,120,180].map(m=>{ const pr=perfil(); const dias=Math.max(1,(pr.dias||[]).length); const sem=ms.semanas; const c=Math.min(totalTemas, lidos().length + Math.floor(m/25)*dias*sem); return `<button class="${m===180?'on':''}">${fmtMin(m)}: ${c} temas</button>`; }).join('')}</div>
+      <div class="chips" style="margin-top:8px;pointer-events:none;">${[[60,50],[90,65],[120,70],[150,80],[180,90],[240,100]].map(([m,pc])=>`<button class="${m===240?'on':''}">${fmtMin(m)}${m===240?' ou mais':''}: ${pc}% (${Math.round(totalTemas*pc/100)} temas)</button>`).join('')}</div>
       <button class="btn" style="margin-top:12px;" onclick="irAjustar()">Ajustar meu Plano</button></div>`; })()}
     <div class="card hero"><div class="fase"><span class="ic">${f.ic}</span><div><div class="k">Fase ${f.n} de 3</div><div class="grande" style="font-size:20px;">${f.nome}</div><p style="font-size:13px;">${f.txt}</p></div></div></div>
     <div class="secao">Sua semana completa</div>
@@ -571,7 +571,7 @@ function telaAjustar(){
     <div class="card"><div class="card-tt">Dias da semana</div>
       <div class="chips">${ORDEM_SEMANA.map(x=>`<button class="${aj.dias.includes(x)?'on':''}" onclick="ajDia(${x})">${DIAS[x]}</button>`).join('')}</div></div>
     <div class="card"><div class="card-tt">Tempo por dia</div>
-      <div class="chips">${[30,45,60,90,120,150].map(m=>`<button class="${aj.minutos===m?'on':''}" onclick="aj.minutos=${m};telaAjustar()">${fmtMin(m)}</button>`).join('')}</div></div>
+      <div class="chips">${[30,45,60,90,120,150,180,240].map(m=>`<button class="${aj.minutos===m?'on':''}" onclick="aj.minutos=${m};telaAjustar()">${fmtMin(m)}</button>`).join('')}</div></div>
     <div class="card"><div class="card-tt">Horário do lembrete</div>
       <input class="inp" id="ajHora" type="time" value="${S(aj.hora)}" onchange="aj.hora=this.value||aj.hora"></div>
     <div class="card"><div class="card-tt">Matérias prioritárias <span class="nota" style="margin-left:auto;font-family:Inter;font-size:12px;">até 4, na ordem</span></div>
