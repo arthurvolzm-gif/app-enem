@@ -308,3 +308,16 @@ Quadrada 1080x1080, fundo escuro do checkout. Confira a ortografia dos textos na
 
 **Se o gerador errar os textos pequenos:** peça "textos das páginas só como linhas, mantendo apenas os títulos grandes", ou gere sem texto e escreva os títulos no Canva.
 **Para ler em miniatura:** o tablet com as páginas deve ocupar uns 65% do quadro e a capa em pé uns 30%. Se ficar carregado, tire as quatro folhas em leque.
+
+---
+
+# Logo do Acelera Enem: monograma "AE" (versão simples, fundo branco)
+
+> Logo minimalista, vetorial e plana, em fundo branco liso. Um monograma com as letras "A" e "E" unidas: a perna direita do "A" se funde com a haste vertical esquerda do "E", formando uma única forma contínua. As duas letras inclinadas para a direita, como em itálico forte, para dar ideia de movimento. O "A" em azul (#1d4ed8) e o "E" em verde (#16a34a), cores chapadas, sem degradê, sem sombra, sem brilho, sem contorno. Letras geométricas, traço grosso e uniforme, cantos levemente arredondados, o miolo do "A" aberto e as três barras do "E" bem legíveis. Composição centralizada, com bastante margem em volta, sem nenhum texto além das duas letras, sem ícones extras, sem moldura. Boa leitura em tamanho de 48 pixels. Quadrada 1:1, 1024x1024.
+
+**Variações para pedir depois**
+- Mesma logo com fundo transparente.
+- Mesma logo dentro de um quadrado de cantos arredondados em azul-escuro, com as letras em branco (para ícone do app).
+- Logotipo horizontal: o monograma à esquerda e, à direita, "Acelera" em azul e "ENEM" em verde, fonte geométrica pesada, na mesma linha de base.
+
+**Se a ferramenta separar as letras:** peça "as letras compartilham a mesma haste, sem espaço entre elas, uma única silhueta".
