@@ -311,7 +311,7 @@ details.acc .ct{padding:0 16px 14px;font-size:14px;line-height:1.6;}
 .tp-check{flex:none;border:1.5px solid var(--azul2);background:var(--card);color:var(--azul2);font-weight:700;font-size:12px;padding:7px 10px;border-radius:999px;cursor:pointer;font-family:inherit;}
 .tp-check.on{background:var(--verde);border-color:var(--verde);color:#fff;}
 .tp-resumo{padding:4px 14px 14px;}
-.bloco-acoes{display:flex;gap:8px;flex-wrap:wrap;}
+.bloco-acoes{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:10px;}
 
 /* =========================================================
    REDESIGN: ícones de contorno, logo, cabeçalho em degradê,
