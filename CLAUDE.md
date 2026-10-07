@@ -13,7 +13,7 @@ em `testegratuitoenem.vercel.app` a partir deste repositório. Cores: branco e v
 - `shared/`: `quiz.css` e `quiz-base.js` (motor comum dos quizzes), `app.css`, `config.js`,
   `conta.js` (login Supabase e sincronização do progresso), `acesso.js` (códigos por produto, só hashes), `arsenal.js`, `questoes.js`.
 - `shared/conteudo/<matéria>.js`: os 25 temas de cada matéria (fonte única dos PDFs e do app). `shared/materias.js` monta a lista do app.
-- `materiais/gerar.cjs`: gera os PDFs de resumo (`node materiais/gerar.cjs [ids]`, saída em `materiais/pdf/`, fora do git). Cada tema precisa caber em 1 página: o gerador avisa se estourar.
+- `materiais/gerar.cjs`: gera os PDFs de resumo (`node materiais/gerar.cjs [ids]`, saída em `materiais/pdf/`, fora do git). Cada tema tem 6 páginas (visão geral, desenvolvimento, aprofundamento, exemplos resolvidos, exercícios, gabarito e checklist); o conteúdo estendido fica em `materiais/ext/<id>-N.cjs` (array por tema, chaveado pelo título exato de `shared/conteudo/<id>.js`) e o gerador avisa se faltar conteúdo, houver alternativa duplicada ou gabarito inconsistente.
 - `supabase/schema.sql`: banco (progresso, acessos, resgate de código). Passo a passo em `docs/SUPABASE.md`.
 - `img/`: imagens (ver `docs/prompts-imagens.md`).
 - `docs/oferta-e-funil.md`: funis, bumps, entrega de acesso, configuração e pendências.
