@@ -242,3 +242,43 @@ Entre na comunidade para tirar dúvidas, trocar dicas de estudo e se manter moti
 - Tire dúvidas com outros estudantes
 - Dicas e rotina de estudo
 - Acesso pelo link liberado no aplicativo
+
+---
+
+# Capas pequenas dos order bumps (miniatura do checkout)
+
+A imagem aparece minúscula no checkout, então: **um único elemento grande, centralizado, sem texto, traço grosso, alto contraste, fundo liso**. Formato quadrado 1:1, 1080x1080. Elemento ocupando cerca de 70% da imagem, com margem em volta (o checkout corta os cantos).
+
+Estilo comum: fundo preto liso (#0b0f12) com um brilho ciano suave atrás do objeto, objeto em 3D leve ou ilustração plana com acabamento premium, cores ciano #22b3d2 e #2ee6ff, branco e grafite. Sem pessoas, sem logo, sem texto, sem números, sem travessões. Poucos detalhes, formas simples e legíveis em 80 pixels.
+
+**OB1: Exercícios e Simulados**
+Uma prancheta (clipboard) em grafite com uma folha branca de prova, mostrando quatro linhas com bolinhas de alternativa, uma delas preenchida em ciano, e um lápis amarelo encostado na lateral. Um pequeno cronômetro em ciano preso ao canto superior direito da prancheta.
+
+**OB2: Material Preparatório para Redação**
+Uma folha de redação pautada em branco, inclinada, com linhas de texto manuscrito em cinza e uma caneta-tinteiro em ciano apoiada na diagonal sobre ela. Sem palavras legíveis, só linhas.
+
+**OB3: Correção de Redação por Foto com IA**
+Um celular preto de frente, com a tela mostrando uma folha de redação com quatro cantos de escaneamento em ciano ao redor e, no canto superior direito do celular, uma pequena estrela de brilho (símbolo de IA) em ciano. Sem texto na tela, só linhas.
+
+**Upsell: Comunidade de Estudantes**
+Dois balões de conversa sobrepostos, um em ciano e um em grafite com borda ciana, e três pequenos círculos de avatar (só silhuetas simples) acima deles. Sem texto dentro dos balões, só três pontinhos em um deles.
+
+---
+
+# Logo do Acelera Enem
+
+**Conceito:** velocidade com estudo, sem exagero. Um ícone simples, que lê bem em 48 pixels e em 1024.
+
+**Ícone (1024x1024, fundo preto #0b0f12 e também versão em fundo transparente):**
+Um quadrado de cantos bem arredondados em degradê de ciano escuro #0b6f86 para ciano claro #2ee6ff (do canto inferior esquerdo ao superior direito). Dentro dele, em branco, duas setas grossas em forma de chevron (>>) inclinadas para cima e para a direita, como um símbolo de acelerar, e uma pequena estrela de quatro pontas no canto superior direito como brilho. Formas geométricas simples, traço grosso, cantos arredondados, sem texto dentro do ícone, sem sombras duras, um único reflexo suave no alto.
+
+**Logotipo horizontal (fundo preto):**
+O ícone à esquerda e, à direita, a palavra "Acelera" em branco e "ENEM" em ciano #2ee6ff logo abaixo ou ao lado, na mesma linha de base. Fonte geométrica pesada e moderna (estilo Plus Jakarta Sans ExtraBold), letras levemente inclinadas para a direita (itálico leve) para dar ideia de movimento. Espaçamento generoso entre o ícone e o texto.
+
+**Versão para fundo branco:**
+O mesmo logotipo com "Acelera" em azul-escuro #0b1f4d e "ENEM" em ciano escuro #0891b2, ícone mantido.
+
+**Capa quadrada (1080x1080):**
+Fundo preto com brilho ciano no centro, o logotipo grande centralizado, linhas finas de velocidade em ciano saindo para a direita atrás do ícone, e embaixo a frase pequena "Seu plano de estudos até o ENEM".
+
+Pedidos para a ferramenta de imagem: vetor limpo, bordas nítidas, sem ruído, sem gradientes complexos, sem texto fora do logotipo, sem marcas de outras empresas.
