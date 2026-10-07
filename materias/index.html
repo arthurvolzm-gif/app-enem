@@ -422,11 +422,7 @@ function telaInicio(){
   const semana = ORDEM_SEMANA.map(x=>{ const dt=new Date(); dt.setDate(dt.getDate()-((dt.getDay()+6)%7)+((x+6)%7)); const iso=hojeISO(dt); const blx=p.plano[x]||[]; const mins=minutosDia(iso); const meta=blx.reduce((a,b)=>a+b.min,0);
     const cls = iso===h?'hoje':''; const st = !blx.length?'folga':(mins>=meta*0.8?'ok':(mins>0?'meio':'')); return `<div class="d ${cls} ${st}"><div class="l">${DIAS[x].toUpperCase()}</div><div class="n">${st==='ok'?'✓':dt.getDate()}</div></div>`; }).join('');
   app.innerHTML = `
-  <div class="topo-hero">
-    <div class="th-linha"><div class="logo">${LOGO}<span>Plano <b>ENEM</b></span></div>
-      <button class="sino" onclick="irPara('notificacoes')" aria-label="Notificações">${ic('sino',2)}${notif?`<span class="bolha">${notif}</span>`:''}</button></div>
-    <div class="saud">${saudacao()}</div><div class="nome">${S(primeiroNome())} ${seq?`<span class="fogo">${ic('chama',2)} ${seq}</span>`:''}</div>
-  </div>
+  <div class="topo-sino"><button class="sino" onclick="irPara('notificacoes')" aria-label="Notificações">${ic('sino',2)}${notif?`<span class="bolha">${notif}</span>`:''}</button></div>
   <div class="tela fade">
     ${pend.length?`<button class="card alerta-card" onclick="irPara('plano')" style="width:100%;text-align:left;"><span class="ic">📌</span><div><b>${pend.length} ${pend.length>1?'blocos':'bloco'} de estudo ainda hoje</b><span>${pend.map(b=>nomeBloco(b.m)).join(', ')}</span></div><span class="seta">${ic('chevR',2.2)}</span></button>`:''}
     ${d?`<div class="card hero"><div class="fase"><span class="ic">${f.ic}</span><div><div class="k">Faltam ${d} dias para o ENEM · Fase ${f.n}</div><div class="grande" style="font-size:21px;">${f.nome}</div><p style="font-size:13px;">${f.txt}</p></div></div></div>`:''}

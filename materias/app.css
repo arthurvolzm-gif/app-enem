@@ -464,3 +464,8 @@ body.tem-timer .barra-topo{top:54px;}
   .md-capa{border-radius:0;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact;min-height:40vh;}
   .md-tema{border:none;border-radius:0;padding:0;margin:0;page-break-after:always;break-inside:avoid-page;}
 }
+
+/* início: só o sino de notificações no topo */
+.topo-sino{display:flex;justify-content:flex-end;padding:14px 16px 0;}
+.topo-sino .sino{margin:0;}
+.topo-sino .sino svg{width:21px;height:21px;}
