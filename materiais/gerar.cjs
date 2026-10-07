@@ -170,13 +170,13 @@ body{font-family:'Nunito',sans-serif;color:#1d1d1d;-webkit-print-color-adjust:ex
 .parte-topo h3{font-family:'Lilita One',cursive;font-size:19pt;text-transform:uppercase;line-height:1.1;margin:2mm 0 1mm;-webkit-text-stroke:.4px rgba(0,0,0,.3);}
 .parte-topo .parte-nome{font-family:'Patrick Hand',cursive;font-size:15pt;color:#555;}
 .parte-leg{text-align:center;font-size:9pt;font-weight:800;color:#888;letter-spacing:.5px;text-transform:uppercase;margin:-1mm 0 1mm;}
-.q{break-inside:avoid;margin-bottom:4.5mm;border:2px solid #dfe5f2;border-radius:10px;padding:3mm 4.5mm;background:#fbfcff;}
+.q{break-inside:avoid;margin-bottom:3.5mm;border:2px solid #dfe5f2;border-radius:10px;padding:2.5mm 4.5mm;background:#fbfcff;}
 .q-n{font-family:'Lilita One',cursive;font-size:11pt;color:#1d3f8f;margin-bottom:1mm;}
 .folha-fit.fit .sec-txt{font-size:var(--fs,13pt);}
 .q-enun{font-size:calc(var(--fs,13pt));line-height:1.45;margin-bottom:1.5mm;}
 .alts{list-style:none;}
-.alts li{display:flex;gap:2.5mm;font-size:calc(var(--fs,13pt) - .5pt);line-height:1.38;margin-bottom:.8mm;}
-.alts .letra{flex:0 0 5mm;height:5mm;border-radius:50%;background:#e6ecfa;color:#1d3f8f;font-weight:800;font-size:8pt;display:flex;align-items:center;justify-content:center;margin-top:.3mm;}
+.alts li{display:flex;gap:2.5mm;font-size:calc(var(--fs,13pt) - .5pt);line-height:1.3;margin-bottom:.6mm;align-items:flex-start;}
+.alts .letra{flex:0 0 1.55em;height:1.55em;border-radius:50%;background:#e6ecfa;color:#1d3f8f;font-weight:800;font-size:.72em;display:flex;align-items:center;justify-content:center;margin-top:.12em;}
 .resol{margin-top:2mm;padding:2mm 3mm;background:#eefaf1;border-left:3px solid #3f9e2f;border-radius:4px;font-size:calc(var(--fs,13pt) - .5pt);line-height:1.42;}
 .resp-linha{margin-top:3mm;font-size:10.5pt;color:#555;text-align:center;}
 .gab{background:#fff8e1;border:2px solid #f5c443;border-radius:8px;padding:2mm 4mm;text-align:center;font-size:11pt;margin-bottom:3mm;}
@@ -246,14 +246,17 @@ ${(() => { let n = 3; return mat.temas.map((t, i) => temaPaginas(t, i, mat, ext,
     await p.evaluate(() => document.fonts.ready);
     /* páginas extras: reduz a letra até caber (mínimo 8,5pt) */
     await p.evaluate(() => document.querySelectorAll('.folha-fit.fit .conteudo').forEach(c => {
-      let fs = 13; c.style.setProperty('--fs', fs + 'pt');
-      while (c.scrollHeight > c.clientHeight + 2 && fs > 8.5) { fs -= .25; c.style.setProperty('--fs', fs + 'pt'); c.querySelectorAll('.sec-txt').forEach(e => e.style.fontSize = fs + 'pt'); }
+      let fs = 14.5; c.style.setProperty('--fs', fs + 'pt');
+      while (c.scrollHeight > c.clientHeight + 2 && fs > 8) { fs -= .25; c.style.setProperty('--fs', fs + 'pt'); c.querySelectorAll('.sec-txt').forEach(e => e.style.fontSize = fs + 'pt'); }
+      c.dataset.fs = fs;
     }));
     /* a área de anotações só fica quando sobra espaço de verdade */
     await p.evaluate(() => document.querySelectorAll('.anot').forEach(a => { if (a.clientHeight < 120) a.remove(); }));
     const estouro = await p.evaluate(() => [...document.querySelectorAll('.folha .conteudo')]
       .filter(c => c.scrollHeight > c.clientHeight + 2)
       .map(c => (c.querySelector('[data-t]') || {dataset:{t:'(página fixa)'}}).dataset.t + ' +' + (c.scrollHeight - c.clientHeight) + 'px'));
+    const pequenas = await p.evaluate(() => [...document.querySelectorAll('.folha-fit.fit .conteudo')].filter(c => +c.dataset.fs < 10.5).map(c => (c.querySelector('[data-t]')||{dataset:{t:'?'}}).dataset.t + ' ' + c.dataset.fs + 'pt'));
+    if (pequenas.length) console.log('  ℹ️ letra pequena (<10,5pt):', pequenas.join(' | '));
     if (estouro.length) console.log('  ⚠️ não coube na página:', estouro.join(' | '));
     const buf = await p.pdf({ format: 'A4', printBackground: true, preferCSSPageSize: true });
     fs.unlinkSync(arq);
