@@ -94,7 +94,7 @@ pr:[
  { q:'A solução da equação (x − 3)/2 + 4 = 10 é:', a:['x = 9','x = 12','x = 15','x = 18','x = 21'], g:'C', c:'(x − 3)/2 = 6 → x − 3 = 12 → x = 15.' },
  { q:'As raízes da equação x² − 7x + 10 = 0 são:', a:['1 e 10','2 e 5','−2 e −5','3 e 4','5 e 7'], g:'B', c:'Soma = 7 e produto = 10: os números 2 e 5 (2 + 5 = 7 e 2 × 5 = 10).' },
  { q:'Para que a equação x² + 6x + k = 0 tenha duas raízes reais iguais, o valor de k deve ser:', a:['3','6','9','12','36'], g:'C', c:'Raízes iguais exigem Δ = 0: 36 − 4k = 0 → k = 9.' },
- { q:'Um número somado ao seu quadrado dá 30. Esse número pode ser:', a:['−6 ou 5','−5 ou 6','5 ou 6','−6 ou −5','somente 5'], g:'A', c:'x + x² = 30 → x² + x − 30 = 0. Soma das raízes = −1 e produto = −30: os números são 5 e −6. (Alternativa A: −6 ou 5.)' }
+ { q:'Um número somado ao seu quadrado dá 30. Esse número pode ser:', a:['−6 ou 5','−5 ou 6','5 ou 6','−6 ou −5','somente 5'], g:'A', c:'x + x² = 30 → x² + x − 30 = 0. Soma das raízes = −1 e produto = −30: os números são 5 e −6.' }
 ],
 erros:['Errar o sinal ao passar termos de um lado para o outro da igualdade.','Esquecer de dividir ambos os termos por 2a na fórmula de Bhaskara.','Aceitar uma raiz que não faz sentido no contexto (negativa para medida).','Trocar a soma e o produto das raízes: soma = −b/a e produto = c/a.'],
 check:['resolver equações do 1º grau com parênteses e frações','traduzir um problema em linguagem de equação','resolver equações do 2º grau com Bhaskara e por soma e produto','interpretar o discriminante (Δ)']
