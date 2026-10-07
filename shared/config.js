@@ -22,7 +22,7 @@ window.ENEM_CONFIG = {
     comunidade: ''    // Comunidade de estudantes (upsell)
   },
   /* chave PÚBLICA do Web Push (gere o par com: npx web-push generate-vapid-keys; a privada vai só na Vercel) */
-  VAPID_PUBLICA: '',
+  VAPID_PUBLICA: 'BMFQKSgVwR5bnh6g8oKwEj3M26OeTo3NpC9QrPkS9Qux9T6FOJG-zERXHkyi2npX4POjmQ63G5pPdFfW9CkWfxY',
   /* link da comunidade (abre depois da compra) */
   COMUNIDADE_LINK: '',
   SUPORTE_EMAIL: '',   // e-mail de suporte mostrado nas telas de acesso
