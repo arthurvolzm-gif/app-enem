@@ -196,11 +196,19 @@ function gerarPlano(p){
   const porDia = Math.max(1, Math.min(3, Math.ceil(fila.length/Math.max(1,diasMat.length))));
   const base = Math.floor(p.minutos/porDia/5)*5; let sobra = p.minutos - base*porDia;
   const mins = [...Array(porDia)].map(()=>{ const x = base + (sobra>=5?5:0); if(sobra>=5) sobra-=5; return x; });
-  const plano = {}; let k=0;
+  /* cada matéria aparece uma vez por semana; o que sobraria repetido vira UM bloco de redação extra (o resto do dia fica livre) */
+  const divide = n=>{ const b=Math.floor(p.minutos/n/5)*5; let r=p.minutos-b*n; return [...Array(n)].map(()=>{ const x=b+(r>=5?5:0); if(r>=5) r-=5; return x; }); };
+  const plano = {}; let k=0, redExtra=false;
   diasEstudo.forEach(d=>{
     if(comRev && d===0){ plano[d]=[{m:'revisao',min:p.minutos}]; return; }
-    plano[d]=[];
-    for(let i=0;i<porDia;i++){ plano[d].push({m:fila[k%fila.length],min:mins[i]}); k++; }
+    const ids=[];
+    for(let i=0;i<porDia;i++){
+      if(k<fila.length) ids.push(fila[k]);
+      else if(!redExtra){ ids.push('red'); redExtra=true; }
+      k++;
+    }
+    const m2 = ids.length===porDia ? mins : divide(ids.length);
+    plano[d]=ids.map((id,i)=>({m:id,min:m2[i]}));
   });
   return plano;
 }
@@ -435,7 +443,7 @@ function telaGerando(){
 function salvarPerfil(){
   const ant = perfil();
   const np = Object.assign({}, ob.d, { dificeis: ob.d.dificeis.slice(0,4), criadoEm: (ant&&ant.criadoEm)||hojeISO() });
-  np.plano = gerarPlano(np); np.planoV = 2;
+  np.plano = gerarPlano(np); np.planoV = 3;
   lsSet('mat_perfil', np);
   const editar = ob.editar; ob=null;
   telaPlanoPronto(editar);
@@ -640,7 +648,7 @@ function ajTirar(id){ aj.dificeis=aj.dificeis.filter(x=>x!==id); telaAjustar(); 
 function ajAdd(id){ if(aj.dificeis.length<4) aj.dificeis.push(id); telaAjustar(); }
 function ajSalvar(){
   const ant=perfil(), np=Object.assign({}, ant, { dias:aj.dias, minutos:aj.minutos, hora:aj.hora, dificeis:aj.dificeis.slice(0,4) });
-  np.plano=gerarPlano(np); np.planoV=2; lsSet('mat_perfil',np);
+  np.plano=gerarPlano(np); np.planoV=3; lsSet('mat_perfil',np);
   /* os temas já sorteados de hoje em diante não valem mais para o plano novo */
   const A=ls('mat_atrib',{}), h=hojeISO(); Object.keys(A).forEach(k=>{ if(k>=h) delete A[k]; }); lsSet('mat_atrib',A);
   blocosAbertos.clear(); aj=null; diaSel=null; toast('Plano atualizado!'); irPara('plano');
@@ -1016,7 +1024,7 @@ function render(){
   if(pt[0]==='codigo' || (!temPlano && !temEx)){ telaCodigo(); return; }
   if(!temPlano){ nav.style.display='none'; if(pt[0]==='questao') return telaQuestao(); if(pt[0]==='erros') return telaErros(); if(pt[0]==='treino') return iniciarQ('treino',null,pt[2]); return telaExercicios(); }
   if(!perfil()){ if(!ob) iniciarOnboarding(false); else telaOnboarding(); return; }
-  { const pf=perfil(); if(pf.planoV!==2){ pf.plano=gerarPlano(pf); pf.planoV=2; lsSet('mat_perfil',pf); const A=ls('mat_atrib',{}), h=hojeISO(); Object.keys(A).forEach(k=>{ if(k>=h) delete A[k]; }); lsSet('mat_atrib',A); } }
+  { const pf=perfil(); if(pf.planoV!==3){ pf.plano=gerarPlano(pf); pf.planoV=3; lsSet('mat_perfil',pf); const A=ls('mat_atrib',{}), h=hojeISO(); Object.keys(A).forEach(k=>{ if(k>=h) delete A[k]; }); lsSet('mat_atrib',A); } }
   nav.style.display='';
   const aba = {inicio:'inicio',notificacoes:'inicio',timer:'plano',ajustar:'plano',plano:'plano',resumos:'resumos',materia:'resumos',tema:'resumos',progresso:'progresso',erros:'progresso'}[pt[0]] || 'perfil';
   nav.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.r===aba));
