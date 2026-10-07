@@ -607,8 +607,7 @@ function telaPlano(){
       :'<p class="nota" style="padding:6px 0;">Dia livre. Descansar também faz parte do plano: o cérebro fixa o que você estudou.</p>'}
     </div>
     ${(()=>{ const ms=metaSemana(); return `<div class="card"><div class="meta-topo"><div><div class="k">Meta de temas da semana</div><div class="v">${ms.feitos} <small>de ${ms.meta} temas</small></div></div><div class="pct"><b>${Math.min(100,Math.round(ms.feitos/ms.meta*100))}%</b><span>da semana</span></div></div><div class="barra"><i style="width:${Math.min(100,ms.feitos/ms.meta*100)}%"></i></div><div class="nota">No seu ritmo, você cobre cerca de <b>${ms.cobertos} dos ${totalTemas} temas</b> até o ENEM, começando pelos que mais caem.</div>
-      <div class="chips" style="margin-top:8px;pointer-events:none;display:grid;grid-template-columns:1fr 1fr;gap:6px;">${[[60,50],[90,65],[120,70],[150,80],[180,90],[240,100]].map(([m,pc])=>`<button style="padding:9px 6px;font-size:12.5px;text-align:center;" class="${m===240?'on':''}">${fmtMin(m)}${m===240?' ou mais':''}: ${pc}% (${Math.round(totalTemas*pc/100)} temas)</button>`).join('')}</div>
-      <button class="btn" style="margin-top:12px;" onclick="irAjustar()">Ajustar meu Plano</button></div>`; })()}
+      <div class="chips" style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">${(()=>{ const T=[[60,50],[90,65],[120,70],[150,80],[180,90],[240,100]], atual=T.filter(t=>t[0]<=Math.max(0,p.minutos)).map(t=>t[0]).pop(); return T.map(([m,pc])=>`<button style="padding:9px 6px;font-size:12.5px;text-align:center;" class="${m===atual?'on':''}" onclick="mudarTempo(${m})">${fmtMin(m)}${m===240?' ou mais':''}: ${pc}% (${Math.round(totalTemas*pc/100)} temas)</button>`).join(''); })()}</div></div>`; })()}
     <div class="card hero"><div class="fase"><span class="ic">${f.ic}</span><div><div class="k">Fase ${f.n} de 3</div><div class="grande" style="font-size:20px;">${f.nome}</div><p style="font-size:13px;">${f.txt}</p></div></div></div>
     <div class="secao">Sua semana completa</div>
     <div class="card">${ORDEM_SEMANA.map(x=>{ const b2=p.plano[x]||[]; return `<div class="row" style="display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--borda);font-size:14px;"><b style="color:var(--navy);width:44px;">${DIAS[x]}</b><span style="flex:1;color:${b2.length?'var(--texto)':'var(--cinza2)'};">${b2.length?b2.map(b=>iconeBloco(b.m)+' '+nomeBloco(b.m)).join(' · '):'Descanso'}</span><span style="color:var(--azul2);font-weight:700;">${b2.length?fmtMin(b2.reduce((a,b)=>a+b.min,0)):''}</span></div>`; }).join('')}</div>
@@ -646,6 +645,14 @@ function ajDia(x){ aj.dias = aj.dias.includes(x) ? aj.dias.filter(y=>y!==x) : [.
 function ajMover(i,d){ const a=aj.dificeis, j=i+d; if(j<0||j>=a.length) return; [a[i],a[j]]=[a[j],a[i]]; telaAjustar(); }
 function ajTirar(id){ aj.dificeis=aj.dificeis.filter(x=>x!==id); telaAjustar(); }
 function ajAdd(id){ if(aj.dificeis.length<4) aj.dificeis.push(id); telaAjustar(); }
+/* toque nos cards de tempo da aba Plano: troca o tempo por dia e refaz o plano na hora */
+function mudarTempo(m){
+  const ant=perfil(); if(!ant||ant.minutos===m) return;
+  const np=Object.assign({}, ant, { minutos:m });
+  np.plano=gerarPlano(np); np.planoV=3; lsSet('mat_perfil',np);
+  const A=ls('mat_atrib',{}), h=hojeISO(); Object.keys(A).forEach(k=>{ if(k>=h) delete A[k]; }); lsSet('mat_atrib',A);
+  blocosAbertos.clear(); toast('Plano atualizado: '+fmtMin(m)+' por dia.'); render();
+}
 function ajSalvar(){
   const ant=perfil(), np=Object.assign({}, ant, { dias:aj.dias, minutos:aj.minutos, hora:aj.hora, dificeis:aj.dificeis.slice(0,4) });
   np.plano=gerarPlano(np); np.planoV=3; lsSet('mat_perfil',np);
