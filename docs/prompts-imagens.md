@@ -297,3 +297,14 @@ Fotografia realista vista diretamente de cima (flat lay), em mesa preta (#000000
 Mockup de produto digital em 3D realista, fundo preto liso (#0b0f12) com brilho ciano suave atrás. No centro, a capa do e-book em pé, levemente inclinada, com lombada e sombra, capa azul royal com título em letras amarelas pesadas "ARSENAL de REDAÇÕES PARA O ENEM" e uma ilustração simples de livro aberto, fones de ouvido e despertador. Atrás dela, à direita, um tablet mostrando a mesma capa na tela, e à esquerda uma pilha pequena de folhas de redação pautadas. Selo redondo pequeno no canto superior direito com a palavra "PDF". O e-book ocupa cerca de 55% do quadro, com margem em volta. Acabamento premium, reflexos suaves.
 
 **Se o gerador errar o texto da capa:** gere o mockup com a capa só em azul royal e formas amarelas, sem texto, e coloque o título no Canva.
+
+---
+
+# OB2 (Material Preparatório para Redação): mockup com o conteúdo por dentro
+
+Quadrada 1080x1080, fundo escuro do checkout. Confira a ortografia dos textos na imagem gerada. Sem pessoas, sem mãos, sem logo de outras marcas, sem promessa de nota ou aprovação, sem travessões.
+
+> Mockup de produto digital em 3D realista, fundo preto liso (#0b0f12) com brilho ciano suave atrás. No centro, o e-book aberto em tablet grande, inclinado, mostrando por dentro duas páginas lado a lado, brancas e limpas, de um material de redação do ENEM. Página da esquerda com o título "Modelos prontos de introdução" em azul-escuro, três cartões numerados (1 Alusão histórica, 2 Constituição Federal, 3 Pensador ou filósofo) e, dentro de cada cartão, um parágrafo em linhas de texto com trechos entre colchetes destacados em amarelo, como [TEMA] e [CAUSA 1]. Página da direita com o título "Propostas de intervenção" e uma lista de cinco itens com ícones de check em ciano (Agente, Ação, Meio, Finalidade, Detalhamento), mais um quadro pequeno "Conectivos" com palavras em pílulas azuis. Atrás do tablet, em leque, quatro folhas do material em perspectiva, mostrando blocos coloridos de títulos ("Teses", "Tópicos frasais", "Frases coringas", "Repertório"). À esquerda, a capa do e-book em pé, azul royal com título em letras amarelas "ARSENAL de REDAÇÕES PARA O ENEM", menor que o tablet. Selo redondo pequeno "PDF" no canto superior direito. O conteúdo das páginas precisa ser o foco, legível e com cores de marca (azul-escuro, azul-royal, amarelo e ciano). Acabamento premium, reflexos suaves, sombras profundas.
+
+**Se o gerador errar os textos pequenos:** peça "textos das páginas só como linhas, mantendo apenas os títulos grandes", ou gere sem texto e escreva os títulos no Canva.
+**Para ler em miniatura:** o tablet com as páginas deve ocupar uns 65% do quadro e a capa em pé uns 30%. Se ficar carregado, tire as quatro folhas em leque.
