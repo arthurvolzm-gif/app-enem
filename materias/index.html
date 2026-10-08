@@ -304,7 +304,7 @@ function notificacoes(){
   if(pend.length) L.push({id:'plano'+h, ic:'📅', t:`${pend.length} ${pend.length>1?'blocos':'bloco'} de estudo para hoje`, s:pend.map(b=>nomeBloco(b.m)).join(' e '), r:'plano'});
   const rv=revisoesPendentes(); if(rv.length) L.push({id:'rev'+h, ic:'🧠', t:`${rv.length} ${rv.length>1?'revisões':'revisão'} para hoje`, s:'Revisar no tempo certo ajuda a guardar o conteúdo.', r:'inicio'});
   const sq=sequencia(); if(sq>=2) L.push({id:'seq'+h, ic:'🔥', t:`${sq} dias seguidos!`, s: sq>=melhorSequencia()?'É o seu recorde. Não deixe a sequência cair hoje.':'Continue: falta pouco para o seu recorde.', r:'progresso'});
-  if(d) L.push({id:'enem'+h, ic:'⏳', t:`Faltam ${d} dias para o ENEM`, s:`Fase ${fase().n}: ${fase().nome}. ${fase().txt}`, r:'plano'});
+  if(d) L.push({id:'enem'+h, ic:'⏳', t:`Faltam ${d} dias para o ENEM`, s:'Continue no seu plano de estudos.', r:'plano'});
   if(!Acesso.tem('exercicios')) L.push({id:'simpromo'+semanaISO(), ic:'📝', t:'Simulado da semana bloqueado', s:'Desbloqueie Exercícios e simulados e receba um aviso toda semana para treinar.', r:'exercicios'});
   else if(!(ls('mat_simulado_pref',null)||{}).dia && (ls('mat_simulado_pref',null)||{}).dia!==0) L.push({id:'simesc', ic:'📝', t:'Escolha o dia do seu simulado', s:'Defina o dia e a hora do simulado semanal.', r:'lembretes'});
   L.push({id:'com'+semanaISO(), ic:'👥', t:'Comunidade de estudantes', s:Acesso.tem('comunidade')?'Troque dúvidas e dicas com quem também está estudando para o ENEM.':'Estude junto: conheça a comunidade de estudantes do ENEM.', r:'comunidade'});
