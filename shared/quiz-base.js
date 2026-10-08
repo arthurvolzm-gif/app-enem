@@ -217,7 +217,24 @@ function renderAnalyzing(step){
       <div class="lib-pct" id="libPct">0%</div>
       <div class="lib-bar"><div class="lib-fill" id="libFill"></div></div>
     </div>
+    ${step.fotos && step.fotos.length ? `<div style="position:relative;width:100%;margin:22px auto 0;aspect-ratio:3/4;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 10px 26px rgba(0,0,0,.4);">
+      <img id="dep-img" src="${step.fotos[0]}" alt="Depoimento de aluno" style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity .2s ease;" onerror="this.style.display='none'">
+    </div>` : ''}
   </div></div>`;
+  /* depoimentos que se trocam sozinhos enquanto o índice é calculado (mesmo
+     padrão do quiz do Focus Fit). Pré-carrega todos assim que a tela abre,
+     senão a troca chega antes do download e a imagem pisca. */
+  if(step.fotos && step.fotos.length > 1){
+    step.fotos.forEach(src => { const im = new Image(); im.src = src; });
+    let fi = 0;
+    const depImg = document.getElementById('dep-img');
+    const depTimer = setInterval(() => {
+      if(!depImg || !document.body.contains(depImg)){ clearInterval(depTimer); return; }
+      fi = (fi + 1) % step.fotos.length;
+      depImg.style.opacity = '0';
+      setTimeout(() => { depImg.src = step.fotos[fi]; depImg.style.opacity = '1'; }, 180);
+    }, 1250);
+  }
   const DUR = step.dur || 5000;
   const p = document.getElementById('libPct'), f = document.getElementById('libFill');
   const t0 = performance.now(); let ult = -1;

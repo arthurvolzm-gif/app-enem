@@ -168,9 +168,21 @@ const QUESTIONS = [
     options:['📅 Um plano pronto para saber o que estudar em menos de 30 dias','📚 Resumos do que mais cai em cada matéria','📊 Ver o meu desempenho por matéria e saber onde melhorar','⏰ Lembretes e um aplicativo que me puxa para estudar','✅ Todas as alternativas acima'] }
 ];
 
+/* depoimentos de alunas (prints de conversa): só na versão escura, /quiz2/escuro */
+const DEPOIMENTOS = ['/img/depoimento-1.jpg','/img/depoimento-2.jpg','/img/depoimento-3.jpg'];
+const EH_ESCURO = document.documentElement.classList.contains('escuro');
+function depoimentosHTML(){
+  if(!EH_ESCURO) return '';
+  return `
+      <div class="sec-h" style="margin-top:30px;">Veja alguns depoimentos</div>
+      <div style="display:flex;flex-direction:column;gap:14px;margin-top:12px;">
+        ${DEPOIMENTOS.map(src=>`<img src="${src}" alt="Depoimento de aluna" loading="lazy" style="width:100%;height:auto;border-radius:14px;display:block;box-shadow:0 8px 22px rgba(0,0,0,.35);" onerror="this.remove()">`).join('')}
+      </div>`;
+}
+
 function montaFlow(){
   QUESTIONS.forEach(q=>FLOW.push({type:'question', q}));
-  FLOW.push({type:'analyzing', label:'Calculando o seu Índice de Preparo...', dur:5000});
+  FLOW.push({type:'analyzing', label:'Calculando o seu Índice de Preparo...', dur:5000, fotos: EH_ESCURO ? DEPOIMENTOS : null});
   FLOW.push({type:'diag'});
   FLOW.push({type:'app'});
   FLOW.push({type:'analyzing', label:'Montando o seu plano personalizado...', dur:3500});
@@ -576,6 +588,7 @@ const RENDER = {
         acao:'go(1)',
         preco:'R$ 29,90', precoNota:'à vista',
         nota:'Não prometemos nota nem aprovação. Os resultados dependem da sua dedicação.'})}
+      ${depoimentosHTML()}
     </div></div>`;
   },
 
