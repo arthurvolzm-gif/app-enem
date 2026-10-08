@@ -181,3 +181,20 @@ html:not(.escuro) [style*="color:#8a98b5"],html:not(.escuro) [style*="color:#9ba
 .cd-un{min-width:64px;padding:9px 6px 7px;border-radius:14px;background:var(--verde);color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.12);}
 .cd-un b{display:block;font-family:'Open Sans',sans-serif;font-size:26px;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums;}
 .cd-un span{font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:700;opacity:.9;}
+
+/* custo de não agir x custo da oferta */
+.custo .custo-grid{display:grid;gap:12px;margin:16px 0 18px;text-align:left;}
+.custo-card{border-radius:16px;padding:18px 16px;border:2px solid var(--borda);background:#fff;}
+.custo-card.ruim{border-color:#f0c9c9;background:#fff7f7;}
+.custo-card.bom{border-color:var(--verde);background:var(--verde-suave);}
+.custo-tag{display:inline-block;font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;font-weight:800;padding:4px 10px;border-radius:20px;margin-bottom:10px;}
+.custo-card.ruim .custo-tag{background:#fde4e4;color:#b13a3a;}
+.custo-card.bom .custo-tag{background:var(--verde);color:#fff;}
+.custo-card h4{font-family:'Open Sans',sans-serif;font-size:19px;font-weight:900;color:var(--verde-escuro);line-height:1.25;margin-bottom:10px;}
+.custo-card h4 small{font-size:12px;font-weight:700;opacity:.7;}
+.custo-card ul{list-style:none;}
+.custo-card li{position:relative;padding-left:26px;font-size:14px;line-height:1.5;color:var(--cinza);margin-bottom:8px;}
+.custo-card li::before{position:absolute;left:0;top:0;font-weight:900;}
+.custo-card.ruim li::before{content:"✕";color:#d64545;}
+.custo-card.bom li::before{content:"✓";color:var(--verde);}
+@media(min-width:560px){.custo .custo-grid{grid-template-columns:1fr 1fr;}}

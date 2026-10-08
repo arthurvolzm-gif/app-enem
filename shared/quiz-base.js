@@ -55,6 +55,20 @@ function contadorEnem(){
   }, 0);
   return `<div class="cd-enem"><p class="cd-tt">Faltam para o ENEM</p><div class="cd-box">${un('cd-d','dias')}${un('cd-h','horas')}${un('cd-m','min')}${un('cd-s','seg')}</div></div>`;
 }
+/* comparativo "custo de não agir" x "custo da oferta" (cards lado a lado no desktop, empilhados no celular) */
+function custoComparado(o){
+  const li = a=>a.map(t=>`<li>${t}</li>`).join('');
+  return `<div class="blk custo">
+    <h3 class="sec-h" style="margin-top:0;">${o.titulo}</h3>
+    <p class="sec-s">${o.sub}</p>
+    <div class="custo-grid">
+      <div class="custo-card ruim"><span class="custo-tag">Custo de ficar como está</span><h4>${o.ruimTit}</h4><ul>${li(o.ruim)}</ul></div>
+      <div class="custo-card bom"><span class="custo-tag">Custo de começar hoje</span><h4>${S(window.QUIZ.PRECO_POR)} <small>pagamento único</small></h4><ul>${li(o.bom)}</ul></div>
+    </div>
+    <button class="btn" onclick="irCheckout('custo')">${o.cta}</button>
+    <p class="note">${o.nota}</p>
+  </div>`;
+}
 function prazoTxt(){ const d = diasEnem(); return d ? `Faltam ${d} dias para o ENEM` : 'O ENEM está chegando'; }
 function irCheckout(origem){
   px('InitiateCheckout', true);

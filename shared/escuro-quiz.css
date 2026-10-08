@@ -113,3 +113,9 @@ html.escuro .pdf-sheet{background:#0d1114;border-color:#1b2a31;box-shadow:0 14px
 
 html.escuro .cd-tt{color:var(--txt2);}
 html.escuro .cd-un{background:var(--card);border:1px solid var(--borda);color:var(--verde);box-shadow:none;}
+
+html.escuro .custo-card{background:var(--card);}
+html.escuro .custo-card.ruim{background:#1a0f10;border-color:#4a2427;}
+html.escuro .custo-card.ruim .custo-tag{background:#3a1a1c;color:#ff8f8f;}
+html.escuro .custo-card.bom{background:var(--verde-suave);}
+html.escuro .custo-card.bom .custo-tag{color:#04222b;}
