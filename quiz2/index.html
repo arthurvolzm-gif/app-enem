@@ -40,6 +40,7 @@ if(/\/escuro\/?$/.test(location.pathname)||/[?&]tema=escuro/.test(location.searc
 .cp-cod b{display:block;font-family:'Open Sans',sans-serif;font-size:22px;font-weight:900;letter-spacing:1px;}
 .cp-dica{font-size:14px;color:#6b7590;margin-top:14px;}
 .faixa-cupom{background:linear-gradient(90deg,var(--verde-claro),var(--verde));color:#04222b;border-radius:16px;padding:14px 16px;margin:0 0 14px;text-align:center;font-weight:800;font-size:14.5px;box-shadow:0 8px 22px rgba(8,145,178,.25);}
+.faixa-cupom .fc-tempo{white-space:nowrap;}
 </style>
 <style>
 .hero-sub{font-family:'Open Sans',sans-serif;font-size:17px;font-weight:700;color:var(--verde-claro);line-height:1.5;text-align:center;margin:18px 0 6px;}
@@ -385,6 +386,19 @@ function iniciarRaspadinha(){
   const fim = ()=>{ raspando = false; ult = null; };
   cv.addEventListener('pointerup', fim); cv.addEventListener('pointercancel', fim);
 }
+
+/* tempo de reserva do cupom (2 min, contado a partir da 1ª vez que a página aparece na sessão) */
+function iniciarReservaCupom(){
+  const DUR = 120000; let t0 = Date.now();
+  try{ const v = +sessionStorage.getItem('enem_cupom_t0'); if(v) t0 = v; else sessionStorage.setItem('enem_cupom_t0', String(t0)); }catch(e){}
+  (function tick(){
+    const el = document.getElementById('fc-tempo'); if(!el) return;
+    const r = Math.max(0, DUR-(Date.now()-t0)), s = Math.ceil(r/1000);
+    el.textContent = Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+    if(r>0) setTimeout(tick, 250);
+    else { const w = el.closest('.fc-tempo'); if(w) w.innerHTML = '· reserva encerrada'; }
+  })();
+}
 function resgatarCupom(){
   try{ navigator.clipboard && navigator.clipboard.writeText(CUPOM_CODIGO); }catch(e){}
   try{ sessionStorage.setItem('enem_cupom', CUPOM_CODIGO); }catch(e){}
@@ -534,6 +548,7 @@ const RENDER = {
 
   projecao(){
     px('ViewContent', true);
+    setTimeout(iniciarReservaCupom, 0);
     const a = state.answers, n = nomeA();
     const P = calcPreparo(), niv = nivel(P.idx);
     const plano = montaPlano(), dif = matsDificeis(), semanaMin = plano.reduce((x,p)=>x+p.total,0);
@@ -543,7 +558,7 @@ const RENDER = {
     const M = (window.MATERIAS||[]).find(m=>m.nome===nomes[0]) || (window.MATERIAS||[])[0];
     const tema = M ? M.temas[0] : null;
     app.innerHTML = `
-    <div class="wrap fade"><div class="faixa-cupom">Desconto de 40% aplicado · cupom <b>${CUPOM_CODIGO}</b></div><div class="card">
+    <div class="wrap fade"><div class="faixa-cupom">Desconto de 40% aplicado · cupom <b>${CUPOM_CODIGO}</b> <span class="fc-tempo">reservado por <b id="fc-tempo">2:00</b> min</span></div><div class="card">
       ${backBtn()}<div class="brand-sub" style="margin-bottom:6px;">Seu plano personalizado</div>
       <span class="tag">${n?n+', veja':'Veja'} como fica usando o aplicativo</span>
 
