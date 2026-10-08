@@ -112,7 +112,7 @@ html.escuro .progress-fill,html.escuro .lib-fill{background:linear-gradient(90de
 html.escuro .pdf-sheet{background:#0d1114;border-color:#1b2a31;box-shadow:0 14px 30px rgba(0,0,0,.7);}
 
 html.escuro .cd-tt{color:var(--txt2);}
-html.escuro .cd-un{background:linear-gradient(135deg,#b71c1c,#e53935);border:1px solid #ff6b6b;color:#fff;box-shadow:0 6px 18px rgba(229,57,53,.25);}
+html.escuro .cd-un{background:var(--card);border:2px solid #ff5252;color:#ff5252;box-shadow:none;}
 
 html.escuro .custo-card{background:var(--card);}
 html.escuro .custo-card.ruim{background:#1a0f10;border-color:#4a2427;}
