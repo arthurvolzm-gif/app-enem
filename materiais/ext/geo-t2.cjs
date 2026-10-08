@@ -63,3 +63,15 @@ module.exports = [
   'Para revisar, esquematize: fatores (latitude, altitude, massas de ar, relevo, correntes) → climas (equatorial, tropical, tropical de altitude, semiárido, subtropical) → fenômenos (El Niño, La Niña, ZCAS, friagem, geadas, ilhas de calor) → impactos (seca, enchentes, agricultura) → respostas (cisternas, transposição, alertas). Esse tema se liga ao seguinte, as mudanças climáticas, que ampliam a frequência e a intensidade dos fenômenos extremos, e à hidrografia, que depende do regime de chuvas.'] }
 ]}
 ];
+
+/* quinto bloco do tema Climas do Brasil e fenômenos climáticos */
+{
+  const cb = module.exports[2];
+  const ult = cb.txt.pop();
+  cb.txt.push({ h:'Clima, agricultura, energia e saúde', p:[
+    'O clima condiciona as atividades econômicas. Na **agricultura**, o regime de chuvas define o calendário de plantio e de colheita: no Centro-Oeste, por exemplo, a safra de verão (soja) é plantada no início das chuvas, e a segunda safra (milho) aproveita o fim do período chuvoso. As geadas ameaçam o café e a cana no Sul de Minas e no Paraná, e as secas reduzem a produtividade. A **irrigação** amplia a produção em áreas secas, como o Vale do São Francisco, que se tornou polo de fruticultura (uva, manga), mas exige uso racional da água, para evitar a salinização do solo e o esgotamento dos mananciais.',
+    'O clima também afeta a **geração de energia**. A matriz elétrica brasileira depende muito das usinas **hidrelétricas**, cuja produção varia com as chuvas: em períodos de seca prolongada, os reservatórios baixam, e é preciso acionar usinas termelétricas, que são mais caras e mais poluentes. Por outro lado, o clima favorece as fontes **solar** (alta insolação, principalmente no Nordeste e no Centro-Oeste) e **eólica** (ventos constantes no litoral nordestino e no Sul), que têm crescido muito. O conhecimento das condições climáticas é, portanto, estratégico para o planejamento energético do país.',
+    'Na **saúde**, o clima influencia a ocorrência de doenças. As chuvas de verão e as altas temperaturas favorecem a proliferação do mosquito Aedes aegypti, e a dengue tem picos sazonais. A seca e a baixa umidade agravam problemas respiratórios, e as ondas de calor e de frio atingem principalmente idosos e crianças. As enchentes aumentam os casos de leptospirose e de doenças de veiculação hídrica. Os **desastres naturais**, como deslizamentos e inundações, atingem mais as populações pobres, que ocupam áreas de risco, o que mostra que a vulnerabilidade é social, e reforça a necessidade de políticas de moradia, de saneamento e de defesa civil.'
+  ]});
+  cb.txt.push(ult);
+}
