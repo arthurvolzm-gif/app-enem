@@ -321,3 +321,15 @@ Quadrada 1080x1080, fundo escuro do checkout. Confira a ortografia dos textos na
 - Logotipo horizontal: o monograma à esquerda e, à direita, "Acelera" em azul e "ENEM" em verde, fonte geométrica pesada, na mesma linha de base.
 
 **Se a ferramenta separar as letras:** peça "as letras compartilham a mesma haste, sem espaço entre elas, uma única silhueta".
+
+---
+
+# Logo do Acelera Enem: versão desenhada à mão (substitui a versão vetorial do monograma)
+
+Referência: o rabisco enviado pelo usuário (letras feitas com um traço contínuo de caneta, com as letras coladas).
+Azul do quiz claro: `#0891b2` (azul-petróleo), com `#06b0cf` para realces. O "E" segue em verde `#16a34a`.
+
+> Logo desenhada à mão, estilo ilustração de caderno feita com caneta marcador de ponta grossa e traço contínuo, levemente irregular e orgânico, como no rabisco de referência. O monograma "AE": um "A" alto e arredondado no topo, e um "E" colado à direita, de modo que a perna direita do "A" se funde com a haste esquerda do "E", formando uma única silhueta. As duas letras levemente inclinadas, "de lado", como se estivessem em movimento para a direita. O "A" em azul-petróleo (#0891b2), o "E" em verde (#16a34a), cada uma com contorno de traço grosso e miolo vazado (só linha), sem preenchimento, sem sombra, sem degradê. Em volta do monograma, desenhados no mesmo estilo de traço à mão, pequenos objetos de estudo: um caderno espiral aberto, dois cadernos empilhados, um lápis, uma caneta, um marca-texto, uma régua, um livro, um post-it e uma borracha, em azul-petróleo e verde, com pequenos detalhes em amarelo-mostarda e rosa apenas nos marca-textos. Os objetos ficam espalhados em volta com folga, sem tocar nem cobrir as letras, que continuam sendo o centro da imagem. Fundo bege liso (#f3ead8), sem textura de papel, sem pauta. Composição quadrada 1:1, 1024x1024, monograma ocupando cerca de 45% do quadro. Sem textos além das duas letras, sem moldura, sem pessoas.
+
+**Se ficar carregado:** peça "só quatro objetos: caderno, lápis, livro e post-it". Para usar como ícone pequeno, peça também a versão só do monograma, sem objetos, no mesmo fundo bege.
+**Se o gerador deixar as letras separadas:** acrescente "as letras compartilham o mesmo traço, a perna do A vira a haste do E, sem espaço entre elas".
