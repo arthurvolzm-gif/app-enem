@@ -27,6 +27,19 @@ if(/\/escuro\/?$/.test(location.pathname)||/[?&]tema=escuro/.test(location.searc
 .capa-mini span{font-size:10px;opacity:.9;}
 .capa-mini b{font-family:'Open Sans',sans-serif;font-weight:900;font-size:12.5px;color:#ffd84d;text-transform:uppercase;line-height:1.1;margin-top:2px;text-shadow:1px 1px 0 rgba(0,0,0,.3);}
 .capa-mini i{font-style:normal;font-size:18px;margin-top:4px;}
+
+.cp-card{width:100%;max-width:290px;margin:0 auto;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,var(--verde-claro),var(--verde));padding:14px 14px 16px;box-shadow:0 14px 40px rgba(8,145,178,.3);}
+.cp-raspa{position:relative;height:250px;border-radius:16px;overflow:hidden;background:#fff;touch-action:none;}
+.cp-premio{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Open Sans',sans-serif;color:var(--verde-escuro);}
+.cp-premio b{font-size:64px;font-weight:900;line-height:1;}
+.cp-premio span{font-size:20px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;}
+.cp-raspa canvas{position:absolute;left:0;top:0;cursor:grab;touch-action:none;}
+.cp-linha{border-top:2px dashed rgba(255,255,255,.55);margin:14px 0;}
+.cp-cod{background:var(--verde-escuro);color:#fff;border-radius:14px;padding:12px 10px;}
+.cp-cod small{display:block;font-size:13px;opacity:.8;margin-bottom:2px;}
+.cp-cod b{display:block;font-family:'Open Sans',sans-serif;font-size:24px;font-weight:900;letter-spacing:2px;}
+.cp-dica{font-size:14px;color:#6b7590;margin-top:14px;}
+.faixa-cupom{background:linear-gradient(90deg,var(--verde-claro),var(--verde));color:#04222b;border-radius:16px;padding:14px 16px;margin:0 0 14px;text-align:center;font-weight:800;font-size:14.5px;box-shadow:0 8px 22px rgba(8,145,178,.25);}
 </style>
 <style>
 .hero-sub{font-family:'Open Sans',sans-serif;font-size:17px;font-weight:700;color:var(--verde-claro);line-height:1.5;text-align:center;margin:18px 0 6px;}
@@ -161,6 +174,7 @@ function montaFlow(){
   FLOW.push({type:'diag'});
   FLOW.push({type:'app'});
   FLOW.push({type:'analyzing', label:'Montando o seu plano personalizado...', dur:3500});
+  FLOW.push({type:'cupom'});
   FLOW.push({type:'projecao'});
   FLOW.push({type:'result'});
 }
@@ -317,7 +331,78 @@ function iniciarPdf(){
 function pausarPdf(){ clearInterval(pdfTimer); }
 function retomarPdf(){ clearInterval(pdfTimer); pdfTimer = setInterval(avancarPdf, 1800); }
 
+
+/* ===== raspadinha do cupom ===== */
+const CUPOM_CODIGO = 'ENEM40';
+function iniciarRaspadinha(){
+  const box = document.getElementById('cp-raspa'), cv = document.getElementById('cp-canvas');
+  if(!box || !cv) return;
+  const W = box.clientWidth, H = box.clientHeight, dpr = window.devicePixelRatio||1;
+  cv.width = W*dpr; cv.height = H*dpr; cv.style.width = W+'px'; cv.style.height = H+'px';
+  const c = cv.getContext('2d'); c.scale(dpr,dpr);
+  const g = c.createLinearGradient(0,0,W,H);
+  const cs = getComputedStyle(document.documentElement);
+  g.addColorStop(0, (cs.getPropertyValue('--verde-claro')||'#06b0cf').trim()); g.addColorStop(1, (cs.getPropertyValue('--verde')||'#0891b2').trim());
+  c.fillStyle = g; c.fillRect(0,0,W,H);
+  c.fillStyle = 'rgba(255,255,255,.16)';
+  [[.3,.55,50,16],[.55,.5,52,16],[.78,.55,46,15],[.42,.78,52,16],[.68,.78,46,15]].forEach(([x,y,rx,ry])=>{ c.beginPath(); c.ellipse(W*x,H*y,rx,ry,-.2,0,7); c.fill(); });
+  c.fillStyle = '#04222b'; c.textAlign = 'center';
+  c.font = '800 19px Open Sans, sans-serif'; c.fillText('RASPE AQUI', W/2, H*.2);
+  c.font = '600 13px Lato, sans-serif'; c.fillText('arraste o dedo sobre o cartão', W/2, H*.2+22);
+  c.globalCompositeOperation = 'destination-out';
+  let raspando = false, revelado = false, ult = null;
+  const pos = e=>{ const r = cv.getBoundingClientRect(); return [e.clientX-r.left, e.clientY-r.top]; };
+  function raspa(e){
+    if(!raspando || revelado) return;
+    const [x,y] = pos(e); c.lineWidth = 44; c.lineCap = 'round'; c.lineJoin = 'round';
+    c.beginPath(); c.moveTo(ult?ult[0]:x, ult?ult[1]:y); c.lineTo(x,y); c.stroke(); ult = [x,y];
+    checa();
+  }
+  function checa(){
+    const d = c.getImageData(0,0,cv.width,cv.height).data; let vazio = 0, tot = 0;
+    for(let i=3;i<d.length;i+=4*40){ tot++; if(d[i]<20) vazio++; }
+    if(vazio/tot > .42) revelar();
+  }
+  function revelar(){
+    if(revelado) return; revelado = true;
+    cv.style.transition = 'opacity .5s'; cv.style.opacity = '0'; setTimeout(()=>{ cv.style.display='none'; },520);
+    document.getElementById('cp-codigo').textContent = CUPOM_CODIGO;
+    document.getElementById('cp-codigo').classList.add('on');
+    const di = document.getElementById('cp-dica'); if(di) di.innerHTML = 'Cupom <b>'+CUPOM_CODIGO+'</b> liberado! 🎉';
+    track('quiz_cupom_revelado', { cupom:CUPOM_CODIGO });
+  }
+  cv.addEventListener('pointerdown', e=>{ raspando = true; ult = null; cv.setPointerCapture(e.pointerId); raspa(e); });
+  cv.addEventListener('pointermove', raspa);
+  const fim = ()=>{ raspando = false; ult = null; };
+  cv.addEventListener('pointerup', fim); cv.addEventListener('pointercancel', fim);
+}
+function resgatarCupom(){
+  try{ navigator.clipboard && navigator.clipboard.writeText(CUPOM_CODIGO); }catch(e){}
+  try{ sessionStorage.setItem('enem_cupom', CUPOM_CODIGO); }catch(e){}
+  track('quiz_cupom_resgatado', { cupom:CUPOM_CODIGO });
+  go(1);
+}
+
 const RENDER = {
+  cupom(){
+    app.innerHTML = `
+    <div class="wrap fade"><div class="card" style="text-align:center;padding-top:40px;padding-bottom:40px;">
+      <h1 class="intro-h1" style="font-size:30px;">Você ganhou 40% de desconto</h1>
+      <p style="font-size:17px;font-weight:700;color:var(--cinza);margin:0 0 22px;">Raspe para revelar o seu cupom</p>
+      <div class="cp-card">
+        <div class="cp-raspa" id="cp-raspa">
+          <div class="cp-premio"><b>40%</b><span>de desconto</span></div>
+          <canvas id="cp-canvas"></canvas>
+        </div>
+        <div class="cp-linha"></div>
+        <div class="cp-cod"><small>40% de desconto</small><b id="cp-codigo">• • • • • • •</b></div>
+      </div>
+      <p class="cp-dica" id="cp-dica">Arraste o dedo (ou o mouse) sobre o cartão.</p>
+      <button class="btn" style="margin-top:18px;" onclick="resgatarCupom()">Resgatar cupom →</button>
+    </div></div>`;
+    iniciarRaspadinha();
+  },
+
   intro(q){
     app.innerHTML = `
     <div class="wrap fade">${contadorEnem()}<div class="card" style="text-align:center;padding-top:26px;padding-bottom:28px;">
@@ -448,7 +533,7 @@ const RENDER = {
     const M = (window.MATERIAS||[]).find(m=>m.nome===nomes[0]) || (window.MATERIAS||[])[0];
     const tema = M ? M.temas[0] : null;
     app.innerHTML = `
-    <div class="wrap fade"><div class="card">
+    <div class="wrap fade"><div class="faixa-cupom">Desconto de 40% aplicado · cupom <b>${CUPOM_CODIGO}</b></div><div class="card">
       ${backBtn()}<div class="brand-sub" style="margin-bottom:6px;">Seu plano personalizado</div>
       <span class="tag">${n?n+', veja':'Veja'} como fica usando o aplicativo</span>
 
