@@ -188,7 +188,6 @@ function montaFlow(){
   FLOW.push({type:'analyzing', label:'Montando o seu plano personalizado...', dur:3500});
   FLOW.push({type:'cupom'});
   FLOW.push({type:'projecao'});
-  FLOW.push({type:'result'});
 }
 
 /* =========================================================
@@ -536,6 +535,7 @@ const RENDER = {
   },
 
   projecao(){
+    px('ViewContent', true);
     const a = state.answers, n = nomeA();
     const P = calcPreparo(), niv = nivel(P.idx);
     const plano = montaPlano(), dif = matsDificeis(), semanaMin = plano.reduce((x,p)=>x+p.total,0);
@@ -573,7 +573,7 @@ const RENDER = {
           <div class="pc-de">R$ 49,90</div>
           <div class="pc-parc">5x R$ 6,65</div>
           <div class="pc-vista">ou R$ 29,90 à vista</div>
-          <button class="pc-btn" onclick="go(1)">QUERO ATIVAR O MEU PLANO</button>
+          <button class="pc-btn" onclick="irCheckout('projecao')">QUERO ATIVAR O MEU PLANO</button>
           <div class="pc-nota">Garantia incondicional de 7 dias · Acesso imediato<br>Compra 100% segura · Todas as bandeiras</div>
         </div>
       </div>
@@ -585,7 +585,7 @@ const RENDER = {
         ruim:['Gastar os dias que restam sem saber o que estudar primeiro','Deixar de revisar justamente os temas que mais caem','Estudar sem constância e sem lembretes, e largar de novo','Ficar de fora do curso que você quer e esperar mais um ano'],
         bom:['9 materiais em PDF, um por matéria, para estudar em menos de 30 dias','Aplicativo Plano ENEM com plano diário pronto para o seu tempo','Lembretes, revisão e progresso, tudo no celular','Acesso imediato e 7 dias de garantia'],
         cta:'QUERO ATIVAR O MEU PLANO →',
-        acao:'go(1)',
+        acao:"irCheckout('custo')",
         preco:'R$ 29,90', precoNota:'à vista',
         nota:'Não prometemos nota nem aprovação. Os resultados dependem da sua dedicação.'})}
       ${depoimentosHTML()}

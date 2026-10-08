@@ -104,7 +104,7 @@ function trackEtapa(step){
   else { num = track_estado.etapa; }
   track_estado.etapa  = Math.max(track_estado.etapa, num);
   track_estado.rotulo = rotulo;
-  if(step.type==='result') track_estado.concluiu = true;
+  if(step.type==='result' || step.type==='projecao') track_estado.concluiu = true;
   track('quiz_etapa', { etapa:num, etapa_id:rotulo, tipo:step.type, posicao:state.idx, total_perguntas:TOTAL_Q });
 }
 function trackResposta(qid, valor){
@@ -285,7 +285,7 @@ function armarPopupSaida(){
   const chave = 'enem_saida_'+Z.id;
   let armado=false, usado=false;
   const jaExibido = ()=>{ try{return sessionStorage.getItem(chave)==='1';}catch(e){return false;} };
-  const naOferta = ()=>{ try{return FLOW[state.idx] && FLOW[state.idx].type==='result';}catch(e){return false;} };
+  const naOferta = ()=>{ try{return FLOW[state.idx] && (FLOW[state.idx].type==='result'||FLOW[state.idx].type==='projecao');}catch(e){return false;} };
   function armar(){ if(armado||usado||jaExibido()||!naOferta()) return; try{history.pushState({e:1},'');armado=true;}catch(e){} }
   function abrir(){ overlay.classList.add('aberto'); document.body.style.overflow='hidden'; usado=true; try{sessionStorage.setItem(chave,'1');}catch(e){} px('ExitOffer'); }
   function fechar(){ overlay.classList.remove('aberto'); document.body.style.overflow=''; }
