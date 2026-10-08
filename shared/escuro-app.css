@@ -82,8 +82,8 @@ html.escuro .tm-full{background:var(--card);border-color:var(--borda);color:var(
 html.escuro .aj-item{background:var(--suave2);border-color:var(--borda);}
 html.escuro .aj-item button{background:var(--card);border-color:var(--borda);color:var(--azul);}
 html.escuro .tag.azul{background:var(--suave);color:var(--azul);}
-html.escuro .alerta-card{background:#1d1608;border-color:#4a3510;}
-html.escuro .alerta-card .ic{background:#2a1e0a;}
+html.escuro .alerta-card{background:#0c1c26;border-color:#154458;}
+html.escuro .alerta-card .ic{background:#12303f;}
 html.escuro .meta-card{border-color:var(--ciano-fundo);}
 html.escuro .fogo{background:#2a1a0a;border-color:#5a3a12;color:#ffb066;}
 html.escuro .humor button{background:var(--suave2);}
