@@ -63,3 +63,15 @@ module.exports = [
   'Para revisar, monte um quadro com os conceitos de Maquiavel (virtù, fortuna, razão de Estado, leão e raposa, aparências) e uma situação atual para cada um. Compare-o com os pensadores políticos que vêm a seguir (Hobbes, Locke e Rousseau), que, em vez de descrever a conquista do poder, buscaram justificar a origem e a legitimidade do Estado. Esse tema inaugura a Filosofia moderna, e prepara a discussão do racionalismo e do empirismo, que transformarão a teoria do conhecimento.'] }
 ]}
 ];
+
+/* quinto bloco do tema Maquiavel */
+{
+  const mq = module.exports[2];
+  const ult = mq.txt.pop();
+  mq.txt.push({ h:'O legado de Maquiavel: Estado moderno, poder e atualidade', p:[
+    'Maquiavel foi um dos primeiros a usar a palavra **Estado** (lo stato) no sentido moderno, como uma organização política impessoal, distinta da pessoa do governante, que detém o poder sobre um território e uma população. Antes, falava-se em reinos, cidades e principados. Essa novidade de vocabulário expressa uma nova forma de pensar a política, que se desenvolveria com a formação dos **Estados nacionais** e das monarquias absolutas. Sua defesa da unificação da Itália e do exército nacional também antecipou o **nacionalismo** e a ideia de que o Estado deve ser forte, para garantir a segurança e a ordem.',
+    'A influência de Maquiavel foi enorme e ambígua. Autores como **Hobbes** retomaram sua visão realista da natureza humana e da necessidade de um poder forte, enquanto **Rousseau** viu em sua obra uma crítica ao poder dos príncipes. Na época da Contrarreforma, O Príncipe foi incluído no Index dos livros proibidos da Igreja, e o termo "maquiavélico" se popularizou como adjetivo para a astúcia e a falta de escrúpulos. Pensadores do século XX, como **Gramsci**, retomaram a imagem do "príncipe moderno", o partido político que organiza a vontade coletiva, e **Hannah Arendt** e **Isaiah Berlin** discutiram suas ideias sobre a ética e a política.',
+    'Na atualidade, Maquiavel é lido como um autor que obriga a pensar sobre a **distância entre o discurso e a prática política**: a importância da imagem pública, das aparências e da comunicação, a tensão entre a ética e a eficácia, o papel do conflito, a necessidade de instituições capazes de limitar o poder e a relação entre liderança e circunstâncias. Seus conceitos são usados em análises de política, de marketing, de gestão e de relações internacionais. Estudá-lo permite compreender como o poder funciona, e, por meio dessa compreensão, criar mecanismos de controle democrático, que evitem o abuso, em vez de apenas aceitar a ideia de que "a política é assim".'
+  ]});
+  mq.txt.push(ult);
+}
