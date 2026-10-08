@@ -63,3 +63,15 @@ module.exports = [
   'Para revisar, monte uma linha do tempo: 1808 (revogação do alvará), 1929 (crise), 1930 a 1945 (Vargas, CSN, CLT), 1956 a 1961 (JK), 1964 a 1985 (ditadura, milagre, Zona Franca), anos 1990 (abertura e privatizações), atualidade (inovação e desindustrialização). Relacione esse tema com a urbanização (anterior), a agropecuária e a questão agrária (próximo) e a energia e os transportes, que dão suporte à produção. Também serve de base para a Geografia econômica mundial, que estuda a globalização e a divisão internacional do trabalho.'] }
 ]}
 ];
+
+/* quinto bloco do tema Urbanização brasileira */
+{
+  const ub = module.exports[0];
+  const ult = ub.txt.pop();
+  ub.txt.push({ h:'Urbanização, meio ambiente e qualidade de vida', p:[
+    'A urbanização transforma o ambiente. A **impermeabilização do solo**, com asfalto e concreto, reduz a infiltração da água, aumenta o escoamento superficial e favorece as **enchentes**. A retirada da vegetação e a concentração de edifícios formam as **ilhas de calor**, em que a temperatura é mais alta que a do entorno. A poluição do ar, emitida por veículos e indústrias, agrava as doenças respiratórias, e a **inversão térmica**, comum no inverno, impede a dispersão dos poluentes. Os rios urbanos, como o Tietê e o Pinheiros, em São Paulo, recebem esgoto e lixo, e, em muitos casos, foram canalizados e escondidos.',
+    'A geração de **resíduos sólidos** cresce com o consumo urbano, e o descarte inadequado em lixões contamina o solo e a água. A **Política Nacional de Resíduos Sólidos** busca a coleta seletiva, a reciclagem e a logística reversa. A busca por **áreas verdes**, como parques, praças e arborização, melhora o conforto térmico, a qualidade do ar e a saúde mental, mas elas estão distribuídas de forma desigual: os bairros ricos têm mais verde do que as periferias. O conceito de **justiça ambiental** destaca que os mais pobres sofrem mais com a poluição, com os riscos de deslizamento e com a falta de saneamento.',
+    'A **qualidade de vida urbana** depende do acesso a moradia digna, transporte, saneamento, saúde, educação, cultura, lazer e segurança. Indicadores como o **IDH municipal** e os índices de mortalidade infantil e de escolaridade mostram grandes diferenças entre bairros e entre cidades. Políticas de **requalificação urbana**, de urbanização de favelas, de ampliação do transporte coletivo e de áreas verdes podem melhorar essas condições. A participação da população, por meio de conselhos, orçamento participativo e movimentos sociais, é fundamental para que as cidades sejam mais justas e sustentáveis, e para que o crescimento urbano deixe de reproduzir a desigualdade.'
+  ]});
+  ub.txt.push(ult);
+}
