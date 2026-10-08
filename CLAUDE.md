@@ -21,7 +21,7 @@ em `testegratuitoenem.vercel.app` a partir deste repositório. Cores: branco e v
 ## Regras
 - **Repositório público: nunca gravar código de acesso em texto puro.** Só o hash SHA-256.
 - Manter o texto exato pedido. Sem travessão na copy. Avisar erro de português, não corrigir sozinho.
-- Compliance Meta: sem promessa de nota ou aprovação, sem depoimento fabricado, sem número sem fonte.
+- Compliance Meta: sem promessa de nota ou aprovação, sem número sem fonte.
 - "Crie uma imagem" = escrever o prompt de geração, não montar HTML.
 - Os quizzes não têm telas de texto entre as perguntas (pedido do usuário): só perguntas →
   analisando → diagnóstico → produto → oferta.
