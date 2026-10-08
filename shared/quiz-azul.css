@@ -200,3 +200,4 @@ html:not(.escuro) [style*="color:#8a98b5"],html:not(.escuro) [style*="color:#9ba
 @media(min-width:560px){.custo .custo-grid{grid-template-columns:1fr 1fr;}}
 .card .custo{margin-top:26px;}
 .cd-enem{margin-bottom:10px;}.cd-un{padding:7px 6px 5px;}.cd-un b{font-size:23px;}
+.tag.azul{background:#e1f0fb;color:#0a6aa8;}

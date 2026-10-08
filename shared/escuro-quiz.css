@@ -119,3 +119,4 @@ html.escuro .custo-card.ruim{background:#1a0f10;border-color:#4a2427;}
 html.escuro .custo-card.ruim .custo-tag{background:#3a1a1c;color:#ff8f8f;}
 html.escuro .custo-card.bom{background:var(--verde-suave);}
 html.escuro .custo-card.bom .custo-tag{color:#04222b;}
+html.escuro .tag.azul{background:#0b2a3a;color:#4cc3ff;}
