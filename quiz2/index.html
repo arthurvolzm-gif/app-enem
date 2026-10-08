@@ -412,7 +412,6 @@ const RENDER = {
              ontouchstart="pausarPdf()" ontouchend="retomarPdf()" ontouchcancel="retomarPdf()">
           ${[-1,0,1,2].map(pos=>`<div class="pdf-sheet" data-pos="${pos}"><img alt="Página de um dos materiais" onerror="this.style.visibility='hidden'"><div class="pdf-leg"><b></b><span></span></div></div>`).join('')}
         </div>
-        <p class="prints-leg">Páginas reais do material, de matérias diferentes</p>
 
         <div class="res-aplicativo">
           <h3 class="pdf-h" style="font-size:19px;">E cada tema também tem um resumo dentro do aplicativo</h3>
