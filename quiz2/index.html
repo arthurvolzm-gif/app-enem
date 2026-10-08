@@ -402,6 +402,16 @@ const RENDER = {
       <div id="prints-call" class="print-call esq"><svg class="pc-seta" viewBox="0 0 40 16" aria-hidden="true"><circle cx="3" cy="8" r="3" fill="#0899b8"/><path d="M3 8h30M27 2l7 6-7 6" fill="none" stroke="#0899b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="pc-card"><b></b><span></span></div></div>
       </div>
       <div class="prints-dots" id="prints-dots">${PRINTS.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join('')}</div>`;
+    const blocoRes = `      <div class="pdf-bloco" style="margin-top:0;border-top:0;padding-top:0;">
+        <div class="res-aplicativo">
+          <h3 class="pdf-h" style="font-size:19px;">E cada tema também tem um resumo dentro do aplicativo</h3>
+          <div class="res-prints">
+            <figure><img src="/img/print-app-plano-resumo${SUF_IMG}.jpg" alt="Resumo de um tema aberto no plano" loading="lazy" onerror="this.parentNode.style.display='none'"><figcaption>O resumo aparece no seu plano, ao tocar em "Ver resumo"</figcaption></figure>
+            <figure><img src="/img/print-app-tema${SUF_IMG}.jpg" alt="Tela de um tema do aplicativo" loading="lazy" onerror="this.parentNode.style.display='none'"><figcaption>E o tema completo, com a dica "Como cai no ENEM"</figcaption></figure>
+          </div>
+        </div>
+        <p class="pdf-fecho">Com o conteúdo completo e um plano para cada dia, você chega mais preparado(a).</p>
+      </div>`;
     const blocoMat = `      <div class="pdf-bloco">
         <span class="tag" style="margin-bottom:10px;">O material completo</span>
         <h3 class="pdf-h">Tudo o que você precisa estudar, para chegar preparado no <span style="color:#1f9d63;">Enem</span> em menos de <span style="color:#1f9d63;">30 dias</span></h3>
@@ -412,15 +422,6 @@ const RENDER = {
              ontouchstart="pausarPdf()" ontouchend="retomarPdf()" ontouchcancel="retomarPdf()">
           ${[-1,0,1,2].map(pos=>`<div class="pdf-sheet" data-pos="${pos}"><img alt="Página de um dos materiais" onerror="this.style.visibility='hidden'"><div class="pdf-leg"><b></b><span></span></div></div>`).join('')}
         </div>
-
-        <div class="res-aplicativo">
-          <h3 class="pdf-h" style="font-size:19px;">E cada tema também tem um resumo dentro do aplicativo</h3>
-          <div class="res-prints">
-            <figure><img src="/img/print-app-plano-resumo${SUF_IMG}.jpg" alt="Resumo de um tema aberto no plano" loading="lazy" onerror="this.parentNode.style.display='none'"><figcaption>O resumo aparece no seu plano, ao tocar em "Ver resumo"</figcaption></figure>
-            <figure><img src="/img/print-app-tema${SUF_IMG}.jpg" alt="Tela de um tema do aplicativo" loading="lazy" onerror="this.parentNode.style.display='none'"><figcaption>E o tema completo, com a dica "Como cai no ENEM"</figcaption></figure>
-          </div>
-        </div>
-        <p class="pdf-fecho">Com o conteúdo completo e um plano para cada dia, você chega mais preparado(a).</p>
       </div>`;
     const cabApp = `      <span class="tag azul" style="margin-top:6px;">Aplicativo Acelera Enem</span>
       <h2 class="q-title" style="margin:6px 0 10px;">Você não precisa estudar tudo. Precisa saber o que estudar.</h2>
@@ -429,7 +430,7 @@ const RENDER = {
     app.innerHTML = `
     <div class="wrap fade"><div class="card" style="text-align:center;padding-top:34px;padding-bottom:40px;">
       ${backBtn()}
-      ${foco==='resumos' ? blocoMat+cabApp.replace(/<h2[^>]*>.*?<\/h2>\n?/,'')+blocoApp : cabApp+blocoApp+blocoMat}
+      ${foco==='resumos' ? blocoMat+cabApp.replace(/<h2[^>]*>.*?<\/h2>\n?/,'')+blocoApp+blocoRes : cabApp+blocoApp+blocoMat+blocoRes}
 
       <button class="btn" style="margin-top:24px;" onclick="go(1)">Ver o meu plano →</button>
       <p style="font-size:13px;color:#8a98b5;margin:12px 0 0;">✅ Falta só um passo</p>
