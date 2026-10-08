@@ -63,3 +63,15 @@ module.exports = [
   'Para revisar, esquematize: tipos de migração (interna e externa; permanente, temporária, sazonal e pendular), fatores de repulsão e de atração, principais fluxos brasileiros (campo-cidade, Nordeste-Sudeste, fronteira agrícola, retorno) e internacionais (refugiados, imigrantes no Brasil). Relacione o tema com a urbanização brasileira, que veremos a seguir, e com a questão agrária, que explica parte do êxodo rural. Esse conjunto de conteúdos também fornece repertório sociocultural para a redação, sobretudo em propostas sobre acolhida e direitos humanos.'] }
 ]}
 ];
+
+/* quinto bloco do tema Migrações */
+{
+  const mg = module.exports[2];
+  const ult = mg.txt.pop();
+  mg.txt.push({ h:'Consequências das migrações e políticas migratórias', p:[
+    'As migrações produzem efeitos nos locais de origem e de destino. Nas **áreas de origem**, a saída de pessoas em idade ativa pode reduzir a força de trabalho e envelhecer a população, mas as **remessas** de dinheiro ajudam as famílias e a economia local. Nas **áreas de destino**, os migrantes ocupam postos de trabalho, muitas vezes os mais precários, contribuem com impostos e com a diversidade cultural, e podem pressionar serviços públicos, como moradia, saúde e transporte, sobretudo quando o crescimento é rápido e desordenado, como ocorreu nas periferias das grandes cidades brasileiras, com favelas e loteamentos irregulares.',
+    'Um problema recorrente é o do **trabalho precário** e das **condições análogas à escravidão**, que atingem migrantes internos e imigrantes, em atividades agrícolas, na construção civil e na indústria têxtil. O Brasil criou mecanismos de fiscalização e a "lista suja" de empregadores que utilizam essa forma de trabalho. Há ainda a questão da **perda de identidade** e do preconceito: os nordestinos, os bolivianos e os haitianos, por exemplo, enfrentaram estereótipos e discriminação. A integração depende de políticas de acolhida, de ensino da língua, de reconhecimento de diplomas e de acesso a documentos e direitos.',
+    'As **políticas migratórias** variam: alguns países facilitam a entrada de trabalhadores qualificados, outros impõem cotas e restrições, e há os que erguem **muros** e reforçam a fiscalização, como na fronteira entre os EUA e o México. Organismos internacionais, como a ONU e a Organização Internacional para as Migrações (OIM), defendem a migração segura, ordenada e regular, com respeito aos direitos humanos. Do ponto de vista geográfico, as migrações lembram que as fronteiras são construções políticas, e que o território é dinâmico, com fluxos de pessoas que transformam as cidades, as economias e as culturas.'
+  ]});
+  mg.txt.push(ult);
+}
