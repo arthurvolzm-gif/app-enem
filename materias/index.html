@@ -83,16 +83,17 @@ const ARQ_EX = {mat:'Matematica',fis:'Fisica',qui:'Quimica',bio:'Biologia',his:'
 function pedirExercicios(){ pedirCompra('exercicios','Exercícios e simulados','Exercícios rápidos dos temas que você estuda e simulados cronometrados no estilo do ENEM, com a explicação de cada resposta.','R$ 14,90'); }
 function exerciciosRapidos(mid, temasCsv){
   if(!Acesso.tem('exercicios')){ pedirExercicios(); return; }
-  const ts=(temasCsv||'').split(',').filter(Boolean);
-  let idx=Q.map((q,i)=>i).filter(i=>ts.includes(Q[i].t));
-  if(!idx.length) idx=Q.map((q,i)=>i).filter(i=>Q[i].m===mid);
-  if(!idx.length){ toast('Ainda não há exercícios desta matéria no app.'); return; }
-  idx=embaralhar(idx).slice(0,6);
+  const ts=(temasCsv||'').split(',').filter(Boolean), todas=Q.map((q,i)=>i);
+  /* prioridade: questões dos temas estudados, depois da matéria, depois as demais; sempre no mínimo 10 */
+  const tema=todas.filter(i=>ts.includes(Q[i].t)), materia=todas.filter(i=>Q[i].m===mid&&!tema.includes(i)), resto=todas.filter(i=>!tema.includes(i)&&!materia.includes(i));
+  const idx=[].concat(embaralhar(tema), embaralhar(materia), embaralhar(resto)).slice(0,10);
+  if(!idx.length){ toast('Ainda não há exercícios no app.'); return; }
   sQ={lista:idx,i:0,acertos:0,modo:'treino',inicio:Date.now(),marcadas:{}}; irPara('questao');
 }
-function fazerSimulado(){
+/* "Fazer simulado": leva ao PDF do simulado da matéria (25 questões, gabarito comentado) */
+function fazerSimulado(mid){
   if(!Acesso.tem('exercicios')){ pedirExercicios(); return; }
-  iniciarQ('simulado');
+  if(mid && ARQ_EX[mid]) baixarExercicios(mid); else irPara('exercicios');
 }
 async function baixarExercicios(mid){
   if(!ARQ_EX[mid]) return;
@@ -102,7 +103,7 @@ async function baixarExercicios(mid){
     const url = window.Conta && Conta.ativo ? await Conta.urlMaterial('Exercicios-'+ARQ_EX[mid]+'.pdf') : null;
     if(url){ window.open(url,'_blank','noopener'); return; }
   }catch(e){}
-  toast('O PDF de exercícios ainda está sendo preparado. Enquanto isso, pratique no app em Exercícios e simulados.');
+  toast('O PDF do simulado ainda está sendo preparado. Enquanto isso, pratique no app.');
   irPara('exercicios');
 }
 
@@ -604,7 +605,7 @@ function telaPlano(){
               <div class="dica-enem"><b>💡 Como cai no ENEM:</b> ${S(t.dica)}</div></div>
           </div>`; }).join('')}
           ${materialArq(b.m)?`<button class="btn sec sm" onclick="baixarMaterial('${b.m}')">⬇ Baixar o material de ${S(nomeBloco(b.m))}</button>`:''}
-          ${ARQ_EX[b.m]?`<div style="display:flex;gap:8px;margin-top:8px;"><button class="btn sec sm" style="flex:1;margin:0;" onclick="exerciciosRapidos('${b.m}','${temas.map(t=>t.id).join(',')}')">📝 Exercícios rápidos${Acesso.tem('exercicios')?'':' 🔒'}</button><button class="btn sm" style="flex:1;margin:0;" onclick="fazerSimulado()">Fazer simulado${Acesso.tem('exercicios')?'':' 🔒'}</button></div>`:''}
+          ${ARQ_EX[b.m]?`<div style="display:flex;gap:8px;margin-top:8px;"><button class="btn sec sm" style="flex:1;margin:0;" onclick="exerciciosRapidos('${b.m}','${temas.map(t=>t.id).join(',')}')">📝 Exercícios rápidos${Acesso.tem('exercicios')?'':' 🔒'}</button><button class="btn sm" style="flex:1;margin:0;" onclick="fazerSimulado('${b.m}')">Fazer simulado${Acesso.tem('exercicios')?'':' 🔒'}</button></div>`:''}
           <div class="bloco-acoes">${diaSel===hoje?(feito?'<span class="tag verde">Concluído</span>':tmAqui?'':`<button class="btn sm" onclick="tmComecar('${b.m}',${b.min})">${ic('play')} Começar</button>`):''}
           ${b.m==='red'&&diaSel===hoje?' <button class="btn sm sec" onclick="location.href=\'/redacao#corrigir\'">📸 Corrigir</button>':''}</div>
         </div></div>`; }).join('')
