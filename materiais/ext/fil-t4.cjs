@@ -63,3 +63,15 @@ module.exports = [
   'Para revisar, monte uma tabela com os três autores (estado de natureza, motivo do contrato, o que se cede, forma de governo, direito de resistência e relação com a propriedade). Pense em situações atuais: manifestações contra governos, constituições, direitos individuais versus segurança. Esse tema se liga ao Iluminismo e a Montesquieu, que veremos a seguir, e à Revolução Francesa, estudada em História, pois as ideias contratualistas forneceram a base teórica para a crítica ao absolutismo e a defesa da liberdade e da soberania popular.'] }
 ]}
 ];
+
+/* quinto bloco do tema Kant e a ética do dever */
+{
+  const kt = module.exports[1];
+  const ult = kt.txt.pop();
+  kt.txt.push({ h:'Kant, a política e a atualidade de seu pensamento', p:[
+    'Na filosofia política e do direito, Kant defendeu que o **Estado** deve garantir a **liberdade externa** de cada pessoa, compatível com a liberdade de todos. Distinguiu o **direito**, que regula as ações externas e pode ser imposto pela coerção, da **moral**, que diz respeito às intenções e depende da autonomia interior. O melhor regime, para ele, é o **republicano**, com separação dos poderes e representação, e não necessariamente a democracia direta, que considerava propensa ao despotismo da maioria. Defendeu a **liberdade de pensamento** e de imprensa, e o "uso público da razão": cada pessoa deve poder criticar publicamente as leis e as instituições, embora deva obedecê-las no exercício de sua função.',
+    'Em **A Paz Perpétua** (1795), Kant propôs condições para a paz entre os Estados: a abolição dos exércitos permanentes, a proibição de dívidas para a guerra, a não interferência na constituição de outros Estados, uma **federação de Estados livres** e um **direito cosmopolita**, de hospitalidade universal, que garanta ao estrangeiro o direito de não ser tratado com hostilidade. Essas ideias anteciparam a Liga das Nações e a ONU, e inspiram até hoje o debate sobre a paz mundial, os direitos humanos e o direito internacional. A paz, para Kant, não é um estado natural, mas uma tarefa política e moral.',
+    'A **atualidade** de Kant é grande. A ideia de que toda pessoa tem **dignidade** e não pode ser usada como instrumento sustenta os direitos humanos, a bioética (por exemplo, no uso de seres humanos em pesquisas) e o combate ao trabalho análogo à escravidão e ao tráfico de pessoas. A exigência de **autonomia** e de pensamento crítico é um antídoto contra a manipulação por propaganda e por desinformação. O teste da universalização ("e se todos fizessem o mesmo?") é útil para avaliar atitudes como furar fila, jogar lixo na rua ou sonegar impostos. Mas também há críticas: seu rigor com os deveres absolutos, e a dificuldade de lidar com conflitos entre deveres, motivaram éticas que valorizam o cuidado, a virtude e as consequências.'
+  ]});
+  kt.txt.push(ult);
+}
