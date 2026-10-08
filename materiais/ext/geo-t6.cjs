@@ -59,3 +59,27 @@ module.exports = [
   'Para revisar, monte um quadro dos modais (vantagens, desvantagens, uso no Brasil) e liste as principais obras e corredores (Carajás, Norte-Sul, Tietê-Paraná, BR-163, portos de Santos e Paranaguá). Relacione o tema com a industrialização (que escolheu a rodovia), com o agronegócio (que precisa de logística) e com a energia (combustíveis e emissões). A seguir, o estudo da globalização e da economia mundial mostrará como os fluxos de mercadorias, de capitais e de informações conectam o Brasil ao resto do planeta.'] }
 ]}
 ];
+
+/* quinto bloco do tema Agropecuária e questão agrária */
+{
+  const ag = module.exports[0];
+  const ult = ag.txt.pop();
+  ag.txt.push({ h:'Pecuária, agrotóxicos e agricultura sustentável', p:[
+    'A **pecuária** brasileira é uma das maiores do mundo, com o maior rebanho bovino comercial do planeta. Pode ser **extensiva**, em que o gado é criado solto em grandes áreas de pasto, com baixa produtividade e grande uso de terra, ou **intensiva**, com confinamento, melhoramento genético, suplementação alimentar e maior produtividade por hectare. A expansão da pecuária extensiva é uma das principais causas de desmatamento na Amazônia. Também crescem as criações de aves e de suínos, concentradas no Sul e no Centro-Oeste, integradas à agroindústria, e voltadas à exportação.',
+    'O uso de **agrotóxicos** (defensivos agrícolas) aumentou muito com a modernização. Eles protegem as lavouras de pragas e doenças, mas podem contaminar o solo, a água, os alimentos e os trabalhadores, e afetar polinizadores e outros organismos. O Brasil está entre os maiores consumidores do mundo, e a regulamentação, os limites de resíduos e a fiscalização são objeto de debate. Os **transgênicos** (soja, milho e algodão geneticamente modificados) são amplamente cultivados, o que traz benefícios de produtividade, mas levanta discussões sobre dependência de sementes, de patentes e sobre efeitos ambientais.',
+    'Como alternativas, ganham espaço as práticas **sustentáveis**: a **agricultura orgânica** e a **agroecologia**, que dispensam agrotóxicos sintéticos e valorizam a biodiversidade e o conhecimento local; o **plantio direto**; a **rotação de culturas**; o **manejo integrado de pragas**; a **integração lavoura-pecuária-floresta**; a **recuperação de pastagens degradadas**; e a **agricultura de baixo carbono**. A certificação socioambiental, a rastreabilidade e as exigências dos mercados consumidores, como as da União Europeia, também pressionam por produções que não causem desmatamento. Conciliar produtividade e conservação é o grande desafio do campo.'
+  ]});
+  ag.txt.push(ult);
+}
+
+/* quinto bloco do tema Energia */
+{
+  const en = module.exports[1];
+  const ult = en.txt.pop();
+  en.txt.push({ h:'A geopolítica da energia', p:[
+    'A energia é um dos elementos centrais da **geopolítica** mundial. O **petróleo** está concentrado em poucos países, em especial no Oriente Médio (Arábia Saudita, Irã, Iraque, Kuwait e Emirados Árabes), mas também na Rússia, nos Estados Unidos (que se tornaram grandes produtores com o óleo de xisto), na Venezuela, no Canadá e no Brasil. A dependência de importações torna países como a China, o Japão, a Índia e os europeus vulneráveis, e as rotas marítimas, como o **estreito de Ormuz**, são estratégicas. As disputas por petróleo e gás estiveram envolvidas em guerras, como a do Golfo (1991) e a do Iraque (2003).',
+    'A **OPEP** (Organização dos Países Exportadores de Petróleo), criada em 1960, coordena a produção e influencia os preços. Os **choques do petróleo** de 1973 e 1979, quando os preços dispararam, mostraram a força desses países e levaram os consumidores a buscar alternativas e eficiência, como o Proálcool no Brasil. O **gás natural** também tem peso geopolítico: a Rússia fornece gás à Europa por gasodutos, e a guerra na Ucrânia, a partir de 2022, escancarou os riscos dessa dependência e acelerou a busca por diversificação, incluindo o gás natural liquefeito e as energias renováveis.',
+    'A **transição energética** também redesenha o mapa do poder. Países com muito sol e vento, e com reservas de minerais críticos, como o **lítio**, o cobalto e as terras raras, necessários para baterias, painéis e turbinas, ganham importância, e a China domina boa parte da cadeia de produção. O Brasil tem potencial, por suas fontes renováveis e suas reservas minerais. Ao mesmo tempo, o acesso à energia é desigual: bilhões de pessoas ainda cozinham com lenha e carvão, e milhões não têm eletricidade, principalmente na África Subsaariana. A pobreza energética é, assim, um desafio de desenvolvimento e de justiça social.'
+  ]});
+  en.txt.push(ult);
+}
