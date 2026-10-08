@@ -63,3 +63,15 @@ module.exports = [
   'Para revisar, esquematize: 1985 (Sarney, fim da ditadura) → 1986 (Plano Cruzado) → 1987 a 1988 (Constituinte) → 1989 (eleição de Collor) → 1992 (impeachment) → 1994 (Plano Real) → 2002 (alternância) → programas sociais → desafios atuais. Relacione a Constituição aos temas de cidadania e direitos humanos, que reaparecem em Sociologia, Filosofia e na redação, e se prepare para o bloco seguinte, que trata da História Geral do século XX, começando pela Primeira Guerra Mundial.'] }
 ]}
 ];
+
+/* quinto bloco do tema Nova República e Constituição de 1988 */
+{
+  const nr = module.exports[2];
+  const ult = nr.txt.pop();
+  nr.txt.push({ h:'Cidadania, participação e memória democrática', p:[
+    'O conceito de **cidadania**, segundo o sociólogo T. H. Marshall, desenvolveu-se em três dimensões: os **direitos civis** (liberdade, propriedade, igualdade perante a lei), os **direitos políticos** (votar e ser votado, participar do poder) e os **direitos sociais** (educação, saúde, trabalho, previdência). No Brasil, essa sequência foi diferente: os direitos sociais foram concedidos no Estado Novo, em um regime autoritário, antes dos políticos e dos civis plenos, que só foram garantidos de modo mais amplo com a Constituição de 1988. O historiador José Murilo de Carvalho analisa essa "inversão" para explicar a cidadania incompleta do país.',
+    'A Constituição criou instrumentos de **participação direta**, como o plebiscito, o referendo e a iniciativa popular de leis, além de conselhos e conferências de políticas públicas, em áreas como saúde e educação. Também fortaleceu o **Ministério Público** e a **Defensoria Pública**, que atuam na defesa de direitos coletivos e dos mais pobres. A liberdade de imprensa, a atuação de ONGs e dos movimentos sociais (como o MST, os movimentos negro, feminista e indígena, e o dos trabalhadores) ampliaram o espaço público, mas o acesso desigual à justiça e à informação ainda limita a efetivação dos direitos.',
+    'A memória do período autoritário também faz parte da vida democrática. A **Comissão Nacional da Verdade** (2011 a 2014) investigou violações de direitos humanos cometidas entre 1946 e 1988, principalmente na ditadura, e recomendou a responsabilização e o reconhecimento das vítimas. O debate sobre a **Lei da Anistia**, sobre a abertura dos arquivos e sobre os lugares de memória mostra que conhecer o passado é uma condição para impedir que ele se repita. Para o ENEM, vale lembrar que a democracia é um processo, e que o exercício da cidadania inclui a participação, a fiscalização e a defesa dos direitos de todos.'
+  ]});
+  nr.txt.push(ult);
+}
