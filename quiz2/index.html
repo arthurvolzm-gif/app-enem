@@ -422,14 +422,14 @@ const RENDER = {
         </div>
         <p class="pdf-fecho">Quem estuda sem direção chega na prova com a sensação de que faltou alguma coisa. Com o conteúdo completo e um plano para cada dia, você chega mais preparado(a).</p>
       </div>`;
+    const cabApp = `      <span class="tag azul" style="margin-top:6px;">Aplicativo Acelera Enem</span>
+      <h2 class="q-title" style="margin:6px 0 10px;">Você não precisa estudar tudo. Precisa saber o que estudar.</h2>
+      <p class="hero-sub">Com o aplicativo Acelera Enem, ${listaItens} ficam em um lugar só.</p>
+`;
     app.innerHTML = `
     <div class="wrap fade"><div class="card" style="text-align:center;padding-top:34px;padding-bottom:40px;">
       ${backBtn()}
-      <span class="tag azul" style="margin-top:6px;">Aplicativo Acelera Enem</span>
-      <h2 class="q-title" style="margin:6px 0 10px;">Você não precisa estudar tudo. Precisa saber o que estudar.</h2>
-      <p class="hero-sub">Com o aplicativo Acelera Enem, ${listaItens} ficam em um lugar só.</p>
-
-      ${foco==='resumos' ? blocoMat+blocoApp : blocoApp+blocoMat}
+      ${foco==='resumos' ? blocoMat+cabApp.replace(/<h2[^>]*>.*?<\/h2>\n?/,'')+blocoApp : cabApp+blocoApp+blocoMat}
 
       <button class="btn" style="margin-top:24px;" onclick="go(1)">Ver o meu plano →</button>
       <p style="font-size:13px;color:#8a98b5;margin:12px 0 0;">✅ Falta só um passo</p>
