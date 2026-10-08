@@ -198,3 +198,4 @@ html:not(.escuro) [style*="color:#8a98b5"],html:not(.escuro) [style*="color:#9ba
 .custo-card.ruim li::before{content:"✕";color:#d64545;}
 .custo-card.bom li::before{content:"✓";color:var(--verde);}
 @media(min-width:560px){.custo .custo-grid{grid-template-columns:1fr 1fr;}}
+.card .custo{margin-top:26px;}

@@ -481,6 +481,16 @@ const RENDER = {
         </div>
       </div>
       <img class="garantia-img" src="/img/garantia-7-dias${SUF_IMG}.webp${SUF_IMG?"?v=2":""}" alt="Garantia total de 7 dias: compre hoje e decida em 7 dias" loading="lazy" style="display:block;width:100%;height:auto;border-radius:16px;margin:16px 0 4px;" onerror="this.remove()">
+      ${custoComparado({
+        titulo:'Quanto custa não agir agora?',
+        sub:'Compare os dois lados antes de decidir.',
+        ruimTit:'Chegar na prova sem um plano',
+        ruim:['Gastar os dias que restam sem saber o que estudar primeiro','Deixar de revisar justamente os temas que mais caem','Estudar sem constância e sem lembretes, e largar de novo','Ficar de fora do curso que você quer e esperar mais um ano'],
+        bom:['9 materiais em PDF, um por matéria, para estudar em menos de 30 dias','Aplicativo Plano ENEM com plano diário pronto para o seu tempo','Lembretes, revisão e progresso, tudo no celular','Acesso imediato e 7 dias de garantia'],
+        cta:'QUERO ATIVAR O MEU PLANO →',
+        acao:'go(1)',
+        preco:'R$ 29,90', precoNota:'à vista',
+        nota:'Não prometemos nota nem aprovação. Os resultados dependem da sua dedicação.'})}
     </div></div>`;
   },
 
@@ -525,15 +535,6 @@ const RENDER = {
         <div><h3 style="font-family:'Open Sans';font-size:18px;font-weight:900;color:var(--verde-escuro);margin-bottom:6px;">Garantia de 7 dias</h3>
         <p style="font-size:14px;color:#525d78;line-height:1.6;">Use o material e o aplicativo por 7 dias. Se não gostar, peça o reembolso dentro do prazo e devolvemos o valor pago.</p></div>
       </div>
-      ${custoComparado({
-        titulo:'Quanto custa não agir agora?',
-        sub:'Compare os dois lados antes de decidir.',
-        ruimTit:'Chegar na prova sem um plano',
-        ruim:['Gastar os dias que restam sem saber o que estudar primeiro','Deixar de revisar justamente os temas que mais caem','Estudar sem constância e sem lembretes, e largar de novo','Ficar de fora do curso que você quer e esperar mais um ano'],
-        bom:['9 materiais em PDF, um por matéria, para estudar em menos de 30 dias','Aplicativo Plano ENEM com plano diário pronto para o seu tempo','Lembretes, revisão e progresso, tudo no celular','Acesso imediato e 7 dias de garantia'],
-        cta:'Quero começar agora →',
-        nota:'Não prometemos nota nem aprovação. Os resultados dependem da sua dedicação.'})}
-
       <div class="blk faq">
         <h3 class="sec-h" style="margin-top:0;">Dúvidas frequentes</h3>
         <details><summary>Ainda dá tempo de usar?</summary><p>Sim. O plano é feito para o tempo que falta e foca no que mais pesa: priorizar os temas certos e manter a constância. Não prometemos nota, mas cada dia bem usado conta.</p></details>
