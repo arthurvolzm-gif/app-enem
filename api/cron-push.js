@@ -98,10 +98,10 @@ export default async function handler(req, res) {
     }
     /* 3. comunidade (1 vez por semana) */
     if (dow === DIA_COMUNIDADE && venceu(HORA_COMUNIDADE, min) && (!p.ultima_comunidade || diasEntre(p.ultima_comunidade, hoje) >= 6)) {
-      const tem_c = tem.has("comunidade");
+      const tem_c = true; // comunidade grátis por enquanto (ver LIBERADO_COM_CONTA em shared/config.js)
       await enviar(p.user_id, {
         titulo: "👥 Comunidade de estudantes",
-        corpo: tem_c ? "Tire dúvidas e troque dicas com quem também está estudando para o ENEM." : "Estude junto: conheça a comunidade de estudantes do ENEM.",
+        corpo: tem_c ? "Grátis por enquanto: entre no grupo e troque dúvidas e dicas com quem também está estudando para o ENEM." : "Estude junto: conheça a comunidade de estudantes do ENEM.",
         url: `${site}/materias#comunidade`, tag: "comunidade",
       });
       await marcar(p.user_id, { ultima_comunidade: hoje });

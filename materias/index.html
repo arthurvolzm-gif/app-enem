@@ -71,6 +71,29 @@ function pedirCompra(prod, titulo, texto, preco){
   d.addEventListener('click',e=>{ if(e.target===d) fecharCompra(); });
   document.body.appendChild(d);
 }
+/* ===== comunidade (grátis por enquanto): aviso depois de entrar no app + notificação ===== */
+function entrarComunidade(){ const l=C.COMUNIDADE_LINK; if(!l){ toast('O link da comunidade será liberado em breve.'); return; } try{ lsSet('mat_com_entrou',true); }catch(e){} window.open(l,'_blank','noopener'); }
+function fecharAvisoCom(){ const d=document.getElementById('avisoCom'); if(d) d.remove(); }
+async function notificarComunidade(){
+  try{
+    if(!('Notification' in window) || Notification.permission!=='granted' || !('serviceWorker' in navigator)) return;
+    const reg=await navigator.serviceWorker.ready;
+    await reg.showNotification('👥 Comunidade de estudantes liberada', { body:'Grátis por enquanto: entre no grupo do Acelera Enem e tire dúvidas com outros estudantes.', tag:'comunidade-aviso', icon:'/shared/icone.svg', data:{ url:'/materias#comunidade' } });
+  }catch(e){}
+}
+function avisoComunidade(){
+  if(!C.COMUNIDADE_LINK || !Acesso.tem('comunidade') || ls('mat_com_aviso',false) || document.getElementById('avisoCom')) return;
+  lsSet('mat_com_aviso',true);
+  const d=document.createElement('div'); d.id='avisoCom'; d.className='modal-fundo';
+  d.innerHTML=`<div class="modal-cx"><div class="e">👥</div><h3>Comunidade do Acelera Enem liberada</h3>
+    <p>Entre no nosso grupo de estudos para tirar dúvidas, trocar dicas e manter a rotina até o ENEM. <b>É grátis por enquanto.</b></p>
+    <button class="btn" onclick="entrarComunidade();fecharAvisoCom()">Entrar no grupo agora</button>
+    <button class="btn-link" onclick="fecharAvisoCom()">Agora não</button></div>`;
+  d.addEventListener('click',e=>{ if(e.target===d) fecharAvisoCom(); });
+  document.body.appendChild(d);
+  toast('👥 Comunidade liberada: entre no grupo!');
+  notificarComunidade();
+}
 function fecharCompra(){ const d=document.getElementById('modalCompra'); if(d) d.remove(); }
 async function jaComprei(){
   toast('Conferindo a sua compra...');
@@ -307,7 +330,7 @@ function notificacoes(){
   if(d) L.push({id:'enem'+h, ic:'⏳', t:`Faltam ${d} dias para o ENEM`, s:'Continue no seu plano de estudos.', r:'plano'});
   if(!Acesso.tem('exercicios')) L.push({id:'simpromo'+semanaISO(), ic:'📝', t:'Simulado da semana bloqueado', s:'Desbloqueie Exercícios e simulados e receba um aviso toda semana para treinar.', r:'exercicios'});
   else if(!(ls('mat_simulado_pref',null)||{}).dia && (ls('mat_simulado_pref',null)||{}).dia!==0) L.push({id:'simesc', ic:'📝', t:'Escolha o dia do seu simulado', s:'Defina o dia e a hora do simulado semanal.', r:'lembretes'});
-  L.push({id:'com'+semanaISO(), ic:'👥', t:'Comunidade de estudantes', s:Acesso.tem('comunidade')?'Troque dúvidas e dicas com quem também está estudando para o ENEM.':'Estude junto: conheça a comunidade de estudantes do ENEM.', r:'comunidade'});
+  L.push({id:'com'+semanaISO(), ic:'👥', t:'Comunidade de estudantes liberada', s:Acesso.tem('comunidade')?'Grátis por enquanto: entre no grupo e troque dúvidas e dicas com quem também está estudando para o ENEM.':'Estude junto: conheça a comunidade de estudantes do ENEM.', r:'comunidade'});
   if(!('Notification' in window) || Notification.permission!=='granted') L.push({id:'lemb', ic:'⏰', t:'Ative os lembretes', s:`Receba um aviso às ${p.hora} nos seus dias de estudo.`, r:'lembretes'});
   const lid = ls('mat_notif_lidas',[]);
   return L.map(n=>Object.assign(n,{nova:!lid.includes(n.id)}));
@@ -943,7 +966,8 @@ function telaComunidade(){
   const tem=Acesso.tem('comunidade'), link=C.COMUNIDADE_LINK;
   app.innerHTML = `${barraTopo('👥 Comunidade',true)}<div class="tela fade"><div class="card bloq"><div class="e">👥</div><h2>Comunidade de estudantes</h2>
     <p>Um espaço para tirar dúvidas, trocar dicas de estudo e se manter motivado até o ENEM, junto com outros estudantes.</p>
-    ${tem?(link?`<button class="btn" onclick="window.open('${S(link)}','_blank','noopener')">Entrar na comunidade</button>`:'<p class="nota">O link da comunidade será liberado em breve.</p>'):`<button class="btn" onclick="pedirCompra('comunidade','Comunidade de estudantes','Entre na comunidade para tirar dúvidas, trocar dicas e estudar acompanhado até o ENEM.','R$ 37,90')">Quero entrar na comunidade</button>`}
+    ${tem?'<p class="nota" style="margin-bottom:12px;"><b>Grátis por enquanto.</b> O grupo é no WhatsApp.</p>':''}
+    ${tem?(link?`<button class="btn" onclick="entrarComunidade()">Entrar no grupo do WhatsApp</button>`:'<p class="nota">O link da comunidade será liberado em breve.</p>'):`<button class="btn" onclick="pedirCompra('comunidade','Comunidade de estudantes','Entre na comunidade para tirar dúvidas, trocar dicas e estudar acompanhado até o ENEM.','R$ 37,90')">Quero entrar na comunidade</button>`}
   </div></div>`;
 }
 function baixarICS(){
@@ -1036,7 +1060,7 @@ function render(){
   if(!temPlano){ nav.style.display='none'; if(pt[0]==='questao') return telaQuestao(); if(pt[0]==='erros') return telaErros(); if(pt[0]==='treino') return iniciarQ('treino',null,pt[2]); return telaExercicios(); }
   if(!perfil()){ if(!ob) iniciarOnboarding(false); else telaOnboarding(); return; }
   { const pf=perfil(); if(pf.planoV!==3){ pf.plano=gerarPlano(pf); pf.planoV=3; lsSet('mat_perfil',pf); const A=ls('mat_atrib',{}), h=hojeISO(); Object.keys(A).forEach(k=>{ if(k>=h) delete A[k]; }); lsSet('mat_atrib',A); } }
-  nav.style.display='';
+  nav.style.display=''; setTimeout(avisoComunidade,900);
   const aba = {inicio:'inicio',notificacoes:'inicio',timer:'plano',ajustar:'plano',plano:'plano',resumos:'resumos',materia:'resumos',tema:'resumos',progresso:'progresso',erros:'progresso'}[pt[0]] || 'perfil';
   nav.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.r===aba));
   const T = { comunidade:telaComunidade, material:()=>telaMaterialDoc(pt[1]), ajustar:telaAjustar, plano:telaPlano, resumos:telaResumos, progresso:telaProgresso, perfil:telaPerfil, notificacoes:telaNotificacoes, lembretes:telaLembretes, materiais:telaMateriais, exercicios:telaExercicios, questao:telaQuestao, erros:telaErros };
