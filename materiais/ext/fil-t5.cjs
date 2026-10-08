@@ -63,3 +63,15 @@ module.exports = [
   'Para revisar, monte um quadro com os conceitos (apolíneo e dionisíaco, morte de Deus, niilismo, genealogia, moral dos senhores e dos escravos, além-do-homem, eterno retorno, vontade de potência) e escreva uma frase de cada. Relacione Nietzsche com o existencialismo, o próximo tema, que parte da ideia de que a vida não tem sentido dado e de que cada um deve criar o seu, e com Foucault, que usou a genealogia para analisar o poder. Esse tema encerra a trilogia de filósofos do século XIX (Hegel, Marx e Nietzsche), que transformaram a Filosofia contemporânea.'] }
 ]}
 ];
+
+/* quinto bloco do tema Iluminismo e Montesquieu */
+{
+  const il = module.exports[0];
+  const ult = il.txt.pop();
+  il.txt.push({ h:'Liberalismo, economia e as revoluções do século XVIII', p:[
+    'No campo econômico, o Iluminismo produziu o **liberalismo econômico**. O escocês **Adam Smith**, em A Riqueza das Nações (1776), argumentou que a riqueza vem do **trabalho** e da **divisão do trabalho**, e que, em um mercado livre, a busca de cada um pelo próprio interesse resulta, como se guiada por uma "**mão invisível**", em benefício de toda a sociedade. Defendeu a livre concorrência e a redução da intervenção do Estado, em oposição ao **mercantilismo**, que defendia o monopólio e o protecionismo. Os **fisiocratas**, na França, também afirmavam a liberdade econômica ("laissez-faire, laissez-passer"), e valorizavam a agricultura como fonte de riqueza.',
+    'As ideias iluministas inspiraram as grandes revoluções. A **Revolução Americana** (1776) proclamou, na Declaração de Independência, que todos os homens são criados iguais e têm direitos inalienáveis à vida, à liberdade e à busca da felicidade, e a Constituição de 1787 adotou a separação dos poderes. A **Revolução Francesa** (1789) aboliu os privilégios do Antigo Regime e proclamou a liberdade, a igualdade e a fraternidade, na Declaração dos Direitos do Homem e do Cidadão. Na América Latina, as independências e os movimentos como a Inconfidência Mineira, no Brasil, foram influenciados por esses ideais. Ao mesmo tempo, as contradições entre os princípios e a prática, como a manutenção da escravidão, foram objeto de crítica e de lutas.',
+    'O Iluminismo também influenciou o **despotismo esclarecido**, em que monarcas como Frederico II, da Prússia, Catarina II, da Rússia, José II, da Áustria, e o Marquês de Pombal, em Portugal, adotaram reformas inspiradas nas ideias iluministas, sem abrir mão do poder absoluto. Na educação, difundiu a ideia de **instrução pública** e de formação do cidadão. Na justiça, inspirou a humanização das penas e a presunção de inocência. No campo da religião, defendeu a tolerância e a separação entre Igreja e Estado. Esses legados explicam por que o Iluminismo é considerado a base ideológica da modernidade política, jurídica e científica.'
+  ]});
+  il.txt.push(ult);
+}
