@@ -426,7 +426,6 @@ const RENDER = {
     app.innerHTML = `
     <div class="wrap fade"><div class="card" style="text-align:center;padding-top:34px;padding-bottom:40px;">
       ${backBtn()}
-      <span class="tag red" style="margin-top:6px;">${S(prazoTxt())}</span>
       <h2 class="q-title" style="margin:6px 0 10px;">Você não precisa estudar tudo. Precisa saber o que estudar.</h2>
       <p class="hero-sub">Com o aplicativo Acelera Enem, ${listaItens} ficam em um lugar só.</p>
 
@@ -500,7 +499,6 @@ const RENDER = {
     app.innerHTML = `
     <div class="res fade">
       <div class="blk" style="text-align:center;">
-        <span class="tag red">${S(prazoTxt())}</span>
         <h1 class="intro-h1" style="font-size:27px;">${n?n+', c':'C'}omece hoje o plano do seu último mês</h1>
         <p class="intro-sub" style="font-size:15px;">Seu Índice de Preparo hoje é <strong style="color:${nivel(P.idx).cor};">${P.idx}/100</strong>. O material traz o que mais cai, e o aplicativo diz o que estudar em cada dia até a prova.</p>
       </div>
