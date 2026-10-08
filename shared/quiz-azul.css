@@ -173,3 +173,11 @@ body{font-family:'Lato',sans-serif;background:#f0fbfd;color:var(--cinza);line-he
 /* tons inline do HTML (cores fixas que a versão escura reescreve por atributo) */
 html:not(.escuro) [style*="color:#0b1f4d"]{color:#04222b !important;}
 html:not(.escuro) [style*="color:#8a98b5"],html:not(.escuro) [style*="color:#9ba8c2"]{color:#6f9aa5 !important;}
+
+/* contador até o ENEM */
+.cd-enem{text-align:center;margin:0 0 14px;}
+.cd-tt{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:800;color:var(--verde-escuro);margin-bottom:8px;}
+.cd-box{display:flex;justify-content:center;gap:8px;}
+.cd-un{min-width:64px;padding:9px 6px 7px;border-radius:14px;background:var(--verde);color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.12);}
+.cd-un b{display:block;font-family:'Open Sans',sans-serif;font-size:26px;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums;}
+.cd-un span{font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:700;opacity:.9;}

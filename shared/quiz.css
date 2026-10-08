@@ -169,3 +169,11 @@ body{font-family:'Lato',sans-serif;background:#f1f8f4;color:var(--cinza);line-he
 .saida-val{font-family:'Open Sans',sans-serif;font-size:46px;font-weight:900;color:var(--verde);line-height:1.1;margin:2px 0 14px;}
 .saida-recusa{background:none;border:none;color:#9aaaa2;font-size:12.5px;margin-top:12px;cursor:pointer;text-decoration:underline;}
 @media(max-width:480px){.card{padding:30px 20px;}.q-title{font-size:23px;}.intro-h1{font-size:27px;}.cmp{grid-template-columns:1fr;}}
+
+/* contador até o ENEM */
+.cd-enem{text-align:center;margin:0 0 14px;}
+.cd-tt{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:800;color:var(--verde-escuro);margin-bottom:8px;}
+.cd-box{display:flex;justify-content:center;gap:8px;}
+.cd-un{min-width:64px;padding:9px 6px 7px;border-radius:14px;background:var(--verde);color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.12);}
+.cd-un b{display:block;font-family:'Open Sans',sans-serif;font-size:26px;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums;}
+.cd-un span{font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:700;opacity:.9;}

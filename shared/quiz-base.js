@@ -40,6 +40,21 @@ function diasEnem(){
   const d = Math.ceil((new Date(D+'T09:00:00') - new Date())/86400000);
   return (isFinite(d) && d>0) ? d : null;
 }
+/* contador regressivo até a prova (dia da DATA_ENEM, 13h30 de Brasília) */
+function contadorEnem(){
+  const D = window.QUIZ.DATA_ENEM; if(!D) return '';
+  const alvo = new Date(D+'T13:30:00-03:00').getTime();
+  if(!isFinite(alvo) || alvo<=Date.now()) return '';
+  const un = (id,rot)=>`<div class="cd-un"><b id="${id}">00</b><span>${rot}</span></div>`;
+  setTimeout(function tick(){
+    const el = document.getElementById('cd-d'); if(!el) return;
+    let r = Math.max(0, Math.floor((alvo-Date.now())/1000));
+    const v = { 'cd-d':Math.floor(r/86400), 'cd-h':Math.floor(r%86400/3600), 'cd-m':Math.floor(r%3600/60), 'cd-s':r%60 };
+    for(const k in v){ const e=document.getElementById(k); if(e) e.textContent = String(v[k]).padStart(2,'0'); }
+    setTimeout(tick, 1000);
+  }, 0);
+  return `<div class="cd-enem"><p class="cd-tt">Faltam para o ENEM</p><div class="cd-box">${un('cd-d','dias')}${un('cd-h','horas')}${un('cd-m','min')}${un('cd-s','seg')}</div></div>`;
+}
 function prazoTxt(){ const d = diasEnem(); return d ? `Faltam ${d} dias para o ENEM` : 'O ENEM está chegando'; }
 function irCheckout(origem){
   px('InitiateCheckout', true);

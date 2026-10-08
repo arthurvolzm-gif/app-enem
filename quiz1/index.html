@@ -132,7 +132,7 @@ const PONTOS = {
 const RENDER = {
   intro(q){
     app.innerHTML = `
-    <div class="wrap fade"><div class="card" style="text-align:center;padding-top:46px;padding-bottom:40px;">
+    <div class="wrap fade">${contadorEnem()}<div class="card" style="text-align:center;padding-top:46px;padding-bottom:40px;">
       <span class="intro-badge">Teste grátis · 2 minutos</span>
       <h1 class="intro-h1">Você está <span>preparado</span> para a redação do ENEM?</h1>
       <p class="intro-sub">${S(prazoTxt())}. Faça o teste e descubra o seu <strong>Índice de Preparo para a Redação</strong>, competência por competência.</p>

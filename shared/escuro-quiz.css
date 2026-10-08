@@ -110,3 +110,6 @@ html.escuro .opts.grid2 .opt{box-shadow:0 6px 20px rgba(0,229,255,.22);}
 html.escuro .preco-card{box-shadow:0 0 0 1px rgba(46,230,255,.35),0 10px 34px rgba(0,229,255,.22);}
 html.escuro .progress-fill,html.escuro .lib-fill{background:linear-gradient(90deg,#00cfee,#8ff5ff);box-shadow:0 0 12px rgba(46,230,255,.5);}
 html.escuro .pdf-sheet{background:#0d1114;border-color:#1b2a31;box-shadow:0 14px 30px rgba(0,0,0,.7);}
+
+html.escuro .cd-tt{color:var(--txt2);}
+html.escuro .cd-un{background:var(--card);border:1px solid var(--borda);color:var(--verde);box-shadow:none;}

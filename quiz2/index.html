@@ -320,7 +320,7 @@ function retomarPdf(){ clearInterval(pdfTimer); pdfTimer = setInterval(avancarPd
 const RENDER = {
   intro(q){
     app.innerHTML = `
-    <div class="wrap fade"><div class="card" style="text-align:center;padding-top:46px;padding-bottom:40px;">
+    <div class="wrap fade">${contadorEnem()}<div class="card" style="text-align:center;padding-top:46px;padding-bottom:40px;">
       <h1 class="intro-h1">Você está <span>preparado</span> para o ENEM?</h1>
       <p class="intro-sub">${S(prazoTxt())}. Faça o teste e descubra o seu <strong>Índice de Preparo</strong>. Ao final você recebe um plano para o último mês.</p>
       <img src="/img/mockup-quiz2.png" alt="Material e aplicativo Plano ENEM" style="width:100%;max-width:520px;display:block;margin:22px auto 0;border-radius:16px;" onerror="this.remove()">
