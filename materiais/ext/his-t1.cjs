@@ -63,3 +63,15 @@ module.exports = [
   'Para revisar, esquematize: três ordens (clero, nobreza, servos); suserano e vassalo; feudo; corveia, talha e banalidades; economia fechada; papel da Igreja; Cruzadas, renascimento comercial e urbano; e crise do século XIV (fome, peste, guerra, revoltas). Associe essa estrutura à anterior, a crise do escravismo romano e o colonato, e à seguinte, o Renascimento e a formação dos Estados modernos. Entender o encadeamento ajuda a ver a História como processo, e não como uma lista de datas isoladas.'] }
 ]}
 ];
+
+/* quinto bloco do tema Idade Média e feudalismo */
+{
+  const im = module.exports[2];
+  const ult = im.txt.pop();
+  im.txt.push({ h:'O Império Bizantino e o mundo islâmico', p:[
+    'A Idade Média não foi apenas europeia. O **Império Bizantino** (Império Romano do Oriente), com capital em **Constantinopla**, sobreviveu até 1453 e preservou o direito romano, a cultura grega e o comércio. No governo de **Justiniano** (527 a 565), reuniu as leis romanas no **Corpus Juris Civilis**, que influenciou o direito ocidental. A Igreja do Oriente, de tradição grega, separou-se da de Roma no **Cisma do Oriente** (1054), formando a Igreja Ortodoxa. Constantinopla era uma das maiores e mais ricas cidades do mundo, no cruzamento de rotas entre a Europa e a Ásia.',
+    'No século VII, surgiu na península Arábica o **Islamismo**, pregado por **Maomé**, que unificou as tribos árabes. Os califados que se seguiram expandiram-se rapidamente, e criaram um império que se estendeu da Península Ibérica à Índia. Os muçulmanos desenvolveram uma notável cultura: na **matemática** (os algarismos "arábicos" de origem indiana e a álgebra), na **medicina**, na **astronomia**, na **filosofia** (com a preservação e comentário de Aristóteles) e na **arquitetura**. Cidades como Bagdá, Córdoba e Cairo eram centros de saber e de comércio, e muito mais desenvolvidas do que as da Europa feudal.',
+    'O contato entre os mundos cristão e muçulmano, nas Cruzadas, na Península Ibérica (onde os mouros dominaram por cerca de 800 anos, até 1492) e no comércio mediterrâneo, foi decisivo para a Europa: trouxe novas técnicas, produtos (papel, bússola, especiarias), conhecimentos e obras da Antiguidade, que alimentaram o **Renascimento**. Isso mostra que a Idade Média europeia não foi isolada, e que o "renascimento" do saber clássico dependeu do trabalho de tradutores e estudiosos bizantinos e muçulmanos, aspecto muitas vezes esquecido em visões eurocêntricas.'
+  ]});
+  im.txt.push(ult);
+}
