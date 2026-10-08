@@ -63,3 +63,16 @@ module.exports = [
   'Para revisar: mutualismo (+/+, obrigatório), protocooperação (+/+, facultativo), comensalismo (+/0), inquilinismo e epifitismo (tipos de comensalismo), predação (+/-), parasitismo (+/-), competição (-/-) e amensalismo (-/0). Associe cada relação a um exemplo de que se lembre bem, como líquen, rêmora, onça e capivara, carrapato e boi, e penicilina. Em seguida, vale estudar os ciclos biogeoquímicos, que mostram como a matéria circula entre os seres vivos e o ambiente.'] }
 ]}
 ];
+
+/* separa "Evolução humana" do bloco final e acrescenta mais um parágrafo */
+{
+  const evo = module.exports[0];
+  const ult = evo.txt.pop();
+  evo.txt.push({ h:'Evolução humana', p:[
+    ult.p[0],
+    'Três características marcam a linhagem humana. O **bipedalismo**, anterior ao grande aumento do cérebro, liberou as mãos para carregar objetos e fabricar ferramentas. O **aumento do cérebro** acompanhou o uso de ferramentas, a cooperação e a linguagem. E a **cultura**, ou seja, o conhecimento transmitido de uma geração a outra pelo aprendizado, tornou-se um fator tão importante quanto os genes. Vale lembrar que a evolução humana não foi uma linha reta, de "macaco" a "homem", e sim um "arbusto" ramificado, em que várias espécies de hominínios coexistiram em diferentes épocas.'
+  ]});
+  evo.txt.push({ h:'Como esse conteúdo aparece no ENEM', p:[ ult.p[1], ult.p[2] ] });
+}
+
+module.exports[0].txt[4].p.push('Uma dica final de estudo: ao ler qualquer questão de evolução, procure o que é **variação preexistente** e o que é **seleção pelo ambiente**. Se o texto diz que os organismos "precisaram" mudar, a explicação é lamarckista e geralmente está errada. Se diz que, entre os indivíduos variados, os mais bem ajustados deixaram mais descendentes, a explicação é darwinista e costuma ser a correta. Esse critério resolve muitas questões do tema.');

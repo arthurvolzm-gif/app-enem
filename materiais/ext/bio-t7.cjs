@@ -63,3 +63,15 @@ module.exports = [
   'Para revisar: neurônios conduzem o impulso (dendritos recebem, axônio conduz, sinapse transmite); o SNC é encéfalo e medula, e o SNP, nervos; os reflexos passam pela medula; as glândulas endócrinas lançam hormônios no sangue; insulina reduz e glucagon eleva a glicemia; a hipófise controla outras glândulas; e as drogas agem sobre as sinapses e causam dependência. O próximo tema, a reprodução humana e os métodos contraceptivos, aplica muito do conhecimento hormonal que você acabou de revisar.'] }
 ]}
 ];
+
+/* quinto bloco do tema Sistema digestório e nutrição */
+{
+  const dig = module.exports[0];
+  const ult = dig.txt.pop();
+  dig.txt.push({ h:'Energia, calorias e distúrbios alimentares', p:[
+    'A energia dos alimentos é medida em **quilocalorias** (kcal), o que popularmente se chama de "caloria". Uma caloria é a quantidade de calor necessária para elevar em 1 °C a temperatura de 1 grama de água, e uma quilocaloria equivale a 1.000 calorias, ou a cerca de 4,18 quilojoules. O gasto de energia de uma pessoa depende da **taxa metabólica basal**, da energia consumida na digestão e da atividade física. Para manter o peso, o consumo de energia deve se equilibrar com o gasto: o excesso é armazenado, sobretudo como gordura, e a falta obriga o corpo a recorrer às reservas.',
+    'Os rótulos de alimentos trazem a **tabela nutricional**, que informa o valor energético e a quantidade de carboidratos, proteínas, gorduras totais, saturadas e trans, fibras e sódio por porção, e o percentual de valores diários. Para calcular as calorias de um alimento, multiplica-se a massa de cada nutriente por seu valor energético (4, 4 e 9 kcal por grama) e somam-se os resultados. A atenção ao tamanho da porção é essencial, pois a tabela se refere a ela, e não à embalagem inteira. Esse tipo de cálculo é muito comum no ENEM.',
+    'Os **distúrbios alimentares**, como a anorexia nervosa, a bulimia e a compulsão alimentar, são transtornos psiquiátricos graves, que envolvem uma relação alterada com a comida e com a imagem corporal, e exigem acompanhamento médico e psicológico. A **desnutrição** infantil prejudica o crescimento e o desenvolvimento do cérebro, e a **obesidade** aumenta o risco de diabetes, hipertensão e doenças cardiovasculares. A **segurança alimentar** é o direito de acesso regular a alimentos de qualidade, em quantidade suficiente, e é uma discussão que une Biologia, Geografia e Sociologia.'
+  ]});
+  dig.txt.push(ult);
+}
