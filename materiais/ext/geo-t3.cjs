@@ -63,3 +63,15 @@ module.exports = [
   'Para revisar, monte um quadro com os seis domínios e as faixas de transição, indicando clima, relevo, solo, vegetação e ameaças. Treine reconhecer as paisagens a partir de descrições curtas (árvores tortuosas, mandacarus, araucárias, campos limpos, raízes aéreas). Esse tema se articula com o clima, com os solos e com o seguinte, a questão ambiental no Brasil, em que se discutem desmatamento, queimadas, mineração e as políticas de conservação.'] }
 ]}
 ];
+
+/* quinto bloco do tema Vegetação e domínios morfoclimáticos */
+{
+  const vg = module.exports[2];
+  const ult = vg.txt.pop();
+  vg.txt.push({ h:'Devastação, conservação e uso sustentável da vegetação', p:[
+    'A vegetação nativa brasileira sofre pressões históricas. A **Mata Atlântica**, que cobria cerca de 15% do território, foi reduzida a algo em torno de 12% da cobertura original, pela exploração do pau-brasil, pelos ciclos da cana e do café, pela industrialização e pela urbanização. O **Cerrado** perdeu quase metade de sua vegetação nativa, com a expansão da soja, do milho, do algodão e da pecuária. A **Amazônia** sofre com o desmatamento do chamado "arco do desmatamento", pela pecuária, pelo corte de madeira, pela grilagem de terras, pelo garimpo e pela abertura de estradas, e a **Caatinga**, com a retirada de lenha e a desertificação.',
+    'O **Código Florestal** (Lei 12.651/2012) estabelece as regras de proteção: as **Áreas de Preservação Permanente** (APPs), como matas ciliares, topos de morro e encostas íngremes, que devem ser mantidas, e a **Reserva Legal**, a parcela de cada propriedade rural que deve preservar a vegetação nativa (80% na Amazônia, 35% no Cerrado amazônico e 20% nas demais regiões). Foram criadas **Unidades de Conservação** de proteção integral (parques, reservas biológicas) e de uso sustentável (reservas extrativistas, áreas de proteção ambiental). A fiscalização, o monitoramento por satélite e o Cadastro Ambiental Rural (CAR) são instrumentos de controle.',
+    'O uso sustentável da vegetação inclui o **manejo florestal** (extração planejada de madeira), o **extrativismo** de produtos não madeireiros (castanha, açaí, borracha, babaçu), os **sistemas agroflorestais**, o **ecoturismo** e o **pagamento por serviços ambientais**. A **recuperação de áreas degradadas**, com o plantio de espécies nativas, e a criação de **corredores ecológicos** reconectam fragmentos de vegetação. O **Pacto pela Restauração da Mata Atlântica** é um exemplo. O desafio é conciliar a produção de alimentos e de energia com a conservação, e o ENEM valoriza respostas que combinem fiscalização, incentivos e participação das comunidades locais.'
+  ]});
+  vg.txt.push(ult);
+}
