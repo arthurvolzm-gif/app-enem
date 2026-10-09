@@ -208,17 +208,17 @@ function calcPreparo(){
   const resu  = pts(a.resumos,opts('resumos')) / 3;
   const simu  = pts(a.simulados,opts('simulados')) / 3;
   const rn    = pts(a.red_nota,opts('red_nota')) / 5;
-  const raw = horas*20 + dias*15 + rot*15 + tent*5 + resu*15 + simu*15 + rn*15;   // 0..100
-  /* quem está mal continua entre 14 e 24; quem está bem sobe de verdade, até cerca de 88 */
-  const idx = Math.round(raw<=40 ? 14 + raw*0.24 : 23.6 + (raw-40)*1.073);
   const barra = r => Math.min(96, Math.round(8 + r*88));
-  return { idx, areas:[
+  const areas = [
     {n:'Rotina e constância', v:barra((dias*15+rot*15+tent*5)/35)},
     {n:'Tempo de estudo',     v:barra(horas)},
     {n:'Conteúdo priorizado', v:barra(resu)},
     {n:'Simulados e prática', v:barra(simu)},
     {n:'Redação',             v:barra(rn)}
-  ]};
+  ];
+  /* Índice de Preparo = média simples das 5 áreas (soma dos 5 resultados dividida por 5) */
+  const idx = Math.round(areas.reduce((s,x)=>s+x.v,0)/areas.length);
+  return { idx, areas };
 }
 function nivel(i){
   return i<24 ? {txt:'MUITO BAIXO', cor:'#d64545'} : i<45 ? {txt:'BAIXO', cor:'#e0703a'} : i<65 ? {txt:'EM EVOLUÇÃO', cor:'#d99a00'} : {txt:'BOM', cor:'#1f9d63'};
