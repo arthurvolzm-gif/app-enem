@@ -167,8 +167,8 @@ const QUESTIONS = [
   { id:'meta', question:'Qual nota você precisa tirar para passar?',
     sub:a=>{ const c=CURSOS[a.curso]; return c ? `Para ${S(a.curso)}, a nota de corte nas federais costuma ficar na faixa de <strong>${c} pontos</strong> (valor aproximado de edições anteriores do SISU; muda conforme a universidade).` : ''; },
     options:['Até 600 pontos','De 600 a 700','De 700 a 800','Acima de 800','Não sei qual é a minha meta'] },
-  { id:'red_nota', question:'E na redação, como você está?',
-    options:['Nunca escrevi uma redação completa','Não sei, ninguém corrige','Tiro menos de 500','Tiro entre 500 e 700','Tiro entre 700 e 800','Tiro mais de 800'] },
+  { id:'red_nota', question:'Qual a sua frequência da prática de redação?',
+    options:['Nunca fiz uma redação completa','Faço toda semana','Mensalmente','Faço de vez em quando'] },
   { id:'atrapalha', question:'O que mais atrapalha você de estudar?',
     options:['Falta de tempo','Celular e distrações','Não saber o que estudar hoje','Ansiedade e cansaço','Desmotivação'] },
   { id:'ajuda', question:'O que mais ajudaria você a manter o foco e render no último mês?',
@@ -209,7 +209,8 @@ function calcPreparo(){
   const tent  = pts(a.tentou,opts('tentou')) / 3;
   const resu  = pts(a.resumos,opts('resumos')) / 3;
   const simu  = pts(a.simulados,opts('simulados')) / 3;
-  const rn    = pts(a.red_nota,opts('red_nota')) / 5;
+  /* a ordem das opções não é crescente: a pontuação lê o texto (0 a 1) */
+  const rn    = ({'Nunca fiz uma redação completa':0,'Faço de vez em quando':1/3,'Mensalmente':2/3,'Faço toda semana':1})[a.red_nota] || 0;
   const barra = r => Math.min(96, Math.round(8 + r*88));
   const areas = [
     {n:'Rotina e constância', v:barra((dias*15+rot*15+tent*5)/35)},
