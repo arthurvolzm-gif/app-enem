@@ -136,7 +136,7 @@ function render(){
 /* abertura com cards de foto (a 1ª pergunta já está na tela) */
 function introCards(q){
   return `<div class="opts grid2">
-    ${q.options.map((o,i)=>`<div class="foto-card" onclick="selectFoto('${q.id}',${i})"><img src="${q.images[i]}" alt="${S(o)}" class="foto-img" onerror="this.style.display='none'"><button class="opt${state.answers[q.id]===o?' sel':''}" data-i="${i}"><span class="opt-radio"></span><span>${S(o)}</span></button></div>`).join('')}
+    ${q.options.map((o,i)=>`<div class="foto-card" onclick="selectFoto('${q.id}',${i})">${q.images?`<img src="${q.images[i]}" alt="${S(o)}" class="foto-img" onerror="this.style.display='none'">`:''}<button class="opt${state.answers[q.id]===o?' sel':''}" data-i="${i}"><span class="opt-radio"></span><span>${S(o)}</span></button></div>`).join('')}
   </div>`;
 }
 function selectFoto(qid,i){
