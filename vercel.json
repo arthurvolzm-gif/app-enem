@@ -3,11 +3,6 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/",
-      "destination": "/quiz1",
-      "permanent": false
-    },
-    {
       "source": "/quiz-enem",
       "destination": "/quiz2",
       "permanent": false
@@ -68,6 +63,10 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/",
+      "destination": "/quiz2"
+    },
     {
       "source": "/quiz2/escuro",
       "destination": "/quiz2"
