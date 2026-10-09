@@ -155,8 +155,10 @@ const QUESTIONS = [
     options:['Não tenho rotina, estudo quando dá','Tenho cronograma, mas não consigo cumprir','Estudo bastante, mas sem saber o que priorizar','Tenho uma rotina organizada'] },
   { id:'tentou', question:'Você já montou um cronograma e abandonou no meio do caminho?',
     options:['Sim, várias vezes','Sim, uma vez','Nunca montei um','Não, sempre cumpro'] },
-  { id:'materias', type:'multi', max:4, question:'Em quais matérias você tem mais dificuldade?',
-    options:['Matemática','Física','Química','Biologia','História','Geografia','Filosofia','Sociologia','Linguagens','Redação'] },
+  /* a pessoa escolhe a ÁREA; o quiz e o aplicativo continuam lendo a lista de matérias em answers.materias (derivada aqui) */
+  { id:'area', question:'Quais é o tema que você mais tem dificuldade?',
+    options:['Ciências Humanas','Ciências da Natureza','Exatas','Linguagens','Redação'],
+    derive(a){ a.materias = ({'Ciências Humanas':['História','Geografia','Filosofia','Sociologia'],'Ciências da Natureza':['Física','Química','Biologia'],'Exatas':['Matemática'],'Linguagens':['Linguagens'],'Redação':['Redação']})[a.area] || []; } },
   { id:'resumos', question:'Você sabe quais são os temas que mais caem em cada matéria?',
     options:['Não faço ideia','Sei de alguns, mas estudo tudo igual','Sei, mas não tenho resumo deles','Sei e tenho resumos organizados'] },
   { id:'simulados', question:'Quando foi o seu último simulado completo do ENEM?',

@@ -162,6 +162,7 @@ function renderSingle(q){
 function selectOpt(qid,i){
   const q = QUESTIONS.find(x=>x.id===qid);
   state.answers[qid] = q.options[i];
+  if(q.derive) q.derive(state.answers);
   trackResposta(qid, q.options[i]);
   app.querySelectorAll('.opt').forEach(b=>{b.classList.remove('sel');b.style.pointerEvents='none';});
   const c = app.querySelector(`.opt[data-i="${i}"]`); if(c) c.classList.add('sel');
