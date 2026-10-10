@@ -6,6 +6,7 @@
    - WEBHOOK_SECRET         segredo que vai na URL do webhook (?token=...)
    - SUPABASE_URL           o mesmo de shared/config.js
    - SUPABASE_SERVICE_KEY   chave service_role do Supabase (NUNCA no repositório)
+   - PRODUTO_PADRAO         (opcional) produto liberado quando a venda chega com um id desconhecido, ex.: plano
    - ZUPTOS_PRODUTOS        JSON ligando o id/nome do produto na Zuptos ao produto do app, ex.:
        {"id-do-front":"plano","id-do-ob1":"exercicios","id-do-ob3":"correcao","id-do-upsell":"comunidade"}
      (o id do material de redação, OB2, não entra: ele é entregue só pela plataforma)
@@ -28,7 +29,7 @@ function achatar(obj, caminho = "", saida = []) {
 }
 
 function acharEmail(folhas) {
-  const ehEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  const ehEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
   const candidatos = folhas.filter(([c, v]) => /email|e-mail/.test(c) && ehEmail(v));
   if (!candidatos.length) return "";
   const comprador = candidatos.find(([c]) => /(customer|buyer|client|cliente|comprador|payer|lead|user)/.test(c));
@@ -82,7 +83,12 @@ export default async function handler(req, res) {
   const email = acharEmail(folhas);
   const status = acharStatus(folhas).join(" | ");
   const valores = new Set(folhas.map(([, v]) => v.trim().toLowerCase()));
-  const produtos = [...new Set(Object.keys(mapaMin).filter((k) => valores.has(k)).map((k) => mapaMin[k]))];
+  let produtos = [...new Set(Object.keys(mapaMin).filter((k) => valores.has(k)).map((k) => mapaMin[k]))];
+  /* reserva: se a venda chega com um id que não está em ZUPTOS_PRODUTOS, usa o produto padrão (opcional).
+     Só ligue PRODUTO_PADRAO=plano se TODAS as vendas deste webhook forem do app; senão deixe vazio. */
+  const padrao = String(process.env.PRODUTO_PADRAO || "").trim();
+  const usouPadrao = !produtos.length && !!padrao;
+  if (usouPadrao) produtos = [padrao];
 
   const revertido = REVERTIDO.test(status);
   const pago = !revertido && PAGO.test(status);
@@ -97,7 +103,7 @@ export default async function handler(req, res) {
     } else if (pago) {
       const origem = String((corpo.id || corpo.order_id || corpo.sale_id || corpo.transaction_id || "")).slice(0, 80) || null;
       for (const p of produtos) await rpc("liberar_por_email", { p_email: email, p_produto: p, p_origem: origem });
-      acao = "liberado: " + produtos.join(",");
+      acao = "liberado: " + produtos.join(",") + (usouPadrao ? " (produto padrão)" : "");
     } else acao = "status não tratado";
   } catch (e) {
     acao = "erro: " + e.message;
