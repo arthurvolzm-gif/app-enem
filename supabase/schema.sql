@@ -1,5 +1,5 @@
 -- =========================================================
--- Banco do testegratuitoenem (Supabase)
+-- Banco do Acelera Enem (Supabase)
 -- Rode tudo no SQL Editor do Supabase. Pode rodar de novo
 -- sem problema: tudo é "if not exists" ou "or replace".
 -- =========================================================
@@ -132,29 +132,38 @@ create table if not exists public.webhook_log (
 alter table public.webhook_log enable row level security;
 
 -- ---------- 8. Liberar / revogar por e-mail (só o servidor com a chave service_role) ----------
+-- email_chave(): um mesmo e-mail pode ser escrito de formas diferentes. No Gmail, pontos e "+etiqueta"
+-- não mudam a caixa de entrada (thiago.plenss@gmail.com = thiagoplenss@gmail.com). A comparação usa esta chave.
+create or replace function public.email_chave(p text)
+returns text language sql immutable as $$
+  select case
+    when split_part(lower(trim(p)), '@', 2) in ('gmail.com', 'googlemail.com')
+      then replace(split_part(split_part(lower(trim(p)), '@', 1), '+', 1), '.', '') || '@gmail.com'
+    else lower(trim(p))
+  end
+$$;
+
 create or replace function public.liberar_por_email(p_email text, p_produto text, p_origem text default null)
 returns void language plpgsql security definer set search_path = public, auth as $$
-declare uid uuid;
+declare k text; uid uuid;
 begin
-  p_email := lower(trim(p_email));
-  insert into public.acessos_email (email, produto, origem) values (p_email, p_produto, p_origem)
+  k := public.email_chave(p_email);
+  insert into public.acessos_email (email, produto, origem) values (k, p_produto, p_origem)
     on conflict (email, produto) do nothing;
-  select id into uid from auth.users where lower(email) = p_email limit 1;
-  if uid is not null then
+  for uid in select id from auth.users where public.email_chave(email) = k loop
     insert into public.acessos (user_id, produto) values (uid, p_produto) on conflict do nothing;
-  end if;
+  end loop;
 end $$;
 
 create or replace function public.revogar_por_email(p_email text, p_produto text)
 returns void language plpgsql security definer set search_path = public, auth as $$
-declare uid uuid;
+declare k text; uid uuid;
 begin
-  p_email := lower(trim(p_email));
-  delete from public.acessos_email where email = p_email and produto = p_produto;
-  select id into uid from auth.users where lower(email) = p_email limit 1;
-  if uid is not null then
+  k := public.email_chave(p_email);
+  delete from public.acessos_email where email = k and produto = p_produto;
+  for uid in select id from auth.users where public.email_chave(email) = k loop
     delete from public.acessos where user_id = uid and produto = p_produto;
-  end if;
+  end loop;
 end $$;
 
 revoke all on function public.liberar_por_email(text,text,text) from public, anon, authenticated;
@@ -169,11 +178,17 @@ begin
   if auth.uid() is null then return; end if;
   insert into public.acessos (user_id, produto)
     select auth.uid(), e.produto from public.acessos_email e
-     where e.email = lower((select email from auth.users where id = auth.uid()))
+     where e.email = public.email_chave((select email from auth.users where id = auth.uid()))
   on conflict do nothing;
 end $$;
 revoke all on function public.sincronizar_acessos() from public, anon;
 grant execute on function public.sincronizar_acessos() to authenticated;
+
+-- Só para bancos que já tinham compras gravadas antes da email_chave: normaliza as linhas antigas.
+insert into public.acessos_email (email, produto, origem, criado_em)
+  select public.email_chave(email), produto, origem, criado_em from public.acessos_email
+on conflict (email, produto) do nothing;
+delete from public.acessos_email where email <> public.email_chave(email);
 
 -- ---------- 10. Notificações no celular (Web Push) ----------
 create table if not exists public.push_inscricoes (
