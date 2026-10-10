@@ -22,7 +22,7 @@ window.ENEM_CONFIG = {
     comunidade: ''    // Comunidade de estudantes (upsell)
   },
   /* chave PÚBLICA do Web Push (gere o par com: npx web-push generate-vapid-keys; a privada vai só na Vercel) */
-  VAPID_PUBLICA: 'BMFQKSgVwR5bnh6g8oKwEj3M26OeTo3NpC9QrPkS9Qux9T6FOJG-zERXHkyi2npX4POjmQ63G5pPdFfW9CkWfxY',
+  VAPID_PUBLICA: 'BCPJHf0MtEp-5ag7dnpVDohZ8H58qFVLxAGUxdRYWa1GbNalyJPgAJV7I53aU7hfygaEhcq6GRIT9ln54h9hZa8',
   /* link da comunidade (abre depois da compra) */
   COMUNIDADE_LINK: 'https://chat.whatsapp.com/JHuA0CMoiOqF2SmaaCYZRv?s=cl&p=a&mlu=4&ilr=4',
   SUPORTE_EMAIL: '',   // e-mail de suporte mostrado nas telas de acesso
