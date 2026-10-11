@@ -103,9 +103,8 @@ async function jaComprei(){
 }
 const ARQ_EX = {mat:'Matematica',fis:'Fisica',qui:'Quimica',bio:'Biologia',his:'Historia',geo:'Geografia',fil:'Filosofia',soc:'Sociologia',lin:'Linguagens'};
 /* botões do plano: exercícios rápidos dos temas estudados e simulado (só com Exercícios e simulados) */
-function pedirExercicios(){ pedirCompra('exercicios','Exercícios e simulados','Exercícios rápidos dos temas que você estuda e simulados cronometrados no estilo do ENEM, com a explicação de cada resposta.','R$ 14,90'); }
+function pedirExercicios(){ pedirCompra('exercicios','Exercícios e simulados','Simulados cronometrados no estilo do ENEM e o PDF de exercícios de cada matéria, com gabarito comentado. Os exercícios rápidos continuam liberados.','R$ 14,90'); }
 function exerciciosRapidos(mid, temasCsv){
-  if(!Acesso.tem('exercicios')){ pedirExercicios(); return; }
   const ts=(temasCsv||'').split(',').filter(Boolean), todas=Q.map((q,i)=>i);
   /* prioridade: questões dos temas estudados, depois da matéria, depois as demais; sempre no mínimo 10 */
   const tema=todas.filter(i=>ts.includes(Q[i].t)), materia=todas.filter(i=>Q[i].m===mid&&!tema.includes(i)), resto=todas.filter(i=>!tema.includes(i)&&!materia.includes(i));
@@ -257,23 +256,39 @@ function fase(){
   return {n:3,nome:'Revisão final',txt:'Revise o que já leu e descanse bem. Nada de conteúdo novo pesado.',ic:'🏁'};
 }
 
-/* ===================== meta de temas da semana ===================== */
-/* quanto cada tempo por dia rende em cobertura do conteúdo (mesma tabela dos cards da aba Plano) */
-const TEMPOS_META = [[60,50],[90,65],[120,70],[150,80],[180,90],[300,100]];
-function pctTempo(min){ const t=TEMPOS_META.filter(x=>x[0]<=min).pop(); return t ? t[1] : Math.max(10, Math.round(50*min/60)); }
+/* ===================== meta de temas (igual para todos) ===================== */
+/* 1º dia (DATA_ENEM): Linguagens, Humanas e Redação · 2º dia (DATA_ENEM_2): Natureza e Matemática.
+   A meta não depende do tempo escolhido: todos os temas de cada prova até o dia dela. */
+const ETAPAS_ENEM = [
+  { ic:'📚', nome:'Linguagens, Humanas e Redação', data:()=>C.DATA_ENEM, ids:['lin','his','geo','fil','soc','red'] },
+  { ic:'🔬', nome:'Natureza e Matemática', data:()=>C.DATA_ENEM_2||'2026-11-15', ids:['mat','fis','qui','bio'] }
+];
 /* 20 minutos por tema: um bloco de 2h tem 6 temas */
 function temasPorBloco(b){ return Math.max(1, Math.min(6, Math.round(b.min/20))); }
+function etapasEnem(){
+  const L=lidos(), LE=lidosEm(), ini=inicioSemana();
+  return ETAPAS_ENEM.map(e=>{
+    const temas = M.filter(m=>e.ids.includes(m.id)).flatMap(m=>m.temas.map(t=>t.id));
+    const feitos = temas.filter(id=>L.includes(id)).length;
+    const restantes = temas.length - feitos;
+    const semana = temas.filter(id=>LE[id] && LE[id]>=ini).length;
+    const data = e.data();
+    const dias = data ? Math.max(0, Math.ceil((new Date(data+'T13:30:00-03:00') - new Date())/86400000)) : 0;
+    const semanas = Math.max(1, Math.ceil(dias/7));
+    return { ...e, data, total:temas.length, feitos, restantes, dias, semana,
+      porDia: dias ? Math.ceil(restantes/dias) : 0,
+      metaSemana: dias ? Math.ceil((restantes+semana)/semanas) : 0 };
+  });
+}
 function metaSemana(){
-  const p=perfil(), d=diasEnem();
-  const capacidade = Object.values(p.plano).flat().filter(b=>b.m!=='revisao').reduce((a,b)=>a+temasPorBloco(b),0);
-  const restantes = totalTemas - lidos().length;
-  const semanas = d ? Math.max(1, Math.ceil(d/7)) : 4;
-  const meta = Math.max(1, Math.min(capacidade, Math.ceil(restantes/semanas)));
+  const E = etapasEnem();
+  const meta = Math.max(1, E.reduce((a,e)=>a+e.metaSemana,0));
   const ini = inicioSemana(), L = lidosEm();
   const feitos = Object.keys(L).filter(k=>L[k]>=ini).length;
-  const cobertos = Math.min(totalTemas, Math.max(lidos().length, Math.round(totalTemas*pctTempo(p.minutos)/100)));
-  return { meta, feitos, capacidade, semanas, cobertos };
+  return { meta, feitos, etapas:E };
 }
+function metaTemasDia(){ return Math.max(1, etapasEnem().reduce((a,e)=>a+e.porDia,0)); }
+function dataCurta(iso){ const p=(iso||'').split('-'); return p.length===3 ? p[2]+'/'+p[1] : ''; }
 
 /* ===================== revisão espaçada ===================== */
 const INTERVALOS = [1,3,7,14];
@@ -503,7 +518,7 @@ function telaInicio(){
   const minHoje=minutosDia(h), metaMin=metaMinHoje()||p.minutos;
   const planejado=minutosPlanejados(), feitoTot=totalMin(), pctPlano = planejado ? Math.min(100,Math.round(feitoTot/planejado*100)) : 0;
   const tHoje=lidosHoje(), qHoje=(respDia()[h]||0), temEx=Acesso.tem('exercicios');
-  const metaTemasHoje = Math.max(1, bl.filter(b=>b.m!=='revisao').reduce((a,b)=>a+temasPorBloco(b),0)) || 1, ms=metaSemana();
+  const metaTemasHoje = metaTemasDia(), ms=metaSemana();
   const rv=revisoesPendentes(), notif=notificacoes().filter(n=>n.nova).length;
   const hum = checkins()[h];
   const semana = ORDEM_SEMANA.map(x=>{ const dt=new Date(); dt.setDate(dt.getDate()-((dt.getDay()+6)%7)+((x+6)%7)); const iso=hojeISO(dt); const blx=p.plano[x]||[]; const mins=minutosDia(iso); const meta=blx.reduce((a,b)=>a+b.min,0);
@@ -521,7 +536,7 @@ function telaInicio(){
       <div class="card-tt">🎯 Meta de hoje <button class="acao" onclick="irPara('plano')">Ver plano</button></div>
       <div class="mh-linha">${anel(minHoje/metaMin*100, minHoje, 'min', '')}<div class="anel-info"><div class="t">Tempo de estudo</div><div class="v">${fmtMin(metaMin)}</div><div class="s">${minHoje>=metaMin?'Meta batida! 🎉':'Faltam '+fmtMin(metaMin-minHoje)}</div>${pend[0]?`<button class="mini-btn" onclick="irPara('timer/${pend[0].m}/${pend[0].min}')">▶ Começar ${S(nomeBloco(pend[0].m))}</button>`:''}</div></div>
       <div class="mh-linha">${anel(tHoje/metaTemasHoje*100, tHoje, 'temas', '')}<div class="anel-info"><div class="t">Temas lidos</div><div class="v">${metaTemasHoje} ${metaTemasHoje>1?'temas':'tema'}</div><div class="s">${tHoje>=metaTemasHoje?'Leitura em dia ✓':'Semana: '+ms.feitos+' de '+ms.meta+' temas'}</div><button class="mini-btn" onclick="irPara('resumos')">📚 Ler um resumo</button></div></div>
-      ${temEx?`<div class="mh-linha">${anel(qHoje/10*100, qHoje, 'questões', '')}<div class="anel-info"><div class="t">Questões</div><div class="v">10 questões</div><div class="s">${qHoje>=10?'Treino feito ✓':'Pratique no estilo do ENEM'}</div><button class="mini-btn" onclick="irPara('exercicios')">📝 Resolver</button></div></div>`
+      ${true?`<div class="mh-linha">${anel(qHoje/10*100, qHoje, 'questões', '')}<div class="anel-info"><div class="t">Questões</div><div class="v">10 questões</div><div class="s">${qHoje>=10?'Treino feito ✓':'Pratique no estilo do ENEM'}</div><button class="mini-btn" onclick="irPara('exercicios')">📝 Resolver</button></div></div>`
              :`<div class="mh-linha">${anel(rv.length?0:100, rv.length, 'revisões', '')}<div class="anel-info"><div class="t">Revisões</div><div class="v">${rv.length?rv.length+' para hoje':'Em dia'}</div><div class="s">Revisar no tempo certo fixa o conteúdo</div></div></div>`}
     </div>
     <div class="card"><div class="card-tt">📆 Sua semana</div><div class="semana">${semana}</div></div>
@@ -533,7 +548,7 @@ function telaInicio(){
     <div class="card" style="padding:0;overflow:hidden;">
       <button class="atalho" onclick="irPara('plano')"><span class="ic">${ic('calendario',1.9)}</span><div><b>Plano de ${DIAS_LONGO[new Date().getDay()].toLowerCase()}</b><span>${bl.length?bl.map(b=>nomeBloco(b.m)).join(' + '):'Dia de descanso'}</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
       <button class="atalho" onclick="irPara('resumos')"><span class="ic">${ic('livros',1.9)}</span><div><b>Resumos do que mais cai</b><span>${lidos().length} de ${totalTemas} temas lidos</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
-      <button class="atalho" onclick="irPara('exercicios')"><span class="ic">${ic('prova',1.9)}</span><div><b>Exercícios e simulados</b><span>No estilo do ENEM</span></div>${temEx?`<span class="seta">${ic('chevR',2.2)}</span>`:`<span class="tag-lock">${ic('cadeado',1.9)}</span>`}</button>
+      <button class="atalho" onclick="irPara('exercicios')"><span class="ic">${ic('prova',1.9)}</span><div><b>Exercícios e simulados</b><span>No estilo do ENEM</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
       <button class="atalho" onclick="location.href='/redacao#corrigir'"><span class="ic">${ic('camera',1.9)}</span><div><b>Corrigir redação pela foto</b><span>Nota estimada por competência</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
       <button class="atalho" onclick="irPara('progresso')"><span class="ic">${ic('barras',1.9)}</span><div><b>Seu progresso</b><span>Nível ${nivel().n}: ${nivel().nome}</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
     </div>
@@ -628,14 +643,15 @@ function telaPlano(){
               <div class="dica-enem"><b>💡 Como cai no ENEM:</b> ${S(t.dica)}</div></div>
           </div>`; }).join('')}
           ${materialArq(b.m)?`<button class="btn sec sm" onclick="baixarMaterial('${b.m}')">⬇ Baixar o material de ${S(nomeBloco(b.m))}</button>`:''}
-          ${ARQ_EX[b.m]?`<div style="display:flex;gap:8px;margin-top:8px;"><button class="btn sec sm" style="flex:1;margin:0;" onclick="exerciciosRapidos('${b.m}','${temas.map(t=>t.id).join(',')}')">📝 Exercícios rápidos${Acesso.tem('exercicios')?'':' 🔒'}</button><button class="btn sm" style="flex:1;margin:0;" onclick="fazerSimulado('${b.m}')">Fazer simulado${Acesso.tem('exercicios')?'':' 🔒'}</button></div>`:''}
+          ${ARQ_EX[b.m]?`<div style="display:flex;gap:8px;margin-top:8px;"><button class="btn sec sm" style="flex:1;margin:0;" onclick="exerciciosRapidos('${b.m}','${temas.map(t=>t.id).join(',')}')">📝 Exercícios rápidos</button><button class="btn sm" style="flex:1;margin:0;" onclick="fazerSimulado('${b.m}')">Fazer simulado${Acesso.tem('exercicios')?'':' 🔒'}</button></div>`:''}
           <div class="bloco-acoes">${diaSel===hoje?(feito?'<span class="tag verde">Concluído</span>':tmAqui?'':`<button class="btn sm" onclick="tmComecar('${b.m}',${b.min})">${ic('play')} Começar</button>`):''}
           ${b.m==='red'&&diaSel===hoje?' <button class="btn sm sec" onclick="location.href=\'/redacao#corrigir\'">📸 Corrigir</button>':''}</div>
         </div></div>`; }).join('')
       :'<p class="nota" style="padding:6px 0;">Dia livre. Descansar também faz parte do plano: o cérebro fixa o que você estudou.</p>'}
     </div>
-    ${(()=>{ const ms=metaSemana(); return `<div class="card"><div class="meta-topo"><div><div class="k">Meta de temas da semana</div><div class="v">${ms.feitos} <small>de ${ms.meta} temas</small></div></div><div class="pct"><b>${Math.min(100,Math.round(ms.feitos/ms.meta*100))}%</b><span>da semana</span></div></div><div class="barra"><i style="width:${Math.min(100,ms.feitos/ms.meta*100)}%"></i></div><div class="nota">No seu ritmo, você cobre cerca de <b>${ms.cobertos} dos ${totalTemas} temas</b> até o ENEM, começando pelos que mais caem.</div>
-      <div class="chips" style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">${(()=>{ const atual=TEMPOS_META.filter(t=>t[0]<=Math.max(0,p.minutos)).map(t=>t[0]).pop(); return TEMPOS_META.map(([m,pc])=>`<button style="padding:9px 6px;font-size:12.5px;text-align:center;" class="${m===atual?'on':''}" onclick="mudarTempo(${m})">${fmtMin(m)}${m===300?' ou mais':''}/dia: ${pc}% (${Math.round(totalTemas*pc/100)} temas)</button>`).join(''); })()}</div></div>`; })()}
+    ${(()=>{ const ms=metaSemana(); return `<div class="card"><div class="meta-topo"><div><div class="k">Meta de temas da semana</div><div class="v">${ms.feitos} <small>de ${ms.meta} temas</small></div></div><div class="pct"><b>${Math.min(100,Math.round(ms.feitos/ms.meta*100))}%</b><span>da semana</span></div></div><div class="barra"><i style="width:${Math.min(100,ms.feitos/ms.meta*100)}%"></i></div>
+      <div class="nota">A meta é a mesma para todos: estudar <b>todos os temas</b> de cada prova até o dia dela, começando pelos que mais caem.</div>
+      ${ms.etapas.map(e=>`<div class="etapa-enem"><div class="et-topo"><b>${e.ic} Até ${dataCurta(e.data)} · ${S(e.nome)}</b><span>${e.feitos} de ${e.total}</span></div><div class="barra fina"><i style="width:${Math.round(e.feitos/e.total*100)}%"></i></div><div class="et-sub">${e.restantes ? (e.dias ? `Faltam <b>${e.restantes} temas</b> em ${e.dias} ${e.dias>1?'dias':'dia'}: cerca de <b>${e.porDia} por dia</b>` : `Faltam ${e.restantes} temas`) : 'Todos os temas estudados ✓'}</div></div>`).join('')}</div>`; })()}
     <div class="secao">Sua semana completa</div>
     <div class="card">${ORDEM_SEMANA.map(x=>{ const b2=p.plano[x]||[]; return `<div class="row" style="display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--borda);font-size:14px;"><b style="color:var(--navy);width:44px;">${DIAS[x]}</b><span style="flex:1;color:${b2.length?'var(--texto)':'var(--cinza2)'};">${b2.length?b2.map(b=>iconeBloco(b.m)+' '+nomeBloco(b.m)).join(' · '):'Descanso'}</span><span style="color:var(--azul2);font-weight:700;">${b2.length?fmtMin(b2.reduce((a,b)=>a+b.min,0)):''}</span></div>`; }).join('')}</div>
     <button class="btn sec" onclick="irAjustar()">⚙️ Ajustar o meu plano</button>
@@ -808,7 +824,7 @@ function telaTema(id){
       <div class="dica-enem"><b>💡 Como cai no ENEM:</b> ${S(t.dica)}</div>
     </div>
     ${rev?`<button class="btn azul" id="revisei">🧠 Revisei este tema</button>`:`<button class="btn" id="lido" ${lido?'disabled':''}>${lido?'✅ Tema lido':'Marcar como lido'}</button>`}
-    ${nq?`<button class="btn sec" onclick="irPara('treino/tema/${id}')">📝 Praticar ${nq} ${nq>1?'questões':'questão'} deste tema${Acesso.tem('exercicios')?'':' 🔒'}</button>`:''}
+    ${nq?`<button class="btn sec" onclick="irPara('treino/tema/${id}')">📝 Praticar ${nq} ${nq>1?'questões':'questão'} deste tema</button>`:''}
   </div>`;
   const b=document.getElementById('lido');
   if(b && !lido) b.onclick=()=>{ const L=lidos(); L.push(id); lsSet('mat_lidos',L); const E=lidosEm(); E[id]=hojeISO(); lsSet('mat_lidos_em',E); marcarDiaAtivo(); toast('+25 XP · salvo em '+m.nome+'!'); telaTema(id); };
@@ -867,7 +883,7 @@ function telaPerfil(){
       <button class="atalho" onclick="irAjustar()"><span class="ic">${ic('engrenagem',1.9)}</span><div><b>Ajustar o meu plano</b><span>Curso, meta, matérias, tempo e dias</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
       <button class="atalho" onclick="irPara('lembretes')"><span class="ic">${ic('alarme',1.9)}</span><div><b>Lembretes</b><span>Todo dia de estudo às ${S(p.hora)}</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
       <button class="atalho" onclick="irPara('materiais')"><span class="ic">${ic('arquivo',1.9)}</span><div><b>Meus materiais em PDF</b><span>Os resumos completos de cada matéria</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
-      <button class="atalho" onclick="irPara('exercicios')"><span class="ic">${ic('prova',1.9)}</span><div><b>Exercícios e simulados</b><span>No estilo do ENEM</span></div>${Acesso.tem('exercicios')?`<span class="seta">${ic('chevR',2.2)}</span>`:`<span class="tag-lock">${ic('cadeado',1.9)}</span>`}</button>
+      <button class="atalho" onclick="irPara('exercicios')"><span class="ic">${ic('prova',1.9)}</span><div><b>Exercícios e simulados</b><span>No estilo do ENEM</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
       <button class="atalho" onclick="location.href='/redacao'"><span class="ic">${ic('red',1.9)}</span><div><b>Redação</b><span>Arsenal de Redações e correção por foto</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
       <button class="atalho" onclick="verificarAcesso()"><span class="ic">${ic('chave',1.9)}</span><div><b>Já comprei um produto</b><span>Atualizar os meus acessos</span></div><span class="seta">${ic('chevR',2.2)}</span></button>
       ${u?`<button class="atalho" onclick="sairConta()"><span class="ic">${ic('sair',1.9)}</span><div><b>Sair da conta</b><span>${S(u.email)}</span></div></button>`:''}
@@ -994,12 +1010,12 @@ setInterval(checaLembrete,30000);
 let sQ=null;
 function bloqueado(prod,titulo,texto){ return `<div class="card bloq"><div class="e">🔒</div><h2>${titulo}</h2><p>${texto}</p><button class="btn" onclick="checkout('${prod}')">Desbloquear agora</button><button class="btn sec" onclick="verificarAcesso()">Já comprei: verificar acesso</button></div>`; }
 function telaExercicios(){
-  if(!Acesso.tem('exercicios')){ app.innerHTML = barraTopo('📝 Exercícios e simulados', !!perfil())+`<div class="tela">${bloqueado('exercicios','Exercícios e simulados','Pratique com questões no estilo do ENEM, com a explicação de cada resposta, e faça simulados cronometrados.')}</div>`; return; }
+  const temEx=Acesso.tem('exercicios');
   const R=respostas(), p=perfil();
   const ordem = M.slice().sort((a,b)=>((p&&p.dificeis.includes(b.id))?1:0)-((p&&p.dificeis.includes(a.id))?1:0));
   app.innerHTML = `${barraTopo('📝 Exercícios e simulados', !!perfil())}
   <div class="tela fade">
-    <div class="card hero"><div class="k">Mini simulado</div><div class="grande" style="font-size:22px;">10 questões, cronometrado</div><p>Todas as matérias. O resultado entra no seu progresso.</p><div style="height:12px"></div><button class="btn sec" style="background:var(--card);" onclick="iniciarQ('simulado')">Começar simulado</button></div>
+    <div class="card hero"><div class="k">Mini simulado</div><div class="grande" style="font-size:22px;">10 questões, cronometrado</div><p>Todas as matérias. O resultado entra no seu progresso.</p><div style="height:12px"></div><button class="btn sec" style="background:var(--card);" onclick="${temEx?"iniciarQ('simulado')":'pedirExercicios()'}">${temEx?'':'🔒 '}Começar simulado</button></div>
     <div class="secao">Treinar por matéria</div>
     ${ordem.map(m=>{ const qs=Q.map((q,i)=>({q,i})).filter(x=>x.q.m===m.id); if(!qs.length) return ''; const f=qs.filter(x=>x.i in R).length; return `<button class="tema-item" onclick="iniciarQ('treino','${m.id}')"><span class="ck" style="background:${COR_MAT[m.id]};border:none;font-size:15px;">${m.icone}</span><div style="flex:1;"><b>${S(m.nome)}</b><span class="nota">${f}/${qs.length} feitas${p&&p.dificeis.includes(m.id)?' · sua prioridade':''}</span></div><span class="seta">${ic('chevR',2.2)}</span></button>`; }).join('')}
     <button class="btn sec" onclick="irPara('erros')">📒 Caderno de erros</button>
@@ -1008,6 +1024,7 @@ function telaExercicios(){
 }
 function embaralhar(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function iniciarQ(modo, filtro, tema){
+  if(modo==='simulado' && !Acesso.tem('exercicios')){ pedirExercicios(); return; }
   let idx=Q.map((q,i)=>i);
   if(modo==='erros'){ const R=respostas(); idx=idx.filter(i=>R[i]===false); modo='treino'; }
   else if(tema) idx=idx.filter(i=>Q[i].t===tema); else if(filtro) idx=idx.filter(i=>Q[i].m===filtro);
@@ -1067,7 +1084,7 @@ function render(){
   if(pt[0]==='materia') telaMateria(pt[1]);
   else if(pt[0]==='tema') telaTema(pt[1]);
   else if(pt[0]==='timer') telaTimer(pt[1], +pt[2]||30);
-  else if(pt[0]==='treino'){ if(!temEx) telaExercicios(); else iniciarQ('treino',null,pt[2]); return; }
+  else if(pt[0]==='treino'){ iniciarQ('treino',null,pt[2]); return; }
   else (T[pt[0]]||telaInicio)();
   window.scrollTo(0,0);
 }
