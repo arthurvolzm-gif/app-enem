@@ -81,10 +81,6 @@ h2 em{font-style:normal;color:var(--azul)}
 .hero p.lead{font-size:16px;color:var(--suave);margin:14px auto 0;max-width:560px}
 .leque{position:relative;height:290px;margin:24px auto 4px;max-width:440px}
 .leque img{position:absolute;bottom:0;width:150px;border-radius:8px;box-shadow:0 12px 26px rgba(4,34,43,.28);border:3px solid #fff}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px}
-.stat{background:var(--azul-suave);border-radius:14px;padding:12px 6px}
-.stat b{display:block;font-size:24px;font-weight:900;color:var(--azul);line-height:1.1}
-.stat span{font-size:11.5px;font-weight:700;color:var(--suave);text-transform:uppercase;letter-spacing:.04em}
 
 
 /* dores */
@@ -109,35 +105,53 @@ h2 em{font-style:normal;color:var(--azul)}
 @keyframes esteira{to{transform:translateX(calc(-50% - 7px))}}
 @media (prefers-reduced-motion:reduce){.esteira-trilho{animation-duration:180s}}
 /* galeria */
-/* anatomia de um tema */
-.anat{display:grid;gap:18px;margin-top:24px;align-items:start}
-.ficha{background:#fff;border:3px solid #f1d98a;border-radius:20px;padding:16px;box-shadow:0 0 0 6px #fbf1d0,0 26px 50px -26px rgba(4,34,43,.35)}
-.ficha-topo{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-bottom:12px}
+/* anatomia de um tema: página com etiquetas apontando os elementos */
+.anat{margin-top:30px;display:flex;justify-content:center}
+.ficha{position:relative;width:100%;max-width:440px;background:#fff;border:3px solid #f1d98a;border-radius:20px;padding:18px 16px 16px;box-shadow:0 0 0 6px #fbf1d0,0 26px 50px -26px rgba(4,34,43,.35)}
+.ficha-topo{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-bottom:6px}
 .ficha-topo .num{background:var(--azul-escuro);color:#fff;font-weight:900;font-size:18px;border-radius:10px;padding:6px 10px}
 .ficha-topo h3{font-size:20px;font-weight:900;color:var(--azul-escuro);text-transform:uppercase;letter-spacing:.02em}
-.ficha-topo .fogo{font-size:11.5px;font-weight:800;background:var(--amarelo-suave);border:1px solid #f3dc8a;color:#8a6a00;border-radius:999px;padding:3px 10px}
-.zona{position:relative;border-radius:14px;padding:12px 14px 12px 16px;margin-top:10px;font-size:13.5px;color:var(--suave)}
-.zona .pino{position:absolute;top:-10px;right:-8px}
+.ficha-topo .fogo{position:relative;font-size:11.5px;font-weight:800;background:var(--amarelo-suave);border:1px solid #f3dc8a;color:#8a6a00;border-radius:999px;padding:3px 10px}
+.zona{position:relative;border-radius:14px;padding:22px 14px 12px 16px;margin-top:24px;font-size:13.5px;color:var(--suave)}
 .z1{background:var(--azul-suave);border:1px solid #cdeef6}
-.z2{background:#f1f7ec;border:1px solid #d4e8c6}
+.z2{background:#fff3e3;border:1px solid #f6d3a6}
 .z3{background:#fff4f2;border:1px solid #f1d0ca}
+.zona.enem{background:#f3eefc;border:1px solid #ddd0f5;color:#4c2d86}
+.zona.enem>b{color:#3b1f72}
 .z-tit{font-size:12px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--azul-escuro);margin-bottom:4px}
 .zona b{color:var(--azul-escuro)}
-.zona ul{margin-top:2px}
 .zona li{list-style:none;position:relative;padding:2px 0 2px 16px}
 .zona li::before{content:'•';position:absolute;left:2px;color:var(--azul);font-weight:900}
+.z2 li::before{color:#e8863a}
 .zona ul.x li::before{content:'✕';color:var(--vermelho);font-size:11px;top:4px}
-.conta{margin-top:6px;background:#fff;border:1px dashed #b9d8a6;border-radius:10px;padding:8px 10px;font-weight:700;color:var(--azul-escuro);font-variant-numeric:tabular-nums}
 .aten{margin-top:6px;font-weight:700;color:#9a3412}
-.enem{margin-top:10px;background:#f3eefc;border:1px solid #ddd0f5;border-radius:12px;padding:10px 12px;font-size:13.5px;color:#4c2d86}
-.enem b{color:#3b1f72}
-.pino{flex:none;width:30px;height:30px;border-radius:50%;background:var(--amarelo);border:3px solid #fff;box-shadow:0 0 0 2px #e8c64a,0 4px 10px rgba(0,0,0,.12);color:var(--azul-escuro);font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center}
-.pino.alvo{font-size:13px;background:#fff}
-.legendas{display:grid;gap:10px}
-.leg{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--linha);border-radius:14px;padding:12px 14px}
-.leg b{font-size:15px;color:var(--azul-escuro)}
-.leg p{font-size:13.5px;color:var(--suave);margin-top:2px}
-@media (min-width:720px){.anat{grid-template-columns:1.25fr 1fr;align-items:center}}
+/* etiquetas: no celular ficam presas na borda de cada bloco */
+.call{position:absolute;top:-13px;right:8px;z-index:2;display:flex;align-items:center;gap:6px;background:#fff;border:2px solid #f1d98a;border-radius:999px;padding:3px 10px 3px 4px;box-shadow:0 6px 14px rgba(4,34,43,.12);white-space:nowrap}
+.call i{font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--amarelo-suave);display:flex;align-items:center;justify-content:center;font-size:12px}
+.call b{font-size:11.5px;font-weight:900;color:#a37c00;text-transform:uppercase;letter-spacing:.04em}
+.call small,.call b{display:none}
+.call .cm{font-style:normal;font-size:11px;font-weight:900;color:#a37c00;text-transform:uppercase;letter-spacing:.04em}
+.fogo .call{top:50%;transform:translateY(-50%);right:auto;left:calc(100% + 5px);padding-right:8px}
+/* no computador ficam do lado de fora, com a linha apontando para o elemento */
+@media (min-width:900px){
+  .anat{width:960px;margin-left:calc(50% - 480px);padding:0}
+  .ficha{max-width:460px}
+  .call .cm{display:none}
+  .call b{display:block}
+  .call{top:50%;transform:translateY(-50%);right:auto;width:180px;white-space:normal;flex-wrap:wrap;align-items:flex-start;gap:4px 8px;border-radius:16px;padding:10px 12px}
+  .call i{width:32px;height:32px;font-size:16px;border:2px solid #f1d98a}
+  .call b{flex:1;font-size:13px;align-self:center}
+  .call small{display:block;width:100%;font-size:12.5px;color:var(--suave);line-height:1.4}
+  .call.esq{right:calc(100% + 54px)}
+  .call.dir{left:calc(100% + 54px)}
+  .call::after{content:'';position:absolute;top:50%;width:54px;border-top:2px dashed #e0bf4c}
+  .call::before{content:'';position:absolute;top:calc(50% - 5px);width:10px;height:10px;border-radius:50%;background:#e0bf4c}
+  .call.esq::after{left:100%} .call.esq::before{left:calc(100% + 49px)}
+  .call.dir::after{right:100%} .call.dir::before{right:calc(100% + 49px)}
+  .fogo .call{display:flex;top:50%;bottom:auto;left:auto}
+  .fogo .call.esq{right:calc(100% + 150px)}
+  .fogo .call.esq::after{width:150px} .fogo .call.esq::before{left:calc(100% + 145px)}
+}
 
 /* rota */
 .rota{display:grid;gap:12px;margin-top:22px}
@@ -269,14 +283,8 @@ footer p+p{margin-top:8px}
         <img src="/oferta/img/topico-6.webp" style="right:2%;transform:rotate(9deg);bottom:10px" alt="">
         <img src="/oferta/img/topico-1.webp" style="left:50%;transform:translateX(-50%);bottom:24px;z-index:3;width:170px" alt="">
       </div>
-      <div class="stats">
-        <div class="stat"><b>9</b><span>matérias</span></div>
-        <div class="stat"><b>225</b><span>temas</span></div>
-        <div class="stat"><b>+2.000</b><span>páginas</span></div>
-      </div>
       <a class="btn pulsa" href="#planos">Quero o material completo →</a>
-      <div class="selos"><span>⚡ Acesso imediato</span><span>📱 Celular ou impresso</span><span>🛡️ 7 dias de garantia</span></div>
-    </div>
+          </div>
   </div>
 </div></header>
 
@@ -298,7 +306,7 @@ footer p+p{margin-top:8px}
   <div class="passos">
     <div class="passo"><div class="n">1</div><div><h3>25 temas por matéria</h3><p>Em vez de uma apostila sem fim, cada matéria foi organizada nos 25 temas que o ENEM costuma cobrar.</p></div></div>
     <div class="passo"><div class="n">2</div><div><h3>🔥 Os que mais caem primeiro</h3><p>Os temas que aparecem com mais frequência vêm com o selo "Cai muito no ENEM". Se o tempo estiver curto, você começa por eles.</p></div></div>
-    <div class="passo"><div class="n">3</div><div><h3>Cada tema em 3 partes</h3><p>Visão geral, aprofundando (com exemplo resolvido) e erros comuns e pontos de atenção.</p></div></div>
+    <div class="passo"><div class="n">3</div><div><h3>Cada tema em 3 partes</h3><p>Visão geral, lembretes rápidos e erros comuns e pontos de atenção.</p></div></div>
     <div class="passo"><div class="n">4</div><div><h3>Como cai no ENEM</h3><p>No fim de cada tema, o contexto em que o assunto costuma aparecer na prova.</p></div></div>
   </div>
 </div></section>
@@ -315,38 +323,40 @@ footer p+p{margin-top:8px}
 <section style="padding-top:0"><div class="wrap">
   <span class="eyebrow">Como cada tema é organizado</span>
   <h2>Cada tema em <em>3 partes</em></h2>
-  <p class="sub">Nada de texto enrolado: você entende o conceito, vê como se aplica e aprende onde a maioria erra.</p>
+  <p class="sub">Nada de texto enrolado: você entende o conceito, guarda o essencial e aprende onde a maioria erra.</p>
   <div class="anat">
     <div class="ficha">
-      <div class="ficha-topo"><span class="num">03</span><h3>Razão e proporção</h3><span class="fogo">🔥 Cai muito no ENEM</span></div>
+      <div class="ficha-topo"><span class="num">03</span><h3>Razão e proporção</h3>
+        <span class="fogo">🔥 Cai muito no ENEM
+          <span class="call esq"><i>🔥</i><b>Selo dos que mais caem</b><small>Os temas que mais caem, para começar por eles.</small><em class="cm">Comece por estes</em></span>
+        </span>
+      </div>
 
-      <div class="zona z1"><span class="pino">1</span>
+      <div class="zona z1">
+        <span class="call dir"><i>📖</i><b>Visão geral</b><small>O conceito em poucas linhas e os pontos-chave.</small><em class="cm">Visão geral</em></span>
         <div class="z-tit">O que é?</div>
         <p><b>Razão</b> compara duas grandezas por divisão: a/b. <b>Proporção</b> é a igualdade entre duas razões: a/b = c/d.</p>
         <div class="z-tit" style="margin-top:8px">Pontos-chave</div>
         <ul><li>Produto dos meios = produto dos extremos: a · d = b · c</li><li>Diretamente proporcionais: uma dobra, a outra dobra</li><li>Inversamente: uma dobra, a outra cai pela metade</li></ul>
       </div>
 
-      <div class="zona z2"><span class="pino">2</span>
-        <div class="z-tit">Aprofundando</div>
-        <p>Uma receita usa 3 ovos para 2 xícaras de farinha. Com 6 xícaras:</p>
-        <div class="conta">3/2 = x/6 → 2x = 18 → <b>x = 9 ovos</b></div>
+      <div class="zona z2">
+        <span class="call esq"><i>💡</i><b>Lembretes rápidos</b><small>Informação-chave para revisar em segundos.</small><em class="cm">Revise em segundos</em></span>
+        <div class="z-tit">💡 Lembretes rápidos</div>
+        <ul><li>Proporção: multiplique cruzado</li><li>Escala 1:100 → 1 cm no papel = 100 cm reais</li></ul>
       </div>
 
-      <div class="zona z3"><span class="pino">3</span>
+      <div class="zona z3">
+        <span class="call dir"><i>⚠️</i><b>Erros comuns e pontos de atenção</b><small>As pegadinhas que mais derrubam na prova.</small><em class="cm">As pegadinhas da prova</em></span>
         <div class="z-tit">⚠️ Erros comuns e pontos de atenção</div>
         <ul class="x"><li>Usar regra de três direta quando as grandezas são inversas (mais pedreiros, menos dias)</li><li>Comparar minutos com horas sem converter</li></ul>
         <p class="aten">Pergunte sempre: se uma aumenta, a outra aumenta ou diminui?</p>
       </div>
 
-      <div class="enem">🎯 <b>Como cai no ENEM:</b> escalas de mapa, receitas, misturas e velocidade.</div>
-    </div>
-
-    <div class="legendas">
-      <div class="leg"><span class="pino">1</span><div><b>Visão geral</b><p>O conceito em poucas linhas e os pontos-chave que você precisa saber.</p></div></div>
-      <div class="leg"><span class="pino">2</span><div><b>Aprofundando</b><p>Exemplo resolvido passo a passo, do jeito que a questão aparece.</p></div></div>
-      <div class="leg"><span class="pino">3</span><div><b>Erros comuns e pontos de atenção</b><p>As pegadinhas que mais derrubam na prova e como evitar.</p></div></div>
-      <div class="leg"><span class="pino alvo">🎯</span><div><b>Como cai no ENEM</b><p>No fim de cada tema, o contexto em que o assunto aparece na prova.</p></div></div>
+      <div class="zona enem">
+        <span class="call esq"><i>🎯</i><b>Como cai no ENEM</b><small>O contexto em que o assunto aparece na prova.</small><em class="cm">Onde aparece na prova</em></span>
+        🎯 <b>Como cai no ENEM:</b> escalas de mapa, receitas, misturas e velocidade.
+      </div>
     </div>
   </div>
 </div></section>
