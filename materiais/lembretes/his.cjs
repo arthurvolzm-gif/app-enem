@@ -1,0 +1,28 @@
+/* Lembretes rápidos de História (3 por tema, chaveados pelo título exato) */
+module.exports = {
+  'Antiguidade: Grécia': ['Atenas: democracia direta, só para cidadãos homens', 'Esparta: sociedade militarizada', 'Legado: filosofia, teatro, olimpíadas e democracia'],
+  'Antiguidade: Roma': ['Fases: Monarquia, República e Império', 'Pão e circo: controlar a plebe com comida e diversão', 'Legado: direito romano e o latim'],
+  'Idade Média e feudalismo': ['Sociedade estamental: clero, nobreza e servos', 'Terra = riqueza; relação de suserania e vassalagem', 'A Igreja dominava a cultura e a educação'],
+  'Renascimento e Reformas religiosas': ['Renascimento: antropocentrismo e retorno à cultura clássica', 'Lutero (1517) criticou a venda de indulgências', 'Contrarreforma: Concílio de Trento, Inquisição e jesuítas'],
+  'Grandes Navegações e colonização': ['Objetivo: rota direta para as especiarias', 'Portugal foi pioneiro (Escola de Sagres)', 'Mercantilismo: metalismo e balança comercial favorável'],
+  'Brasil Colônia: economia açucareira': ['Plantation: latifúndio, monocultura, escravidão, exportação', 'O engenho era a base da economia nordestina', 'Quilombos (como Palmares) foram resistência'],
+  'Brasil Colônia: mineração e revoltas': ['Ouro em Minas no século XVIII; capital vai para o Rio', 'Quinto e derrama geravam revolta', 'Inconfidência Mineira (1789) teve influência iluminista'],
+  'Iluminismo': ['Razão contra o absolutismo e os privilégios', 'Montesquieu: três poderes; Rousseau: vontade geral', 'Inspirou as revoluções liberais'],
+  'Revolução Francesa': ['Começa em 1789 com a Queda da Bastilha', 'Lema: liberdade, igualdade e fraternidade', 'Declaração dos Direitos do Homem e do Cidadão'],
+  'Revolução Industrial': ['Começa na Inglaterra, século XVIII', 'Máquina a vapor e fábricas substituem a manufatura', 'Ludismo quebrava máquinas; sindicatos lutavam por direitos'],
+  'Independência do Brasil': ['Vinda da família real (1808) e abertura dos portos', 'Independência em 1822, com D. Pedro I', 'Constituição de 1824 criou o Poder Moderador'],
+  'Brasil Império': ['Primeiro Reinado, Regências e Segundo Reinado', 'Café virou o centro da economia', 'Lei de Terras (1850) dificultou o acesso à terra'],
+  'Abolição e pós-abolição': ['Lei Áurea: 13 de maio de 1888', 'Sem indenização, terra ou inclusão para os libertos', 'Desigualdade racial persiste até hoje'],
+  'República Velha (1889 a 1930)': ['Política do café com leite (SP e MG)', 'Coronelismo e voto de cabresto', 'Revoltas: Canudos, Contestado, Vacina, Chibata'],
+  'Era Vargas (1930 a 1945)': ['Governo Provisório, Constitucional e Estado Novo (1937)', 'CLT (1943) e salário mínimo', 'Estado Novo: ditadura, censura e propaganda'],
+  'República Democrática (1945 a 1964)': ['Populismo: líder carismático e apoio das massas', 'JK: "50 anos em 5" e Brasília', 'Crise de Jango termina no golpe de 1964'],
+  'Ditadura Militar (1964 a 1985)': ['Atos Institucionais; AI-5 (1968) endureceu o regime', 'Milagre econômico com aumento da dívida e da desigualdade', 'Diretas Já (1984) e abertura lenta e gradual'],
+  'Nova República e Constituição de 1988': ['Constituição Cidadã: direitos sociais e voto aos 16 anos', 'SUS e direitos indígenas e quilombolas garantidos', 'Impeachment de Collor (1992) e Plano Real (1994)'],
+  'Primeira Guerra Mundial': ['1914 a 1918; estopim: assassinato em Sarajevo', 'Guerra de trincheiras', 'Tratado de Versalhes puniu duramente a Alemanha'],
+  'Crise de 1929 e totalitarismos': ['Quebra da Bolsa de Nova York em 1929', 'New Deal: Estado intervindo na economia', 'Nazismo e fascismo: autoritarismo, nacionalismo e partido único'],
+  'Segunda Guerra Mundial': ['1939 a 1945: Aliados x Eixo', 'Holocausto: genocídio de judeus e outros grupos', 'Brasil enviou a FEB à Itália'],
+  'Guerra Fria': ['EUA (capitalismo) x URSS (socialismo), sem guerra direta', 'Corrida armamentista e espacial', 'Muro de Berlim cai em 1989; URSS acaba em 1991'],
+  'Descolonização da África e da Ásia': ['Ocorre principalmente após 1945', 'Índia: resistência não violenta com Gandhi', 'Fronteiras artificiais geraram conflitos'],
+  'Movimentos sociais e direitos no século XX': ['Direitos civis nos EUA: Martin Luther King, Rosa Parks', 'Feminismo: voto, trabalho e igualdade', 'Conquistas viraram leis (ex.: Lei Maria da Penha, 2006)'],
+  'Mundo contemporâneo': ['Ordem multipolar e globalizada', 'Temas atuais: terrorismo, refugiados, clima', 'Relacione o fato atual com o processo histórico']
+};

@@ -107,30 +107,35 @@ h2 em{font-style:normal;color:var(--azul)}
 @keyframes esteira{to{transform:translateX(calc(-50% - 7px))}}
 @media (prefers-reduced-motion:reduce){.esteira-trilho{animation-duration:180s}}
 /* galeria */
-/* anatomia: página real com marcadores */
-.anat{margin-top:26px;display:flex;justify-content:center}
-.real{position:relative;width:100%;max-width:440px;margin:0}
-.real img{width:100%;border-radius:12px;background:#fff;box-shadow:0 0 0 6px #e9f6ee,0 0 0 9px #b9e2c8,0 26px 50px -24px rgba(4,34,43,.4)}
+/* anatomia: página real com etiquetas (como na referência) */
+.anat{margin-top:26px;display:flex;justify-content:center;padding:6px 0}
+.real{position:relative;width:80%;max-width:440px;margin:0}
+.real img{width:100%;border-radius:12px;box-shadow:0 26px 50px -24px rgba(4,34,43,.4)}
 .pt{position:absolute;left:0;right:0;top:calc(var(--y) * 1%);height:0}
-.dot{position:absolute;left:calc(var(--x) * 1%);top:0;transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50%;background:var(--amarelo);color:#fff;border:3px solid #fff;box-shadow:0 0 0 2px #6fbf8e,0 4px 10px rgba(0,0,0,.18);color:var(--azul-escuro);font-weight:900;font-size:12.5px;display:flex;align-items:center;justify-content:center;z-index:2}
-.call{display:none}
-.legenda-m{list-style:none;display:grid;gap:10px;margin:22px auto 0;max-width:440px}
-.legenda-m li{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--linha);border-radius:14px;padding:12px 14px;font-size:13.5px;color:var(--suave)}
-.legenda-m .dot{position:static;transform:none;flex:none}
-.legenda-m b{display:block;font-size:14.5px;color:var(--azul-escuro)}
+.dot{display:none}
+.call{position:absolute;top:0;transform:translateY(-50%);z-index:2;width:98px;background:#fff;border:2px solid #b9e2c8;border-radius:10px;padding:5px 7px 6px;box-shadow:0 8px 18px rgba(4,34,43,.16)}
+.call i{font-style:normal;position:absolute;top:-13px;left:6px;width:24px;height:24px;border-radius:50%;background:#e9f6ee;border:2px solid #0c7a3c;display:flex;align-items:center;justify-content:center;font-size:13px}
+.call b{display:block;margin-top:7px;font-size:9.5px;font-weight:900;color:#0c7a3c;text-transform:uppercase;letter-spacing:.03em;line-height:1.2}
+.call small{display:block;font-size:9.5px;color:var(--tinta);line-height:1.25;margin-top:1px}
+.esq .call{left:-15%}
+.dir .call{right:-15%}
+.esq .call::after,.dir .call::after{content:'';position:absolute;top:50%;width:10px;height:10px;background:#fff;border:2px solid #b9e2c8;transform:translateY(-50%) rotate(45deg)}
+.esq .call::after{right:-7px;border-left:0;border-bottom:0}
+.dir .call::after{left:-7px;border-right:0;border-top:0}
 @media (min-width:900px){
   .anat{width:980px;margin-left:calc(50% - 490px)}
-  .real{max-width:460px}
-  .legenda-m{display:none}
-  .call{display:flex;position:absolute;top:0;transform:translateY(-50%);width:190px;flex-wrap:wrap;align-items:center;gap:4px 8px;background:#fff;border:2px solid #b9e2c8;border-radius:16px;padding:10px 12px;box-shadow:0 8px 20px rgba(4,34,43,.12)}
-  .call i{font-style:normal;width:32px;height:32px;border-radius:50%;background:var(--amarelo-suave);border:2px solid #b9e2c8;display:flex;align-items:center;justify-content:center;font-size:16px}
-  .call b{flex:1;font-size:13px;font-weight:900;color:#0c7a3c;text-transform:uppercase;letter-spacing:.04em}
-  .call small{width:100%;font-size:12.5px;color:var(--suave);line-height:1.4}
-  .esq .call{right:calc(100% + 50px)}
-  .dir .call{left:calc(100% + 50px)}
+  .real{width:460px;max-width:none}
+  .dot{display:block;position:absolute;left:calc(var(--x) * 1%);top:0;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#0c7a3c;border:3px solid #fff;box-shadow:0 0 0 2px #0c7a3c;z-index:2}
+  .call{width:190px;padding:12px 14px 12px;border-radius:16px}
+  .call i{top:-18px;left:14px;width:36px;height:36px;font-size:17px}
+  .call b{margin-top:12px;font-size:13.5px}
+  .call small{font-size:13px}
+  .call::after{display:none}
+  .esq .call{left:auto;right:calc(100% + 54px)}
+  .dir .call{right:auto;left:calc(100% + 54px)}
   .pt::after{content:'';position:absolute;top:0;border-top:2px dashed #6fbf8e}
-  .esq::after{left:-50px;width:calc(50px + var(--x) * 1%)}
-  .dir::after{right:-50px;width:calc(50px + (100 - var(--x)) * 1%)}
+  .esq::after{left:-54px;width:calc(54px + var(--x) * 1%)}
+  .dir::after{right:-54px;width:calc(54px + (100 - var(--x)) * 1%)}
 }
 
 
@@ -233,7 +238,7 @@ footer p+p{margin-top:8px}
     <div class="capa-corpo">
       <span class="eyebrow">Material completo</span>
       <h1>Tudo o que você precisa estudar para o ENEM, <em>em menos de 30 dias</em></h1>
-      <p class="lead">As 9 matérias em 225 temas, com os que mais caem marcados. Cada tema vai do básico ao "Como cai no ENEM", para você estudar o que importa no tempo que falta.</p>
+      <p class="lead">As 9 matérias com os 25 temas que mais pra cada. Cada tema vai do básico ao "Como cai no ENEM", para você estudar o que importa no tempo que falta.</p>
       <div class="leque" aria-hidden="true">
         <img src="/oferta/img/topico-8.webp" style="left:2%;transform:rotate(-9deg);bottom:10px" alt="">
         <img src="/oferta/img/topico-6.webp" style="right:2%;transform:rotate(9deg);bottom:10px" alt="">
@@ -263,7 +268,7 @@ footer p+p{margin-top:8px}
   <div class="passos">
     <div class="passo"><div class="n">1</div><div><h3>25 temas por matéria</h3><p>Em vez de uma apostila sem fim, cada matéria foi organizada nos 25 temas que o ENEM costuma cobrar.</p></div></div>
     <div class="passo"><div class="n">2</div><div><h3>🔥 Os que mais caem primeiro</h3><p>Os temas que aparecem com mais frequência vêm com o selo "Cai muito no ENEM". Se o tempo estiver curto, você começa por eles.</p></div></div>
-    <div class="passo"><div class="n">3</div><div><h3>Direto ao ponto</h3><p>Cada tema em tópicos curtos, com exemplos e as regras principais em destaque.</p></div></div>
+    <div class="passo"><div class="n">3</div><div><h3>1 tema = 1 página</h3><p>Conceito, pontos de atenção, lembretes rápidos e como cai no ENEM, tudo em uma página.</p></div></div>
     <div class="passo"><div class="n">4</div><div><h3>Como cai no ENEM</h3><p>No fim de cada tema, o contexto em que o assunto costuma aparecer na prova.</p></div></div>
   </div>
 </div></section>
@@ -278,26 +283,19 @@ footer p+p{margin-top:8px}
 
 <!-- ANATOMIA DE UM TEMA (página real do material) -->
 <section style="padding-top:0"><div class="wrap">
-  <span class="eyebrow">Por dentro de um tema</span>
-  <h2>Veja uma <em>página real</em> do material</h2>
-  <p class="sub">Tema "Razão e proporção", do material de Matemática.</p>
+  <span class="eyebrow">Metodologia de alta retenção</span>
+  <h2>A estrutura de <em>cada tema</em></h2>
+  <p class="sub">Cada um dos 225 temas cabe em uma página, organizado para você entender, lembrar e saber como cai na prova.</p>
   <div class="anat">
     <figure class="real">
-      <img src="/oferta/img/anatomia-razao.webp" alt="Página real do material de Matemática sobre razão e proporção" loading="lazy" width="920" height="1301">
-      <div class="pt esq" style="--y:13.3;--x:37"><span class="dot">1</span><span class="call"><i>🔥</i><b>Selo dos que mais caem</b><small>Os temas que mais caem, para começar por eles.</small></span></div>
-      <div class="pt dir" style="--y:24;--x:89"><span class="dot">2</span><span class="call"><i>📌</i><b>Tópicos curtos</b><small>Cada assunto em blocos, só com os pontos-chave.</small></span></div>
-      <div class="pt esq" style="--y:33.6;--x:8"><span class="dot">3</span><span class="call"><i>✏️</i><b>Exemplos</b><small>O conceito aplicado em um caso concreto.</small></span></div>
-      <div class="pt dir" style="--y:44.4;--x:94"><span class="dot">4</span><span class="call"><i>⭐</i><b>Regras em destaque</b><small>Fórmulas e propriedades em negrito para memorizar.</small></span></div>
-      <div class="pt esq" style="--y:83;--x:7"><span class="dot">5</span><span class="call"><i>🎯</i><b>Como cai no ENEM</b><small>No fim de cada tema, o contexto em que o assunto aparece na prova.</small></span></div>
+      <img src="/oferta/img/anatomia-tema.webp" alt="Página real do material de Matemática: tema Razão e proporção" loading="lazy" width="900" height="1273">
+      <div class="pt esq" style="--y:13.4;--x:11"><span class="dot"></span><span class="call"><i>🔥</i><b>Cai muito</b><small>Os temas que mais caem, para começar por eles.</small></span></div>
+      <div class="pt dir" style="--y:31;--x:90"><span class="dot"></span><span class="call"><i>📖</i><b>Conceito</b><small>O que você precisa entender.</small></span></div>
+      <div class="pt esq" style="--y:55.5;--x:10"><span class="dot"></span><span class="call"><i>⚠️</i><b>Pontos de atenção</b><small>Os erros que mais derrubam na prova.</small></span></div>
+      <div class="pt dir" style="--y:72;--x:90"><span class="dot"></span><span class="call"><i>💡</i><b>Lembretes rápidos</b><small>Informação-chave para revisão.</small></span></div>
+      <div class="pt esq" style="--y:86;--x:10"><span class="dot"></span><span class="call"><i>🎓</i><b>Como cai</b><small>Contexto de aplicação no ENEM.</small></span></div>
     </figure>
   </div>
-  <ol class="legenda-m">
-    <li><span class="dot">1</span><div><b>Selo dos que mais caem</b>Os temas que mais caem, para começar por eles.</div></li>
-    <li><span class="dot">2</span><div><b>Tópicos curtos</b>Cada assunto em blocos, só com os pontos-chave.</div></li>
-    <li><span class="dot">3</span><div><b>Exemplos</b>O conceito aplicado em um caso concreto.</div></li>
-    <li><span class="dot">4</span><div><b>Regras em destaque</b>Fórmulas e propriedades em negrito para memorizar.</div></li>
-    <li><span class="dot">5</span><div><b>Como cai no ENEM</b>No fim de cada tema, o contexto em que o assunto aparece na prova.</div></li>
-  </ol>
 </div></section>
 
 <!-- BÔNUS -->

@@ -1,0 +1,28 @@
+/* Lembretes rápidos de Geografia (3 por tema, chaveados pelo título exato) */
+module.exports = {
+  'Cartografia: escalas e projeções': ['Escala grande = área pequena com muito detalhe', 'Toda projeção distorce alguma coisa', 'Mercator preserva formas e aumenta as áreas perto dos polos'],
+  'Coordenadas geográficas e fusos horários': ['Latitude: norte e sul (Equador); longitude: leste e oeste (Greenwich)', 'Cada fuso = 15°', 'Para leste a hora aumenta; para oeste diminui'],
+  'Estrutura geológica e relevo': ['Agentes internos: tectonismo e vulcanismo', 'Agentes externos: chuva, vento, rios e seres vivos', 'Brasil: planaltos, planícies e depressões'],
+  'Solos e erosão': ['Solo nasce do intemperismo da rocha', 'Desmatamento acelera a erosão', 'Curvas de nível e cobertura vegetal conservam o solo'],
+  'Clima: fatores e elementos': ['Tempo é o momento; clima é o padrão de anos', 'Fatores: latitude, altitude, maritimidade, massas de ar', 'Chuvas: convectiva, orográfica e frontal'],
+  'Climas do Brasil e fenômenos climáticos': ['Semiárido: chuvas escassas e irregulares', 'El Niño: seca no Norte e no Nordeste, chuva no Sul', 'Ilha de calor e inversão térmica são fenômenos urbanos'],
+  'Mudanças climáticas': ['Efeito estufa é natural; o problema é a intensificação', 'CO₂ e metano são os principais gases', 'Acordo de Paris (2015): limitar o aquecimento'],
+  'Hidrografia': ['Amazônica é a maior bacia do mundo', 'São Francisco: "rio da integração nacional"', 'Aquífero Guarani é estratégico'],
+  'Vegetação e domínios morfoclimáticos': ['Ab\'Sáber: relevo, clima, solo e vegetação juntos', 'Seis domínios e faixas de transição', 'Mata dos Cocais está numa faixa de transição'],
+  'Questão ambiental no Brasil': ['Arco do desmatamento no sul da Amazônia', 'Queimadas ligadas ao avanço da agropecuária', 'Código Florestal: APP e reserva legal'],
+  'População: crescimento e estrutura': ['Crescimento vegetativo = natalidade − mortalidade', 'Brasil em transição demográfica: menos filhos, mais idosos', 'Pirâmide com base estreita = população envelhecendo'],
+  'Migrações': ['Êxodo rural esvaziou o campo no século XX', 'Fatores de repulsão e de atração', 'Refugiado foge de perseguição ou guerra'],
+  'Urbanização brasileira': ['Rápida e concentrada a partir de 1950', 'Problemas: favelização, mobilidade, segregação', 'Metropolização e conurbação'],
+  'Rede e hierarquia urbana': ['Metrópoles comandam a rede urbana', 'Hoje cidades se ligam sem passar pela hierarquia', 'Cidades médias crescem rápido'],
+  'Industrialização brasileira': ['Tardia: Vargas (base) e JK (bens de consumo)', 'Concentração no Sudeste e desconcentração recente', 'Desindustrialização: menor peso da indústria no PIB'],
+  'Agropecuária e questão agrária': ['Agronegócio: exportação e alta tecnologia', 'Agricultura familiar produz grande parte dos alimentos internos', 'Concentração de terras gera conflitos no campo'],
+  'Energia': ['Matriz elétrica brasileira é majoritariamente renovável', 'Hidrelétricas: limpas, mas com impacto socioambiental', 'Pré-sal: petróleo em águas muito profundas'],
+  'Transportes e logística': ['Brasil depende demais das rodovias', 'Ferrovia e hidrovia são mais baratas para longas distâncias', 'Corredores de exportação levam grãos aos portos'],
+  'Globalização e economia mundial': ['Integração de mercados, informação e capitais', 'Multinacionais espalham a produção', 'Críticas: desigualdade e homogeneização cultural'],
+  'Blocos econômicos e organizações': ['Mercosul: união aduaneira (imperfeita)', 'União Europeia: moeda comum (euro)', 'ONU, OMC e FMI são organizações internacionais'],
+  'Geopolítica e conflitos': ['Ordem mundial multipolar', 'Causas comuns: território, religião, etnia, recursos', 'Leia o mapa e o contexto histórico do conflito'],
+  'Regionalização do Brasil': ['IBGE: cinco regiões, seguindo os limites dos estados', 'Complexos geoeconômicos: Amazônia, Nordeste, Centro-Sul', 'Milton Santos: quatro Brasis pela técnica e informação'],
+  'Nordeste e semiárido': ['Sub-regiões: Zona da Mata, Agreste, Sertão, Meio-Norte', 'Seca é natural; o problema é social', 'Convivência: cisternas e técnicas adaptadas'],
+  'Amazônia': ['Maior floresta tropical do mundo', 'Ocupação: estradas, mineração e agropecuária', 'Desmatamento afeta chuvas de outras regiões'],
+  'Povos tradicionais e território': ['Indígenas, quilombolas, ribeirinhos e outros', 'A Constituição de 1988 garante direitos territoriais', 'Território tem valor cultural, não só econômico']
+};

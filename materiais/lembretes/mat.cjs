@@ -1,0 +1,28 @@
+/* Lembretes rápidos de Matemática (3 por tema, chaveados pelo título exato) */
+module.exports = {
+  'Conjuntos numéricos e operações': ['Ordem: parênteses → potência → × e ÷ → + e −', 'Sinais iguais dão +, sinais diferentes dão −', '"Encontrar de novo" pede MMC; "dividir no maior tamanho possível" pede MDC'],
+  'Frações, decimais e arredondamento': ['Para somar frações, iguale os denominadores', 'Dividir por uma fração = multiplicar pelo inverso', 'Arredonde só no fim: o algarismo seguinte ≥ 5 sobe'],
+  'Razão e proporção': ['Proporção: multiplique cruzado (a × d = b × c)', 'Diretas sobem juntas; inversas vão em sentidos opostos', 'Divisão proporcional: some as partes e ache o valor de cada uma'],
+  'Regra de três': ['Monte uma tabela com as grandezas e as setas', 'Grandezas inversas: inverta uma das razões antes de multiplicar cruzado', 'Na composta, compare cada grandeza com a incógnita separadamente'],
+  'Porcentagem': ['x% de um valor = valor × x/100', 'Aumento de 20% → × 1,20; desconto de 20% → × 0,80', 'Aumentos sucessivos se multiplicam, não se somam'],
+  'Juros simples e compostos': ['Simples: J = C × i × t (juro sempre sobre o capital inicial)', 'Compostos: M = C × (1 + i)ᵗ (juro sobre juro)', 'Taxa e tempo sempre na mesma unidade (mês com mês, ano com ano)'],
+  'Unidades de medida e conversões': ['km → m: × 1.000; m → cm: × 100', '1 m³ = 1.000 L; 1 dm³ = 1 L', 'km/h → m/s: divida por 3,6'],
+  'Escalas': ['Escala = medida no desenho ÷ medida real', '1:100.000 → 1 cm no mapa = 1 km real', 'Áreas usam a escala ao quadrado'],
+  'Potências, raízes e notação científica': ['Multiplicação de mesma base: some os expoentes', 'Qualquer número (≠ 0) elevado a zero vale 1', 'Notação científica: a × 10ⁿ, com 1 ≤ a < 10'],
+  'Equações do 1º e do 2º grau': ['Faça a mesma operação dos dois lados da igualdade', 'Δ = b² − 4ac; x = (−b ± √Δ) ÷ 2a', 'Δ > 0: duas raízes; Δ = 0: uma; Δ < 0: nenhuma real'],
+  'Sistemas de equações': ['Substituição: isole uma letra e troque na outra equação', 'Adição: some as equações para cancelar uma letra', 'Confira a resposta nas duas equações'],
+  'Funções: como ler e interpretar': ['Cada x tem um único y', 'Domínio = entradas possíveis; imagem = saídas', 'Leia os eixos e as unidades antes do gráfico'],
+  'Função afim (1º grau)': ['f(x) = ax + b: gráfico é uma reta', 'a > 0 cresce; a < 0 decresce', 'b é onde a reta corta o eixo y'],
+  'Função quadrática': ['f(x) = ax² + bx + c: gráfico é uma parábola', 'a > 0 abre para cima (mínimo); a < 0 para baixo (máximo)', 'Vértice: xv = −b ÷ 2a'],
+  'Função exponencial e logaritmo': ['Exponencial: a variável está no expoente', 'log_b a = x ⇔ bˣ = a', 'Meia-vida: a quantidade cai pela metade a cada período'],
+  'Progressões: PA e PG': ['PA: soma uma razão fixa; aₙ = a₁ + (n − 1)r', 'PG: multiplica por uma razão fixa; aₙ = a₁ × qⁿ⁻¹', 'Soma da PA: (a₁ + aₙ) × n ÷ 2'],
+  'Ângulos, triângulos e polígonos': ['Soma dos ângulos internos do triângulo = 180°', 'Polígono de n lados: soma interna = (n − 2) × 180°', 'Ângulo externo + interno adjacente = 180°'],
+  'Áreas e perímetros': ['Perímetro é a soma dos lados; área é a superfície', 'Triângulo: b × h ÷ 2; círculo: πr²', 'Figura composta: divida em partes conhecidas'],
+  'Teorema de Pitágoras e semelhança': ['a² = b² + c² (a é a hipotenusa)', 'Ternas comuns: 3, 4, 5 e 5, 12, 13', 'Triângulos semelhantes têm lados proporcionais'],
+  'Trigonometria': ['sen = oposto ÷ hipotenusa; cos = adjacente ÷ hipotenusa', 'tg = oposto ÷ adjacente', 'sen 30° = 1/2; cos 60° = 1/2; tg 45° = 1'],
+  'Geometria espacial: volumes': ['Prisma e cilindro: área da base × altura', 'Pirâmide e cone: base × altura ÷ 3', '1 dm³ = 1 litro'],
+  'Estatística: média, moda e mediana': ['Média: some tudo e divida pela quantidade', 'Mediana: valor do meio com os dados em ordem', 'Moda: o valor que mais aparece'],
+  'Gráficos, tabelas e dispersão': ['Leia título, eixos, unidades e fonte', 'Pizza compara partes de um todo; linha mostra evolução', 'Desvio padrão alto = dados mais espalhados'],
+  'Análise combinatória': ['Princípio multiplicativo: multiplique as possibilidades de cada etapa', 'A ordem importa? Sim: arranjo ou permutação. Não: combinação', 'n! = n × (n − 1) × ... × 1'],
+  'Probabilidade': ['P = casos favoráveis ÷ casos possíveis', '"E" multiplica; "ou" (exclusivos) soma', 'P(não A) = 1 − P(A)']
+};

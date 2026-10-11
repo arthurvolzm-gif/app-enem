@@ -1,0 +1,28 @@
+/* Lembretes rápidos de Filosofia (3 por tema, chaveados pelo título exato) */
+module.exports = {
+  'O que é Filosofia': ['Filosofia = "amor à sabedoria"', 'Atitude filosófica: questionar o que parece óbvio', 'Áreas: ética, política, lógica, estética, conhecimento'],
+  'Mito e Filosofia': ['Mito explica pelo sobrenatural e pela tradição', 'Filosofia explica pela razão (logos)', 'Nasce na Grécia, por volta do século VI a.C.'],
+  'Pré-socráticos': ['Buscavam a arché, o princípio de tudo', 'Tales: água; Heráclito: fogo e mudança', 'Parmênides: o ser é imutável'],
+  'Sócrates e os sofistas': ['Sofistas: retórica e relativismo, cobravam pelo ensino', '"Só sei que nada sei"', 'Método socrático: ironia e maiêutica'],
+  'Platão': ['Mundo das ideias (real) x mundo sensível (cópia)', 'Mito da Caverna: sair das sombras é conhecer', 'Governo ideal: o rei-filósofo'],
+  'Aristóteles': ['Conhecimento começa pelos sentidos', 'Ética: virtude é o meio-termo', '"O ser humano é um animal político"'],
+  'Filosofia helenística': ['Busca da felicidade e da tranquilidade', 'Estoicos: aceitar o que não depende de nós', 'Epicuristas: prazer moderado e ausência de dor'],
+  'Filosofia medieval': ['Tema central: fé e razão', 'Agostinho: influência de Platão', 'Tomás de Aquino: influência de Aristóteles'],
+  'Maquiavel': ['Separa a política da moral religiosa', 'Virtù (habilidade) e fortuna (acaso)', 'Cuidado: ele não escreveu "os fins justificam os meios"'],
+  'Racionalismo e empirismo': ['Racionalismo (Descartes): razão e ideias inatas', 'Empirismo (Locke, Hume): experiência, mente como tábula rasa', 'Kant une razão e experiência'],
+  'Kant e a ética do dever': ['Esclarecimento: sair da menoridade e pensar por si', 'Imperativo categórico: aja como lei universal', 'A ação vale pela intenção, não pelo resultado'],
+  'Contratualismo: Hobbes, Locke e Rousseau': ['Hobbes: estado de natureza é guerra → Estado forte', 'Locke: direitos naturais (vida, liberdade, propriedade)', 'Rousseau: o homem nasce bom; vontade geral'],
+  'Iluminismo e Montesquieu': ['Razão, liberdade e crítica ao absolutismo', 'Montesquieu: Executivo, Legislativo e Judiciário', 'Voltaire: tolerância e liberdade de expressão'],
+  'Hegel e Marx': ['Hegel: dialética tese → antítese → síntese (ideias)', 'Marx: materialismo histórico (base econômica)', 'Luta de classes move a história'],
+  'Nietzsche': ['Critica a moral cristã ("moral de rebanho")', '"Deus está morto": crise dos valores absolutos', 'Super-homem cria os próprios valores'],
+  'Existencialismo': ['Sartre: a existência precede a essência', 'Estamos "condenados a ser livres"', 'Beauvoir: "Não se nasce mulher, torna-se mulher"'],
+  'Escola de Frankfurt': ['Teoria crítica da sociedade', 'Indústria cultural transforma a cultura em mercadoria', 'Habermas: razão comunicativa e diálogo'],
+  'Hannah Arendt': ['Banalidade do mal: obedecer sem pensar (Eichmann)', 'Totalitarismo: terror e ideologia', 'Política é ação e diálogo no espaço público'],
+  'Foucault: poder e disciplina': ['O poder está nas relações, em todo lugar', 'Instituições disciplinares: escola, prisão, hospital, quartel', 'Panóptico: vigiar sem ser visto'],
+  'Ética e moral': ['Moral: regras de um grupo; ética: reflexão sobre elas', 'Utilitarismo: o maior bem para o maior número', 'Bioética: limites da ciência sobre a vida'],
+  'Política e democracia': ['Aristóteles: formas puras e impuras de governo', 'Liberalismo defende liberdades individuais', 'Democracia exige participação além do voto'],
+  'Teoria do conhecimento': ['Pergunta: como sabemos o que sabemos?', 'Ceticismo duvida; dogmatismo afirma certezas', 'Ciência avança por hipóteses e testes'],
+  'Estética e arte': ['Estética estuda o belo e a arte', 'Platão: arte é cópia da cópia', 'Arte contemporânea valoriza o conceito e o público'],
+  'Filosofia e tecnologia': ['Tecnologia não é neutra', 'Temas: vigilância, inteligência artificial, redes sociais', 'Use os conceitos clássicos para ler o presente'],
+  'Lógica e argumentação': ['Argumento = premissas + conclusão', 'Dedução vai do geral ao particular; indução, o contrário', 'Ad hominem ataca a pessoa, não o argumento']
+};

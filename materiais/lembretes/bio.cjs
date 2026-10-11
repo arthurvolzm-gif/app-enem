@@ -1,0 +1,28 @@
+/* Lembretes rápidos de Biologia (3 por tema, chaveados pelo título exato) */
+module.exports = {
+  'Características dos seres vivos': ['Célula, metabolismo, reprodução, DNA e evolução', 'Célula → tecido → órgão → sistema → organismo', 'Vírus não tem célula e só se reproduz dentro de outra'],
+  'Citologia: a célula': ['Procarionte não tem núcleo (bactérias)', 'Mitocôndria: respiração; cloroplasto: fotossíntese', 'Célula vegetal tem parede, cloroplasto e vacúolo grande'],
+  'Membrana e transporte celular': ['Passivo: a favor do gradiente, sem gasto de energia', 'Ativo: contra o gradiente, gasta ATP', 'Osmose: a água vai para o lado mais concentrado'],
+  'Metabolismo energético': ['Fotossíntese: CO₂ + água + luz → glicose + O₂', 'Respiração: glicose + O₂ → CO₂ + água + ATP', 'Fermentação: sem O₂, rende pouco ATP'],
+  'Ácidos nucleicos e síntese de proteínas': ['DNA: A-T e C-G; RNA troca T por U', 'Transcrição (DNA → RNA) e tradução (RNA → proteína)', 'Cada códon (3 bases) indica um aminoácido'],
+  'Divisão celular': ['Mitose: 2 células iguais (crescimento e reparo)', 'Meiose: 4 células com metade dos cromossomos (gametas)', 'Câncer: divisão celular descontrolada'],
+  'Genética: leis de Mendel': ['Genótipo é o gene; fenótipo é a característica', 'Aa × Aa → 1 AA : 2 Aa : 1 aa (3:1 no fenótipo)', 'Recessivo só aparece em dose dupla (aa)'],
+  'Genética: grupos sanguíneos e herança ligada ao sexo': ['O é doador universal; AB é receptor universal (ABO)', 'Eritroblastose: mãe Rh− e bebê Rh+', 'Daltonismo e hemofilia: mais comuns em homens (X)'],
+  'Biotecnologia': ['Transgênico recebe gene de outra espécie', 'DNA recombinante: insulina produzida por bactérias', 'Células-tronco podem virar outros tipos de célula'],
+  'Evolução': ['Lamarck: uso e desuso (não aceito hoje)', 'Darwin: seleção natural dos mais adaptados', 'Resistência a antibiótico é seleção natural em ação'],
+  'Ecologia: conceitos e cadeias alimentares': ['Produtor → consumidores → decompositores', 'A energia diminui a cada nível trófico', 'Bioacumulação: poluente aumenta no topo da cadeia'],
+  'Relações ecológicas': ['Mutualismo: os dois ganham e dependem um do outro', 'Parasitismo: um ganha e o outro perde', 'Espécie invasora sem predador desequilibra o ambiente'],
+  'Ciclos biogeoquímicos': ['Carbono: fotossíntese retira CO₂; queima devolve', 'Nitrogênio: bactérias fixam o N₂ do ar', 'Água: evaporação, condensação, precipitação'],
+  'Biomas brasileiros': ['Amazônia, Cerrado, Caatinga, Mata Atlântica, Pampa e Pantanal', 'Mata Atlântica é o bioma mais devastado', 'Cerrado é a "caixa d\'água" do Brasil'],
+  'Impactos ambientais e sustentabilidade': ['Desmatamento, queimadas e poluição são os mais cobrados', 'Unidades de conservação protegem áreas naturais', 'Sustentável: atende hoje sem comprometer o futuro'],
+  'Vírus e doenças virais': ['Vírus não responde a antibiótico', 'Dengue, zika e chikungunya: mosquito Aedes aegypti', 'Vacina é a principal prevenção'],
+  'Bactérias, protozoários e verminoses': ['Bacterioses se tratam com antibiótico', 'Doença de Chagas: barbeiro; malária: mosquito Anopheles', 'Verminoses: saneamento básico e higiene previnem'],
+  'Sistema imunológico e vacinas': ['Vacina: imunidade ativa, prevenção, gera memória', 'Soro: anticorpos prontos, tratamento imediato', 'Imunidade coletiva protege quem não pode se vacinar'],
+  'Sistema digestório e nutrição': ['Boca → esôfago → estômago → intestinos', 'A maior absorção acontece no intestino delgado', 'Bile emulsifica gorduras (não é enzima)'],
+  'Sistemas circulatório e respiratório': ['Artérias saem do coração; veias chegam', 'Hemácias levam O₂; plaquetas coagulam', 'Trocas gasosas acontecem nos alvéolos'],
+  'Sistemas nervoso e endócrino': ['Neurônio: dendrito → corpo celular → axônio', 'Insulina baixa a glicose no sangue', 'Adrenalina prepara o corpo para luta ou fuga'],
+  'Reprodução humana e métodos contraceptivos': ['A ovulação ocorre por volta do 14º dia de um ciclo de 28', 'Fecundação costuma ocorrer na tuba uterina', 'Só a camisinha também protege contra ISTs'],
+  'Botânica': ['Briófitas sem vasos; pteridófitas com vasos e sem sementes', 'Gimnospermas: semente nua; angiospermas: flor e fruto', 'Xilema leva seiva bruta; floema leva seiva elaborada'],
+  'Zoologia': ['Invertebrados são a grande maioria dos animais', 'Anfíbios: metamorfose e pele úmida', 'Aves e mamíferos mantêm temperatura constante'],
+  'Saúde, saneamento e doenças não transmissíveis': ['Saneamento previne verminoses e diarreias', 'Hipertensão e diabetes ligam-se ao estilo de vida', 'Saúde inclui o bem-estar físico, mental e social']
+};

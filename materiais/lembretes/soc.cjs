@@ -1,0 +1,28 @@
+/* Lembretes rápidos de Sociologia (3 por tema, chaveados pelo título exato) */
+module.exports = {
+  'O que é Sociologia': ['Estuda as relações sociais e a vida em sociedade', 'Desnaturalizar: o que parece natural é construção social', 'Estranhar o familiar'],
+  'Surgimento e contexto histórico da Sociologia': ['Nasce no século XIX', 'Contexto: Revolução Industrial e Revolução Francesa', 'Busca entender as mudanças da sociedade moderna'],
+  'Auguste Comte': ['Pai do Positivismo e criador do termo Sociologia', 'Lei dos Três Estados: teológico, metafísico, positivo', '"Ordem e Progresso" vem do Positivismo'],
+  'Émile Durkheim': ['Fato social: exterior, coercitivo e geral', 'Solidariedade mecânica (semelhança) x orgânica (diferença)', 'Anomia: ausência ou enfraquecimento das normas'],
+  'Karl Marx': ['Materialismo histórico: a economia molda a sociedade', 'Burguesia x proletariado', 'Mais-valia: trabalho não pago que vira lucro'],
+  'Max Weber': ['Ação social: tem sentido para quem age', 'Dominação: tradicional, carismática e legal-racional', 'Ética protestante favoreceu o capitalismo'],
+  'Cultura e sociedade': ['Cultura é aprendida, não biológica', 'Etnocentrismo julga pela própria cultura', 'Relativismo cultural entende o outro no contexto dele'],
+  'Socialização': ['Processo de aprender a viver em sociedade', 'Primária: família; secundária: escola, trabalho', 'Mídia e redes também socializam'],
+  'Estratificação social': ['Castas: fechadas; estamentos: rígidos; classes: abertas', 'Mobilidade pode ser vertical ou horizontal', 'Desigualdade é social, não natural'],
+  'Trabalho e sociedade': ['Taylorismo: tarefas cronometradas', 'Fordismo: linha de montagem e produção em massa', 'Toyotismo: produção flexível, just in time'],
+  'Poder, política e Estado': ['Poder: capacidade de influenciar a ação dos outros', 'Weber: Estado tem o monopólio legítimo da força', 'Formas de governo: monarquia, república, democracia'],
+  'Instituições sociais': ['Família, escola, Estado, religião, mercado', 'Organizam e regulam a vida social', 'Mudam junto com a sociedade'],
+  'Ideologia e indústria cultural': ['Ideologia (Marx): ideias que escondem a dominação', 'Indústria cultural (Adorno e Horkheimer): cultura como mercadoria', 'Consumo passivo reduz o senso crítico'],
+  'Movimentos sociais': ['Ação coletiva organizada por mudança', 'Exemplos: MST, feminista, negro, LGBTQIA+', 'Ampliam direitos e a cidadania'],
+  'Globalização': ['Integração econômica, cultural e da informação', 'Gera oportunidades e desigualdades', 'Homogeneização x valorização do local'],
+  'Sociologia no Brasil': ['Gilberto Freyre: Casa-Grande & Senzala', 'Florestan Fernandes critica o mito da democracia racial', 'Sérgio Buarque: o "homem cordial"'],
+  'Temas contemporâneos': ['Sociedade digital, bolhas e desinformação', 'Violência, desigualdade e meio ambiente', 'Analise com conceitos dos clássicos'],
+  'Metodologia da pesquisa sociológica': ['Quantitativa mede; qualitativa interpreta', 'Técnicas: questionário, entrevista, observação', 'Pesquisador busca distanciamento e rigor'],
+  'Desvio social e controle social': ['Desvio: romper as normas do grupo', 'Controle formal (leis) e informal (família, opinião)', 'Foucault: vigilância e disciplina'],
+  'Cidadania e direitos humanos': ['Marshall: direitos civis, políticos e sociais', 'Declaração Universal dos Direitos Humanos (1948)', 'Cidadania é ter direitos e exercê-los'],
+  'Sociedade de consumo': ['Consumir vira forma de identidade e status', 'Obsolescência programada encurta a vida dos produtos', 'Consequências: endividamento e lixo'],
+  'Modernidade líquida': ['Conceito de Zygmunt Bauman', 'Relações e identidades frágeis e passageiras', 'Sólida: estabilidade; líquida: fluidez e incerteza'],
+  'Modernidade líquida x sociedade de consumo': ['Na modernidade líquida, o consumo organiza a vida', 'Identidade se compra e se troca rápido', 'Insatisfação constante alimenta o consumo'],
+  'Anomia social': ['Conceito de Durkheim', 'Ocorre em crises e mudanças muito rápidas', 'Relaciona-se com o suicídio anômico'],
+  'Capital cultural': ['Conceito de Pierre Bourdieu', 'Formas: incorporado, objetivado e institucionalizado', 'A escola pode reproduzir desigualdades']
+};

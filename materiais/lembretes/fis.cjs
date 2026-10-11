@@ -1,0 +1,28 @@
+/* Lembretes rápidos de Física (3 por tema, chaveados pelo título exato) */
+module.exports = {
+  'Grandezas e unidades (SI)': ['SI: metro (m), quilograma (kg), segundo (s)', 'Escalar tem só valor; vetorial tem valor, direção e sentido', 'Prefixos: k = 10³, M = 10⁶, m = 10⁻³'],
+  'Movimento uniforme': ['Vm = Δs ÷ Δt', 'MU: velocidade constante; s = s₀ + vt', 'km/h ÷ 3,6 = m/s'],
+  'Movimento uniformemente variado': ['Aceleração = variação da velocidade ÷ tempo', 'v = v₀ + at; s = s₀ + v₀t + at²/2', 'Torricelli (sem tempo): v² = v₀² + 2aΔs'],
+  'Queda livre e lançamentos': ['Sem ar, todos caem com a mesma aceleração (g ≈ 10 m/s²)', 'No ponto mais alto, a velocidade vertical é zero', 'Oblíquo: horizontal é MU, vertical é MUV'],
+  'Leis de Newton': ['1ª: sem força resultante, mantém repouso ou MU', '2ª: F = m × a', '3ª: ação e reação têm a mesma intensidade e agem em corpos diferentes'],
+  'Atrito e plano inclinado': ['Fat = μ × N', 'Atrito estático costuma ser maior que o cinético', 'No plano inclinado, a componente P × sen θ puxa o corpo para baixo'],
+  'Trabalho, energia e potência': ['Ec = mv²/2; Ep = mgh', 'Sem atrito, a energia mecânica se conserva', 'Potência = energia ÷ tempo (W = J/s)'],
+  'Quantidade de movimento e impulso': ['Q = m × v (vetorial)', 'Impulso = F × Δt = variação de Q', 'Sistema isolado: Q antes = Q depois'],
+  'Gravitação universal': ['F = G × m₁ × m₂ ÷ d²', 'Dobrar a distância divide a força por 4', 'Astronauta em órbita está em queda livre contínua'],
+  'Hidrostática': ['Pressão = força ÷ área; densidade = massa ÷ volume', 'Stevin: p = p₀ + dgh (cresce com a profundidade)', 'Empuxo = peso do líquido deslocado'],
+  'Temperatura e calor': ['Temperatura mede agitação; calor é energia em trânsito', 'Q = m × c × ΔT (muda a temperatura)', 'Q = m × L (muda o estado, temperatura constante)'],
+  'Propagação do calor': ['Condução: contato, típica dos sólidos', 'Convecção: correntes em líquidos e gases', 'Irradiação: ondas, funciona até no vácuo'],
+  'Termodinâmica': ['1ª lei: Q = τ + ΔU', 'Nenhuma máquina térmica tem rendimento de 100%', 'Calor flui sozinho do quente para o frio'],
+  'Ondas': ['v = λ × f', 'Onda transporta energia, não matéria', 'Na refração, a frequência não muda'],
+  'Acústica (som)': ['Som é onda mecânica: não se propaga no vácuo', 'Altura depende da frequência; intensidade, da amplitude', 'Doppler: fonte se aproximando → som mais agudo'],
+  'Óptica geométrica': ['A luz se propaga em linha reta em meio homogêneo', 'Ângulo de incidência = ângulo de reflexão', 'Objeto tem a cor da luz que reflete'],
+  'Refração e lentes': ['Refração: a luz muda de velocidade ao trocar de meio', 'Convergente corrige hipermetropia; divergente, miopia', 'Presbiopia (vista cansada) também usa lente convergente'],
+  'Eletrostática': ['Cargas iguais se repelem; opostas se atraem', 'Coulomb: F = k × q₁ × q₂ ÷ d²', 'Por atrito, os corpos ficam com cargas opostas'],
+  'Corrente elétrica e circuitos': ['U = R × i (Lei de Ohm)', 'Série: resistências se somam, mesma corrente', 'Paralelo: mesma tensão, como nas tomadas de casa'],
+  'Potência elétrica e consumo': ['P = U × i', 'Energia = potência × tempo (kWh)', 'kWh = (W ÷ 1.000) × horas de uso'],
+  'Magnetismo e eletromagnetismo': ['Polos iguais se repelem; ímã partido vira dois ímãs', 'Corrente elétrica cria campo magnético', 'Campo magnético variando gera corrente (indução)'],
+  'Geração de energia elétrica': ['Quase toda usina gira uma turbina ligada a um gerador', 'Hidrelétrica: potencial gravitacional → cinética → elétrica', 'Toda fonte tem impacto ambiental, mesmo as renováveis'],
+  'Ondas eletromagnéticas': ['Todas viajam a cerca de 300.000 km/s no vácuo', 'Ordem: rádio, micro-ondas, IV, visível, UV, raio X, gama', 'Maior frequência = mais energia'],
+  'Física moderna': ['Efeito fotoelétrico: a luz se comporta como partículas (fótons)', 'Meia-vida: metade dos núcleos decai a cada período', 'Fissão divide núcleos (usinas); fusão une (estrelas)'],
+  'Física no cotidiano e tecnologia': ['Identifique a transformação de energia da situação', 'Panela de pressão: mais pressão → água ferve acima de 100 °C', 'Comece pela grandeza pedida e pelas unidades']
+};

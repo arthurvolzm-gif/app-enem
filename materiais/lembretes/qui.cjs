@@ -1,0 +1,28 @@
+/* Lembretes rápidos de Química (3 por tema, chaveados pelo título exato) */
+module.exports = {
+  'Matéria e suas propriedades': ['Densidade = massa ÷ volume', 'Fusão, vaporização e sublimação absorvem calor', 'Substância pura tem ponto de fusão e de ebulição constantes'],
+  'Substâncias e misturas': ['Simples: um só elemento (O₂); composta: mais de um (H₂O)', 'Homogênea tem uma fase; heterogênea, duas ou mais', 'Mistura não tem temperatura de ebulição constante'],
+  'Separação de misturas': ['Sólido + líquido: filtração ou decantação', 'Líquidos miscíveis: destilação fracionada', 'Tratamento de água: coagulação, floculação, decantação, filtração, cloração'],
+  'Modelos atômicos': ['Dalton: bola maciça; Thomson: pudim de passas', 'Rutherford: núcleo pequeno e denso, eletrosfera', 'Bohr: elétron salta de nível e emite luz ao voltar'],
+  'Estrutura atômica e tabela periódica': ['Z = prótons; A = prótons + nêutrons', 'Família (coluna) = propriedades parecidas', 'Raio atômico cresce para baixo e para a esquerda'],
+  'Ligações químicas': ['Iônica: metal + ametal (transferência de elétrons)', 'Covalente: ametal + ametal (compartilhamento)', 'Metálica: elétrons livres → conduz eletricidade'],
+  'Polaridade e forças intermoleculares': ['Semelhante dissolve semelhante', 'Ordem de força: dipolo induzido < dipolo-dipolo < ligação de H', 'Forças mais fortes → ponto de ebulição maior'],
+  'Funções inorgânicas': ['Ácido libera H⁺; base libera OH⁻', 'Ácido + base → sal + água', 'Óxidos ácidos (CO₂, SO₂) contribuem para a chuva ácida'],
+  'pH e equilíbrio ácido-base': ['pH < 7 ácido; = 7 neutro; > 7 básico (a 25 °C)', 'Cada unidade de pH = 10 vezes mais ou menos ácido', 'Indicadores mudam de cor conforme o pH'],
+  'Reações químicas': ['Evidências: gás, cor, precipitado, calor', 'Massa se conserva (Lavoisier)', 'Balancear: mesmo número de átomos dos dois lados'],
+  'Mol e massa molar': ['1 mol = 6 × 10²³ entidades', 'Massa molar em g/mol = soma das massas atômicas', 'n = massa ÷ massa molar'],
+  'Estequiometria': ['Balanceie a equação antes de tudo', 'Use a proporção dos coeficientes em mol', 'Aplique pureza e rendimento no final'],
+  'Soluções e concentração': ['C = massa do soluto ÷ volume da solução', 'Diluição: C₁V₁ = C₂V₂', 'Saturada: não dissolve mais soluto naquela temperatura'],
+  'Propriedades coligativas': ['Dependem do número de partículas, não da natureza', 'Soluto aumenta a temperatura de ebulição', 'Soluto diminui a temperatura de congelamento'],
+  'Termoquímica': ['ΔH < 0 exotérmica (libera calor)', 'ΔH > 0 endotérmica (absorve calor)', 'Hess: ΔH total = soma das etapas'],
+  'Cinética química': ['Mais temperatura, concentração e superfície = reação mais rápida', 'Catalisador diminui a energia de ativação', 'Catalisador não é consumido nem muda o ΔH'],
+  'Equilíbrio químico': ['No equilíbrio, as velocidades direta e inversa são iguais', 'Le Chatelier: o sistema reage contra a perturbação', 'Catalisador não desloca o equilíbrio'],
+  'Eletroquímica': ['Oxidação perde elétrons; redução ganha', 'Pilha: ânodo (−) oxida, cátodo (+) reduz', 'Eletrólise usa energia elétrica para forçar a reação'],
+  'Radioatividade': ['α: pouco penetrante; β: médio; γ: muito penetrante', 'Meia-vida: metade da amostra decai a cada período', 'Usos: medicina, datação (C-14), energia'],
+  'Introdução à química orgânica': ['Carbono faz 4 ligações', 'Hidrocarboneto tem só C e H', 'Cadeia aberta ou fechada; saturada ou insaturada'],
+  'Funções orgânicas': ['Álcool: OH em carbono saturado', 'Ácido carboxílico: COOH', 'Amina e amida têm nitrogênio'],
+  'Isomeria': ['Isômeros: mesma fórmula molecular, estruturas diferentes', 'Cis-trans pede dupla ligação com ligantes diferentes', 'Óptica: carbono quiral (4 ligantes diferentes)'],
+  'Reações orgânicas': ['Combustão completa gera CO₂ + H₂O', 'Combustão incompleta gera CO (tóxico) ou fuligem', 'Transesterificação produz biodiesel'],
+  'Polímeros': ['Polímero = muitas unidades repetidas (monômeros)', 'Adição: polietileno, PVC; condensação: náilon, PET', 'Plástico comum demora muito para se degradar'],
+  'Química ambiental': ['CO₂ e CH₄ intensificam o efeito estufa', 'SO₂ e NOₓ causam chuva ácida', 'CFC destrói a camada de ozônio']
+};

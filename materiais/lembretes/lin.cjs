@@ -1,0 +1,28 @@
+/* Lembretes rápidos de Linguagens (3 por tema, chaveados pelo título exato) */
+module.exports = {
+  'Interpretação de texto': ['Leia o comando antes do texto', 'A resposta precisa estar apoiada no texto', 'Desconfie de alternativas com "sempre", "nunca" ou "todos"'],
+  'Gêneros textuais': ['Gênero = função social do texto (notícia, receita, crônica)', 'Identifique suporte, público e objetivo', 'Tipos: narrar, descrever, expor, argumentar, instruir'],
+  'Funções da linguagem': ['Referencial: informar; emotiva: emissor', 'Apelativa: convencer o leitor (propaganda)', 'Metalinguística: a linguagem falando dela mesma'],
+  'Variação linguística': ['Variações: regional, social, histórica, situacional', 'Não existe "erro": existe adequação ao contexto', 'Preconceito linguístico é discriminação social'],
+  'Coesão e coerência': ['Coesão: ligação entre as partes (conectivos, pronomes)', 'Coerência: o sentido lógico do texto', '"Mas" e "porém" indicam oposição'],
+  'Figuras de linguagem': ['Metáfora: comparação sem "como"', 'Ironia: dizer o contrário do que se pensa', 'Hipérbole exagera; eufemismo suaviza'],
+  'Intertextualidade': ['Diálogo de um texto com outro', 'Paródia muda o sentido (crítica ou humor)', 'Paráfrase mantém o sentido com outras palavras'],
+  'Gramática no texto': ['O ENEM cobra gramática pelo efeito de sentido', 'Pronomes retomam termos: descubra o referente', 'Pontuação muda o sentido da frase'],
+  'Texto publicitário': ['Objetivo: persuadir o leitor', 'Função apelativa e verbos no imperativo', 'Imagem e texto trabalham juntos'],
+  'Charges, tirinhas e memes': ['Charge critica um fato atual', 'Humor depende do contexto e da quebra de expectativa', 'Leia imagem e texto juntos'],
+  'Quinhentismo e Barroco': ['Quinhentismo: Carta de Caminha e textos jesuítas', 'Barroco: conflito entre fé e prazer, antíteses', 'Gregório de Matos ("Boca do Inferno") e Padre Vieira'],
+  'Arcadismo': ['Vida simples no campo (fugere urbem)', 'Carpe diem: aproveitar o momento', 'Tomás Antônio Gonzaga (Marília de Dirceu)'],
+  'Romantismo': ['Subjetividade, sentimentalismo e nacionalismo', '1ª geração: indianismo (Gonçalves Dias)', '3ª geração: poesia social (Castro Alves)'],
+  'Realismo e Naturalismo': ['Realismo: crítica social e psicológica (Machado de Assis)', 'Naturalismo: determinismo, ser humano como animal', 'Parnasianismo: arte pela arte, forma perfeita'],
+  'Simbolismo e Pré-Modernismo': ['Simbolismo: musicalidade, mistério (Cruz e Sousa)', 'Pré-Modernismo: Brasil real e excluído', 'Os Sertões (Euclides da Cunha) e Lima Barreto'],
+  'Modernismo: 1ª fase': ['Semana de Arte Moderna (1922)', 'Ruptura, verso livre, linguagem coloquial', 'Antropofagia (Oswald): absorver o estrangeiro e criar o nacional'],
+  'Modernismo: 2ª e 3ª fases': ['Poesia de 30: Drummond, Cecília, Vinicius', 'Romance de 30: regionalismo crítico (Vidas Secas)', 'Geração de 45: Clarice Lispector e Guimarães Rosa'],
+  'Literatura contemporânea': ['Diversidade de vozes e temas urbanos', 'Literatura periférica e marginal', 'Diálogo com a música e as mídias'],
+  'Vanguardas europeias': ['Cubismo: formas geométricas e fragmentação', 'Futurismo: velocidade e máquina', 'Surrealismo: sonho e inconsciente'],
+  'Arte brasileira e contemporânea': ['Tarsila: Abaporu e a antropofagia', 'Arte contemporânea valoriza o conceito', 'O público participa da obra'],
+  'Música e manifestações culturais': ['Samba, MPB, bossa nova e tropicalismo', 'Patrimônio imaterial: saberes, festas, formas de expressão', 'Cultura popular é identidade e resistência'],
+  'Educação Física e práticas corporais': ['Cultura corporal: jogos, esportes, danças, lutas, ginásticas', 'Visão crítica sobre padrões de corpo e beleza', 'Saúde vai além da estética'],
+  'Tecnologias da informação e comunicação': ['Linguagem digital mistura texto, imagem e som', 'Fake news: confira fonte e data', 'Leitura crítica das redes e dos algoritmos'],
+  'Língua estrangeira: estratégias de leitura': ['Leia a pergunta antes do texto', 'Use cognatos, título e imagens', 'Cuidado com falsos cognatos (actually = na verdade)'],
+  'Leitura de textos multimodais': ['Multimodal: palavra + imagem + cor + layout', 'Todos os elementos produzem sentido', 'Infográficos e anúncios são os mais cobrados']
+};
