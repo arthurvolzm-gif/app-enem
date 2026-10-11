@@ -73,3 +73,5 @@ module.exports = [
   'Para revisar, monte uma folha com as fórmulas dos principais sólidos e as relações entre eles (1/3 para pirâmide e cone, 4/3 para esfera, cubo da razão para semelhança). Depois, pratique desenhando os sólidos e marcando as medidas. A visualização espacial melhora com a prática e é uma das habilidades mais valorizadas pelo exame, que privilegia problemas contextualizados de capacidade, embalagem e armazenamento.'] }
 ]}
 ];
+
+module.exports[0].txt[5].p.push('Ao revisar, refaça a figura do problema com as medidas em evidência e escreva a proporção antes de calcular. Esse passo reduz os erros de troca de lados.');

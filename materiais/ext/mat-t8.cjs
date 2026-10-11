@@ -88,3 +88,5 @@ module.exports = [
   'A probabilidade é uma ferramenta fundamental para decidir sob incerteza: avaliar riscos, interpretar previsões do tempo ("70% de chance de chuva" não significa que choverá em 70% da cidade), exames de saúde e seguros. Ter noção de probabilidade protege contra intuições erradas, como a "falácia do apostador", a ideia de que, após uma sequência de caras, a coroa "precisa" aparecer. Lançamentos independentes não têm memória, e isso é o mais importante a lembrar.'] }
 ]}
 ];
+
+module.exports[1].txt[4].p.push('Ao treinar, descreva em uma frase o que o gráfico ou a tabela mostra antes de ler as alternativas. Esse hábito reduz as respostas apressadas.');

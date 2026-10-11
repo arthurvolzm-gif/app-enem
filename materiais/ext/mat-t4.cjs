@@ -69,3 +69,5 @@ module.exports = [
   'Por fim, relacione sempre o gráfico à situação real. Pergunte-se: o que significa o ponto onde a curva cruza o eixo? O que significa o trecho descendente? Essa tradução entre matemática e contexto é o coração da competência de modelagem, e é o que diferencia quem só calcula de quem entende o que está calculando.'] }
 ]}
 ];
+
+module.exports[2].txt[4].p.push('Ao treinar, reserve alguns minutos de cada sessão para refazer, com suas palavras, o que o gráfico mostra, antes de olhar as alternativas. Esse hábito costuma evitar respostas apressadas.');
