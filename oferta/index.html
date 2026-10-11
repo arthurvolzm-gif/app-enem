@@ -140,16 +140,30 @@ h2 em{font-style:normal;color:var(--azul)}
 
 
 
-/* bônus */
-.bonus{display:grid;gap:14px;margin-top:24px}
-.bn{background:var(--card);border:1px solid var(--linha);border-radius:18px;padding:20px}
-.bn .tag{font-size:12px;font-weight:900;letter-spacing:.1em;color:var(--ouro);text-transform:uppercase}
-.bn .ic{width:48px;height:48px;border-radius:12px;background:var(--amarelo-suave);border:1px solid #b9e2c8;display:flex;align-items:center;justify-content:center;font-size:24px;margin:10px 0 12px}
-.bn h3{font-size:18px;font-weight:900;color:var(--azul-escuro)}
-.bn p{font-size:14.5px;color:var(--suave);margin-top:6px}
-.bn .inc{border-top:1px dashed var(--linha);margin-top:14px;padding-top:12px;font-size:13px;font-weight:800;color:#0c7a3c}
-.bn .prints{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 2px 6px}
-.bn .prints img{flex:none;width:44%;max-width:180px;scroll-snap-align:start;border-radius:18px;border:5px solid #111}
+/* bônus em carrossel */
+.carrossel{margin-top:24px}
+.trilho{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:4px 16px 8px;margin:0 -16px;scrollbar-width:none}
+.trilho::-webkit-scrollbar{display:none}
+.bn{flex:none;width:82%;max-width:320px;scroll-snap-align:center;background:var(--card);border:1px solid var(--linha);border-radius:20px;padding:22px 20px 18px;box-shadow:0 14px 30px -22px rgba(4,34,43,.35);display:flex;flex-direction:column}
+.bn-topo{display:flex;justify-content:space-between;align-items:center}
+.bn .ic{width:44px;height:44px;border-radius:12px;background:#e9f6ee;display:flex;align-items:center;justify-content:center;font-size:21px}
+.bn .pill{font-size:12px;font-weight:800;color:var(--suave);background:#f1ece0;border-radius:999px;padding:5px 12px}
+.bn h3{font-size:19px;font-weight:900;color:var(--azul-escuro);margin-top:16px}
+.bn ul{list-style:none;margin-top:10px;flex:1}
+.bn li{position:relative;padding:5px 0 5px 16px;font-size:14px;color:var(--suave)}
+.bn li::before{content:'';position:absolute;left:2px;top:13px;width:6px;height:6px;border-radius:50%;background:#0c7a3c}
+.bn .inc{border-top:1px dashed var(--linha);margin-top:12px;padding-top:12px;font-size:13px;font-weight:800;color:#0c7a3c}
+.nav{display:flex;justify-content:center;align-items:center;gap:16px;margin-top:16px}
+.seta{width:40px;height:40px;border-radius:50%;border:1px solid var(--linha);background:#fff;font-size:22px;line-height:1;color:var(--azul-escuro);cursor:pointer;box-shadow:0 4px 10px rgba(4,34,43,.08)}
+.pontos{display:flex;gap:6px}
+.pontos i{width:7px;height:7px;border-radius:999px;background:#d8d0bd;transition:width .2s,background .2s}
+.pontos i.on{width:22px;background:#0c7a3c}
+.nav-dica{text-align:center;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mudo);margin-top:10px}
+@media (min-width:900px){
+  .trilho{justify-content:center;overflow:visible;margin:0;padding:4px 0 8px}
+  .bn{width:300px}
+  .nav,.nav-dica{display:none}
+}
 
 /* planos */
 .planos{display:grid;gap:18px;margin-top:26px}
@@ -303,37 +317,50 @@ footer p+p{margin-top:8px}
   <span class="eyebrow">Bônus exclusivos</span>
   <h2>3 bônus para estudar <em>no ritmo certo</em></h2>
   <p class="sub">Liberados <b>sem custo extra</b> para quem escolher o <b>Plano Completo</b>.</p>
-  <div class="bonus">
-    <div class="bn">
-      <div class="tag">Bônus #1</div>
-      <div class="ic">📱</div>
-      <h3>Aplicativo Plano ENEM</h3>
-      <p>Monta a sua semana a partir do tempo que você tem, a partir de 30 minutos por dia. Você abre e já sabe o que estudar hoje, com modo foco, lembretes, revisão em 1, 3 e 7 dias e desempenho por matéria.</p>
-      <div class="prints">
-        <img src="/img/print-app-plano.webp" alt="Plano semanal no aplicativo" loading="lazy">
-        <img src="/img/print-app-inicio.webp" alt="Tela inicial do aplicativo" loading="lazy">
-        <img src="/img/print-app-progresso.webp" alt="Desempenho por matéria" loading="lazy">
+  <div class="carrossel" id="bonus">
+    <div class="trilho">
+      <div class="bn">
+        <div class="bn-topo"><span class="ic">📱</span><span class="pill">Bônus #1</span></div>
+        <h3>Aplicativo Plano ENEM</h3>
+        <ul>
+          <li>Plano semanal pronto para o seu tempo</li>
+          <li>A partir de 30 minutos por dia</li>
+          <li>Modo foco com cronômetro</li>
+          <li>Lembretes na hora de estudar</li>
+          <li>Revisão em 1, 3 e 7 dias</li>
+          <li>Desempenho por matéria</li>
+        </ul>
+        <div class="inc">✓ Incluso no Plano Completo</div>
       </div>
-      <div class="inc">✓ Incluso no Plano Completo</div>
-    </div>
-    <div class="bn">
-      <div class="tag">Bônus #2</div>
-      <div class="ic">⚡</div>
-      <h3>Resumos rápidos de cada tema</h3>
-      <p>Os 225 temas em versão curta dentro do aplicativo, para revisar em poucos minutos no ônibus, na fila ou antes de dormir.</p>
-      <div class="prints">
-        <img src="/img/print-app-resumos.webp" alt="Lista de resumos no aplicativo" loading="lazy">
-        <img src="/img/print-app-tema.webp" alt="Resumo de um tema no aplicativo" loading="lazy">
+      <div class="bn">
+        <div class="bn-topo"><span class="ic">⚡</span><span class="pill">Bônus #2</span></div>
+        <h3>Resumos rápidos de cada tema</h3>
+        <ul>
+          <li>Os 225 temas em versão curta</li>
+          <li>Dentro do aplicativo, no celular</li>
+          <li>Revisão em poucos minutos</li>
+          <li>No ônibus, na fila ou antes de dormir</li>
+        </ul>
+        <div class="inc">✓ Incluso no Plano Completo</div>
       </div>
-      <div class="inc">✓ Incluso no Plano Completo</div>
+      <div class="bn">
+        <div class="bn-topo"><span class="ic">📝</span><span class="pill">Bônus #3</span></div>
+        <h3>Exercícios e simulados</h3>
+        <ul>
+          <li>9 simulados, um por matéria</li>
+          <li>25 questões no estilo do ENEM em cada</li>
+          <li>Uma questão de cada tema</li>
+          <li>Gabarito comentado</li>
+        </ul>
+        <div class="inc">✓ Incluso no Plano Completo</div>
+      </div>
     </div>
-    <div class="bn">
-      <div class="tag">Bônus #3</div>
-      <div class="ic">📝</div>
-      <h3>Exercícios e simulados</h3>
-      <p>9 simulados, um por matéria, com 25 questões no estilo do ENEM (uma de cada tema) e gabarito comentado. São 225 questões para treinar e descobrir o que revisar.</p>
-      <div class="inc">✓ Incluso no Plano Completo</div>
+    <div class="nav">
+      <button type="button" class="seta" data-dir="-1" aria-label="Anterior">‹</button>
+      <div class="pontos"></div>
+      <button type="button" class="seta" data-dir="1" aria-label="Próximo">›</button>
     </div>
+    <p class="nav-dica">Toque nas setas ou deslize os 3 cards</p>
   </div>
 </div></section>
 
@@ -488,6 +515,22 @@ footer p+p{margin-top:8px}
       else if(t === 'essencial-final') ir(O.CHECKOUT_ESSENCIAL, 14.90);
     });
   });
+  /* carrossel dos bônus: setas e pontos */
+  (function(){
+    var c = document.getElementById('bonus'); if(!c) return;
+    var tr = c.querySelector('.trilho'), cards = tr.querySelectorAll('.bn'), pts = c.querySelector('.pontos');
+    cards.forEach(function(){ pts.appendChild(document.createElement('i')); });
+    function atual(){ var m = tr.scrollLeft + tr.clientWidth/2, k = 0, d = 1e9;
+      cards.forEach(function(el, j){ var x = Math.abs(el.offsetLeft - tr.offsetLeft + el.offsetWidth/2 - m); if(x < d){ d = x; k = j; } }); return k; }
+    function marcar(){ var k = atual(); pts.querySelectorAll('i').forEach(function(p, j){ p.classList.toggle('on', j === k); }); }
+    function ir(k){ k = Math.max(0, Math.min(cards.length-1, k)); var el = cards[k];
+      tr.scrollTo({ left: el.offsetLeft - tr.offsetLeft - (tr.clientWidth - el.offsetWidth)/2, behavior: 'smooth' }); }
+    c.querySelectorAll('.seta').forEach(function(b){ b.addEventListener('click', function(){ ir(atual() + (+b.dataset.dir)); }); });
+    pts.addEventListener('click', function(e){ var j = [].indexOf.call(pts.children, e.target); if(j >= 0) ir(j); });
+    tr.addEventListener('scroll', function(){ clearTimeout(tr._t); tr._t = setTimeout(marcar, 60); });
+    marcar();
+  })();
+
   pop.addEventListener('click', function(e){ if(e.target === pop || e.target.hasAttribute('data-fechar')) fecharPop(); });
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') fecharPop(); });
 
