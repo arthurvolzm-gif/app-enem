@@ -29,14 +29,11 @@ module.exports = [
 
   // MECANISMO
   { t: 'Foi para isso que criamos o *Método 25 Temas*.' },
-  { t: 'Cada matéria reduzida a *25 temas*.', img: 'capas' },
-  { t: 'Os que mais caem vêm marcados com 🔥', img: '/oferta/img/pagina-fogo.webp', tipo: 'pagina' },
-  { t: 'E um aplicativo que transforma tudo em *um plano diário*.', img: '/img/print-app-plano.webp' },
-  { t: 'Você abre e já sabe *o que estudar hoje*,' , img: '/img/print-app-inicio.webp' },
-  { t: 'por quanto tempo, e *o que revisar*.', img: '/img/print-app-tema.webp' },
-  { t: 'A partir de *30 minutos* por dia.' },
-  { t: 'Revisão no tempo certo: *1, 3 e 7 dias* depois.' },
-  { t: 'E você vê *o que já fez* em cada matéria.', img: '/img/print-app-progresso.webp' },
+  { t: 'As 9 matérias do ENEM em *25 temas cada*.', img: 'topicos' },
+  { t: 'Os que mais caem vêm marcados com 🔥', img: '/oferta/img/topico-1.webp', tipo: 'pagina' },
+  { t: 'Cada tema vai do básico ao *Como cai no ENEM*.', img: '/oferta/img/topico-6.webp', tipo: 'pagina' },
+  { t: 'E fecha com um *checklist de revisão*.' },
+  { t: 'Material completo para estudar *em menos de 30 dias*.' },
 
   // ROTA
   { t: 'O ENEM tem *2 domingos* de prova.' },
@@ -45,20 +42,24 @@ module.exports = [
   { t: 'Cada matéria fresca *na hora certa*.' },
 
   // OFERTA
-  { t: 'Você recebe:', lista: ['9 materiais, um por matéria', '225 temas, os que mais caem marcados', '"Como cai no ENEM" em cada tema', 'Aplicativo Plano ENEM', 'Revisão e lembretes'] },
-  { t: 'Tudo isso por', preco: 'R$ 29,90' },
+  { t: 'Você recebe:', lista: ['9 materiais, um por matéria', '225 temas, os que mais caem marcados', '"Como cai no ENEM" em cada tema', 'PDF para celular ou impressão'] },
+  { t: 'A partir de', preco: 'R$ 14,90', nota: 'pagamento único' },
+  { t: 'E no *Plano Completo*, você ganha 3 bônus.' },
+  { t: 'Bônus 1: o *aplicativo Plano ENEM*, que diz o que estudar hoje.', img: '/img/print-app-plano.webp' },
+  { t: 'Bônus 2: *resumos rápidos* de cada tema.', img: '/img/print-app-resumos.webp' },
+  { t: 'Bônus 3: *225 questões* no estilo do ENEM, com gabarito comentado.' },
   { t: '*Pagamento único.* Acesso imediato no seu e-mail.' },
   { t: 'E você tem *7 dias de garantia*.', selo: true },
   { t: 'Se não gostar, devolvemos *100% do valor*.' },
 
   // PÓS PITCH
   { t: '"Ainda dá tempo?"' },
-  { t: 'O plano é feito para *o tempo que falta* e começa pelo que mais pesa.' },
-  { t: '"Preciso instalar alguma coisa?"' },
-  { t: 'Não. Abre *no navegador do celular*.' },
+  { t: 'O material foi feito para *o tempo que falta*: comece pelos temas com 🔥.' },
+  { t: '"Preciso de computador?"' },
+  { t: 'Não. Abre *no celular*, ou você imprime.' },
   { t: 'Não prometemos nota.' },
   { t: 'Mas *cada dia bem usado conta*.' },
-  { t: 'E cada dia sem plano é *um dia a menos*.' },
+  { t: 'E cada dia sem material é *um dia a menos*.' },
   { t: 'Toque no botão *abaixo do vídeo*', seta: true },
-  { t: 'e comece hoje *o seu plano*.', seta: true, destaque: true }
+  { t: 'e escolha *o seu plano*.', seta: true, destaque: true }
 ];

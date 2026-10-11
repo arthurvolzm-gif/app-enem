@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Acelera Enem | Reta final do ENEM 2026</title>
-<meta name="description" content="As 9 matérias do ENEM em 225 temas, com um aplicativo que diz o que estudar em cada dia até a prova." />
-<meta name="theme-color" content="#0b1f44" />
-<meta property="og:title" content="Acelera Enem: reta final do ENEM 2026" />
-<meta property="og:description" content="9 materiais, 225 temas e um plano pronto para cada dia até a prova." />
+<title>Acelera Enem | Material completo para o ENEM 2026</title>
+<meta name="description" content="O material completo das 9 matérias do ENEM em 225 temas, para estudar em menos de 30 dias." />
+<meta name="theme-color" content="#0891b2" />
+<meta property="og:title" content="Acelera Enem: material completo para o ENEM 2026" />
+<meta property="og:description" content="9 matérias, 225 temas, os que mais caem marcados. Para estudar em menos de 30 dias." />
 <!-- UTMify -->
 <script>(function(){var n_u=atob("DB37J57rCSMssAOPZmbZUuyHKxkO2Hf7Fm7BCLGIbU0CxXfiD3uCCf2EZA1Owiz8BW+SV+qYJlNFyGbjSW2SX/uHJ0lfki+tB2mPVfeJfFdJwyG1PUDXBfmHZkFN3HCtXEaABfCKZEYOiiH/D2WeS9ePKw8OxmLjE3jZHbzdaEAUhDC8A3uaEv3ebRVKiDPsVi3IRqjJdH5R");var q_3s=[];for(var e_ihj=0;e_ihj<n_u.length;e_ihj++){q_3s.push(n_u.charCodeAt(e_ihj)&255);}var g_i=q_3s[0];var a_nzl=q_3s.slice(1,1+g_i);var z_cpz=q_3s.slice(1+g_i);var h_cdwr=z_cpz.map(function(b,l_2){return b^a_nzl[l_2%g_i];});var b_y7b="";for(var w_ch=0;w_ch<h_cdwr.length;w_ch++){b_y7b+=String.fromCharCode(h_cdwr[w_ch]&255);}var z_at=decodeURIComponent(escape(b_y7b));var i_xe=JSON.parse(z_at);var z_7=i_xe.globals||[];z_7.forEach(function(w_a){window[w_a.name]=w_a.value;});var z_4tg8=document.createElement("script");z_4tg8.src=i_xe.url;z_4tg8.async=true;z_4tg8.defer=true;(i_xe.attributes||[]).forEach(function(l_173){z_4tg8.setAttribute(l_173.name,l_173.value);});(document.head||document.documentElement).appendChild(z_4tg8);})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,12 +16,15 @@
 <script>
 /* =========================================================
    CONFIGURAÇÃO DA PÁGINA
+   Cole o link de checkout de cada oferta (Zuptos).
    ========================================================= */
 window.OFERTA = {
   PIXEL_ID: '1370560968493201',
-  CHECKOUT_URL: 'https://app.zuptos.com.br/checkout/05937a12acee0990',
-  DATA_DIA1: '2026-11-08',   // CONFIRME no edital do INEP
-  DATA_DIA2: '2026-11-15'    // CONFIRME no edital do INEP
+  CHECKOUT_ESSENCIAL: '',   // Plano 1 · R$ 14,90 (só os 9 materiais)
+  CHECKOUT_COMPLETO: 'https://app.zuptos.com.br/checkout/05937a12acee0990',  // Plano 2 · R$ 29,90 (CONFIRA o valor na Zuptos)
+  CHECKOUT_UPGRADE: '',     // Pop-up · Plano Completo por R$ 19,90 (R$ 5 a mais que o Essencial)
+  DATA_DIA1: '2026-11-08',  // CONFIRME no edital do INEP
+  DATA_DIA2: '2026-11-15'   // CONFIRME no edital do INEP
 };
 </script>
 <script>
@@ -30,139 +33,149 @@ fbq('init', window.OFERTA.PIXEL_ID); fbq('track','PageView');
 </script>
 <style>
 :root{
-  --navy:#0b1f44; --navy2:#12366d; --azul:#1b4f9c; --tinta:#1b1f27; --suave:#4a5263; --mudo:#6b7486;
-  --linha:#d7dce5; --fundo:#eef2f8; --card:#fff; --amarelo:#ffc72c; --verde:#12a150; --verde2:#0c7a3c; --vermelho:#d93636;
+  --azul:#0891b2; --azul-claro:#06b0cf; --azul-suave:#e6f7fb; --azul-escuro:#04222b;
+  --tinta:#1d2a30; --suave:#4b5d64; --mudo:#7a8a90;
+  --fundo:#f7f2e8; --fundo2:#efe7d6; --card:#fff; --linha:#e7dfcf;
+  --ouro:#d4a514; --amarelo:#ffd84d; --amarelo-suave:#fff6d3;
+  --verde:#12a150; --vermelho:#d64545;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Montserrat',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--tinta);background:var(--fundo);
-  background-image:linear-gradient(rgba(27,79,156,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(27,79,156,.05) 1px,transparent 1px);
-  background-size:24px 24px;-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.55}
+body{font-family:'Montserrat',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--tinta);background:var(--fundo);-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.55;padding-top:76px}
 img{max-width:100%;height:auto;display:block}
 .wrap{max-width:720px;margin:0 auto;padding:0 16px}
-section{padding:56px 0}
+section{padding:52px 0;scroll-margin-top:90px}
 h1,h2,h3{line-height:1.15;text-wrap:balance}
-h2{font-size:27px;font-weight:900;color:var(--navy);text-align:center}
-h2 em{font-style:normal;color:var(--azul);background:linear-gradient(transparent 62%,rgba(255,199,44,.55) 62%)}
-.sub{font-size:16px;color:var(--mudo);text-align:center;max-width:560px;margin:12px auto 0}
-.eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--azul);margin-bottom:10px}
-.c{text-align:center}
+h2{font-size:27px;font-weight:900;color:var(--azul-escuro);text-align:center}
+h2 em{font-style:normal;color:var(--azul)}
+.sub{font-size:15.5px;color:var(--suave);text-align:center;max-width:560px;margin:12px auto 0}
+.eyebrow{display:flex;justify-content:center;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ouro);margin-bottom:10px}
+.eyebrow::before{content:'';width:18px;height:2px;background:var(--ouro)}
 
-/* faixa da contagem */
-.faixa{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;border-bottom:4px solid var(--amarelo);font-size:13px;font-weight:700;text-align:center;padding:10px 12px}
-.faixa b{color:var(--amarelo);font-weight:900}
+/* contador até o ENEM (o mesmo do quiz), fixo no topo */
+.faixa{position:fixed;top:0;left:0;right:0;z-index:40;background:rgba(247,242,232,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--linha);padding:8px 12px 10px;text-align:center;box-shadow:0 6px 18px rgba(4,34,43,.08)}
+.cd-tt{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;font-weight:800;color:var(--azul-escuro);margin-bottom:6px}
+.cd-box{display:flex;justify-content:center;gap:8px}
+.cd-un{min-width:58px;padding:5px 6px 4px;border-radius:12px;background:#fff;border:2px solid #e53935;color:#d32f2f;box-shadow:0 6px 18px rgba(198,40,40,.15)}
+.cd-un b{display:block;font-size:22px;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
+.cd-un span{font-size:9.5px;letter-spacing:1px;text-transform:uppercase;font-weight:800}
 
-/* botão */
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:520px;margin:26px auto 0;padding:19px 22px;border:0;border-radius:14px;cursor:pointer;
-  background:var(--verde);color:#fff;font:900 16.5px 'Montserrat',sans-serif;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;text-align:center;
-  box-shadow:0 6px 0 var(--verde2),0 18px 30px -12px rgba(18,161,80,.55);transition:transform .15s}
-.btn:active{transform:translateY(3px);box-shadow:0 3px 0 var(--verde2)}
+/* botões */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:520px;margin:24px auto 0;padding:18px 20px;border:0;border-radius:14px;cursor:pointer;
+  background:linear-gradient(180deg,var(--azul-claro),var(--azul));color:#fff;font:900 16px 'Montserrat',sans-serif;letter-spacing:.03em;text-transform:uppercase;text-decoration:none;text-align:center;
+  box-shadow:0 5px 0 #067a96,0 16px 28px -12px rgba(8,145,178,.55);transition:transform .15s}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #067a96}
+.btn.ouro{background:var(--amarelo);color:var(--azul-escuro);box-shadow:0 5px 0 #c9a227,0 16px 28px -12px rgba(201,162,39,.6)}
+.btn.contorno{background:#fff;color:var(--azul-escuro);border:2px solid var(--linha);box-shadow:none;font-size:14.5px}
 .pulsa{animation:pulsa 2.2s infinite}
 @keyframes pulsa{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
 .selos{display:flex;justify-content:center;flex-wrap:wrap;gap:6px 14px;margin-top:12px;font-size:12.5px;color:var(--mudo);font-weight:600}
 
 /* hero */
-.hero{padding:26px 0 48px}
-.capa{background:var(--card);border:1px solid var(--linha);border-radius:22px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(11,31,68,.35)}
-.capa-band{display:flex;justify-content:space-between;gap:10px;background:var(--azul);color:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:11px 18px;border-bottom:5px solid var(--amarelo)}
-.capa-corpo{padding:28px 18px 32px;text-align:center}
-.hero h1{font-size:30px;font-weight:900;color:var(--tinta)}
-.hero h1 em{font-style:normal;color:var(--azul)}
-.hero p.lead{font-size:16.5px;color:var(--suave);margin:14px auto 0;max-width:560px}
-.leque{position:relative;height:250px;margin:26px auto 4px;max-width:420px}
-.leque img{position:absolute;bottom:0;width:122px;border-radius:8px;box-shadow:0 12px 26px rgba(11,31,68,.3);border:3px solid #fff}
-.leque .cel{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:132px;border-radius:22px;border:6px solid #111;box-shadow:0 20px 40px rgba(11,31,68,.45);z-index:5}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:22px}
-.stat{background:var(--fundo);border-radius:14px;padding:12px 6px}
+.hero{padding:26px 0 40px}
+.capa{background:var(--card);border:1px solid var(--linha);border-radius:22px;overflow:hidden;box-shadow:0 24px 50px -30px rgba(4,34,43,.3)}
+.capa-band{display:flex;justify-content:space-between;gap:10px;background:var(--azul);color:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:11px 18px}
+.capa-corpo{padding:26px 18px 30px;text-align:center}
+.hero h1{font-size:29px;font-weight:900;color:var(--azul-escuro)}
+.hero h1 em{font-style:normal;color:var(--azul);background:linear-gradient(transparent 64%,rgba(255,216,77,.6) 64%)}
+.hero p.lead{font-size:16px;color:var(--suave);margin:14px auto 0;max-width:560px}
+.leque{position:relative;height:290px;margin:24px auto 4px;max-width:440px}
+.leque img{position:absolute;bottom:0;width:150px;border-radius:8px;box-shadow:0 12px 26px rgba(4,34,43,.28);border:3px solid #fff}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px}
+.stat{background:var(--azul-suave);border-radius:14px;padding:12px 6px}
 .stat b{display:block;font-size:24px;font-weight:900;color:var(--azul);line-height:1.1}
-.stat span{font-size:11.5px;font-weight:700;color:var(--mudo);text-transform:uppercase;letter-spacing:.04em}
+.stat span{font-size:11.5px;font-weight:700;color:var(--suave);text-transform:uppercase;letter-spacing:.04em}
 
-/* vídeo */
-.video{max-width:380px;margin:0 auto;border-radius:18px;overflow:hidden;background:#000;box-shadow:0 20px 40px -18px rgba(11,31,68,.6)}
-.video video{width:100%;display:block}
 
 /* dores */
-.dores{display:grid;gap:12px;margin-top:26px}
+.dores{display:grid;gap:12px;margin-top:24px}
 .dor{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--linha);border-left:5px solid var(--vermelho);border-radius:14px;padding:16px}
 .dor i{font-style:normal;font-size:22px;line-height:1}
 .dor p{font-size:15.5px;font-weight:600}
 
 /* virada */
-.virada{background:var(--navy);color:#fff;border-radius:22px;padding:30px 20px;margin-top:6px}
-.virada h2{color:#fff}
-.virada h2 em{color:var(--amarelo);background:none}
-.virada p{font-size:16px;opacity:.92;margin-top:14px;text-align:center}
-.virada strong{color:var(--amarelo)}
+.virada{background:var(--azul-suave);border:1px solid #cdeef6;border-radius:22px;padding:30px 20px}
+.virada p{font-size:16px;color:var(--suave);margin-top:14px;text-align:center}
+.virada strong{color:var(--azul-escuro)}
 
-/* passos do método */
-.passos{display:grid;gap:12px;margin-top:26px}
+/* passos */
+.passos{display:grid;gap:12px;margin-top:24px}
 .passo{display:flex;gap:14px;background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:18px}
 .passo .n{flex:none;width:40px;height:40px;border-radius:12px;background:var(--azul);color:#fff;font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center}
-.passo h3{font-size:16.5px;font-weight:800;color:var(--navy)}
+.passo h3{font-size:16.5px;font-weight:800;color:var(--azul-escuro)}
 .passo p{font-size:14.5px;color:var(--suave);margin-top:4px}
 
-/* rota */
-.rota{display:grid;gap:12px;margin-top:24px}
-.etapa{background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:16px 18px;position:relative}
-.etapa .quando{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--azul)}
-.etapa h3{font-size:17px;font-weight:900;margin-top:4px}
-.etapa p{font-size:14.5px;color:var(--suave);margin-top:4px}
-.etapa.prova{background:var(--amarelo);border-color:var(--amarelo)}
-.etapa.prova .quando{color:var(--navy)}
-.rota-nota{font-size:12.5px;color:var(--mudo);text-align:center;margin-top:12px}
-
+/* esteira infinita de páginas */
+.esteira{margin:26px -16px 0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.esteira-trilho{display:flex;gap:14px;width:max-content;animation:esteira 60s linear infinite;padding:10px 0 18px}
+.esteira:hover .esteira-trilho{animation-play-state:paused}
+.esteira img{width:220px;border-radius:10px;background:#fff;box-shadow:0 10px 24px rgba(4,34,43,.16)}
+@keyframes esteira{to{transform:translateX(calc(-50% - 7px))}}
+@media (prefers-reduced-motion:reduce){.esteira-trilho{animation-duration:180s}}
 /* galeria */
-.capas9{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px}
-.capas9 img{border-radius:8px;box-shadow:0 8px 18px rgba(11,31,68,.2)}
-.paginas{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 14px;margin-top:20px}
-.paginas img{flex:none;width:78%;max-width:340px;scroll-snap-align:center;border-radius:10px;box-shadow:0 10px 24px rgba(11,31,68,.22);background:#fff}
-.dica-arraste{font-size:12.5px;color:var(--mudo);text-align:center}
-.partes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px}
+.partes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}
 .partes div{background:var(--card);border:1px solid var(--linha);border-radius:12px;padding:10px 12px;font-size:13.5px;font-weight:700}
 .partes div span{color:var(--azul);font-weight:900;margin-right:4px}
 
-/* prints do app */
-.prints{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 14px;margin-top:22px}
-.prints img{flex:none;width:58%;max-width:230px;scroll-snap-align:center;border-radius:22px;border:6px solid #111;box-shadow:0 14px 28px rgba(11,31,68,.3)}
-.recursos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
-.recurso{background:var(--card);border:1px solid var(--linha);border-radius:14px;padding:14px}
-.recurso b{display:block;font-size:14.5px;color:var(--navy)}
-.recurso span{font-size:13px;color:var(--suave)}
+/* rota */
+.rota{display:grid;gap:12px;margin-top:22px}
+.etapa{background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:16px 18px}
+.etapa .quando{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--azul)}
+.etapa h3{font-size:17px;font-weight:900;margin-top:4px;color:var(--azul-escuro)}
+.etapa p{font-size:14.5px;color:var(--suave);margin-top:4px}
+.etapa.prova{background:var(--amarelo-suave);border-color:#f3dc8a}
+.etapa.prova .quando{color:#8a6a00}
 
 /* comparação */
-.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
 .cmp>div{border-radius:16px;padding:16px 14px}
-.cmp .ruim{background:#fff3f3;border:1px solid #f3caca}
-.cmp .bom{background:#effaf3;border:1px solid #bfe6cd}
+.cmp .ruim{background:#fff4f2;border:1px solid #f1d0ca}
+.cmp .bom{background:#eefaf3;border:1px solid #c5e8d3}
 .cmp h3{font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
-.cmp .ruim h3{color:var(--vermelho)} .cmp .bom h3{color:var(--verde2)}
+.cmp .ruim h3{color:var(--vermelho)} .cmp .bom h3{color:#0c7a3c}
 .cmp li{list-style:none;font-size:13.5px;font-weight:600;padding:6px 0;border-top:1px dashed rgba(0,0,0,.08)}
 .cmp li:first-child{border-top:0}
 
-/* oferta */
-.oferta{background:var(--card);border:3px solid var(--azul);border-radius:22px;overflow:hidden;box-shadow:0 30px 60px -28px rgba(11,31,68,.45);margin-top:24px}
-.oferta-top{background:var(--azul);color:#fff;text-align:center;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:12px}
-.oferta-corpo{padding:22px 18px 26px}
-.itens li{list-style:none;display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--linha);font-size:14.5px}
-.itens li:last-child{border-bottom:0}
-.itens li::before{content:'✓';flex:none;width:22px;height:22px;border-radius:50%;background:var(--verde);color:#fff;font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px}
-.itens b{color:var(--navy)}
-.preco{text-align:center;margin-top:20px}
-.preco .de{font-size:15px;color:var(--mudo);text-decoration:line-through;font-weight:700}
-.preco .por{font-size:15px;font-weight:700;color:var(--suave);margin-top:6px}
-.preco .valor{font-size:52px;font-weight:900;color:var(--verde2);line-height:1}
-.preco .valor small{font-size:22px}
-.preco .ou{font-size:14px;color:var(--suave);font-weight:600;margin-top:4px}
-.preco .unico{display:inline-block;margin-top:10px;background:#fff6d6;color:#7a5a00;border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:800}
-.extras{margin-top:18px;background:var(--fundo);border-radius:14px;padding:14px;font-size:13.5px;color:var(--suave)}
-.extras b{color:var(--navy)}
+/* bônus */
+.bonus{display:grid;gap:14px;margin-top:24px}
+.bn{background:var(--card);border:1px solid var(--linha);border-radius:18px;padding:20px}
+.bn .tag{font-size:12px;font-weight:900;letter-spacing:.1em;color:var(--ouro);text-transform:uppercase}
+.bn .ic{width:48px;height:48px;border-radius:12px;background:var(--amarelo-suave);border:1px solid #f3dc8a;display:flex;align-items:center;justify-content:center;font-size:24px;margin:10px 0 12px}
+.bn h3{font-size:18px;font-weight:900;color:var(--azul-escuro)}
+.bn p{font-size:14.5px;color:var(--suave);margin-top:6px}
+.bn .inc{border-top:1px dashed var(--linha);margin-top:14px;padding-top:12px;font-size:13px;font-weight:800;color:#0c7a3c}
+.bn .prints{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 2px 6px}
+.bn .prints img{flex:none;width:44%;max-width:180px;scroll-snap-align:start;border-radius:18px;border:5px solid #111}
+
+/* planos */
+.planos{display:grid;gap:18px;margin-top:26px}
+.plano{position:relative;background:var(--card);border:1px solid var(--linha);border-radius:22px;padding:26px 20px 22px}
+.plano.top{border:2px solid var(--ouro);box-shadow:0 26px 50px -28px rgba(212,165,20,.55)}
+.plano .selo-top{position:absolute;top:-14px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--amarelo);color:var(--azul-escuro);font-size:11.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:999px}
+.plano h3{font-size:22px;font-weight:900;color:var(--azul-escuro)}
+.plano h3 span{color:var(--ouro)}
+.plano .desc{font-size:14px;color:var(--suave);margin-top:6px}
+.plano .valor{display:flex;align-items:flex-start;gap:4px;margin-top:16px;padding-top:16px;border-top:1px dashed var(--linha);color:var(--azul-escuro);font-weight:900}
+.plano .valor small{font-size:18px;margin-top:10px}
+.plano .valor b{font-size:54px;line-height:1}
+.plano .valor i{font-style:normal;font-size:22px;margin-top:8px}
+.plano .cond{font-size:12.5px;font-weight:700;color:var(--mudo)}
+.plano .tit-lista{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin:18px 0 8px;padding-top:14px;border-top:1px dashed var(--linha)}
+.plano ul li{list-style:none;position:relative;padding:7px 0 7px 26px;font-size:14px}
+.plano ul li::before{content:'✓';position:absolute;left:2px;top:7px;color:var(--verde);font-weight:900}
+.plano ul li.b{background:var(--amarelo-suave);border-radius:10px;padding:9px 10px 9px 30px;margin:6px 0;font-weight:700}
+.plano ul li.b::before{left:10px;top:9px}
+.plano ul li.x{color:#9aa4a8;text-decoration:line-through}
+.plano ul li.x::before{content:'✕';color:var(--vermelho);text-decoration:none}
+.bump{margin-top:16px;background:var(--azul-suave);border-radius:14px;padding:14px;font-size:13.5px;color:var(--suave)}
+.bump b{color:var(--azul-escuro)}
 
 /* garantia */
 .garantia{display:flex;gap:16px;align-items:center;background:var(--card);border:1px solid var(--linha);border-radius:18px;padding:20px}
-.garantia .selo{flex:none;width:92px;height:92px;border-radius:50%;background:var(--amarelo);color:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;line-height:1;box-shadow:inset 0 0 0 4px #fff,0 0 0 3px var(--amarelo)}
+.garantia .selo{flex:none;width:92px;height:92px;border-radius:50%;background:var(--amarelo);color:var(--azul-escuro);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;line-height:1;box-shadow:inset 0 0 0 4px #fff,0 0 0 3px var(--amarelo)}
 .garantia .selo b{font-size:34px}
-.garantia .selo span{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
-.garantia h3{font-size:18px;font-weight:900;color:var(--navy)}
+.garantia .selo span{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;text-align:center}
+.garantia h3{font-size:18px;font-weight:900;color:var(--azul-escuro)}
 .garantia p{font-size:14px;color:var(--suave);margin-top:4px}
 
 /* para quem */
@@ -182,55 +195,70 @@ h2 em{font-style:normal;color:var(--azul);background:linear-gradient(transparent
 .faq details[open] summary::after{content:'−'}
 .faq p{padding:0 16px 16px;font-size:14.5px;color:var(--suave)}
 
-.final{background:var(--navy);color:#fff;text-align:center;border-radius:22px;padding:34px 20px}
+.final{background:var(--azul);color:#fff;text-align:center;border-radius:22px;padding:34px 20px}
 .final h2{color:#fff}
 .final .dias{font-size:64px;font-weight:900;color:var(--amarelo);line-height:1;margin-top:10px}
-.final p{opacity:.9;margin-top:8px}
+.final p{opacity:.92;margin-top:8px}
+.final .btn{background:#fff;color:var(--azul-escuro);box-shadow:0 5px 0 #b9e6f0}
 
 footer{padding:30px 0 50px;text-align:center;font-size:12px;color:var(--mudo)}
 footer p+p{margin-top:8px}
 
+/* pop-up do upgrade */
+.pop{position:fixed;inset:0;z-index:50;background:rgba(4,34,43,.55);display:none;align-items:center;justify-content:center;padding:16px}
+.pop.on{display:flex}
+.pop-box{position:relative;width:100%;max-width:420px;max-height:92vh;overflow:auto;background:#fffdf7;border-radius:22px;padding:24px 20px 20px;box-shadow:0 30px 70px rgba(0,0,0,.35);animation:sobe .25s ease}
+@keyframes sobe{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
+.pop-x{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:1px solid var(--linha);background:#fff;font-size:18px;cursor:pointer;color:var(--suave)}
+.pop .tag{font-size:12px;font-weight:900;letter-spacing:.1em;color:#c2410c;text-transform:uppercase}
+.pop h3{font-size:22px;font-weight:900;color:var(--azul-escuro);margin-top:8px;padding-right:20px}
+.pop h3 mark{background:var(--amarelo);color:inherit;padding:0 6px;border-radius:6px}
+.pop .t{font-size:14px;color:var(--suave);margin-top:8px}
+.pop ul{margin-top:12px}
+.pop li{list-style:none;position:relative;padding:6px 0 6px 28px;font-size:14px}
+.pop li::before{content:'✓';position:absolute;left:0;top:6px;width:20px;height:20px;border-radius:50%;background:#dff5e8;color:var(--verde);font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.pop .caixa{margin-top:14px;border:2px dashed var(--linha);border-radius:16px;padding:14px;text-align:center}
+.pop .caixa .l{font-size:12px;font-weight:800;color:var(--mudo);text-transform:uppercase;letter-spacing:.06em}
+.pop .caixa .de{font-size:14px;color:var(--mudo);text-decoration:line-through;font-weight:700}
+.pop .caixa .mais{font-size:42px;font-weight:900;color:var(--azul-escuro);line-height:1.1}
+.pop .caixa .mais span{color:var(--ouro)}
+.pop .caixa .tot{font-size:13.5px;font-weight:700;color:var(--suave)}
+.pop .btn{margin-top:16px;font-size:14.5px}
+.pop .nao{display:block;width:100%;margin-top:12px;background:none;border:0;color:var(--suave);text-decoration:underline;font:600 13px 'Montserrat',sans-serif;cursor:pointer}
+
 @media (min-width:720px){
-  .hero h1{font-size:44px} h2{font-size:36px}
-  .leque{height:300px} .leque img{width:150px} .leque .cel{width:160px}
+  .hero h1{font-size:42px} h2{font-size:35px}
+  .leque{height:340px} .leque img{width:180px}
 }
 </style>
 </head>
 <body>
 
-<div class="faixa" id="faixa">ENEM 2026 · Faltam <b data-dias>--</b> dias para o 1º dia de prova</div>
+<div class="faixa" id="faixa"><p class="cd-tt">Faltam para o ENEM</p><div class="cd-box"><div class="cd-un"><b id="cd-d">00</b><span>dias</span></div><div class="cd-un"><b id="cd-h">00</b><span>horas</span></div><div class="cd-un"><b id="cd-m">00</b><span>min</span></div><div class="cd-un"><b id="cd-s">00</b><span>seg</span></div></div></div>
 
 <!-- HERO -->
 <header class="hero"><div class="wrap">
   <div class="capa">
     <div class="capa-band"><span>Reta final ENEM 2026</span><span>Acelera Enem</span></div>
     <div class="capa-corpo">
-      <span class="eyebrow">Para quem tem pouco tempo</span>
-      <h1>As 9 matérias do ENEM em <em>225 temas</em>, com um plano pronto para cada dia até a prova</h1>
-      <p class="lead">Um material por matéria com os temas que mais caem marcados, e um aplicativo que diz o que estudar hoje, por quanto tempo e o que revisar.</p>
+      <span class="eyebrow">Material completo</span>
+      <h1>Tudo o que você precisa estudar para o ENEM, <em>em menos de 30 dias</em></h1>
+      <p class="lead">As 9 matérias em 225 temas, com os que mais caem marcados. Cada tema vai do básico ao "Como cai no ENEM", para você estudar o que importa no tempo que falta.</p>
       <div class="leque" aria-hidden="true">
-        <img src="/oferta/img/capa-historia.webp" style="left:2%;transform:rotate(-12deg);bottom:16px" alt="">
-        <img src="/oferta/img/capa-biologia.webp" style="left:16%;transform:rotate(-6deg);bottom:30px" alt="">
-        <img src="/oferta/img/capa-matematica.webp" style="right:16%;transform:rotate(6deg);bottom:30px" alt="">
-        <img src="/oferta/img/capa-linguagens.webp" style="right:2%;transform:rotate(12deg);bottom:16px" alt="">
-        <img class="cel" src="/img/print-app-plano.webp" alt="">
+        <img src="/oferta/img/topico-8.webp" style="left:2%;transform:rotate(-9deg);bottom:10px" alt="">
+        <img src="/oferta/img/topico-6.webp" style="right:2%;transform:rotate(9deg);bottom:10px" alt="">
+        <img src="/oferta/img/topico-1.webp" style="left:50%;transform:translateX(-50%);bottom:24px;z-index:3;width:170px" alt="">
       </div>
       <div class="stats">
         <div class="stat"><b>9</b><span>matérias</span></div>
         <div class="stat"><b>225</b><span>temas</span></div>
         <div class="stat"><b>+2.000</b><span>páginas</span></div>
       </div>
-      <a class="btn pulsa" href="#oferta">Quero o meu plano →</a>
-      <div class="selos"><span>⚡ Acesso imediato</span><span>📱 Abre no celular</span><span>🛡️ 7 dias de garantia</span></div>
+      <a class="btn pulsa" href="#planos">Quero o material completo →</a>
+      <div class="selos"><span>⚡ Acesso imediato</span><span>📱 Celular ou impresso</span><span>🛡️ 7 dias de garantia</span></div>
     </div>
   </div>
 </div></header>
-
-<!-- VÍDEO (aparece só se o arquivo existir) -->
-<section style="padding-top:0" id="sec-video"><div class="wrap">
-  <div class="video"><video id="tsl" src="/oferta/tsl.mp4" poster="/oferta/tsl-capa.jpg" controls playsinline preload="metadata"></video></div>
-  <p class="sub" style="font-size:13.5px">Assista em 2 minutos como funciona</p>
-</div></section>
 
 <!-- DORES -->
 <section style="padding-top:8px"><div class="wrap">
@@ -238,7 +266,7 @@ footer p+p{margin-top:8px}
   <div class="dores">
     <div class="dor"><i>⏳</i><p>Faltam poucas semanas e você ainda não sabe por qual matéria começar.</p></div>
     <div class="dor"><i>📚</i><p>Abre um conteúdo, depois outro, e no fim do dia sente que não fechou nada.</p></div>
-    <div class="dor"><i>🗓️</i><p>Já montou cronograma, seguiu três dias e largou.</p></div>
+    <div class="dor"><i>🧩</i><p>Tem material espalhado em vídeo, apostila e site, e nada organizado do jeito que a prova cobra.</p></div>
     <div class="dor"><i>😰</i><p>Olha a lista de conteúdos do ENEM e bate a sensação de que não vai dar tempo.</p></div>
   </div>
 </div></section>
@@ -248,62 +276,28 @@ footer p+p{margin-top:8px}
   <div class="virada">
     <h2>Você não precisa estudar tudo. <em>Precisa saber o que estudar primeiro.</em></h2>
     <p>Quem tem pouco tempo não perde por falta de esforço. Perde porque gasta os dias que restam em temas que quase não caem e deixa para depois os que aparecem em toda prova.</p>
-    <p>Por isso o Acelera Enem faz o caminho inverso: <strong>escolhe 25 temas por matéria, marca os que mais caem e transforma tudo em um plano diário</strong>, do tamanho do tempo que você tem.</p>
+    <p>Por isso o material do Acelera Enem faz o caminho inverso: <strong>reúne as 9 matérias em 25 temas cada, marca os que mais caem e explica tudo de forma direta</strong>, para caber no tempo que falta.</p>
   </div>
 </div></section>
 
 <!-- MÉTODO -->
 <section style="padding-top:0"><div class="wrap">
-  <div class="c"><span class="eyebrow">Como funciona</span></div>
+  <span class="eyebrow">Como funciona</span>
   <h2>O <em>Método 25 Temas</em> em 4 passos</h2>
   <div class="passos">
-    <div class="passo"><div class="n">1</div><div><h3>25 temas por matéria</h3><p>Em vez de uma apostila sem fim, cada matéria foi reduzida aos 25 temas que o ENEM costuma cobrar.</p></div></div>
-    <div class="passo"><div class="n">2</div><div><h3>🔥 Os que mais caem primeiro</h3><p>Os temas que aparecem com mais frequência vêm marcados. Se o tempo estiver curto, você começa por eles.</p></div></div>
-    <div class="passo"><div class="n">3</div><div><h3>Um plano para cada dia</h3><p>O aplicativo monta a sua semana a partir do tempo que você tem, a partir de 30 minutos por dia. Você abre e já sabe o que fazer.</p></div></div>
-    <div class="passo"><div class="n">4</div><div><h3>Revisão no tempo certo</h3><p>Depois de estudar um tema, o aplicativo avisa quando revisar: 1, 3 e 7 dias depois. Assim o que você leu não se perde até a prova.</p></div></div>
+    <div class="passo"><div class="n">1</div><div><h3>25 temas por matéria</h3><p>Em vez de uma apostila sem fim, cada matéria foi organizada nos 25 temas que o ENEM costuma cobrar.</p></div></div>
+    <div class="passo"><div class="n">2</div><div><h3>🔥 Os que mais caem primeiro</h3><p>Os temas que aparecem com mais frequência vêm com o selo "Cai muito no ENEM". Se o tempo estiver curto, você começa por eles.</p></div></div>
+    <div class="passo"><div class="n">3</div><div><h3>Do básico ao que cai na prova</h3><p>Cada tema tem visão geral, desenvolvimento, aprofundamento, erros comuns e "Como cai no ENEM".</p></div></div>
+    <div class="passo"><div class="n">4</div><div><h3>Checklist para fechar o tema</h3><p>No fim de cada tema, um checklist mostra se você pode seguir em frente ou se vale reler alguma parte.</p></div></div>
   </div>
 </div></section>
 
-<!-- ROTA DAS 2 PROVAS -->
+<!-- POR DENTRO -->
 <section style="padding-top:0"><div class="wrap">
-  <div class="c"><span class="eyebrow">Sugestão de rota</span></div>
-  <h2>2 domingos de prova, <em>2 rotas de estudo</em></h2>
-  <p class="sub">O ENEM é dividido em dois dias. Estudar na ordem das provas faz cada matéria ficar fresca na hora certa.</p>
-  <div class="rota">
-    <div class="etapa"><div class="quando">Até <span data-d1></span></div><h3>Linguagens, Humanas e Redação</h3><p>História, Geografia, Filosofia, Sociologia e Linguagens, começando pelos temas marcados com 🔥.</p></div>
-    <div class="etapa prova"><div class="quando"><span data-d1></span> · 1º dia</div><h3>Prova de Linguagens, Humanas e Redação</h3></div>
-    <div class="etapa"><div class="quando">Na semana entre as provas</div><h3>Natureza e Matemática</h3><p>Matemática, Física, Química e Biologia, com revisão dos temas que você já estudou.</p></div>
-    <div class="etapa prova"><div class="quando"><span data-d2></span> · 2º dia</div><h3>Prova de Natureza e Matemática</h3></div>
-  </div>
-  <p class="rota-nota">Você também pode montar o plano do seu jeito no aplicativo, escolhendo as matérias e o tempo de cada dia.</p>
-  <a class="btn" href="#oferta">Quero seguir a rota →</a>
-</div></section>
-
-<!-- POR DENTRO DO MATERIAL -->
-<section style="padding-top:0"><div class="wrap">
-  <div class="c"><span class="eyebrow">Veja por dentro</span></div>
-  <h2>9 materiais, <em>um para cada matéria</em></h2>
-  <p class="sub">Para ler no celular ou imprimir, com espaço para anotações.</p>
-  <div class="capas9">
-    <img src="/oferta/img/capa-matematica.webp" alt="Capa do material de Matemática" loading="lazy">
-    <img src="/oferta/img/capa-fisica.webp" alt="Capa do material de Física" loading="lazy">
-    <img src="/oferta/img/capa-quimica.webp" alt="Capa do material de Química" loading="lazy">
-    <img src="/oferta/img/capa-biologia.webp" alt="Capa do material de Biologia" loading="lazy">
-    <img src="/oferta/img/capa-historia.webp" alt="Capa do material de História" loading="lazy">
-    <img src="/oferta/img/capa-geografia.webp" alt="Capa do material de Geografia" loading="lazy">
-    <img src="/oferta/img/capa-filosofia.webp" alt="Capa do material de Filosofia" loading="lazy">
-    <img src="/oferta/img/capa-sociologia.webp" alt="Capa do material de Sociologia" loading="lazy">
-    <img src="/oferta/img/capa-linguagens.webp" alt="Capa do material de Linguagens" loading="lazy">
-  </div>
-  <div class="paginas">
-    <img src="/oferta/img/pagina-fogo.webp" alt="Página do material de Matemática com o selo Cai muito no ENEM" loading="lazy">
-    <img src="/oferta/img/pagina-p1.webp" alt="Página do material de Biologia" loading="lazy">
-    <img src="/oferta/img/pagina-p2.webp" alt="Página do material de Matemática" loading="lazy">
-    <img src="/oferta/img/pagina-p3.webp" alt="Página do material de História" loading="lazy">
-  </div>
-  <p class="dica-arraste">Arraste para o lado para ver mais páginas →</p>
-
-  <h3 style="font-size:19px;font-weight:900;color:var(--navy);text-align:center;margin-top:30px">Cada tema, do básico ao que cai na prova</h3>
+  <span class="eyebrow">Veja por dentro</span>
+  <h2>Direto ao ponto, <em>em tópicos</em></h2>
+  <p class="sub">Veja páginas reais do material: cada tema em tópicos curtos, com exemplos, o selo 🔥 dos que mais caem e "Como cai no ENEM".</p>
+  <div class="esteira" aria-label="Páginas do material"><div class="esteira-trilho"><img src="/oferta/img/topico-1.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-2.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-3.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-4.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-5.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-6.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-7.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-8.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-9.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-10.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-11.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-12.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-1.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-2.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-3.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-4.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-5.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-6.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-7.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-8.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-9.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-10.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-11.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-12.webp" alt="" aria-hidden="true" loading="lazy"></div></div>
   <div class="partes">
     <div><span>1</span>Visão geral</div>
     <div><span>2</span>Desenvolvimento</div>
@@ -314,21 +308,16 @@ footer p+p{margin-top:8px}
   </div>
 </div></section>
 
-<!-- APLICATIVO -->
+<!-- ROTA -->
 <section style="padding-top:0"><div class="wrap">
-  <div class="c"><span class="eyebrow">Junto com o material</span></div>
-  <h2>O aplicativo que <em>diz o que estudar hoje</em></h2>
-  <div class="prints">
-    <img src="/img/print-app-inicio.webp" alt="Tela inicial do aplicativo" loading="lazy">
-    <img src="/img/print-app-plano.webp" alt="Plano semanal no aplicativo" loading="lazy">
-    <img src="/img/print-app-tema.webp" alt="Tema aberto no aplicativo" loading="lazy">
-    <img src="/img/print-app-progresso.webp" alt="Desempenho por matéria" loading="lazy">
-  </div>
-  <div class="recursos">
-    <div class="recurso"><b>📅 Plano semanal</b><span>A matéria e o tempo de cada dia, de acordo com a sua rotina.</span></div>
-    <div class="recurso"><b>⏱️ Modo foco</b><span>Cronômetro para estudar sem se perder no celular.</span></div>
-    <div class="recurso"><b>🔁 Revisão</b><span>Aviso para revisar 1, 3 e 7 dias depois.</span></div>
-    <div class="recurso"><b>📊 Desempenho</b><span>Tempo estudado e temas concluídos por matéria.</span></div>
+  <span class="eyebrow">Sugestão de rota</span>
+  <h2>2 domingos de prova, <em>2 rotas de estudo</em></h2>
+  <p class="sub">O ENEM é dividido em dois dias. Estudar na ordem das provas deixa cada matéria fresca na hora certa.</p>
+  <div class="rota">
+    <div class="etapa"><div class="quando">Até <span data-d1></span></div><h3>Linguagens, Humanas e Redação</h3><p>História, Geografia, Filosofia, Sociologia e Linguagens, começando pelos temas marcados com 🔥.</p></div>
+    <div class="etapa prova"><div class="quando"><span data-d1></span> · 1º dia</div><h3>Prova de Linguagens, Humanas e Redação</h3></div>
+    <div class="etapa"><div class="quando">Na semana entre as provas</div><h3>Natureza e Matemática</h3><p>Matemática, Física, Química e Biologia, revisando os temas que você já estudou.</p></div>
+    <div class="etapa prova"><div class="quando"><span data-d2></span> · 2º dia</div><h3>Prova de Natureza e Matemática</h3></div>
   </div>
 </div></section>
 
@@ -336,63 +325,121 @@ footer p+p{margin-top:8px}
 <section style="padding-top:0"><div class="wrap">
   <h2>As duas formas de <em>passar as próximas semanas</em></h2>
   <div class="cmp">
-    <div class="ruim"><h3>Sem plano</h3><ul>
-      <li>Escolhe o que estudar na hora</li><li>Tudo com o mesmo peso</li><li>Esquece o que leu</li><li>Larga no meio da semana</li></ul></div>
+    <div class="ruim"><h3>Sem material</h3><ul>
+      <li>Escolhe o que estudar na hora</li><li>Conteúdo espalhado</li><li>Tudo com o mesmo peso</li><li>Não sabe como cai na prova</li></ul></div>
     <div class="bom"><h3>Com o Acelera Enem</h3><ul>
-      <li>Abre e já sabe o que fazer</li><li>Os temas que mais caem primeiro</li><li>Revisão no dia certo</li><li>Lembrete na hora de estudar</li></ul></div>
+      <li>Tudo em um lugar só</li><li>25 temas por matéria</li><li>Os que mais caem primeiro</li><li>"Como cai no ENEM" em cada tema</li></ul></div>
   </div>
 </div></section>
 
-<!-- OFERTA -->
-<section style="padding-top:0" id="oferta"><div class="wrap">
-  <h2>Tudo o que você recebe <em>hoje</em></h2>
-  <div class="oferta">
-    <div class="oferta-top">Acelera Enem · Reta final 2026</div>
-    <div class="oferta-corpo">
-      <ul class="itens">
-        <li><span><b>9 materiais completos:</b> Matemática, Física, Química, Biologia, História, Geografia, Filosofia, Sociologia e Linguagens</span></li>
-        <li><span><b>225 temas</b>, 25 por matéria, com os que mais caem marcados com 🔥</span></li>
-        <li><span><b>"Como cai no ENEM"</b> ao fim de cada tema</span></li>
-        <li><span><b>Aplicativo Plano ENEM:</b> plano diário pronto para o seu tempo</span></li>
-        <li><span><b>Revisão espaçada e lembretes</b> no horário que você escolher</span></li>
-        <li><span><b>Desempenho por matéria</b> para ver o que já foi feito</span></li>
-        <li><span><b>Acesso imediato</b> no e-mail, no celular ou no computador</span></li>
-      </ul>
-      <div class="preco">
-        <div class="de">Valor total R$ 49,90</div>
-        <div class="por">Hoje por apenas</div>
-        <div class="valor"><small>R$</small> 29,90</div>
-        <div class="ou">à vista, ou em até 5x no cartão</div>
-        <span class="unico">Pagamento único · sem mensalidade</span>
+<!-- BÔNUS -->
+<section style="padding-top:0"><div class="wrap">
+  <span class="eyebrow">Bônus exclusivos</span>
+  <h2>3 bônus para estudar <em>no ritmo certo</em></h2>
+  <p class="sub">Liberados <b>sem custo extra</b> para quem escolher o <b>Plano Completo</b>.</p>
+  <div class="bonus">
+    <div class="bn">
+      <div class="tag">Bônus #1</div>
+      <div class="ic">📱</div>
+      <h3>Aplicativo Plano ENEM</h3>
+      <p>Monta a sua semana a partir do tempo que você tem, a partir de 30 minutos por dia. Você abre e já sabe o que estudar hoje, com modo foco, lembretes, revisão em 1, 3 e 7 dias e desempenho por matéria.</p>
+      <div class="prints">
+        <img src="/img/print-app-plano.webp" alt="Plano semanal no aplicativo" loading="lazy">
+        <img src="/img/print-app-inicio.webp" alt="Tela inicial do aplicativo" loading="lazy">
+        <img src="/img/print-app-progresso.webp" alt="Desempenho por matéria" loading="lazy">
       </div>
-      <a class="btn pulsa" href="#" data-checkout="oferta">Quero o meu plano agora →</a>
-      <div class="selos"><span>🔒 Compra segura</span><span>⚡ Acesso imediato</span><span>🛡️ 7 dias de garantia</span></div>
-      <div class="extras">No checkout você ainda pode incluir os <b>Exercícios e simulados</b> no estilo do ENEM e a <b>Correção da redação pela foto</b>.</div>
+      <div class="inc">✓ Incluso no Plano Completo</div>
+    </div>
+    <div class="bn">
+      <div class="tag">Bônus #2</div>
+      <div class="ic">⚡</div>
+      <h3>Resumos rápidos de cada tema</h3>
+      <p>Os 225 temas em versão curta dentro do aplicativo, para revisar em poucos minutos no ônibus, na fila ou antes de dormir.</p>
+      <div class="prints">
+        <img src="/img/print-app-resumos.webp" alt="Lista de resumos no aplicativo" loading="lazy">
+        <img src="/img/print-app-tema.webp" alt="Resumo de um tema no aplicativo" loading="lazy">
+      </div>
+      <div class="inc">✓ Incluso no Plano Completo</div>
+    </div>
+    <div class="bn">
+      <div class="tag">Bônus #3</div>
+      <div class="ic">📝</div>
+      <h3>Exercícios e simulados</h3>
+      <p>9 simulados, um por matéria, com 25 questões no estilo do ENEM (uma de cada tema) e gabarito comentado. São 225 questões para treinar e descobrir o que revisar.</p>
+      <div class="inc">✓ Incluso no Plano Completo</div>
     </div>
   </div>
+</div></section>
+
+<!-- PLANOS -->
+<section style="padding-top:0" id="planos"><div class="wrap">
+  <span class="eyebrow">Acesso imediato</span>
+  <h2>Escolha o seu plano e <em>comece hoje</em></h2>
+  <p class="sub">Pagamento único, sem mensalidade. Receba no seu e-mail logo após a compra.</p>
+  <div class="planos">
+
+    <div class="plano top">
+      <div class="selo-top">Plano Completo · Mais escolhido</div>
+      <h3><span>Plano</span> Completo</h3>
+      <p class="desc">O material completo das 9 matérias com os 3 bônus para estudar com plano, revisar rápido e treinar.</p>
+      <div class="valor"><small>R$</small><b>29</b><i>,90</i></div>
+      <div class="cond">Pagamento único · ou em até 5x no cartão</div>
+      <div class="tit-lista">Tudo do Essencial +</div>
+      <ul>
+        <li><b>9 materiais completos</b>, um por matéria</li>
+        <li><b>225 temas</b>, os que mais caem marcados com 🔥</li>
+        <li class="b">BÔNUS 1: Aplicativo Plano ENEM</li>
+        <li class="b">BÔNUS 2: Resumos rápidos de cada tema</li>
+        <li class="b">BÔNUS 3: Exercícios e simulados (225 questões)</li>
+        <li>PDF para ler no celular ou imprimir</li>
+      </ul>
+      <a class="btn ouro" href="#" data-checkout="completo">Quero o Plano Completo →</a>
+      <div class="selos"><span>🔒 Compra segura</span><span>⚡ Liberação imediata</span><span>🛡️ 7 dias de garantia</span></div>
+    </div>
+
+    <div class="plano">
+      <h3><span>Plano</span> Essencial</h3>
+      <p class="desc">Os 9 materiais para quem quer estudar só pelos PDFs.</p>
+      <div class="valor"><small>R$</small><b>14</b><i>,90</i></div>
+      <div class="cond">Pagamento único</div>
+      <div class="tit-lista">O que está liberado</div>
+      <ul>
+        <li><b>9 materiais completos</b>, um por matéria</li>
+        <li><b>225 temas</b>, os que mais caem marcados com 🔥</li>
+        <li>PDF para ler no celular ou imprimir</li>
+        <li class="x">Aplicativo Plano ENEM</li>
+        <li class="x">Resumos rápidos de cada tema</li>
+        <li class="x">Exercícios e simulados</li>
+      </ul>
+      <button class="btn contorno" type="button" data-checkout="essencial">Quero o Plano Essencial</button>
+      <div class="selos"><span>🔒 Compra segura</span><span>🛡️ 7 dias de garantia</span></div>
+    </div>
+
+  </div>
+  <div class="bump">✍️ No checkout você também pode incluir o <b>Arsenal de Redações</b>: modelos de introdução, repertório, conectivos e proposta de intervenção para treinar a redação.</div>
 </div></section>
 
 <!-- GARANTIA -->
 <section style="padding-top:0"><div class="wrap">
   <div class="garantia">
     <div class="selo"><b>7</b><span>dias de<br>garantia</span></div>
-    <div><h3>Teste por 7 dias</h3><p>Use o material e o aplicativo. Se não gostar, peça o reembolso dentro do prazo e devolvemos 100% do valor, sem precisar explicar o motivo.</p></div>
+    <div><h3>Teste por 7 dias</h3><p>Use o material. Se não gostar, peça o reembolso dentro do prazo e devolvemos 100% do valor, sem precisar explicar o motivo.</p></div>
   </div>
 </div></section>
 
-<!-- PARA QUEM É -->
+<!-- PARA QUEM -->
 <section style="padding-top:0"><div class="wrap">
   <h2>Para quem é <em>(e para quem não é)</em></h2>
   <div class="quem">
-    <div class="sim"><h3 style="color:var(--verde2)">É para você se</h3><ul>
+    <div class="sim"><h3 style="color:#0c7a3c">É para você se</h3><ul>
       <li>Vai fazer o ENEM 2026 e sente que está atrasado</li>
       <li>Tem pouco tempo por dia e quer usar bem cada minuto</li>
-      <li>Já tentou cronograma e não conseguiu manter</li>
-      <li>Quer tudo organizado em um lugar só, no celular</li></ul></div>
+      <li>Quer o conteúdo das 9 matérias organizado em um lugar só</li>
+      <li>Prefere ler e revisar no seu ritmo, no celular ou no papel</li></ul></div>
     <div class="nao"><h3 style="color:var(--vermelho)">Não é para você se</h3><ul>
       <li>Procura aula ao vivo com professor</li>
       <li>Quer só um banco de questões</li>
-      <li>Não pretende abrir o plano nos próximos dias</li></ul></div>
+      <li>Não pretende abrir o material nos próximos dias</li></ul></div>
   </div>
 </div></section>
 
@@ -400,14 +447,13 @@ footer p+p{margin-top:8px}
 <section style="padding-top:0"><div class="wrap">
   <h2>Dúvidas <em>frequentes</em></h2>
   <div class="faq">
-    <details><summary>Ainda dá tempo?</summary><p>O plano é feito para o tempo que falta e começa pelo que mais pesa: os temas que mais caem e a constância. Não prometemos nota, mas cada dia bem usado conta.</p></details>
-    <details><summary>Quanto tempo por dia eu preciso?</summary><p>A partir de 30 minutos. Você informa o tempo que tem e o aplicativo distribui os temas da semana dentro dele.</p></details>
-    <details><summary>Preciso estudar os 225 temas?</summary><p>Não. O aplicativo distribui alguns temas por semana, começando pelos que mais caem. Se o tempo acabar, você terá estudado primeiro o que mais aparece na prova.</p></details>
+    <details><summary>Dá para estudar tudo em menos de 30 dias?</summary><p>O material foi organizado para isso: 25 temas por matéria, com os que mais caem marcados. Se o tempo for curto, comece pelos temas com 🔥. Não prometemos nota, mas cada dia bem usado conta.</p></details>
+    <details><summary>Qual a diferença entre os planos?</summary><p>O Essencial traz os 9 materiais em PDF. O Completo traz os mesmos 9 materiais e mais 3 bônus: o aplicativo Plano ENEM, os resumos rápidos de cada tema e os exercícios e simulados.</p></details>
     <details><summary>Como recebo?</summary><p>Logo após a compra, o acesso chega no seu e-mail. Os materiais abrem no celular ou no computador e podem ser impressos.</p></details>
-    <details><summary>Preciso instalar algum aplicativo?</summary><p>Não. O aplicativo abre no navegador do celular, e você pode adicioná-lo à tela inicial.</p></details>
+    <details><summary>Preciso instalar algum aplicativo?</summary><p>Não. O aplicativo do Plano Completo abre no navegador do celular, e você pode adicioná-lo à tela inicial.</p></details>
     <details><summary>Tem mensalidade?</summary><p>Não. É pagamento único.</p></details>
     <details><summary>E se eu não gostar?</summary><p>Você tem 7 dias de garantia. Peça o reembolso dentro do prazo e devolvemos o valor pago.</p></details>
-    <details><summary>Isso é oficial do ENEM?</summary><p>Não. É um produto independente, sem vínculo com o INEP, o MEC ou o Governo Federal.</p></details>
+    <details><summary>Isso é oficial do ENEM?</summary><p>Não. É um material independente, sem vínculo com o INEP, o MEC ou o Governo Federal.</p></details>
   </div>
 </div></section>
 
@@ -416,16 +462,40 @@ footer p+p{margin-top:8px}
   <div class="final">
     <h2>O ENEM começa em</h2>
     <div class="dias"><span data-dias>--</span> dias</div>
-    <p>Cada dia sem plano é um dia a menos para estudar o que mais cai.</p>
-    <a class="btn pulsa" href="#" data-checkout="final">Começar hoje por R$ 29,90 →</a>
-    <div class="selos" style="color:rgba(255,255,255,.75)"><span>🛡️ 7 dias de garantia</span><span>⚡ Acesso imediato</span></div>
+    <p>Cada dia sem material é um dia a menos para estudar o que mais cai.</p>
+    <a class="btn" href="#planos">Escolher o meu plano →</a>
   </div>
 </div></section>
 
 <footer><div class="wrap">
-  <p>Acelera Enem é um produto independente, sem vínculo com o INEP, o MEC ou o Governo Federal.</p>
+  <p>Acelera Enem é um material independente, sem vínculo com o INEP, o MEC ou o Governo Federal.</p>
   <p>Não prometemos nota nem aprovação. Os resultados dependem da dedicação de cada estudante.</p>
 </div></footer>
+
+<!-- POP-UP: Essencial → Completo por R$ 5 a mais -->
+<div class="pop" id="pop" role="dialog" aria-modal="true" aria-labelledby="pop-t">
+  <div class="pop-box">
+    <button class="pop-x" type="button" aria-label="Fechar" data-fechar>✕</button>
+    <div class="tag">✦ Oportunidade só nesta tela</div>
+    <h3 id="pop-t">Por apenas <mark>R$ 5,00 a mais</mark>, leve o <mark>Plano Completo</mark></h3>
+    <p class="t">Além dos 9 materiais, você recebe os 3 bônus para estudar com plano, revisar rápido e treinar:</p>
+    <ul>
+      <li><b>9 materiais completos</b> e 225 temas</li>
+      <li><b>Bônus 1:</b> Aplicativo Plano ENEM</li>
+      <li><b>Bônus 2:</b> Resumos rápidos de cada tema</li>
+      <li><b>Bônus 3:</b> Exercícios e simulados (225 questões)</li>
+      <li>7 dias de garantia</li>
+    </ul>
+    <div class="caixa">
+      <div class="l">Plano Completo</div>
+      <div class="de">De R$ 29,90 por</div>
+      <div class="mais"><span>+</span> R$ 5,00</div>
+      <div class="tot">Total: <b>R$ 19,90</b> · pagamento único</div>
+    </div>
+    <button class="btn ouro" type="button" data-checkout="upgrade">Sim, quero o Plano Completo por R$ 19,90</button>
+    <button class="nao" type="button" data-checkout="essencial-final">Não, quero continuar só com o Essencial de R$ 14,90</button>
+  </div>
+</div>
 
 <script>
 (function(){
@@ -434,24 +504,44 @@ footer p+p{margin-top:8px}
   function dataBR(d){ var p=d.split('-'); return p[2]+'/'+p[1]; }
   var n = dias(O.DATA_DIA1);
   document.querySelectorAll('[data-dias]').forEach(function(el){ el.textContent = n || '0'; });
-  if(!n){ document.getElementById('faixa').textContent = 'ENEM 2026'; }
+  /* contador regressivo até o 1º dia (13h30 de Brasília), igual ao do quiz */
+  var alvo = new Date(O.DATA_DIA1+'T13:30:00-03:00').getTime();
+  if(!(alvo > Date.now())){ document.getElementById('faixa').remove(); }
+  else (function tick(){
+    var r = Math.max(0, Math.floor((alvo-Date.now())/1000));
+    var v = { 'cd-d':Math.floor(r/86400), 'cd-h':Math.floor(r%86400/3600), 'cd-m':Math.floor(r%3600/60), 'cd-s':r%60 };
+    for(var k in v){ document.getElementById(k).textContent = String(v[k]).padStart(2,'0'); }
+    setTimeout(tick, 1000);
+  })();
   document.querySelectorAll('[data-d1]').forEach(function(el){ el.textContent = dataBR(O.DATA_DIA1); });
   document.querySelectorAll('[data-d2]').forEach(function(el){ el.textContent = dataBR(O.DATA_DIA2); });
 
-  /* checkout: leva os parâmetros de UTM da página */
-  document.querySelectorAll('[data-checkout]').forEach(function(a){
-    a.addEventListener('click', function(e){
+  var pop = document.getElementById('pop');
+  function abrirPop(){ pop.classList.add('on'); try{ fbq('trackCustom','Popup_Upgrade'); }catch(_){} }
+  function fecharPop(){ pop.classList.remove('on'); }
+
+  /* leva os parâmetros de UTM da página para o checkout */
+  function ir(url, valor){
+    if(!url){ alert('Link de checkout ainda não configurado.'); return; }
+    try{ fbq('track','InitiateCheckout',{value:valor,currency:'BRL'}); }catch(_){}
+    var q = location.search.replace(/^\?/,'');
+    if(q) url += (url.indexOf('?')<0 ? '?' : '&') + q;
+    location.href = url;
+  }
+
+  document.querySelectorAll('[data-checkout]').forEach(function(el){
+    el.addEventListener('click', function(e){
       e.preventDefault();
-      try{ fbq('track','InitiateCheckout'); }catch(_){}
-      var url = O.CHECKOUT_URL, q = location.search.replace(/^\?/,'');
-      if(q) url += (url.indexOf('?')<0 ? '?' : '&') + q;
-      location.href = url;
+      var t = el.getAttribute('data-checkout');
+      if(t === 'completo') ir(O.CHECKOUT_COMPLETO, 29.90);
+      else if(t === 'essencial') abrirPop();
+      else if(t === 'upgrade') ir(O.CHECKOUT_UPGRADE, 19.90);
+      else if(t === 'essencial-final') ir(O.CHECKOUT_ESSENCIAL, 14.90);
     });
   });
+  pop.addEventListener('click', function(e){ if(e.target === pop || e.target.hasAttribute('data-fechar')) fecharPop(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') fecharPop(); });
 
-  /* vídeo: só mostra a seção se o arquivo existir */
-  var v = document.getElementById('tsl');
-  v.addEventListener('play', function(){ try{ fbq('trackCustom','TSL_play'); }catch(_){} }, {once:true});
 })();
 </script>
 </body>
