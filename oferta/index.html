@@ -113,9 +113,35 @@ h2 em{font-style:normal;color:var(--azul)}
 @keyframes esteira{to{transform:translateX(calc(-50% - 7px))}}
 @media (prefers-reduced-motion:reduce){.esteira-trilho{animation-duration:180s}}
 /* galeria */
-.partes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}
-.partes div{background:var(--card);border:1px solid var(--linha);border-radius:12px;padding:10px 12px;font-size:13.5px;font-weight:700}
-.partes div span{color:var(--azul);font-weight:900;margin-right:4px}
+/* anatomia de um tema */
+.anat{display:grid;gap:18px;margin-top:24px;align-items:start}
+.ficha{background:#fff;border:3px solid #f1d98a;border-radius:20px;padding:16px;box-shadow:0 0 0 6px #fbf1d0,0 26px 50px -26px rgba(4,34,43,.35)}
+.ficha-topo{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-bottom:12px}
+.ficha-topo .num{background:var(--azul-escuro);color:#fff;font-weight:900;font-size:18px;border-radius:10px;padding:6px 10px}
+.ficha-topo h3{font-size:20px;font-weight:900;color:var(--azul-escuro);text-transform:uppercase;letter-spacing:.02em}
+.ficha-topo .fogo{font-size:11.5px;font-weight:800;background:var(--amarelo-suave);border:1px solid #f3dc8a;color:#8a6a00;border-radius:999px;padding:3px 10px}
+.zona{position:relative;border-radius:14px;padding:12px 14px 12px 16px;margin-top:10px;font-size:13.5px;color:var(--suave)}
+.zona .pino{position:absolute;top:-10px;right:-8px}
+.z1{background:var(--azul-suave);border:1px solid #cdeef6}
+.z2{background:#f1f7ec;border:1px solid #d4e8c6}
+.z3{background:#fff4f2;border:1px solid #f1d0ca}
+.z-tit{font-size:12px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--azul-escuro);margin-bottom:4px}
+.zona b{color:var(--azul-escuro)}
+.zona ul{margin-top:2px}
+.zona li{list-style:none;position:relative;padding:2px 0 2px 16px}
+.zona li::before{content:'•';position:absolute;left:2px;color:var(--azul);font-weight:900}
+.zona ul.x li::before{content:'✕';color:var(--vermelho);font-size:11px;top:4px}
+.conta{margin-top:6px;background:#fff;border:1px dashed #b9d8a6;border-radius:10px;padding:8px 10px;font-weight:700;color:var(--azul-escuro);font-variant-numeric:tabular-nums}
+.aten{margin-top:6px;font-weight:700;color:#9a3412}
+.enem{margin-top:10px;background:#f3eefc;border:1px solid #ddd0f5;border-radius:12px;padding:10px 12px;font-size:13.5px;color:#4c2d86}
+.enem b{color:#3b1f72}
+.pino{flex:none;width:30px;height:30px;border-radius:50%;background:var(--amarelo);border:3px solid #fff;box-shadow:0 0 0 2px #e8c64a,0 4px 10px rgba(0,0,0,.12);color:var(--azul-escuro);font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center}
+.pino.alvo{font-size:13px;background:#fff}
+.legendas{display:grid;gap:10px}
+.leg{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--linha);border-radius:14px;padding:12px 14px}
+.leg b{font-size:15px;color:var(--azul-escuro)}
+.leg p{font-size:13.5px;color:var(--suave);margin-top:2px}
+@media (min-width:720px){.anat{grid-template-columns:1.25fr 1fr;align-items:center}}
 
 /* rota */
 .rota{display:grid;gap:12px;margin-top:22px}
@@ -287,8 +313,8 @@ footer p+p{margin-top:8px}
   <div class="passos">
     <div class="passo"><div class="n">1</div><div><h3>25 temas por matéria</h3><p>Em vez de uma apostila sem fim, cada matéria foi organizada nos 25 temas que o ENEM costuma cobrar.</p></div></div>
     <div class="passo"><div class="n">2</div><div><h3>🔥 Os que mais caem primeiro</h3><p>Os temas que aparecem com mais frequência vêm com o selo "Cai muito no ENEM". Se o tempo estiver curto, você começa por eles.</p></div></div>
-    <div class="passo"><div class="n">3</div><div><h3>Do básico ao que cai na prova</h3><p>Cada tema tem visão geral, desenvolvimento, aprofundamento, erros comuns e "Como cai no ENEM".</p></div></div>
-    <div class="passo"><div class="n">4</div><div><h3>Checklist para fechar o tema</h3><p>No fim de cada tema, um checklist mostra se você pode seguir em frente ou se vale reler alguma parte.</p></div></div>
+    <div class="passo"><div class="n">3</div><div><h3>Cada tema em 3 partes</h3><p>Visão geral, aprofundando (com exemplo resolvido) e erros comuns e pontos de atenção.</p></div></div>
+    <div class="passo"><div class="n">4</div><div><h3>Como cai no ENEM</h3><p>No fim de cada tema, o contexto em que o assunto costuma aparecer na prova.</p></div></div>
   </div>
 </div></section>
 
@@ -298,13 +324,45 @@ footer p+p{margin-top:8px}
   <h2>Direto ao ponto, <em>em tópicos</em></h2>
   <p class="sub">Veja páginas reais do material: cada tema em tópicos curtos, com exemplos, o selo 🔥 dos que mais caem e "Como cai no ENEM".</p>
   <div class="esteira" aria-label="Páginas do material"><div class="esteira-trilho"><img src="/oferta/img/topico-1.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-2.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-3.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-4.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-5.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-6.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-7.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-8.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-9.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-10.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-11.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-12.webp" alt="Página de conteúdo do material" loading="lazy"><img src="/oferta/img/topico-1.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-2.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-3.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-4.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-5.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-6.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-7.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-8.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-9.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-10.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-11.webp" alt="" aria-hidden="true" loading="lazy"><img src="/oferta/img/topico-12.webp" alt="" aria-hidden="true" loading="lazy"></div></div>
-  <div class="partes">
-    <div><span>1</span>Visão geral</div>
-    <div><span>2</span>Desenvolvimento</div>
-    <div><span>3</span>Aprofundamento</div>
-    <div><span>4</span>Erros comuns</div>
-    <div><span>5</span>Revisão com checklist</div>
-    <div><span>🎯</span>Como cai no ENEM</div>
+</div></section>
+
+<!-- ANATOMIA DE UM TEMA -->
+<section style="padding-top:0"><div class="wrap">
+  <span class="eyebrow">Como cada tema é organizado</span>
+  <h2>Cada tema em <em>3 partes</em></h2>
+  <p class="sub">Nada de texto enrolado: você entende o conceito, vê como se aplica e aprende onde a maioria erra.</p>
+  <div class="anat">
+    <div class="ficha">
+      <div class="ficha-topo"><span class="num">03</span><h3>Razão e proporção</h3><span class="fogo">🔥 Cai muito no ENEM</span></div>
+
+      <div class="zona z1"><span class="pino">1</span>
+        <div class="z-tit">O que é?</div>
+        <p><b>Razão</b> compara duas grandezas por divisão: a/b. <b>Proporção</b> é a igualdade entre duas razões: a/b = c/d.</p>
+        <div class="z-tit" style="margin-top:8px">Pontos-chave</div>
+        <ul><li>Produto dos meios = produto dos extremos: a · d = b · c</li><li>Diretamente proporcionais: uma dobra, a outra dobra</li><li>Inversamente: uma dobra, a outra cai pela metade</li></ul>
+      </div>
+
+      <div class="zona z2"><span class="pino">2</span>
+        <div class="z-tit">Aprofundando</div>
+        <p>Uma receita usa 3 ovos para 2 xícaras de farinha. Com 6 xícaras:</p>
+        <div class="conta">3/2 = x/6 → 2x = 18 → <b>x = 9 ovos</b></div>
+      </div>
+
+      <div class="zona z3"><span class="pino">3</span>
+        <div class="z-tit">⚠️ Erros comuns e pontos de atenção</div>
+        <ul class="x"><li>Usar regra de três direta quando as grandezas são inversas (mais pedreiros, menos dias)</li><li>Comparar minutos com horas sem converter</li></ul>
+        <p class="aten">Pergunte sempre: se uma aumenta, a outra aumenta ou diminui?</p>
+      </div>
+
+      <div class="enem">🎯 <b>Como cai no ENEM:</b> escalas de mapa, receitas, misturas e velocidade.</div>
+    </div>
+
+    <div class="legendas">
+      <div class="leg"><span class="pino">1</span><div><b>Visão geral</b><p>O conceito em poucas linhas e os pontos-chave que você precisa saber.</p></div></div>
+      <div class="leg"><span class="pino">2</span><div><b>Aprofundando</b><p>Exemplo resolvido passo a passo, do jeito que a questão aparece.</p></div></div>
+      <div class="leg"><span class="pino">3</span><div><b>Erros comuns e pontos de atenção</b><p>As pegadinhas que mais derrubam na prova e como evitar.</p></div></div>
+      <div class="leg"><span class="pino alvo">🎯</span><div><b>Como cai no ENEM</b><p>No fim de cada tema, o contexto em que o assunto aparece na prova.</p></div></div>
+    </div>
   </div>
 </div></section>
 
