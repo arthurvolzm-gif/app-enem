@@ -9,6 +9,8 @@
    - PRODUTO_PADRAO         (opcional) produto liberado quando a venda chega com um id desconhecido, ex.: plano
    - ZUPTOS_PRODUTOS        JSON ligando o id/nome do produto na Zuptos ao produto do app, ex.:
        {"id-do-front":"plano","id-do-ob1":"exercicios","id-do-ob3":"correcao","id-do-upsell":"comunidade"}
+     O valor também pode ser uma lista (libera vários): {"id-do-pro":["plano","exercicios"]}
+     ou "" (venda reconhecida que não libera nada no app, ex.: plano só de PDFs): {"id-do-essencial":""}
      (o id do material de redação, OB2, não entra: ele é entregue só pela plataforma)
 
    Como funciona: o payload da Zuptos é lido de forma tolerante. Procura o e-mail do
@@ -83,11 +85,13 @@ export default async function handler(req, res) {
   const email = acharEmail(folhas);
   const status = acharStatus(folhas).join(" | ");
   const valores = new Set(folhas.map(([, v]) => v.trim().toLowerCase()));
-  let produtos = [...new Set(Object.keys(mapaMin).filter((k) => valores.has(k)).map((k) => mapaMin[k]))];
+  /* o valor pode ser um produto ("plano"), uma lista (["plano","exercicios"]) ou "" (venda reconhecida que não libera nada no app) */
+  const achados = Object.keys(mapaMin).filter((k) => valores.has(k));
+  let produtos = [...new Set(achados.flatMap((k) => [].concat(mapaMin[k]).map((p) => String(p || "").trim()).filter(Boolean)))];
   /* reserva: se a venda chega com um id que não está em ZUPTOS_PRODUTOS, usa o produto padrão (opcional).
      Só ligue PRODUTO_PADRAO=plano se TODAS as vendas deste webhook forem do app; senão deixe vazio. */
   const padrao = String(process.env.PRODUTO_PADRAO || "").trim();
-  const usouPadrao = !produtos.length && !!padrao;
+  const usouPadrao = !achados.length && !!padrao;
   if (usouPadrao) produtos = [padrao];
 
   const revertido = REVERTIDO.test(status);
@@ -96,7 +100,7 @@ export default async function handler(req, res) {
 
   try {
     if (!email) acao = "sem e-mail";
-    else if (!produtos.length) acao = "produto não reconhecido";
+    else if (!produtos.length) acao = achados.length ? "venda sem acesso no app (só PDFs)" : "produto não reconhecido";
     else if (revertido) {
       for (const p of produtos) await rpc("revogar_por_email", { p_email: email, p_produto: p });
       acao = "revogado: " + produtos.join(",");
